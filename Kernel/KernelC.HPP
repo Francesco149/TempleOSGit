@@ -1,7 +1,6 @@
 #help_index "AutoComplete"
 #help_file "::/Doc/AutoComplete"
 public extern CAutoCompleteGlbls ac;
-
 #help_index "AutoComplete/Dictionary"
 public extern CAutoCompleteDictGlbls acd;
 
@@ -88,6 +87,7 @@ public extern U8 *CatPrint(U8 *dst,U8 *fmt,...);
 
 #help_index "Char/Operations;Memory/Adam Heap"
 public extern U8 *AStrNew(U8 *buf);
+
 #help_index "Char/Operations;Memory/Heap"
 public extern U8 *StrNew(U8 *buf,CTask *mem_task=NULL);
 

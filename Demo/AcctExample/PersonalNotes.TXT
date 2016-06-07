@@ -1,5 +1,7 @@
                                      TODO
 
+* [C:/Adam/God/HSNotes.TXT.Z,1] change web links.
+
 * [C:/Apps/KeepAway/KeepAway.CPP.Z,1]: Add intelligence to passing, both
 throwing 
 and catching.

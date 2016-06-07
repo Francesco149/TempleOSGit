@@ -10,9 +10,6 @@
       F64 best_score=4.9425;
       +] DiningStars
       F64 best_score=9999.0000;
-      +] Staff
-      #define PERSONAL_INITIALS "TAD"
-    #define MACHINE_CFG 0
       +] DunGen
       F64 best_score=20.5295;
       +] FlapBat
@@ -36,10 +33,13 @@
       F64 best_score=33.8405;
       +] BomberGolf
       I64 best_score=175;
-      +] EagleDive
-      I64 best_score=8;
       +] RawHide
       F64 best_score=96.1279;
+      +] EagleDive
+      I64 best_score=8;
+      +] Staff
+      #define PERSONAL_INITIALS "TAD"
+    #define MACHINE_CFG 0
       +] DemoCompany
   
   +] Game1
