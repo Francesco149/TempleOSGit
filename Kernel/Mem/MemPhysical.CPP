@@ -36,8 +36,8 @@ U0 Mem32DevInit()
   tempmr=AMAlloc(sizeof(CMemRange));
   tempmr->type=MRT_UNUSED;
   tempmr->flags=0;
-//Maybe !!! Change this to 0xE0000000 !!!
-  tempmr->base=0xF0000000;
+//Maybe !!! Change this to 0xF0000000 !!!
+  tempmr->base=0xE0000000;
   tempmr->size=0x10000000;
   QueIns(tempmr,dev.mem32_root.last);
 

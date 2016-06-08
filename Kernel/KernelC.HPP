@@ -501,6 +501,7 @@ public extern I64 ScanChar();
 public extern Bool ScanKey(I64 *_ch=NULL,I64 *_scan_code=NULL,Bool echo=FALSE);
 public extern Bool YorN();
 public extern CKbdStateGlbls	kbd;
+
 #help_index "Math"
 public extern I64 CeilI64(I64 num,I64 to);
 public extern U64 CeilU64(U64 num,U64 to);
@@ -627,7 +628,6 @@ public extern CSndGlbls snd;
 
 #help_index "StdOut"
 #help_file "::/Doc/Streams"
-
 #help_index "Task"
 public extern U0 Exit();
 public extern Bool IsSuspended(CTask *task=NULL);

@@ -2914,7 +2914,7 @@ public class CHeapCtrl
   CMemUnused *heap_hash[MEM_HEAP_HASH_SIZE/sizeof(U8 *)];
 };
 
-#help_index "Devices"
+#help_index "Devices;Memory/Page Tables"
 public class CDevGlbls
 {
   I64	*idt;

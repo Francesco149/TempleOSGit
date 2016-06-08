@@ -302,16 +302,74 @@ for each spot.
   panels_processed_bitmap=MAlloc((num_panels+7)>>3);
 }
 
+F64 claws_down;
+
+#define HAND_X	(1.0-claws_down)*(0.3*w)+claws_down*(0.4*w)
+#define HAND_Y	(1.0-claws_down)*(h-125)+claws_down*h
+
+
+
+
+/* <2> <2> (image) */
+/* <3> <3> (image) */
+
+
+
+U0 ClawDraw(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,I64 w,I64 segments,Bool talon)
+{
+  I64 i,j;
+  for (i=0,j=segments;i<segments;i++,j--) {
+    dc->pen_width=w;
+    dc->color=BLACK;
+    GrLine3(dc,
+	j*x1/segments+i*x2/segments,
+	j*y1/segments+i*y2/segments,0,
+	(j-1)*x1/segments+(i+1)*x2/segments,
+	(j-1)*y1/segments+(i+1)*y2/segments,0);
+    dc->pen_width=w-2;
+    dc->color=YELLOW;
+    GrLine3(dc,
+	j*x1/segments+i*x2/segments,
+	j*y1/segments+i*y2/segments,0,
+	(j-1)*x1/segments+(i+1)*x2/segments,
+	(j-1)*y1/segments+(i+1)*y2/segments,0);
+  }
+  if (talon) {
+    if (y1<y2)
+      Sprite3B(dc,x1,y1,0,__BIN_2);
+    else
+      Sprite3B(dc,x1,y1,0,__BIN_3);
+  }
+}
+
+U0 ClawsDraw(CTask *task,CDC *dc)
+{
+  F64 claws_up=1.0-claws_down;
+  I64 w=task->pix_width,h=task->pix_height;
+  dc->flags|=DCF_SYMMETRY;
+  DCSymmetrySet(dc,w>>1,0,w>>1,1);
+
+  ClawDraw(dc,HAND_X-30,HAND_Y-50*claws_up,HAND_X-5,HAND_Y,	22,4,TRUE);
+  ClawDraw(dc,HAND_X-10,HAND_Y-60*claws_up,HAND_X,HAND_Y,	22,4,TRUE);
+  ClawDraw(dc,HAND_X+10,HAND_Y-60*claws_up,HAND_X,HAND_Y,	22,4,TRUE);
+  ClawDraw(dc,HAND_X+30,HAND_Y-50*claws_up,HAND_X+5,HAND_Y,	22,4,TRUE);
+  ClawDraw(dc,HAND_X+25,HAND_Y+40*claws_up,HAND_X+5,HAND_Y,	22,4,TRUE);
+
+  ClawDraw(dc,HAND_X,HAND_Y,6*w/20,h,38,5,FALSE);
+}
+
 CDC *main_dc;
 
-U0 DrawIt(CTask *,CDC *dc)
+U0 DrawIt(CTask *task,CDC *dc)
 {
   main_dc->flags|=DCF_NO_TRANSPARENTS;
   GrBlot(dc,0,0,main_dc);
+  if (claws_down)
+    ClawsDraw(task,dc);
 }
 
 /*
-/* <2> <2> (image) */
+/* <4> <4> (image) */
 
 
 
@@ -330,7 +388,7 @@ U0 DrawIt(CTask *,CDC *dc)
 
 
 
-/* <3> <3> (image) */
+/* <5> <5> (image) */
 
 
 
@@ -691,13 +749,31 @@ U0 Core0EagleDive()
   WinMgrSync;
 }
 
+
+Fish *FishFind(I64 x1,I64 y1,I64 *_dd)
+{
+  I64 dd,best_dd=MAX_I64;
+  Fish *res=NULL,*tempf;
+  tempf=fish_root.next;
+  while (tempf!=&fish_root) {
+    dd=SqrI64(tempf->p.x-x1)+SqrI64(tempf->p.y-y1);
+    if (dd<best_dd) {
+      best_dd=dd;
+      res=tempf;
+    }
+    tempf=tempf->next;
+  }
+  *_dd=best_dd;
+  return res;
+}
+
 #define ANIMATE_MS	10
 
 U0 AnimateTask(I64)
 {//Steadily moves the airplane fwd.
-  I64 *s2w,x1,y1,z1;
-  F64 t0=tS,mS;
-  Fish *tempf,*tempf1;
+  I64 *s2w,x1,y1,z1,dx,dy,dz,dd;
+  F64 t0=tS,mS,theta,d;
+  Fish *tempf;
   while (TRUE) {
     mS=1000*(tS-t0);
     t0=tS;
@@ -707,21 +783,26 @@ U0 AnimateTask(I64)
       Mat4x4RotZ(s2w,-theta1);
       Mat4x4RotX(s2w,-phi);
       Mat4x4RotZ(s2w,-theta2);
-      x1=0;y1=0;z1=-speed*mS*COORDINATE_SCALE;
-      Mat4x4MulXYZ(s2w,&x1,&y1,&z1);
-      x+=x1;
-      y+=y1;
-      z+=z1;
+      dx=0;dy=0;dz=1<<16;
+      Mat4x4MulXYZ(s2w,&dx,&dy,&dz);
+      x-=speed*mS*COORDINATE_SCALE*dx/1<<16;
+      y-=speed*mS*COORDINATE_SCALE*dy/1<<16;
+      z-=speed*mS*COORDINATE_SCALE*dz/1<<16;
       Free(s2w);
       x1=x/COORDINATE_SCALE; y1=y/COORDINATE_SCALE; z1=z/COORDINATE_SCALE;
 
-      if (z1<WATER_ELEVATION*MAP_SCALE) {
+      if (z1<(WATER_ELEVATION+3)*MAP_SCALE) {
 	speed=0.5;
-	tempf=fish_root.next;
-	while (tempf!=&fish_root) {
-	  tempf1=tempf->next;
-	  if (SqrI64(tempf->p.x-x1)+
-		SqrI64(tempf->p.y-y1)<MAP_SCALE*MAP_SCALE*5*5) {
+	if (tempf=FishFind(x1,y1,&dd)) {
+	  d=Sqrt(dd);
+	  x1-=tempf->p.x;
+	  y1-=tempf->p.y;
+	  theta=ACos((dx*x1+dy*y1)/(d*1<<16));
+	  if (theta>0 && d<MAP_SCALE*4)
+	    claws_down=Saw(d,MAP_SCALE*4);
+	  else
+	    claws_down=0.01;
+	  if (d<MAP_SCALE*2) {
 	    game_score++;
 	    if (game_score>best_score)
 	      best_score=game_score;
@@ -731,9 +812,9 @@ U0 AnimateTask(I64)
 	    Snd(1000); Sleep(200); Snd(0);
 	    music.mute=FALSE;
 	  }
-	  tempf=tempf1;
 	}
       } else {
+	claws_down=0;
 	if (-pi/4<=phi<=pi/4)
 	  speed+=0.0005;
 	else if (-3*pi/4<=phi<=3*pi/4)
@@ -799,6 +880,7 @@ U0 Init(I64 _mp_cnt)
   x=MAP_WIDTH>>1 *COORDINATE_SCALE*MAP_SCALE;
   y=MAP_HEIGHT>>1*COORDINATE_SCALE*MAP_SCALE;
   z=64		 *COORDINATE_SCALE*MAP_SCALE;
+  claws_down=0;
 
   for (i=1;i<mp.mp_cnt;i++)
     Spawn(&CoreAPEagleDiveTask,Fs,"AP EagleDive",i);
