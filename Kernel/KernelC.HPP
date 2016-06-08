@@ -628,6 +628,7 @@ public extern CSndGlbls snd;
 
 #help_index "StdOut"
 #help_file "::/Doc/Streams"
+
 #help_index "Task"
 public extern U0 Exit();
 public extern Bool IsSuspended(CTask *task=NULL);
