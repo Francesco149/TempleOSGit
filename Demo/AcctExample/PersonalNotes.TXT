@@ -75,6 +75,8 @@ Free old task memory?
 
 * Use pen_width and pen_height when clipping with pen_width>1.
 
+* [C:/Home/Downloads/Games/Rocks.CPP,1].
+
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
@@ -189,7 +191,7 @@ imagination.
 
 * 1/1/2015 Bug messing-up keyboard, like no CTRL key.  Was working on Sprites.
 
-* 4/13/14 Strut or RawHide crashed when [C:/Kernel/KernelB.HPP.Z,186]
+* 4/13/14 Strut or RawHide crashed when [C:/Kernel/KernelB.HPP.Z,184]
 sys_var_init_flag was set during 
 testsuite.  Perhaps, floodfill?
 * 3/19/14: RESET during RawHide. 
@@ -321,7 +323,7 @@ ICCmp() like in [C:/Compiler/BackB.CPP.Z,468] ICCmpAndBranch()?
 R("#define","StrMap");  [C:/Home/HomeWrappers.CPP.Z,13] R("#include",...);
 also?
 
-* Compiler: [C:/Kernel/KernelB.HPP.Z,186] sys_var_init_flag for local vars?
+* Compiler: [C:/Kernel/KernelB.HPP.Z,184] sys_var_init_flag for local vars?
 
 * Implement [C:/Kernel/KernelA.HPP.Z,2538] RS_ATTR_FIXED fixed pos files?
 

@@ -1,6 +1,7 @@
 #help_index "AutoComplete"
 #help_file "::/Doc/AutoComplete"
 public extern CAutoCompleteGlbls ac;
+
 #help_index "AutoComplete/Dictionary"
 public extern CAutoCompleteDictGlbls acd;
 
@@ -621,7 +622,6 @@ public extern Bool IsMute();
 public extern Bool Mute(Bool val);
 public extern U0 Snd(F64 freq);
 public extern CSndGlbls snd;
-
 #help_index "StdIn"
 #help_file "::/Doc/Streams"
 

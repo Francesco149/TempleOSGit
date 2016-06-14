@@ -44,8 +44,8 @@
   [C:/Kernel/KernelB.HPP.Z,14] Bt() is bit test, like the x86 inst, not bit
   torrent.
 +] Is 'Fs->' in the code file system?
-  [C:/Kernel/KernelB.HPP.Z,277] Fs is a segment reg, not file system. 
-  ([C:/Kernel/KernelB.HPP.Z,277] Fs is kept pointing to the current task's
+  [C:/Kernel/KernelB.HPP.Z,275] Fs is a segment reg, not file system. 
+  ([C:/Kernel/KernelB.HPP.Z,275] Fs is kept pointing to the current task's
   record.)  There is no memory segmentation.  It is 64-bit and flat. FS and GS
   are used as general purpose regs, more or less.
 +] Is it Pascal?

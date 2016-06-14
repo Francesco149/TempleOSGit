@@ -2,7 +2,7 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----06/05/16 21:05:26----
+----06/12/16 20:36:14----
 
 ----06/02/16 03:20:56----
 * **TempleOS version 4.07 Released**
@@ -39,7 +39,7 @@ R("ISOFileCreate","[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO");
 * Made [C:/Kernel/FunSeg.CPP.Z,54] FunSegFind() search all hash tables when
 [C:/Kernel/KMisc.CPP.Z,265] IsDbg.
 * Added missiles to [C:/Apps/X-Caliber/X-Caliber.CPP.Z,1].
-* Fixed bug in [C:/Kernel/KernelB.HPP.Z,163] D3Unit().
+* Fixed bug in [C:/Kernel/KernelB.HPP.Z,161] D3Unit().
 
 ----05/01/16 15:12:31----
 * [C:/Home/HomeWrappers.CPP.Z,13] R("Identical","Ident");
@@ -56,9 +56,9 @@ R("MapDrv","[C:/Kernel/BlkDev/DskDrv.CPP.Z,223] DrvMap");
 * Changed args in [C:/Adam/AMath.CPP.Z,68] CAdd(), [C:/Adam/AMath.CPP.Z,75]
 CSub(), [C:/Adam/AMath.CPP.Z,82] CMul(), [C:/Adam/AMath.CPP.Z,89] CDiv() and
 [C:/Adam/AMath.CPP.Z,122] CPoly().
-* Changed args in [C:/Kernel/KernelB.HPP.Z,147] D3Add(),
-[C:/Kernel/KernelB.HPP.Z,161] D3Sub(), [C:/Kernel/KernelB.HPP.Z,157] D3Mul(),
-[C:/Kernel/KernelB.HPP.Z,153] D3Div() and [C:/Kernel/KernelB.HPP.Z,150]
+* Changed args in [C:/Kernel/KernelB.HPP.Z,145] D3Add(),
+[C:/Kernel/KernelB.HPP.Z,159] D3Sub(), [C:/Kernel/KernelB.HPP.Z,155] D3Mul(),
+[C:/Kernel/KernelB.HPP.Z,151] D3Div() and [C:/Kernel/KernelB.HPP.Z,148]
 D3Cross().
 
 ----04/25/16 03:42:30----
