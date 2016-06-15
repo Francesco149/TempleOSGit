@@ -316,7 +316,7 @@ U0 Core0StartMP()
   mp_cnt_lock=0;
 
   *LAPIC_LVT_ERR(U32 *)=*LAPIC_LVT_ERR(U32 *)&0xFFFFFF00+MPN_VECT;
-  WBINVD //Not sure why this is needed.	Might just need delay. [C:/Kernel/KernelB.HPP.Z,170] MemCpy above?
+  WBINVD //Not sure why this is needed.	Might just need delay. [C:/Kernel/KernelB.HPP.Z,168] MemCpy above?
 
   *LAPIC_ICR_LOW(U32 *)=0xC4500; //assert init IPI
   BusyWait(10000);

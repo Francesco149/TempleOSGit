@@ -91,8 +91,8 @@ just numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
 are 
 compiled inefficiently.
 
-* You can use [C:/Kernel/KernelB.HPP.Z,207]
-progress1-[C:/Kernel/KernelB.HPP.Z,219] progress4 in your programs for
+* You can use [C:/Kernel/KernelB.HPP.Z,205]
+progress1-[C:/Kernel/KernelB.HPP.Z,217] progress4 in your programs for
 whatever you like.  
 They're just global vars that are shown on the wallpaper.  The original
 intent 
@@ -274,9 +274,9 @@ text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 * [C:/Kernel/KernelA.HPP.Z,537] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
 expressions might decrease.  Take a snap-shot, like this:
-timeout=[C:/Kernel/KernelB.HPP.Z,281] GetTSC+
+timeout=[C:/Kernel/KernelB.HPP.Z,279] GetTSC+
 [C:/Kernel/KernelA.HPP.Z,537] cnts.time_stamp_freq x seconds; and compare
-against [C:/Kernel/KernelB.HPP.Z,281] GetTSC().  I recommend 
+against [C:/Kernel/KernelB.HPP.Z,279] GetTSC().  I recommend 
 just using [C:/Kernel/KMisc.CPP.Z,117] tS or [C:/Kernel/KernelA.HPP.Z,537]
 cnts.jiffies.
 

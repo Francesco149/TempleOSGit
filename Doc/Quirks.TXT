@@ -57,7 +57,7 @@ ranges of case values.
 * A goto label name must not match a global scope object's name.  (It's not 
 worth slowing-down the compiler to handle this case.)
 
-* [C:/Kernel/KernelB.HPP.Z,170] MemCpy() only goes fwd.
+* [C:/Kernel/KernelB.HPP.Z,168] MemCpy() only goes fwd.
 
 * A [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() cmd must be followed by two
 semicolons if a #include is after it.  

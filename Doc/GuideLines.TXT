@@ -134,11 +134,6 @@ however.
 * Glbl vars in AOT BIN modules are initialized to zero.  They occupy space in 
 BIN files.
 
-* If you use floats in your interrupt routine, save and restore the fpu state 
-with [C:/Kernel/KernelB.HPP.Z,135] Fxsave() and [C:/Kernel/KernelB.HPP.Z,134]
-Fxrstor().  The timer interrupt does this.  The keyboard and 
-mouse don't use floats.
-
 * Bracketing code with PUSHFD CLI and POPFD will protect against simultaneous 
 accesses from tasks on _one_ core.  To protect against multiple cores, you
 need 

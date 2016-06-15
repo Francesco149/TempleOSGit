@@ -131,8 +131,6 @@ _extern _FLDCW U0 Fldcw(U16 w);
 public _extern _FLOOR F64 Floor(F64 d); //Floor of F64.
 _extern _FSTCW U16 Fstcw();
 _extern _FSTSW U16 Fstsw();
-_extern _FXRSTOR U0 Fxrstor(CFPU *fpu_mmx);
-_extern _FXSAVE  U0 Fxsave(CFPU *fpu_mmx);
 public _extern _LN  F64 Ln(F64 d); //Logarithm.
 public _extern _LOG10 F64 Log10(F64 d); //Log base 10.
 public _extern _LOG2 F64 Log2(F64 d); //Log base 2.
@@ -225,7 +223,7 @@ public _extern SYS_PROGRESSES
 
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,235] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3441] CCPU.
+public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,233] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3441] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
 _extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,284] Core0StartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
