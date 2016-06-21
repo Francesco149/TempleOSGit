@@ -153,9 +153,11 @@ for (i=0;i<20;i++)
     case: "Eleven\n";	break; //One plus prev case.
   }
 
-* sub_switch_start/sub_switch_end allow a new type of nested-switch control 
-flow.  (Don't goto, throw exception or return out of sub_switch_start front 
-porch area.)  See [C:/Demo/SubSwitch.CPP.Z,1].
+* Switch statements can be nestled with a single switch expression!  This is 
+known as a "sub_switch" statement.  start/end are used to group cases.  Don't 
+goto out of, throw an exception out of, or return out of the start front
+porch 
+area.  See [C:/Demo/SubSwitch.CPP.Z,1].
 
   I64 i;
 for (i=0;i<10;i++)
@@ -163,19 +165,19 @@ for (i=0;i<10;i++)
     case 0: "Zero ";	break;
     case 2: "Two ";		break;
     case 4: "Four ";	break;
-    sub_switch_start:
+    start:
       "[";
       case 1: "One";	break;
       case 3: "Three";	break;
       case 5: "Five";	break;
-    sub_switch_end:
+    end:
       "] ";
       break;
   }
 OutPut:
 >Zero [One] Two [Three] Four [Five]
 
-* A nounusedwarn stmt will suppress an unused var warning.
+* A no_warn stmt will suppress an unused var warning.
 
 * You can have multiple member vars of a class named "pad" or "reserved", and 
 it won't issue warnings. 
@@ -189,7 +191,7 @@ optionally, specify a reg after the reg keyword.
   [C:/Kernel/KernelA.HPP.Z,1795] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
 clobbered.
   I64 reg R15 i=5, noreg j=4;
-  nounusedwarn i;
+  no_warn i;
   asm {
 	MOV	RAX,R15
 	CALL	&PUT_HEX_U64
@@ -332,8 +334,8 @@ example.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2884] MEM_DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,208]
+[C:/Kernel/KernelA.HPP.Z,2885] MEM_DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,210]
 Spawn().  You can use 
 [C:/Kernel/KTask.CPP.Z,78] CallStkGrow(), but it's odd.  See
 [C:/Demo/StkGrow.CPP.Z,1]. 

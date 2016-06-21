@@ -9,8 +9,8 @@ U0 SysGlblsInit()
   sys_focus_task=Fs;
   QueInit(&sys_macro_root);
 
-  blkdev.dft_iso_filename="::/Temp/CDDVD.ISO";
-  blkdev.temp_filename="::/Home/Temp.TXT.Z";
+  blkdev.dft_iso_filename=AStrNew("::/Temp/CDDVD.ISO");
+  blkdev.temp_filename=AStrNew("~/Temp.TXT.Z");
   blkdev.dvd_boot_is_good=TRUE;
   #exe {
     if (!kernel_cfg->auto_mount_ide_hd_let)
@@ -64,15 +64,16 @@ U0 SysGlblsInit()
 U0 SysGrInit()
 {
   U8 *vga_page=MemVGAAlloc;
-  text.font=sys_font_8x8;
-  text.aux_font=MAlloc(256*FONT_HEIGHT);
-  MemCpy(text.aux_font,text.font,256*FONT_HEIGHT);
+  text.font=sys_font_std;
+  text.aux_font=sys_font_cyrillic;
   text.vga_alias	=vga_page+VGAM_GRAPHICS;
   text.vga_text_alias	=vga_page+VGAM_TEXT;
   if (!Bt(&sys_run_level,RLf_VGA)) { //if text mode
     text.cols=80;
     text.rows=25;
     MemSet(text.vga_text_alias,0,text.rows*text.cols<<1);
+    text.border_chars[2] (I64)='--||++++';
+    text.border_chars[10](U32)='++++';
   } else { //if 640x480 16 color
     text.cols=GR_WIDTH/FONT_WIDTH;
     text.rows=GR_HEIGHT/FONT_HEIGHT;
@@ -80,6 +81,8 @@ U0 SysGrInit()
     OutU8(VGAP_DATA,0x0F);
     MemSet(text.vga_alias,0,GR_WIDTH*GR_HEIGHT>>3);
     text.raw_screen_image=CAlloc(GR_WIDTH*GR_HEIGHT/8);
+    text.border_chars[2] (I64)=0x0908070605040302;
+    text.border_chars[10](U32)=0x0D0C0B0A;
   }
 }
 
@@ -172,7 +175,9 @@ U0 KernelMain()
   "After  BlkDevsInitAll\n";
 
   ChgDsk(':');
-  Gs->idle_task->cur_dv=blkdev.let_to_drv[ToUpper(blkdev.boot_drv_let)-'A'];
+  #exe {StreamPrint("HomeSet(\"%s\");",kernel_cfg->home_dir);}
+  Gs->idle_task->cur_dv=blkdev.let_to_drv[*blkdev.home_dir-'A'];
+  DrvRep;
   LBts(&sys_run_level,RLf_BLKDEV);
 
   #exe {

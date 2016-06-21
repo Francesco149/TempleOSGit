@@ -11,7 +11,7 @@ You can load it with:
 
 If you want to change the system font permanently,
 save to a file with this font editor program
-and cut and paste the code into [C:/Kernel/Font8x8.CPP.Z,1].
+and cut and paste the code into [C:/Kernel/FontStd.CPP.Z,1].
 You will need to recompile Kernel by calling [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 
 See [C:/Demo/ExtendedChars.CPP.Z,1], [C:/Demo/Games/CharDemo.CPP.Z,1],

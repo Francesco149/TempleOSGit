@@ -323,7 +323,6 @@
 [C:/Compiler/OptLib.CPP.Z,562] OptMVCompare
 [C:/Compiler/BackB.CPP.Z,289] ICToBool
 [C:/Compiler/PrsStmt.CPP.Z,68] PrsFunJoin
-[C:/Compiler/PrsStmt.CPP.Z,787] PrsNoUnusedWarn
 [C:/Compiler/OptLib.CPP.Z,484] OptFixSizeOf
 [C:/Compiler/CExts.CPP.Z,45] cmp_templates_dont_push
 [C:/Compiler/CExts.CPP.Z,46] cmp_templates_dont_push_pop
@@ -334,3 +333,4 @@
 [C:/Compiler/PrsVar.CPP.Z,381] PrsDotDotDot
 [C:/Compiler/BackA.CPP.Z,322] ICMulEqu
 [C:/Compiler/AsmInit.CPP.Z,1] AsmPrsInsFlags
+[C:/Compiler/PrsStmt.CPP.Z,787] PrsNoWarn

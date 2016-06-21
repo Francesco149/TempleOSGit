@@ -2,7 +2,31 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----06/12/16 20:36:14----
+----06/20/16 07:14:22----
+* Added [C:/Adam/Gr/GrBitMap.CPP.Z,1812] GrVLine() and
+[C:/Adam/Gr/GrPrimatives.CPP.Z,522] GrLineFat3().
+
+----06/18/16 16:16:22----
+* Modified [C:/Kernel/KeyDev.CPP.Z,70] KeyDevAdd().
+* [C:/Home/HomeWrappers.CPP.Z,13] R("nounusedwarn","no_warn");
+* [C:/Home/HomeWrappers.CPP.Z,13] R("sub_switch_start","start");
+* [C:/Home/HomeWrappers.CPP.Z,13] R("sub_switch_end","end");
+* Changed args to [C:/Kernel/BlkDev/DskDirA.CPP.Z,200] PutDirLink() and
+[C:/Kernel/BlkDev/DskDirA.CPP.Z,163] PutFileLink().
+* Added [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] HomeSet().  Added "~" as special
+directory designator.
+* Changed filename exclude mask char from '~' to '!'.  See
+[C:/Doc/FileUtils.TXT.Z,1] File Utils.
+* Got rid of /Home/HomePkgs.CPP.
+
+----06/16/16 20:59:41----
+* <CTRL-ALT-t> is terminal window.
+* <CTRL-ALT-n> is next task.
+
+----06/16/16 19:49:39----
+* Added [C:/Doc/Comm.CPP.Z,1].
+* Added [C:/Doc/StdTempleOSPC.TXT.Z,1].
+* Added [C:/Kernel/FontCyrillic.CPP.Z,1]. <CTRL-ALT-f>
 
 ----06/02/16 03:20:56----
 * **TempleOS version 4.07 Released**
@@ -50,7 +74,7 @@ R("ISOFileCreate","[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO");
 
 ----04/26/16 01:18:57----
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("MapDrv","[C:/Kernel/BlkDev/DskDrv.CPP.Z,223] DrvMap");
+R("MapDrv","[C:/Kernel/BlkDev/DskDrv.CPP.Z,225] DrvMap");
 
 ----04/25/16 13:17:49----
 * Changed args in [C:/Adam/AMath.CPP.Z,68] CAdd(), [C:/Adam/AMath.CPP.Z,75]
@@ -132,7 +156,7 @@ automatically from the compiler's class information.
 * Changed [C:/Kernel/SerialDev/Keyboard.CPP.Z,65] KbdMouseCmdAck().
 
 ----02/19/16 18:48:51----
-* Fixed bug in [C:/Demo/ToHtmlToTXTExample/ToHtml.CPP.Z,1].
+* Fixed bug in [C:/Demo/ToHtmlToTXTDemo/ToHtml.CPP.Z,1].
 
 ----02/15/16 23:31:15----
 * Improved [C:/Demo/Games/RawHide.CPP.Z,1].
@@ -152,7 +176,7 @@ automatically from the compiler's class information.
 * Added [C:/Kernel/KernelA.HPP.Z,1012] DOCEF_REMALLOC_DATA.
 
 ----02/05/16 23:00:53----
-* Moved [C:/Demo/ToHtmlToTXTExample/ToHtml.CPP.Z,1].
+* Moved [C:/Demo/ToHtmlToTXTDemo/ToHtml.CPP.Z,1].
 * Added [C:/Demo/AcctExample/TOSToHtml.CPP.Z,1].
 
 ----02/03/16 18:47:00----
@@ -160,7 +184,7 @@ automatically from the compiler's class information.
 * Added tag edit to main sprite edit menu.
 
 ----02/01/16 21:01:15----
-* Cleaned-up [C:/Kernel/KTask.CPP.Z,496] TaskKillDying().
+* Cleaned-up [C:/Kernel/KTask.CPP.Z,498] TaskKillDying().
 * Made multicore more professional.
 
 ----02/01/16 06:02:41----
@@ -199,10 +223,10 @@ automatically from the compiler's class information.
 * Added compiler err for break; in a subswitch preface.
 
 ----01/27/16 04:14:08----
-* Added [C:/Demo/ToHtmlToTXTExample/HtmlGen.CPP.Z,1] and 
-[C:/Demo/ToHtmlToTXTExample/TXTGen.CPP.Z,1].
+* Added [C:/Demo/ToHtmlToTXTDemo/HtmlGen.CPP.Z,1] and 
+[C:/Demo/ToHtmlToTXTDemo/TXTGen.CPP.Z,1].
 * Now, [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() doesn't save with
-[C:/Kernel/KernelA.HPP.Z,3508] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3509] CH_CURSOR.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
 * Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to
@@ -225,10 +249,10 @@ R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS");
 [C:/Kernel/BlkDev/DskBlkDev.CPP.Z,149] BlkDevChk(),
 [C:/Kernel/BlkDev/DskDrv.CPP.Z,160] Let2Drv(),
 [C:/Kernel/BlkDev/DskDrv.CPP.Z,127] DrvChk() and 
-[C:/Kernel/BlkDev/DskDrv.CPP.Z,180] DrvIsWritable().
+[C:/Kernel/BlkDev/DskDrv.CPP.Z,182] DrvIsWritable().
 
 ----01/16/16 08:20:00----
-* Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,292] DrvTextAttrGet().
+* Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,294] DrvTextAttrGet().
 * Removed DrvTextAttrSet().
 
 ----01/15/16 00:47:31----
@@ -330,7 +354,7 @@ common fault vector.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,147] DVDImageWrite");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("MakeDistro","DoDistro");
-* [C:/Home/HomeWrappers.CPP.Z,13] R("::/Home/Adam*.CPP","::/Home/Home*.CPP");
+* [C:/Home/HomeWrappers.CPP.Z,13] R("~/Adam*.CPP","~/Home*.CPP");
 * Created Make*.CPP make dir files.
 * Moved /Adam/Boot and /Adam/Utils to /Adam/Opt.
 
@@ -369,7 +393,7 @@ R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,147] DVDImageWrite");
 
 ----08/05/15 13:49:10----
 * Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,350] SrvCmdsHandler() &&
-[C:/Kernel/KTask.CPP.Z,334] SrvTaskCont().
+[C:/Kernel/KTask.CPP.Z,336] SrvTaskCont().
 
 ----08/03/15 18:09:33----
 * Improved [C:/Demo/Games/FlapBat.CPP.Z,1].
@@ -431,9 +455,9 @@ Option(,OFF)");
 * Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2768] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2769] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,180] DrvIsWritable");
+R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,182] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("CDFileCreate","[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO");
 

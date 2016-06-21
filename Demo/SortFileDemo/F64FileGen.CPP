@@ -1,5 +1,4 @@
 //This makes a file of N random double values.
-//[D:/Demo/SortFileExample/UnsortedF64.TXT.Z,1]
 
 Cd(__DIR__);;
 
@@ -13,7 +12,7 @@ U0 F64FileGenTXT(U8 *filename,I64 n)
   DocWrite(doc);
   DocDel(doc);
 }
-F64FileGenTXT("UnsortedF64.TXT.Z",10);
+F64FileGenTXT("~/DemoUnsortedF64.TXT.Z",10);
 
 U0 F64FileGenDAT(U8 *filename,I64 n)
 {//[File/CFile,1] File/CFile, [C:/Demo/Dsk/DataBase.CPP.Z,1]
@@ -24,4 +23,4 @@ U0 F64FileGenDAT(U8 *filename,I64 n)
   FileWrite(filename,a,n*sizeof(F64));
   Free(a);
 }
-F64FileGenDAT("UnsortedF64.DAT.Z",10);
+F64FileGenDAT("~/DemoUnsortedF64.DAT.Z",10);

@@ -1,5 +1,4 @@
                                      TODO
-
 * [C:/Adam/God/HSNotes.TXT.Z,1] change web links.
 
 * [C:/Apps/KeepAway/KeepAway.CPP.Z,1]: Add intelligence to passing, both
@@ -62,7 +61,7 @@ GetStr() all the way down into [C:/Kernel/KeyDev.CPP.Z,1] PutKey() code.
 * Good [C:/Adam/AutoComplete/ACFill.CPP.Z,207] spell checker.
 * Good Bible search.
 
-* Can [C:/Kernel/KernelA.HPP.Z,2879] MEM_EXTRA_HASH2_PAGES be just one?
+* Can [C:/Kernel/KernelA.HPP.Z,2880] MEM_EXTRA_HASH2_PAGES be just one?
 
 * Bible ranges in [C:/Adam/God/GodBible.CPP.Z,239] BibleVerse(). 
 
@@ -80,7 +79,7 @@ Free old task memory?
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
-[C:/Kernel/KernelA.HPP.Z,3317] CTask->task_flags and 
+[C:/Kernel/KernelA.HPP.Z,3318] CTask->task_flags and 
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.CPP.Z,52] KbdLEDsSet().
@@ -256,7 +255,7 @@ Document Links
 
 * [C:/Home/HomeWrappers.CPP.Z,13] R("chars_bmp_","set_");
 
-* Clean-up code [C:/Kernel/BlkDev/DskStrA.CPP.Z,161] FileNameAbs(), does it
+* Clean-up code [C:/Kernel/BlkDev/DskStrA.CPP.Z,167] FileNameAbs(), does it
 need so many local var names?  I guess 
 no choice.
 
@@ -275,22 +274,22 @@ have left-right for address search.
 Every country make own version?
 * International Date input: [C:/Kernel/StrScan.CPP.Z,138] Str2Date().
 
-* [C:/Kernel/KernelA.HPP.Z,3628] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3630] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
-* [C:/Kernel/KernelA.HPP.Z,2953] TRANSPARENT does not work with
-[C:/Kernel/KernelA.HPP.Z,2949] ROPF_DITHER.
+* [C:/Kernel/KernelA.HPP.Z,2954] TRANSPARENT does not work with
+[C:/Kernel/KernelA.HPP.Z,2950] ROPF_DITHER.
 
-* [C:/Kernel/KernelA.HPP.Z,2939] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2940] ROP_XOR with pen_width>1 is broken.
 
-* [C:/Adam/Gr/GrPrimatives.CPP.Z,565] GrPutChar3() with depth buf?
+* [C:/Adam/Gr/GrPrimatives.CPP.Z,652] GrPutChar3() with depth buf?
 
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.CPP.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,115] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3655] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3657] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2939] ROP_XOR?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2940] ROP_XOR?
 
 * [C:/Adam/WinB.CPP.Z,421] WinMgrTask needs to do doc operations on
 [C:/Kernel/SrvCmd.CPP.Z,240] PostMsg() msgs for mouse.  Already 
@@ -302,7 +301,7 @@ works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet()?
 [C:/Kernel/Mem/PageTables.CPP.Z,1] Code for documentation.  I 
 tried a PDF-to-text convertor and it wasn't acceptible.
 
-* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2986] CBGR24's wrong? 
+* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2987] CBGR24's wrong? 
 [C:/Adam/Opt/Utils/FileBMP.CPP.Z,1].
 
 * Switch stmt with sparse cases?  Maybe, ban sparse switch stmts.
@@ -331,10 +330,10 @@ also?
 
 * SIMD in [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ?
 
-* I use fixed-point in [C:/Adam/Gr/GrMath.CPP.Z,288] Circle(),
-[C:/Adam/Gr/GrMath.CPP.Z,331] Ellipse(), [C:/Adam/Gr/GrDC.CPP.Z,6]
+* I use fixed-point in [C:/Adam/Gr/GrMath.CPP.Z,282] Circle(),
+[C:/Adam/Gr/GrMath.CPP.Z,321] Ellipse(), [C:/Adam/Gr/GrDC.CPP.Z,6]
 Mat4x4MulXYZ(), 
-[C:/Adam/Gr/GrMath.CPP.Z,99] Mat4x4MulMat4x4New() and others.  God says I
+[C:/Adam/Gr/GrMath.CPP.Z,96] Mat4x4MulMat4x4New() and others.  God says I
 might want to change to float.  
 [C:/Demo/Lectures/FixedPoint.CPP.Z,1]
 [C:/Demo/Lectures/FixedPointAdvanced.CPP.Z,1].
@@ -346,13 +345,12 @@ ROM will have just English.
 Our [C:/Doc/Charter.TXT.Z,1] Charter bans multiple country or architectures
 in the same version.
 
-* We are not doing UTF, but we will add cyrillic 8-bit Russian font on 
-aux_font. <CTRL-ALT-f> will toggle fonts.  Or, we will redefine upper 128-255 
-ASCII characters and move 12 border chars to screen font codes 0-26?  
+* 12 border chars in screen font codes 0x02-0x0D. 
 [C:/Adam/Gr/GrTextBase.CPP.Z,329] TextBorder() [C:/Kernel/KDbg.CPP.Z,291]
-RawDr().  Add aux_font option with [C:/Kernel/StrA.CPP.Z,325] chars_bmp_alpha
-configured for 
-any aux_font?
+RawDr()  
+LineFeed shows-up in <CTRL-m> PersonalMenu.
+
+* Super-simple high speed serial needs flow control.  <CTRL-s> and <CTRL-q>?
 
 
                              Inspirational Ideas
@@ -397,7 +395,7 @@ DirContextNew().
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* More [C:/Kernel/KernelA.HPP.Z,3110] Controls?
+* More [C:/Kernel/KernelA.HPP.Z,3111] Controls?
 
 * Compiler: More use of more floating-point stk?
 
@@ -405,7 +403,7 @@ once.
 with types besides MOV and F64. 
 
 * Playing with [C:/Demo/Lectures/NegDisp.CPP.Z,1] on
-[C:/Kernel/KernelA.HPP.Z,3317] CTask?
+[C:/Kernel/KernelA.HPP.Z,3318] CTask?
      $=-CTASK_NEG_OFFSET
 offset(CTask.addr)==0
 Spawn(): CAlloc()

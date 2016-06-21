@@ -505,12 +505,12 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	    if (sc&SCF_KEY_DESC)
 	      KeyDescSet("Cmd /Personal Notes");
 	    else
-	      Ed("::/Home/PersonalNotes.TXT.Z");
+	      Ed("~/PersonalNotes.TXT.Z");
 	  } else {
 	    if (sc&SCF_KEY_DESC)
 	      KeyDescSet("Cmd /Personal Menu");
 	    else {
-	      m=DocRead("::/Home/PersonalMenu.TXT.Z");
+	      m=DocRead("~/PersonalMenu.TXT.Z");
 	      DocMenu(m);
 	      DocDel(m);
 	    }

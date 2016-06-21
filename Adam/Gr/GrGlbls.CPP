@@ -30,7 +30,6 @@ public class CGrGlbls
 	*collision_pen_brushes[GR_NUM_PEN_BRUSHES],
 	*even_pen_brushes[GR_NUM_PEN_BRUSHES],
 	*odd_pen_brushes[GR_NUM_PEN_BRUSHES];
-
   #define GR_MAX_SCREEN_ZOOM	8
   U8	*screen_zoom_tables[GR_MAX_SCREEN_ZOOM+1];
   I64	screen_zoom,sx,sy;

@@ -1,5 +1,5 @@
  <1> (image)
-[C:/Kernel/SrvCmd.CPP.Z,398] PopUpPrint[C:/Kernel/KTask.CPP.Z,392] User[C:/Compiler/CMain.CPP.Z,605] ExePrint
+[C:/Kernel/SrvCmd.CPP.Z,398] PopUpPrint[C:/Kernel/KTask.CPP.Z,394] User[C:/Compiler/CMain.CPP.Z,605] ExePrint
 
 
 
@@ -7,14 +7,14 @@
 
 
 
- [C:/Kernel/KEnd.CPP.Z,132] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,372] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,194] AP SethTask[C:/Kernel/KTask.CPP.Z,381] UserCmdLine
+ [C:/Kernel/KEnd.CPP.Z,135] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,374] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,194] AP SethTask[C:/Kernel/KTask.CPP.Z,383] UserCmdLine
 
 
 
 
 
 
-[C:/Kernel/KTask.CPP.Z,334] SrvTaskCont[C:/Kernel/KTask.CPP.Z,350] UserTaskCont
+[C:/Kernel/KTask.CPP.Z,336] SrvTaskCont[C:/Kernel/KTask.CPP.Z,352] UserTaskCont
 
 
 
@@ -22,13 +22,13 @@
 
 
 
-[C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRunOne[C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRunOne[C:/Kernel/KTask.CPP.Z,268] ExeCmdLine[C:/Kernel/KTask.CPP.Z,268] ExeCmdLine
+[C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRunOne[C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRunOne[C:/Kernel/KTask.CPP.Z,270] ExeCmdLine[C:/Kernel/KTask.CPP.Z,270] ExeCmdLine
 
 
 
 
-[C:/Kernel/KernelA.HPP.Z,3192] CSrvCmd nodes are one of
-[C:/Kernel/KernelA.HPP.Z,3185] five types.  User applications deal with text
+[C:/Kernel/KernelA.HPP.Z,3193] CSrvCmd nodes are one of
+[C:/Kernel/KernelA.HPP.Z,3186] five types.  User applications deal with text
 or 
 msgs.  [C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRunOne() will call a function,
 spawn a task or execute some text 
@@ -38,7 +38,7 @@ src code.
 #define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,119] TaskMsg()	Post msg 
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 #define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,213] JobQue()	Tell MP to call function
-#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,208] Spawn()	Tell MP to spawn task
+#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,210] Spawn()	Tell MP to spawn task
 
 Several other routines
 `Find("SrvCmdsHandler","::/*");View;`

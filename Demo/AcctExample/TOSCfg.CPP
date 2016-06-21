@@ -56,6 +56,7 @@ U0 TOSInit()
 } TOSInit;
 
 #define TOS_ISO_NAME	"B:/TempleOSCD.ISO"
+#define TOS_ISO_C_NAME	"B:/TempleOSCD.ISO.C"
 #define TOS_DISTRO_DIR	"B:/Distro"
 #define CFG_OPTS	"AutoMountIDE\nCT\n"
 #define CFG_DBG_OPTS	"AutoMountIDE\nCT"\

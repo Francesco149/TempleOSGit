@@ -334,32 +334,17 @@ public U0 TextBorder(CTask *task=NULL,
   I64 i;
   if (!task) task=Fs;
   attr<<=8;
-  if (solid) {
-    TextChar(task,,l-1,t-1,'+'+attr);
-    TextChar(task,,r+1,t-1,'+'+attr);
-    TextChar(task,,l-1,b+1,'+'+attr);
-    TextChar(task,,r+1,b+1,'+'+attr);
-    for (i=l;i<=r;i++) {
-      TextChar(task,,i,t-1,'-'+attr);
-      TextChar(task,,i,b+1,'-'+attr);
-    }
-    for (i=t;i<=b;i++) {
-      TextChar(task,,l-1,i,'|'+attr); //Note: [C:/Kernel/KDbg.CPP.Z,291] RawDr() uses this char.
-      TextChar(task,,r+1,i,'|'+attr);
-    }
-  } else {
-    TextChar(task,,l-1,t-1,'+'+attr);
-    TextChar(task,,r+1,t-1,'+'+attr);
-    TextChar(task,,l-1,b+1,'+'+attr);
-    TextChar(task,,r+1,b+1,'+'+attr);
-    for (i=l;i<=r;i++) {
-      TextChar(task,,i,t-1,'-'+attr);
-      TextChar(task,,i,b+1,'-'+attr);
-    }
-    for (i=t;i<=b;i++) {
-      TextChar(task,,l-1,i,'|'+attr);
-      TextChar(task,,r+1,i,'|'+attr);
-    }
+  TextChar(task,,l-1,t-1,text.border_chars[6+solid]+attr);
+  TextChar(task,,r+1,t-1,text.border_chars[8+solid]+attr);
+  TextChar(task,,l-1,b+1,text.border_chars[10+solid]+attr);
+  TextChar(task,,r+1,b+1,text.border_chars[12+solid]+attr);
+  for (i=l;i<=r;i++) {
+    TextChar(task,,i,t-1,text.border_chars[2+solid]+attr);
+    TextChar(task,,i,b+1,text.border_chars[2+solid]+attr);
+  }
+  for (i=t;i<=b;i++) {
+    TextChar(task,,l-1,i,text.border_chars[4+solid]+attr);
+    TextChar(task,,r+1,i,text.border_chars[4+solid]+attr);
   }
 }
 

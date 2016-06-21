@@ -2,7 +2,7 @@ AutoFiles are used to generate user input to automate operations.  The
 TempleOS tour is done with an AutoFile.  It reminds me of a Unix pipe because 
 StdOut of one gets chained into StdIn of another.
 
-When an AutoFile runs, a child task is [C:/Kernel/KTask.CPP.Z,208] Spawn()ed
+When an AutoFile runs, a child task is [C:/Kernel/KTask.CPP.Z,210] Spawn()ed
 which intercepts real user 
 input and generates fake input.  AutoFiles are [C:/Doc/HolyC.TXT.Z,1] HolyC
 programs run by the child 

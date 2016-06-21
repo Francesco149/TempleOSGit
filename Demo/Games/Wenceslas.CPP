@@ -554,7 +554,7 @@ Lead peasants to fires.
 	  break;
 	case 0:
 	  switch (sc.u8[0]) {
-	    sub_switch_start:
+	    start:
 	      case SC_CURSOR_RIGHT:
 		if (king_x+KING_STEP<Fs->pix_width-BORDER)
 		  king_x+=KING_STEP;
@@ -575,7 +575,7 @@ Lead peasants to fires.
 		  king_y-=KING_STEP;
 		king_theta=pi/2;
 		break;
-	    sub_switch_end:
+	    end:
 	      king_mS=0;
 	      king_phase=(king_phase+2)&2;
 	      StepNew(Fs,king_x,king_y,king_theta,king_phase&2,TRUE);

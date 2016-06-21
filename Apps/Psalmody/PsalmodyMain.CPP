@@ -396,7 +396,7 @@ U0 PsmPopMode()
 #define PSMF_CD		1
 #define PSMF_INCOMPLETE	2
 
-U0 Psalmody(U8 *dirname="::/Home/Psalmody")
+U0 Psalmody(U8 *dirname="~/Psalmody")
 {
   Bool was_playing;
   I64 a1,a2,msg_code=0,col,
@@ -536,7 +536,7 @@ mo_got_msg:
 	    col=0;
 	  } else {
 	    switch (a1) {
-	      sub_switch_start:
+	      start:
 		case 'a': note=7; octave--; break;
 		case 's': note=8; octave--; break;
 		case 'e': note=9; octave--; break;
@@ -556,7 +556,7 @@ mo_got_msg:
 		case '[': note=11; break;
 		case '\'': note=0; octave++; break;
 		case ']': note=1; octave++; break;
-	      sub_switch_end:
+	      end:
 		f=Note2Freq(note,octave);
 		break;
 	      case CH_SPACE:

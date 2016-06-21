@@ -227,5 +227,4 @@ U0 BlkDevsInitAll()
     StreamDoc(kernel_cfg->add_dev);
     StreamPrint("#exe {Option(OPTf_WARN_PAREN,ON);}");
   };
-  DrvRep;
 }

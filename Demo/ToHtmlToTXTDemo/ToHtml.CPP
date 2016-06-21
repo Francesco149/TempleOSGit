@@ -32,25 +32,25 @@ U0 HtmlPutS(CDoc *doc,I64 u32_attr,I64 *_old_u32_attr,
 	} while (*_col&7);
 	break;
 
-      sub_switch_start:
+      start:
 	case 'pi':	ptr="pi";	break;
 	case 'theta':	ptr="theta";	break;
 	case 'phi':	ptr="phi";	break;
 	case 'omega':	ptr="omega";	break;
 	case 'inf':	ptr="inf";	break;
 	case 'u':	ptr="u";	break;
-      sub_switch_end:
+      end:
 	DocPrint(doc,ptr);
 	*_col=*_col+StrLen(ptr);
 	break;
 
-      sub_switch_start:
+      start:
 	case CH_SHIFT_SPACE: ptr=" ";	break;
 	case '&':	ptr="&amp;";	break;
 	case '<':	ptr="&lt;";	break;
 	case '>':	ptr="&gt;";	break;
 	case '"':	ptr="&quot;";	break;
-      sub_switch_end:
+      end:
 	DocPrint(doc,ptr);
 	*_col=*_col+1;
 	break;

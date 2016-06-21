@@ -652,7 +652,7 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,CTask *mem_task=NULL)
 	    FMRightClick;
 	    DocLock(doc);
 	    break;
-	  sub_switch_start:
+	  start:
 	    DocUnlock(doc);
 	    case CH_CTRLV:
 	      FMCopy(doc);
@@ -678,7 +678,7 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,CTask *mem_task=NULL)
 	    case 'f':
 	      FMFmtDrv(doc);
 	      break;
-	  sub_switch_end:
+	  end:
 	    FMRebuildDoc(&doc,&root,mode);
 	    break;
 	  case CH_SHIFT_ESC:

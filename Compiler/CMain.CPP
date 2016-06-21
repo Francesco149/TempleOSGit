@@ -389,7 +389,7 @@ U0 CmpFixUpAOTAsm(CCmpCtrl *cc,CAOT *tempaot)
       Free(tempie);
     } else {
       switch (tempie->type) {
-	sub_switch_start:
+	start:
 	  case IET_REL32_EXPORT:
 	  case IET_IMM32_EXPORT:
 	  case IET_REL64_EXPORT:
@@ -405,7 +405,7 @@ U0 CmpFixUpAOTAsm(CCmpCtrl *cc,CAOT *tempaot)
 	  case IET_REL_I16:	    *ptr(U16 *)-=ip2;	    break;
 	  case IET_REL_I32:	    *ptr(U32 *)-=ip2;	    break;
 	  case IET_REL_I64:	    *ptr(I64 *)-=ip2;	    break;
-	sub_switch_end:
+	end:
 	  tempie->ip+=ip2;
 	  break;
       }

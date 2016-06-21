@@ -17,7 +17,7 @@ TourPut(
 "Press $GREEN$<ENTER>$FG$.\n");
 AFGetStr("\n");
 
-"FF(\"/Kernel/St*;*.HPP*;~*Print*\");";
+"FF(\"/Kernel/St*;*.HPP*;!*Print*\");";
 TourPut(
 "Let's unselect $GREEN$*Print*$FG$.\n\n"
 "Press $GREEN$<ENTER>$FG$.\n");

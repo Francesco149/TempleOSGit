@@ -1,9 +1,9 @@
 Place this file in your /Home directory and modify it.  This version is the 
 default. 
 
-Cd("::/Home");Dir;
+Cd;Dir;
 
-`Cd("::/Home");Dir;
+`Cd;Dir;
 `
 
 Cd("::/Demo");Dir;

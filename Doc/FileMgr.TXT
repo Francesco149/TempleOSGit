@@ -60,7 +60,7 @@ Instructions on Using CD/DVD's
 file mgr and use [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount to define your
   CD/DVD drive.  Place a CD/DVD in the 
 drive and press 'm' when on top of the CD/DVD drive letter to mount the 
-drive.  It will call [C:/Kernel/BlkDev/DskDrv.CPP.Z,211] ChgDsk(), the
+drive.  It will call [C:/Kernel/BlkDev/DskDrv.CPP.Z,213] ChgDsk(), the
   TempleOS cmd to mount removable media.
 
 

@@ -37,7 +37,7 @@ Bool BlkDevInit(CBlkDev *bd)
   if (!LBts(&bd->flags,BDf_INITIALIZED)) {
     bd->flags|=BDF_INIT_IN_PROGRESS;
     switch (bd->type) {
-      sub_switch_start:
+      start:
 	case BDT_RAM:
 	  if (!bd->RAM_dsk) {
 	    bd->RAM_dsk=AMAlloc((bd->max_blk+1)<<BLK_SIZE_BITS);
@@ -59,7 +59,7 @@ Bool BlkDevInit(CBlkDev *bd)
 	  }
 	  bd->file_dsk=FOpen(bd->file_dsk_name,"wc+",bd->max_blk+1);
 	  break;
-      sub_switch_end:
+      end:
 	dv->fs_type=FSt_REDSEA;
 	dv->size=bd->max_blk+1-bd->drv_offset;
 	if (!invalid && RedSeaDrvValidate(bd->first_drv_let))

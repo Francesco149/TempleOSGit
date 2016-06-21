@@ -47,7 +47,6 @@ public extern U8 *ScanCode2KeyName(I64 sc);
 public extern F64 Str2F64(U8 *src,U8 **_end_ptr=NULL);
 public extern I64 Str2I64(U8 *st,I64 radix=10,U8 **_end_ptr=NULL);
 public extern U8 *StrScan(U8 *src,U8 *fmt,...);
-
 #help_index "Char/Conversion;Time/Date/CDate;Date/CDate"
 public extern CDate Str2Date(U8 *src);
 
@@ -282,6 +281,7 @@ public extern I64 Del(U8 *files_find_mask,Bool make_mask=FALSE,
 	Bool del_dir=FALSE,Bool print_msg=TRUE);
 public extern I64 Dir(U8 *files_find_mask="*",Bool full=FALSE);
 public extern Bool Drv(U8 drv_let);
+public extern U0 HomeSet(U8 *dirname);
 public extern Bool MkDir(U8 *filename,I64 entry_cnt=0);
 
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically);Install"
@@ -304,8 +304,9 @@ public extern Bool FilesFindMatch(U8 *_test_name,
 public extern Bool IsDir(U8 *dir_name);
 public extern Bool IsDotC(U8 *filename);
 public extern Bool IsDotZ(U8 *filename);
-public extern U0 PutDirLink(U8 *dirname);
-public extern U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE);
+public extern U0 PutDirLink(U8 *dirname,U8 *full_name=NULL);
+public extern U0 PutFileLink(U8 *filename,U8 *full_name=NULL,
+	I64 line=0,Bool plain_text=FALSE);
 public extern U0 ToFileLine(U8 *_fl_file_line,U8 **_filename,I64 *_linenum);
 public extern U8 *ToggleZorNotZ(U8 *name);
 
@@ -373,8 +374,8 @@ public extern I64 FileWrite(U8 *filename,
 public extern CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0);
 
 #help_index "File/System"
-public extern CATARep *ATAIDDrvs(CATARep *root,
-	I64 _sys_boot_drv,CATARep **_ata_drv,CATARep **_atapi_drv);
+public extern CATARep *ATAIDDrvs(CATARep *root,CATARep **_ata_drv,
+	CATARep **_atapi_drv);
 extern CBlkDev *ATAMount(U8 first_drv_let,
 	I64 type,I64 base0,I64 base1,I64 unit);
 extern Bool ATAPIStartStop(CBlkDev *bd,F64 timeout,Bool start);
@@ -481,7 +482,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3782] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3784] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -622,6 +623,7 @@ public extern Bool IsMute();
 public extern Bool Mute(Bool val);
 public extern U0 Snd(F64 freq);
 public extern CSndGlbls snd;
+
 #help_index "StdIn"
 #help_file "::/Doc/Streams"
 

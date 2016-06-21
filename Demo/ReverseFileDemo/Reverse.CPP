@@ -19,4 +19,4 @@ U0 Reverse(U8 *in_name,U8 *out_name)
   DocWrite(doc_out);
 }
 
-Reverse("PoemBackward.TXT.Z","PoemForeward.TXT.Z");
+Reverse("DemoPoemBwd.TXT.Z","~/DemoPoemFwd.TXT.Z");

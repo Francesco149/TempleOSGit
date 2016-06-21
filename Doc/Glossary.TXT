@@ -149,7 +149,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3317]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3318]
   CTask.  There is only one window per task, and only core0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -180,9 +180,9 @@ Wiz	Wizard
   alloc from any heap in any task at any time on any core, even making
   [C:/Kernel/Mem/Mem512.CPP.Z,11] independent heaps.
 +] Parent, Child and PopUp Tasks
-  Often a task will [C:/Kernel/KTask.CPP.Z,208] Spawn() or
+  Often a task will [C:/Kernel/KTask.CPP.Z,210] Spawn() or
   [C:/Kernel/SrvCmd.CPP.Z,377] PopUp() a task as a helper.  The helper is known
-  as a child Task, though you can [C:/Kernel/KTask.CPP.Z,208] Spawn a task and
+  as a child Task, though you can [C:/Kernel/KTask.CPP.Z,210] Spawn a task and
   assign it a different parent... like Adam.  Links are kept as to who's whose
   child, so when one task is [C:/Kernel/KTask.CPP.Z,28] Kill()ed the child
   helper tasks die, too.  You can get a report of current system tasks with
@@ -322,10 +322,10 @@ res is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HPP.Z,3317] CTask.
+  [C:/Kernel/KernelA.HPP.Z,3318] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3441] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3442] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  They must
@@ -345,6 +345,6 @@ res is reserved for local variables that hold the function return val.
   Core0, has the Adam task, and it is the master.  The application processors
   have an executive Seth tasks and are the slave processors.  Only core0 tasks
   can have windows and can launch applications.  Slave cores are used if the
-  application explicitly [C:/Kernel/KTask.CPP.Z,208] Spawns() a task or
+  application explicitly [C:/Kernel/KTask.CPP.Z,210] Spawns() a task or
   [C:/Kernel/MultiProc.CPP.Z,213] JobQue() a job on them.
 

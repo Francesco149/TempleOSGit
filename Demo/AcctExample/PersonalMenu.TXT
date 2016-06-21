@@ -1,6 +1,6 @@
-Cd("::/Home");Dir;
+Cd;Dir;
 
-`Cd("::/Home");Dir;
+`Cd;Dir;
 `
 
 Drv('C');
@@ -242,9 +242,9 @@ Cd("/Demo/Templates");Dir;
 `Cd("/Demo/Templates");Dir;
 `
 
-Cd("/Demo/ToHtmlToTXTExample");Dir;
+Cd("/Demo/ToHtmlToTXTDemo");Dir;
 
-`Cd("/Demo/ToHtmlToTXTExample");Dir;
+`Cd("/Demo/ToHtmlToTXTDemo");Dir;
 `
 
 Cd("/Doc");Dir;
@@ -287,14 +287,14 @@ MakeDistrosAndBackUp;
 `MakeDistrosAndBackUp;
 `
 
-S2T("C:/*","+r+S");Merge("C:/*;~*/LineRep*","D:/*;~*/LineRep*","+r+d");
+S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","D:/*;!*/LineRep*","+r+d");
 
-`S2T("C:/*","+r+S");Merge("C:/*;~*/LineRep*","D:/*;~*/LineRep*","+r+d");
+`S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","D:/*;!*/LineRep*","+r+d");
 `
 
-S2T("C:/*","+r+S");Merge("C:/*;~*/LineRep*","T:/*;~*/LineRep*","+r+d");
+S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","T:/*;!*/LineRep*","+r+d");
 
-`S2T("C:/*","+r+S");Merge("C:/*;~*/LineRep*","T:/*;~*/LineRep*","+r+d");
+`S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","T:/*;!*/LineRep*","+r+d");
 `
 
 ChgDsk('T');
@@ -303,25 +303,25 @@ ChgDsk('T');
 `
 
 LinuxDict
-`Adam("GodInit(\"::/Home/Downloads/Words/LinuxDict.TXT**\");");
+`Adam("GodInit(\"~/Downloads/Words/LinuxDict.TXT**\");");
 `
  AugustWords
-`Adam("GodInit(\"::/Home/Downloads/Words/AugustWords.TXT**\");");
+`Adam("GodInit(\"~/Downloads/Words/AugustWords.TXT**\");");
 `
  HappyWords
-`Adam("GodInit(\"::/Home/Downloads/Words/HappyWords.TXT*\");");
+`Adam("GodInit(\"~/Downloads/Words/HappyWords.TXT*\");");
 `
  BibleWords
-`Adam("GodInit(\"::/Home/Downloads/Words/BibleWords.TXT*\");");
+`Adam("GodInit(\"~/Downloads/Words/BibleWords.TXT*\");");
 `
  HuckWords
-`Adam("GodInit(\"::/Home/Downloads/Words/HuckWords.TXT*\");");
+`Adam("GodInit(\"~/Downloads/Words/HuckWords.TXT*\");");
 `
  Ingredients
-`Adam("GodInit(\"::/Home/Downloads/Words/Ingredients.TXT*\");");
+`Adam("GodInit(\"~/Downloads/Words/Ingredients.TXT*\");");
 `
  Chess
-`Adam("GodInit(\"::/Home/Downloads/Words/Chess.TXT*\");");
+`Adam("GodInit(\"~/Downloads/Words/Chess.TXT*\");");
 `
 
 PreBackUp;
@@ -330,38 +330,52 @@ PreBackUp;
 `
 
 Make Staff Distro ISO
-`MakeStaffDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSStaff.ISO");
+`MakeStaffDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSStaff.ISO");
 `
  Burn Staff Distro DVD
 `MakeAStaffDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Dbg Distro ISO
-`MakeDbgDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSDbg.ISO");
+`MakeDbgDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSDbg.ISO");
 `
  Burn Dbg Distro DVD
 `MakeDbgDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Std Distro ISO
-`MakeStdDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSCD.ISO");
+`MakeStdDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSCD.ISO");
 `
  Burn Std Distro DVD
 `MakeStdDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
+Make Std RedSea Distro ISO
+`MakeStdRedSeaDistro; MkDir("D:/Wb"); Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSCDRS.ISO");
+`
+ Burn Std RedSea Distro DVD
+`MakeStdRedSeaDistro; DVDImageWrite('T',TOS_ISO_C_NAME);
+`
+
 Make Lite Distro ISO
-`MakeLiteDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSLite.ISO");
+`MakeLiteDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSLite.ISO");
 `
  Burn Lite Distro DVD
 `MakeLiteDistro;DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Ultra Distro ISO
-`MakeUltraDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSUltra.ISO");
+`MakeUltraDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSUltra.ISO");
 `
  Burn Ultra Distro DVD
 `MakeUltraDistro;DVDImageWrite('T',TOS_ISO_NAME);
+`
+
+Make Ultra RedSea Distro ISO
+`MakeUltraRedSeaDistro; MkDir("D:/Wb"); Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSUltraRS.ISO");
+`
+ Burn Ultra RedSea Distro DVD
+`MakeUltraRedSeaDistro;DVDImageWrite('T',TOS_ISO_C_NAME);
 `
 
 
@@ -428,7 +442,7 @@ JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24> (image
 BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29> (image)
 
 Psalmody Downloads
-`#include "::/Apps/Psalmody/Load";Psalmody("::/Home/Downloads/Psalmody");`
+`#include "::/Apps/Psalmody/Load";Psalmody("~/Downloads/Psalmody");`
 
 RAMReboot("D:/Kernel.BIN.C");
 `RAMReboot("D:/Kernel.BIN.C");`

@@ -2756,6 +2756,7 @@ public class CBlkDevGlbls
   CBlkDev *blkdevs;
   U8	*dft_iso_filename;  //See [C:/Kernel/KEnd.CPP.Z,1] blkdev.dft_iso_filename
   U8	*temp_filename;
+  U8	*home_dir;
   CCacheBlk *cache_base,*cache_ctrl,**cache_hash_table;
   I64	cache_size,read_cnt,write_cnt;
   CDrv	*drvs,*let_to_drv[32];
@@ -2831,7 +2832,7 @@ class CMemUsed
 /*TempleOS does not mess with page tables after setting them up
 during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_PAGE_TABLES.
 
-[C:/Kernel/KernelA.HPP.Z,2874] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
+[C:/Kernel/KernelA.HPP.Z,2875] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
 and is not related to CPU hardware.
 
 All virtual addresses are ident to physical at all times.
@@ -2940,7 +2941,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2950] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2951] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3040,7 +3041,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3039] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3040] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3040] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3041] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3187,7 +3188,7 @@ class CFPU
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 //MP cmds
 #define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,213] JobQue()	Tell MP to call function
-#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,208] Spawn()	Tell MP to spawn task
+#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,210] Spawn()	Tell MP to spawn task
 
 class CSrvCmd
 {
@@ -3220,8 +3221,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3482] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3482] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3483] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3483] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3602,6 +3603,7 @@ public class CTextGlbls
   I64	rows,cols;		//Use TEXT_ROWS,TEXT_COLS
   U64	*font,*aux_font;
   U8	*vga_alias,*vga_text_alias;
+  U8	border_chars[16];
 };
 
 #define FONT_WIDTH	8
@@ -3624,7 +3626,7 @@ public class CTextGlbls
 
 #define DCF_TRANSFORMATION	0x100
 
-//See [C:/Adam/Gr/GrMath.CPP.Z,200] DCSymmetrySet() or [C:/Adam/Gr/GrMath.CPP.Z,222] DCSymmetry3Set()
+//See [C:/Adam/Gr/GrMath.CPP.Z,194] DCSymmetrySet() or [C:/Adam/Gr/GrMath.CPP.Z,216] DCSymmetry3Set()
 #define DCF_SYMMETRY		0x200
 
 //Must be used with DCF_SYMMETRY set also.
@@ -3663,12 +3665,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2940] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2941] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2950] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2951] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3691,7 +3693,7 @@ public class CDC
   U0	(*lighting)(CDC *dc,CD3I32 *p1,CD3I32 *p2,
 	CD3I32 *p3,CColorROPU32 color);
 
-  //Set by [C:/Adam/Gr/GrMath.CPP.Z,200] DCSymmetrySet() or [C:/Adam/Gr/GrMath.CPP.Z,222] DCSymmetry3Set()
+  //Set by [C:/Adam/Gr/GrMath.CPP.Z,194] DCSymmetrySet() or [C:/Adam/Gr/GrMath.CPP.Z,216] DCSymmetry3Set()
   CGrSym sym;
 
   I64	nearest_dist,
@@ -3701,7 +3703,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3639] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3641] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3882,9 +3884,10 @@ public class CDbgGlbls
 #define BOOT_STK_SIZE		BLK_SIZE
 
 #define BOOT_SRC_NULL		0
-#define BOOT_SRC_RAM		1
-#define BOOT_SRC_HARDDRV	2
-#define BOOT_SRC_DVD		3
+#define BOOT_SRC_ROM		1
+#define BOOT_SRC_RAM		2
+#define BOOT_SRC_HARDDRV	3
+#define BOOT_SRC_DVD		4
 
 // [C:/Kernel/SrvCmd.CPP.Z,483] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 #define STD_DISTRO_DVD_CFG	"Tb\nScale2Mem(2048,0x40000)\nt \n\n\n\n"

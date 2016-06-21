@@ -15,17 +15,17 @@ involves a long and short name for each file.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2884] MEM_DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,208]
+[C:/Kernel/KernelA.HPP.Z,2885] MEM_DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,210]
 Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
 
-* Call [C:/Kernel/BlkDev/DskDrv.CPP.Z,211] ChgDsk() when you insert a new
+* Call [C:/Kernel/BlkDev/DskDrv.CPP.Z,213] ChgDsk() when you insert a new
 removable media.
 
-* Accessing CD/DVD's is flacky.  Try [C:/Kernel/BlkDev/DskDrv.CPP.Z,234]
-Drv() or [C:/Kernel/BlkDev/DskDrv.CPP.Z,211] ChgDsk() twice.
+* Accessing CD/DVD's is flacky.  Try [C:/Kernel/BlkDev/DskDrv.CPP.Z,236]
+Drv() or [C:/Kernel/BlkDev/DskDrv.CPP.Z,213] ChgDsk() twice.
 
 * You can only extern something once.  There is a varient called _extern
 which 
@@ -59,7 +59,7 @@ worth slowing-down the compiler to handle this case.)
 
 * [C:/Kernel/KernelB.HPP.Z,168] MemCpy() only goes fwd.
 
-* A [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() cmd must be followed by two
+* A [C:/Kernel/BlkDev/DskDirB.CPP.Z,9] Cd() cmd must be followed by two
 semicolons if a #include is after it.  
 This is because the preprocessor processes the next token ahead.
 

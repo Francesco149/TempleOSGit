@@ -1,76 +1,86 @@
                                    Credits
 
-1) The font, [C:/Kernel/Font8x8.CPP.Z,1], is taken from FreeDOS.  It's public 
-domain.
+I, Terry A. Davis, wrote all 120,516 lines of TempleOS over the past 17.3 
+years (full-time).  It can run on some bare metal 64-bit PC's from about 
+2005-2010 with no layering, libraries, tools, modules or anything from other 
+sources.  Otherwise, you run it in a virtual machine, like VMware, QEMU or Vir
+tualBox.  It is independent and stands alone.  It has no networking, so it 
+certainly doesn't call home.  100% of the src code is including on all 
+distro's, from the kernel to the compiler to the boot loaders!  It is public 
+domain, not GPL.
 
-2) [C:/Kernel/KernelA.HPP.Z,2258] ATA Reg and Cmd Definitions are originally
+*) [C:/Kernel/FontStd.CPP.Z,1], is taken from FreeDOS.  It's public domain.
+
+*) [C:/Kernel/FontCyrillic.CPP.Z,1], is taken from OrientDisplay without
+permission.
+
+*) [C:/Kernel/KernelA.HPP.Z,2258] ATA Reg and Cmd Definitions are originally
 from Linux.  Later, I got the 
 spec.
 
-3) The heap algorithm, [C:/Kernel/Mem/MAllocFree.CPP.Z,1], is adapted from
+*) The heap algorithm, [C:/Kernel/Mem/MAllocFree.CPP.Z,1], is adapted from
 one I saw 
 at Ticketmaster when I worked on their VAX operating system.
 
-4) The LZW compression algorithm, [C:/Kernel/Compress.CPP.Z,1], came from a
+*) The LZW compression algorithm, [C:/Kernel/Compress.CPP.Z,1], came from a
 magazine 
 and I implemented it when I worked for Ticketmaster.
 
-5) The adaptive-step-size-Runge-Kutta algorithm, [C:/Adam/AMathODE.CPP.Z,1],
+*) The adaptive-step-size-Runge-Kutta algorithm, [C:/Adam/AMathODE.CPP.Z,1],
 is 
 adapted from the book, _Numeric Recipies in C_.
 
-6) The mountain, palm trees, sheep and goats in AfterEgypt are from 
+*) The mountain, palm trees, sheep and goats in AfterEgypt are from 
 http://www.public-domain-photos.com.  The wolf in BlackDiamond is also from 
 there.  I took watermarked photos and converted to 16 color.
 
-7) The FAT32 file system is owned by MicroSoft.
+*) The FAT32 file system is owned by MicroSoft.
 
-8) A few features were inspired by MATLAB, such as ans in expressions at the 
+*) A few features were inspired by MATLAB, such as ans in expressions at the 
 command-line.  There is a lot of MSDOS , Windows, VAXTMOS (VAX Ticketmaster 
 O.S.) and Unix inspiration, too, such as drive letters, command names, etc.
 
-9) I included [C:/Misc/PCIDevices.TXT.Z,1] PCIDevice Lst File.
+*) I included [C:/Misc/PCIDevices.TXT.Z,1] PCIDevice Lst File.
 
-10) Thanks to whoever wrote this CppHtml.CPP.Z.  I'm a novice on web stuff
-and 
-you helped me with html.  See [C:/Demo/ToHtmlToTXTExample/ToHtml.CPP.Z,1].
+*) Thanks to whoever wrote this CppHtml.CPP.Z.  I'm a novice on web stuff and 
+you helped me with html.  See [C:/Demo/ToHtmlToTXTDemo/ToHtml.CPP.Z,1].
 
-11) I used MagicISO to burn test CD's to help me understand the ISO9660 file 
+*) I used MagicISO to burn test CD's to help me understand the ISO9660 file 
 system format.  I mostly used the ISO9660 spec.
 
-12) I looked at bootable CD boot sects, but didn't learn anything, finding it 
+*) I looked at bootable CD boot sects, but didn't learn anything, finding it 
 easier to make my own.
 
-13) I think I got my original PC speaker code from Borland C.
+*) I think I got my original PC speaker code from Borland C.
 
-14) I found PS/2 keyboard and mouse code on the net and documentation.  My 
-code is very different.  I found VGA reg info on the net.
+*) I found PS/2 keyboard and mouse code on the net and documentation.  My
+code 
+is very different.  I found VGA reg info on the net.
 
-15) Thanks to http://www.osdev.org for a couple tips.
+*) Thanks to http://www.osdev.org for a couple tips.
 
-16) God told me to stick with 640x480 16 color,  a single audio voice and
-kept 
+*) God told me to stick with 640x480 16 color,  a single audio voice and kept 
 me from zombie-walking into making child windows like Windows.  Instead, I 
 made one window per task with no child windows.  He also guided my progress, 
 very obviously.
 
-17) I got Webster's Dictionary and The King James Bible from 
-Project Gutenberg.
+*) I got Webster's Dictionary and The King James Bible from Project Gutenberg.
 
-18) John Carmack inspired me to use "[C:/Kernel/KMathB.CPP.Z,1] Clamp" as a
+*) John Carmack inspired me to use "[C:/Kernel/KMathB.CPP.Z,1] Clamp" as a
 name instead of "Limit".  He 
 inspired me to use "needle" and "haystack" as names.  He inspired me to 
 simplify my Frames-Per-Second code.
 
-19) Bill Gates inspired me to add comments to my [C:/Doc/HelpIndex.TXT.Z,1]
+*) Bill Gates inspired me to add comments to my [C:/Doc/HelpIndex.TXT.Z,1]
 Help & Index.
 
-20) I hired an artist, Cody Rigby, for $3,000 worth of pixel art.
+*) I hired an artist, Cody Rigby, for $3,000 worth of pixel art.
 
-21) Erik van der Karbargenbok made [C:/Linux/TempleBot,1] TempleBot.
+*) Erik van der Karbargenbok made [C:/Linux/TempleBot,1] TempleBot.
 
-22) The random number generator is from Donald Knuth in the wikipedia entry 
-for Linear_congruential_generator.
+*) The random number generator is from Donald Knuth in the wikipedia entry
+for 
+Linear_congruential_generator.
 
 
 * "MSDOS", "Windows", "MovieMaker" "MS Paint" and "FAT32" are trademarks of 

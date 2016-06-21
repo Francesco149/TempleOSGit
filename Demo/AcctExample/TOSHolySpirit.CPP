@@ -34,7 +34,7 @@ U0 BadCodeJump()
   Free(st);
 }
 
-U8 *WebBookMarks(U8 *filename="::/Home/Downloads/Blog/Bookmarks.html")
+U8 *WebBookMarks(U8 *filename="~/Downloads/Blog/Bookmarks.html")
 {
   U8 *st;
   CDocEntry *doc_e;
@@ -682,5 +682,5 @@ U0 InsMyURL()
   Free(url);
 }
 
-if (FileFind("::/Home/Downloads/Words/LinuxDict.TXT"))
-  GodInit("::/Home/Downloads/Words/LinuxDict.TXT");
+if (FileFind("~/Downloads/Words/LinuxDict.TXT"))
+  GodInit("~/Downloads/Words/LinuxDict.TXT");

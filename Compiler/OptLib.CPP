@@ -260,7 +260,7 @@ CIntermediateCode *OptBrZero(CCmpCtrl *cc,CIntermediateCode *tempi)
     case IC_CALL_END:
       tempii2=OptLag(tempii);
       switch (tempii2->ic_code) {
-	sub_switch_start:
+	start:
 	  case IC_CARRY:
 	    tempii2->ic_code=IC_BR_NOT_CARRY;
 	    break;
@@ -282,7 +282,7 @@ CIntermediateCode *OptBrZero(CCmpCtrl *cc,CIntermediateCode *tempi)
 	  case IC_BTC:
 	    tempii2->ic_code=IC_BR_NOT_BTC;
 	    break;
-	sub_switch_end:
+	end:
 	  tempii2->ic_data=tempi->ic_data;
 	  tempii->ic_code=IC_CALL_END2;
 	  OptSetNOP1(tempi);
@@ -387,7 +387,7 @@ CIntermediateCode *OptBrNotZero(CCmpCtrl *cc,CIntermediateCode *tempi)
     case IC_CALL_END:
       tempii2=OptLag(tempii);
       switch (tempii2->ic_code) {
-	sub_switch_start:
+	start:
 	  case IC_CARRY:
 	    tempii2->ic_code=IC_BR_CARRY;
 	    break;
@@ -409,7 +409,7 @@ CIntermediateCode *OptBrNotZero(CCmpCtrl *cc,CIntermediateCode *tempi)
 	  case IC_BTC:
 	    tempii2->ic_code=IC_BR_BTC;
 	    break;
-	sub_switch_end:
+	end:
 	  tempii2->ic_data=tempi->ic_data;
 	  tempii->ic_code=IC_CALL_END2;
 	  OptSetNOP1(tempi);

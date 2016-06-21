@@ -5,18 +5,18 @@ where keys are acted-upon.  TempleOS has a chain of putkey handlers in a
 handlers can choose to 
 terminate handling, otherwise, the keys get sent on down the chain.
 
-[C:/Kernel/KeyDev.CPP.Z,64] KeyDevAdd() defines a putkey device with a
+[C:/Kernel/KeyDev.CPP.Z,70] KeyDevAdd() defines a putkey device with a
 priority.  "Device" might be a 
 misnomer.  Currently, the following are defined:
 
 Priority    Handler
 ---------- ---------
 0x20000000 [C:/Home/HomeKeyPlugIns.CPP.Z,11] MyPutKey() user handler
-0x40000000 [C:/Kernel/KeyDev.CPP.Z,106] KDInputFilterPutKey() for
+0x40000000 [C:/Kernel/KeyDev.CPP.Z,108] KDInputFilterPutKey() for
 [C:/Kernel/SrvCmd.CPP.Z,483] Auto(), [C:/Kernel/SrvCmd.CPP.Z,465] AutoStr(),
 and [C:/Kernel/SrvCmd.CPP.Z,475] AutoFile() 
 handling.
-0x60000000 [C:/Kernel/KeyDev.CPP.Z,86] KDRawPutKey() nonwindowed direct to
+0x60000000 [C:/Kernel/KeyDev.CPP.Z,88] KDRawPutKey() nonwindowed direct to
 video mem debug output. 
 0x80000000 [C:/Adam/DolDoc/DocPutKey.CPP.Z,720] KDDocPutKey() standard
 document cmds

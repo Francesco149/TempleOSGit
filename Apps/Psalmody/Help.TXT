@@ -31,11 +31,11 @@ screwy.  See this <Song>
 2qG3ECB2eGG3qCeFDsBGBG2qG3ECB2eGG3qCeFDsBGBGqEeEFqEB2eG3FetCAGqFCEeEFqEB2eG3Fe
 tCAGqFC after pressing <CTRL-t>, now.
 
-* You can call [C:/Apps/Psalmody/JukeBox.CPP.Z,1]
-JukeBox("::/Home/Psalmody"); to play your songs.
+* You can call [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox("~/Psalmody"); to
+play your songs.
 
 * To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/Kernel/KernelA.HPP.Z,3838] snd.record to TRUE, play music, and
+the Bool [C:/Kernel/KernelA.HPP.Z,3840] snd.record to TRUE, play music, and
 set it to FALSE.  Then, call 
 [C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate().  You might wish to make a
 <CTRL-ALT-key> to toggle this 
