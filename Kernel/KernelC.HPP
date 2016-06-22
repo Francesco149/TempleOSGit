@@ -746,7 +746,6 @@ public extern I64 SysTimerRead();//18.33333*65536Hz (SYS_TIMER_FREQ)
 #help_index "Time/Seconds"
 public extern Bool Blink(F64 Hz=2.5);
 public extern F64 tS(); //From SysTimerFreq.
-
 #help_index "Windows"
 public extern Bool WinInside(I64 x,I64 y,CTask *task=NULL,Bool border=FALSE);
 
