@@ -41,30 +41,33 @@ alphabetically, in case you use MagicISO.
 
                                 ::/Home Files
 
-An empty ::/Home directory should be valid because it will get default files 
-from the root directory. 
+The home dir is specified with '~'.  The home dir is ::/Home unless you
+change 
+it with [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] HomeSet() or compile the kernel
+with a cfg option.  An empty /Home dir 
+should be valid because it will get default files from the root dir. 
 
 [C:/Home/PersonalMenu.TXT,1] a menu viewed with the <CTRL-m> key or by
-clicking "M
-ENU" in the upper left border area of a window.
+clicking "MENU" 
+in the upper left border area of a window.
 
 [C:/Home/PersonalNotes.TXT,1] a personal note file viewed with the
-<CTRL-SHIFT-M> 
-key.
+<CTRL-SHIFT-M> key.
 
 [C:/Home/MakeHome.CPP.Z,1] a file compiled by the [C:/Doc/Glossary.TXT.Z,1]
 Adam Task during [C:/StartOS.CPP.Z,1] StartOS.
 
-::/Home/Home* Copy Home* files from the root into ::/Home and customize them.
- 
-These files are invoked when the adam task starts-up.
+~/Home* Copy Home* files from the root into ~ and customize them.  These
+files 
+are invoked when the adam task starts-up.
 
-[C:/Home/DoOnce.CPP,1] a file invoked at the start-up of the first user.  
-Customize this!
+[C:/Home/DoOnce.CPP,1] a file invoked at the start-up of the first user. 
+Customize 
+this!
 
 [C:/Home/Registry.CPP.Z,1] can be edited by hand or deleted to reset to
-defaults.  
-Takes affect next boot.
+defaults.  Takes 
+affect next boot.
 
 
 
@@ -91,7 +94,7 @@ tall.CPP.Z or Install.AUT.Z to create the /Home subdirectory.
 * Virtual mem/Paging is not used -- it is identity mapped in x86_64 mode. 
 The 
 stk does not grow, so alloc enough when the task (process) is
-[C:/Kernel/KTask.CPP.Z,208] Spawned and use 
+[C:/Kernel/KTask.CPP.Z,210] Spawned and use 
 the heap for most things.  (The heap refers to
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() and
 [C:/Kernel/Mem/MAllocFree.CPP.Z,383] Free().)
@@ -146,7 +149,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HPP.Z,3513] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HPP.Z,3514] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Opt/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
 
@@ -186,9 +189,9 @@ case you wish to make hash table sizes bigger.
 
 See [C:/Doc/Asm.TXT.Z,1].
 
-* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3317] CTask.
+* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3318] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3441] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3442] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and

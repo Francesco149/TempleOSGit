@@ -37,7 +37,7 @@ U0 DrvsRelease()
 
 CDrv *DrvMakeFree(U8 drv_let)
 {//Make a slot free for a new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount().
-//!!! drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,223] remapped drv.
+//!!! drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,225] remapped drv.
   I64 i=ToUpper(drv_let)-'A';
   CDrv *res;
   if (!(0<=i<NUM_DRVS))
@@ -50,7 +50,7 @@ CDrv *DrvMakeFree(U8 drv_let)
 
 CDrv *DrvNextFree(U8 first_drv_let='C')
 {//Locate free slot for new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount().
-//!!! first_drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,223] remapped drv.
+//!!! first_drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,225] remapped drv.
   I64 i=ToUpper(first_drv_let)-'A';
   if (!(0<=i<NUM_DRVS))
     throw('Drv');
@@ -165,6 +165,8 @@ CDrv *Let2Drv(U8 drv_let=0,Bool except=TRUE)
   else {
     if (drv_let==':')
       drv_let=blkdev.boot_drv_let;
+    else if (drv_let=='~')
+      drv_let=*blkdev.home_dir;
     drv_let=ToUpper(drv_let);
     if (!('A'<=drv_let<='Z')) {
       if (except)
@@ -190,7 +192,7 @@ CBlkDev *DrvIsWritable(U8 drv_let=0,Bool except=FALSE)
 }
 
 U0 DskCacheInvalidate(CDrv *dv)
-{//Needed for removable media. Called by [C:/Kernel/BlkDev/DskDrv.CPP.Z,211] ChgDsk().
+{//Needed for removable media. Called by [C:/Kernel/BlkDev/DskDrv.CPP.Z,213] ChgDsk().
   Bool unlock;
   CBlkDev *bd=dv->bd;
   DrvChk(dv);
@@ -232,7 +234,7 @@ Bool DrvMap(U8 drv_let,CDrv *dv)
 }
 
 Bool Drv(U8 drv_let)
-{//Change drive.  You can set drive with [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() as well.
+{//Change drive.  You can set drive with [C:/Kernel/BlkDev/DskDirB.CPP.Z,9] Cd() as well.
   CDrv *dv=Let2Drv(drv_let);
   CBlkDev *bd;
   bd=BlkDevChk(dv->bd);
@@ -295,6 +297,8 @@ U8 DrvTextAttrGet(U8 drv_let=0)
     drv_let=Drv2Let(Fs->cur_dv);
   else if (drv_let==':')
     drv_let=blkdev.boot_drv_let;
+  else if (drv_let=='~')
+    drv_let=*blkdev.home_dir;
   drv_let=ToUpper(drv_let);
   if ('A'<=drv_let<='Z')
     return blkdev_text_attr[Let2BlkDevType(drv_let)]<<4|
@@ -309,7 +313,7 @@ U0 DrvRep()
   CBlkDev *bd;
   I64 ch,i,drv_let,attr;
   U8 *st;
-  "\nDefined Drives:\n\n";
+  "\nDefined Drives:\n";
   for (i=0,dv=blkdev.drvs;i<NUM_DRVS;i++,dv++) {
     if (dv->dv_signature==DRV_SIGNATURE_VAL) {
       bd=dv->bd;
@@ -335,4 +339,5 @@ U0 DrvRep()
       "   %016X-%016X\n$FG$$BG$",dv->drv_offset,dv->drv_offset+dv->size-1;
     }
   }
+  "Home Dir:\"%s\"\n",blkdev.home_dir;
 }

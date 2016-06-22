@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-80,125 lines of code including the kernel, the 64-bit compiler, the graphics 
+80,442 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a [C:/Doc/HelloWorld.TXT.Z,1] Hello World
@@ -145,9 +145,9 @@ Hardware graphics acceleration is not used, so this is possible.  See
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/KernelA.HPP.Z,3317] CTask, pointed to by the FS
+task record, [C:/Kernel/KernelA.HPP.Z,3318] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
-> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3441] CCPU for the current
+> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3442] CCPU for the current
 CPU core.  Each task can have 
 just one window, but a task can have children with windows.  (The segment
 regs 
@@ -179,13 +179,13 @@ own distro that includes everything and is a bootable live CD with
 
 Typically, your usage pattern through the day will be repeatedly left or
 right 
-clicking on filenames in a cmd line [C:/Kernel/BlkDev/DskDirB.CPP.Z,91] Dir()
-listing.  You left-click files to 
+clicking on filenames in a cmd line [C:/Kernel/BlkDev/DskDirB.CPP.Z,105]
+Dir() listing.  You left-click files to 
 edit them and right-click to #include them.  To begin a project, type
 [C:/Adam/DolDoc/DocEd.CPP.Z,189] Ed("file
 name");, supplying a filename.  You can also run programs with <F5> when in 
 the editor.  <ESC> to save and exit the file.  You'll need to do a new
-[C:/Kernel/BlkDev/DskDirB.CPP.Z,91] Dir() 
+[C:/Kernel/BlkDev/DskDirB.CPP.Z,105] Dir() 
 cmd, periodically, so make a macro on your PersonalMenu.  Access your 
 PersonalMenu by pressing <CTRL-m>, cursoring until you are on top of it and 
 pressing <SPACE>.
@@ -205,22 +205,21 @@ it very often, believe it or not.
 <ALT-v> vertically tiles windows.
 <ALT-h> horizontally tiles windows.
 The ALT keys are defined in [C:/Home/HomeKeyPlugIns.CPP,1].  You can
-customize 
-them.
+customize them.
 
-<CTRL-ALT-e> creates a new terminal window.  <CTRL-ALT-x> kills a window.  
-You'll do these periodically.
+<CTRL-ALT-t> new terminal window.
+<CTRL-ALT-x> kills a window.
 
 [C:/Adam/Opt/Utils/Find.CPP.Z,145] Find() is your best friend.  There's a
-wrapper function called [C:/Home/HomeWrappers.CPP.Z,8] F() in your /Ho
-me/HomeWrappers.CPP.Z file.  Feel free to make wrapper functions for
-functions 
-you use often and customize the args.  By the way,
+wrapper function called [C:/Home/HomeWrappers.CPP.Z,8] F() in your ~/H
+omeWrappers.CPP.Z file.  Feel free to make wrapper functions for functions
+you 
+use often and customize the args.  By the way,
 [C:/Adam/Opt/Utils/Find.CPP.Z,145] Find() or [C:/Home/HomeWrappers.CPP.Z,13]
-R() can be used 
-to replace strings across multiple files.  You can access
-[C:/Adam/Opt/Utils/Find.CPP.Z,145] Find() using <CTRL-S
-HIFT-f>.
+R() can be used to 
+replace strings across multiple files.  You can access
+[C:/Adam/Opt/Utils/Find.CPP.Z,145] Find() using <CTRL-SHIF
+T-f>.
 
 As you browse code, use the AutoComplete window to look-up functions, etc.  <C
 TRL-SHIFT-F1> (or whatever number) to follow a sym to it's source.  You can 

@@ -7,7 +7,7 @@ function executes immediately.  Remember to add a semicolon.
 Look-up the function headers with AutoComplete by hitting <CTRL-SHIFT-F1> 
 after typing the first few letters.
 
-[C:/Kernel/BlkDev/DskDirB.CPP.Z,91] Click Here to see the directory cmd
+[C:/Kernel/BlkDev/DskDirB.CPP.Z,105] Click Here to see the directory cmd
 header.  It accepts default args from C++.
 
 >Dir("*.TXT.Z");
@@ -26,23 +26,26 @@ listing or press <F5> while editing.
 
 Most filenames end in .Z because they are stored compressed.
 
-Drives are specified with a letter.  The boot drive is specified with a ':'.
+Drives are specified with a letter.  The boot drive is specified with a ':'.  
+The home dir drive is specified with a '~'.
 
 >Drv('B');	B drive
 
-The drive can be specified in a [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd()
+The drive can be specified in a [C:/Kernel/BlkDev/DskDirB.CPP.Z,9] Cd()
 command as in:
 
 >Cd("B:/Temp");	B drive
 >Cd("::/Demo");	Boot drive
 
->Cd("::/Home/Psalmody");	See [C:/Doc/GuideLines.TXT.Z,1] ::/Home dir.
+The home directory is specified with a '~'.
+
+>Cd("~/Psalmody");	See [C:/Doc/GuideLines.TXT.Z,1] ::/Home dir.
 
 If a file is not found, .Z is added or removed and a search is done, again.  
 If a file is still not found, all parent directories are searched.
 
-You can place macros in your [D:/Home/PersonalMenu.TXT,1] PersonalMenu for
-[C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() commands.  <CTRL-m> to 
+You can place macros in your [C:/Home/PersonalMenu.TXT,1] PersonalMenu for
+[C:/Kernel/BlkDev/DskDirB.CPP.Z,9] Cd() commands.  <CTRL-m> to 
 access your menu.
 
 >Find("needle","/Demo/*.CPP.Z;*.TXT.Z;"); See [C:/Doc/FileUtils.TXT.Z,1] File

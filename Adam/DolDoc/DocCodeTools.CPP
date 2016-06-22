@@ -76,7 +76,7 @@ I64 EdRILex(CRILex *rx)
 	  !rx->exp_depth || i==KW_ELSE || i==KW_CATCH || i==KW_DO)
       rx->is_not_cont=TRUE;
     if (rx->was_new_line && (rx->cc1->token!=':' || i==KW_CASE ||
-	  i==KW_DFT || i==KW_SUB_SWITCH_START || i==KW_SUB_SWITCH_END)) {
+	  i==KW_DFT || i==KW_START || i==KW_END)) {
       tempf=rx->cc2->lex_include_stk;
       while (tempf->next)
 	tempf=tempf->next;
@@ -189,13 +189,13 @@ U0 EdRIStmt(CRILex *rx,Bool indent)
 	    i=0;
 	    while (rx->cc1->token && rx->cc1->token!='}') {
 	      switch (PrsKeyWord(rx->cc1)) {
-		case KW_SUB_SWITCH_START:
+		case KW_START:
 		  rx->depth+=i; i=0;
 		  while (EdRILex(rx) && rx->cc1->token!=':');
 		  EdRILex(rx);
 		  i++;
 		  break;
-		case KW_SUB_SWITCH_END:
+		case KW_END:
 		  rx->depth+=i; i=0;
 		  if (--rx->depth<0) rx->depth=0;
 		  while (EdRILex(rx) && rx->cc1->token!=':');

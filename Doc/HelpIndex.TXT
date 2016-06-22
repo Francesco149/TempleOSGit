@@ -40,7 +40,9 @@ Decisions
 [C:/Doc/FAQ.TXT.Z,1] F.A.Q.		[C:/Doc/Glossary.TXT.Z,1] Glossary
 [C:/Doc/HolyC.TXT.Z,1] HolyC  		[C:/Doc/CompilerOverview.TXT.Z,1] Compiler
 Index
-[C:/Doc/ChangeLog.TXT.Z,1] Change Log	[C:/Doc/Demands.TXT.Z,1] Demands
+[C:/Doc/Demands.TXT.Z,1] Demands		[C:/Doc/StdTempleOSPC.TXT.Z,1] The Std
+TempleOS PC
+[C:/Doc/ChangeLog.TXT.Z,1] Change Log
 	
 +] User Help
   
@@ -57,7 +59,7 @@ Index
 +] DolDoc
     [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is the TempleOS document type. 
     The editor, compiler, assembler and whole operating system seamlessly handle
-    DolDocs.  Cmds like [C:/Kernel/BlkDev/DskDirB.CPP.Z,91] Dir() and
+    DolDocs.  Cmds like [C:/Kernel/BlkDev/DskDirB.CPP.Z,105] Dir() and
     [C:/Adam/Opt/Utils/Find.CPP.Z,145] Find() can output links to the cmd line.
   +] Burning CD/DVDs
     * Prepare a directory with the files you wish to burn.

@@ -1,5 +1,5 @@
 #help_index "Misc/Registry"
-#define REGISTRY_FILENAME "::/Home/Registry.CPP.Z"
+#define REGISTRY_FILENAME "~/Registry.CPP.Z"
 CDoc *sys_registry_doc=NULL;
 I64 sys_msg_flags[1]={0};
 F64 registry_version;

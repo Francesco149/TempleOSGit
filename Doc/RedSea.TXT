@@ -19,7 +19,7 @@ public class CDirEntry //64-byte fixed-size
   U16 attr;	//See [C:/Kernel/KernelA.HPP.Z,2529] RS_ATTR_DIR.  I would like
 to change these.
   U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/StrA.CPP.Z,345]
-chars_bmp_filename, [C:/Kernel/BlkDev/DskStrA.CPP.Z,239] FileNameChk
+chars_bmp_filename, [C:/Kernel/BlkDev/DskStrA.CPP.Z,245] FileNameChk
   I64 cluster; (blk) //One sector per cluster.
   I64 size;	//In bytes
   CDate datetime; //See  [C:/Doc/TimeDate.TXT.Z,1] DateTime,
@@ -40,11 +40,11 @@ BIOS.
   U16 signature2;	//0xAA55
 };
 
-See [C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,1] implementation of RedSea file
-system.
+See [C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,1] and
+[C:/Adam/Opt/Boot/DskISORedSea.CPP.Z,1].
 
-File with names ending in .Z are stored compressed.
-See [C:/Kernel/Compress.CPP.Z,1] implementation of LZW compression.
+Files with names ending in .Z are compressed.  See
+[C:/Kernel/Compress.CPP.Z,1].
 
 To replace ISO9660, make hard-drive partition image of a measured size and 
 copy onto a CD/DVD starting at about sector 20, with EL TORITO booting.  

@@ -519,6 +519,77 @@ public Bool Gr3BSpline(CDC *dc=gr.dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
   return BSpline3(dc,ctrl,cnt,&GrLinePlot,closed);
 }
 
+I64 GrLineFat3(CDC *dc=gr.dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,
+	I64 width,I64 start=0)
+{//Step through line segment calling callback.
+//Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+  I64 res=0,i,j,d,dx=x2-x1,dy=y2-y1,dz=z2-z1,_x,_y,_z,
+	d_lo=width>>1,d_hi=(width-1)>>1,
+	adx=AbsI64(dx),ady=AbsI64(dy),adz=AbsI64(dz);
+  if (adx>=ady) {
+    if (adx>=adz) {
+      if (d=adx) {
+	if (dx>=0)
+	  dx=0x100000000;
+	else
+	  dx=-0x100000000;
+	dy=dy<<32/d;
+	dz=dz<<32/d;
+      }
+    } else {
+      if (d=adz) {
+	dx=dx<<32/d;
+	dy=dy<<32/d;
+	if (dz>=0)
+	  dz=0x100000000;
+	else
+	  dz=-0x100000000;
+      }
+    }
+    x1<<=32; y1<<=32; z1<<=32;
+    for (j=0;j<start;j++) {
+      x1+=dx; y1+=dy; z1+=dz;
+    }
+    for (i=start;i<=d;i++) {
+      res+=GrVLine(dc,x1.i32[1],y1.i32[1]-d_lo,y1.i32[1]+d_hi,
+	    z1.i32[1],z1.i32[1]);
+      _x=x1.i32[1]; _y=y1.i32[1]; _z=z1.i32[1];
+      x1+=dx; y1+=dy; z1+=dz;
+    }
+  } else {
+    if (ady>=adz) {
+      if (d=ady) {
+	dx=dx<<32/d;
+	if (dy>=0)
+	  dy=0x100000000;
+	else
+	  dy=-0x100000000;
+	dz=dz<<32/d;
+      }
+    } else {
+      if (d=adz) {
+	dx=dx<<32/d;
+	dy=dy<<32/d;
+	if (dz>=0)
+	  dz=0x100000000;
+	else
+	  dz=-0x100000000;
+      }
+    }
+    x1<<=32; y1<<=32; z1<<=32;
+    for (j=0;j<start;j++) {
+      x1+=dx; y1+=dy; z1+=dz;
+    }
+    for (i=start;i<=d;i++) {
+      res+=GrHLine(dc,x1.i32[1]-d_lo,x1.i32[1]+d_hi,y1.i32[1],
+	    z1.i32[1],z1.i32[1]);
+      _x=x1.i32[1]; _y=y1.i32[1]; _z=z1.i32[1];
+      x1+=dx; y1+=dy; z1+=dz;
+    }
+  }
+  return res;
+}
+
 public Bool GrLine3(CDC *dc=gr.dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,
 	I64 step=1,I64 start=0)
 {//3D. Transformation with pen width.
@@ -536,20 +607,36 @@ public Bool GrLine3(CDC *dc=gr.dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,
     _x2=x2; _y2=y2; _z2=z2;
     DCReflect(dc,&_x2,&_y2,&_z2);
     dc->flags&=~DCF_SYMMETRY;
-    if (step==1 && !start && !dc->brush && dc->pen_width<2 &&
-	  !dc->depth_buf) {//TODO: clip z for depth buf
-      if (DCClipLine(dc,&_x1,&_y1,&_x2,&_y2))
-	res=Line(dc,_x1,_y1,0,_x2,_y2,0,&GrLinePlot0,step,start);
+    if (step==1 && !dc->brush) {
+      if (!start && dc->pen_width<2 && !dc->depth_buf) {//TODO: clip z depbuf
+	if (DCClipLine(dc,&_x1,&_y1,&_x2,&_y2))
+	  res=Line(dc,_x1,_y1,0,_x2,_y2,0,&GrLinePlot0,step,start);
+      } else {
+	if (GrPlot3(dc,_x1,_y1,_z1))
+	  res=TRUE;
+	if (GrLineFat3(dc,_x1,_y1,_z1,_x2,_y2,_z2,dc->pen_width,start))
+	  res=TRUE;
+	if (GrPlot3(dc,_x2,_y2,_z2))
+	  res=TRUE;
+      }
     } else
       res=Line(dc,_x1,_y1,_z1,_x2,_y2,_z2,&GrPlot3,step,start);
     was_symmetry=TRUE;
     if (dc->flags&DCF_JUST_MIRROR)
       goto gr_done;
   }
-  if (step==1 && !start && !dc->brush && dc->pen_width<2 &&
-	!dc->depth_buf) {//TODO: clip z for depth buf
-    if (DCClipLine(dc,&x1,&y1,&x2,&y2))
-      res|=Line(dc,x1,y1,0,x2,y2,0,&GrLinePlot0,step,start);
+  if (step==1 && !dc->brush) {
+    if (!start && dc->pen_width<2 && !dc->depth_buf) {//TODO: clip z depbuf
+      if (DCClipLine(dc,&x1,&y1,&x2,&y2))
+	res|=Line(dc,x1,y1,0,x2,y2,0,&GrLinePlot0,step,start);
+    } else {
+      if (GrPlot3(dc,x1,y1,z1))
+	res=TRUE;
+      if (GrLineFat3(dc,x1,y1,z1,x2,y2,z2,dc->pen_width,start))
+	res=TRUE;
+      if (GrPlot3(dc,x2,y2,z2))
+	res=TRUE;
+    }
   } else
     res|=Line(dc,x1,y1,z1,x2,y2,z2,&GrPlot3,step,start);
 gr_done:

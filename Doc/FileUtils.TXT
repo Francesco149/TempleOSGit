@@ -3,12 +3,12 @@
 File util [C:/Kernel/BlkDev/DskFind.CPP.Z,30] FilesFind() wildcard mask
 consists of a single base dir with 
 multiple file masks separated by ';'.  The '*' and '?' wildcard chars are 
-accepted.  A '~' indicates an exclusion mask.
+accepted.  The '~' is your home directory and '!' indicates an exclusion mask.
 
  
 "/Kernel/*"		BaseDir: /Kernel	Mask: *
 "/Demo/*.BMP*;*.GRA*"	BaseDir: /Demo		Mask: *.BMP* | *.GRA*
-"/*.TXT*;~*/Bible*"	BaseDir: Root		Mask: *.TXT* but not */Bible*
+"/*.TXT*;!*/Bible*"	BaseDir: Root		Mask: *.TXT* but not */Bible*
 
 See [C:/Kernel/BlkDev/DskStrA.CPP.Z,40] FilesFindMatch().
 

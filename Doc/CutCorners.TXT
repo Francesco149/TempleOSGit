@@ -43,6 +43,6 @@ compiler does calculations with 64-bit.
 StrPrintJoin().  You cannot use vastly over-sized fields for 
 %f.
 
-* [C:/Adam/Gr/GrPrimatives.CPP.Z,596] GrEllipse3() is broken on
+* [C:/Adam/Gr/GrPrimatives.CPP.Z,683] GrEllipse3() is broken on
 transformations.
  

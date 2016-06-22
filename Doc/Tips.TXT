@@ -19,8 +19,9 @@ games you like.
 
 * <ALT-m> maximizes a window.  <ALT-SHIFT-w> closes AutoComplete.  <ALT-w> 
 brings back AutoComplete.  <ALT-v> vertically tiles windows.  <ALT-h> 
-horizontally tiles windows.  The ALT keys are defined in 
-[C:/Home/HomeKeyPlugIns.CPP,1].  You can customize them.
+horizontally tiles windows.  The ALT keys are defined in
+[C:/Home/HomeKeyPlugIns.CPP,1]. 
+ You can customize them.
 
 * If you make changes to TempleOS files in your /Home directory, generally
 you 
@@ -38,7 +39,7 @@ Merge(\"C:/*\",\"D:/*\",\"+r+d\"); to check my changes.
 
 * <CTRL-m> at the cmd line to access your PersonalMenu.  Place macros there 
 with <CTRL-l>, or icon-like sprites with <CTRL-r>.  Use the Pop-Up option on 
-macros to [C:/Kernel/KTask.CPP.Z,208] Spawn() a task to run a file.  It dies
+macros to [C:/Kernel/KTask.CPP.Z,210] Spawn() a task to run a file.  It dies
 when it is finished.  This 
 returns mem to the system.  Be sure to press <CTRL-s> to save your macro/menu 
 area after making changes.
@@ -52,12 +53,12 @@ expressions like 1+2*3;.  F64 ress can be accessed with ansf.
 finding the keyboard controls to games.
 
 * You can adjust the mouse movement rate by setting global vars in your 
-start-up file.  See [D:/Home/HomeLocalize.CPP,1] mouse scale.
+start-up file.  See [C:/Home/HomeLocalize.CPP,1] mouse scale.
 
 * You can set your local time zone by setting the [C:/Kernel/KGlbls.CPP.Z,14]
 local_time_offset global var 
 in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,551] CDATE_FREQ.
- See [D:/Home/HomeLocalize.CPP,1] local time.
+ See [C:/Home/HomeLocalize.CPP,1] local time.
 
 * <CTRL-SHIFT-L> in the editor to reindent a [C:/Doc/HolyC.TXT.Z,1] HolyC
 function or renumber an asm 
@@ -85,7 +86,7 @@ just numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
 
 * You can permanently disable AutoComplete commenting-out
 [D:/Home/HomeSys.CPP,1] ACInit() in 
-[D:/Home/HomeSys.CPP,1] ::/Home/HomeSys.CPP.
+[D:/Home/HomeSys.CPP,1] ~/HomeSys.CPP.
 
 * Boolean expressions **not** in if stmts don't have short circuit logic and
 are 
@@ -105,15 +106,15 @@ the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1354] CDoc
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3317] CTask,
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3318] CTask,
 [C:/Kernel/KernelA.HPP.Z,1181] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2551]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
-smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,208] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2884] MEM_DFT_STK, and using
+smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,210] Spawn(), chang
+[C:/Kernel/KernelA.HPP.Z,2885] MEM_DFT_STK, and using
 [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,176] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -168,6 +169,9 @@ if you want.
 
 * Use <CTRL-ALT-a> to enter an extended ASCII char.
 
+* Use <CTRL-ALT-f> to toggle between [C:/Kernel/FontStd.CPP.Z,1] Std Font and
+[C:/Kernel/FontCyrillic.CPP.Z,1] Cyrillic Font.
+
 * Use <CTRL-ALT-s> will capture the screen as a sprite on the clipboard.  You 
 can save the cmd line doc as text with <CTRL-a>.
 
@@ -178,11 +182,12 @@ Press 't' for transparent.
 
 * There are handy functions--F(),R(),FD() and RD() which are defined in 
 [C:/Home/HomeWrappers.CPP,1].  You are encouraged to change them and add
-more.  
-They will perform find-and-replace operations accross multiple files.  The +l 
-flag is particularly useful since it limits to whole labels.  The +lb and +la 
-flags limit to whole labels just before or after.  You are encouraged to add 
-or modify handy wrapper functions to make cmd line operations easier.
+more.  They 
+will perform find-and-replace operations accross multiple files.  The +l flag 
+is particularly useful since it limits to whole labels.  The +lb and +la
+flags 
+limit to whole labels just before or after.  You are encouraged to add or 
+modify handy wrapper functions to make cmd line operations easier.
 
 * When using [C:/Adam/Opt/Utils/Find.CPP.Z,145] Find() while modifying code,
 work from the bottom-up so that line 
@@ -260,9 +265,9 @@ has not changed and it finds the disk intacted.
 * Using a sub-int array, i.u8[3], for example, will force a local var to 
 non-reg.
 
-* You can delete the /Home/Registry.CPP.Z file.  The policy is that deleting 
-it will restore defaults.  It is a text doc, if you want to edit it.  Be 
-careful of tree indentations.
+* You can delete the ~/Registry.CPP.Z file.  The policy is that deleting it 
+will restore defaults.  It is a text doc, if you want to edit it.  Be careful 
+of tree indentations.
 
 * Study [C:/Adam/Opt/Utils/MemRep.CPP.Z,1] and [C:/Adam/WallPaper.CPP.Z,18]
 WallPaper() to learn how the system 
@@ -287,7 +292,7 @@ be confused by [C:/Kernel/KernelA.HPP.Z,1354] CDoc allocations.  Those are
 generated when text is written to 
 the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2794]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2795]
 _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,330] Type() to display .BMP or
@@ -306,8 +311,7 @@ err.
 * [C:/Adam/Opt/Utils/Diff.CPP.Z,320] ZipRep() can highlight src files with
 lots of redundancy.
 
-* With sub_switch_start/sub_switch_end, common trailing code is fast.  Common 
-leading code is slow.
+* With start/end, common trailing code is fast.  Common leading code is slow.
 
 * The first line of the Psalmody
 `#include "::/Apps/Psalmody/Run"

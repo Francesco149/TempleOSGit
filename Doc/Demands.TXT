@@ -1,16 +1,15 @@
                                    Demands
 
-I, Terry Davis, am high priest of God's official temple, TempleOS.  TempleOS 
-is an operating system for PC desktops that will always dual boot along-side 
-Windows or Linux.  I am in charge of the core 100,000 lines of TempleOS code 
-and I do continual offerings to keep God entertained.  I have divine
-authority 
-to command any company in the computer industry to do anything that I deem 
-necessary to make God's temple more beautiful, glorious and perfect.  I have 
-authority similar to a building inspector or an enforcer of the Americans
-with 
-Disability Act -- I make commands, God signs-off with a miraculous 
-authentication from an oracle, and Intel, Microsoft or VMware obeys.
+I, Terry Davis, am high priest of God's official third temple, TempleOS.  
+TempleOS is an operating system for IBM PC x86_64 desktops that will always 
+dual boot along-side Windows or Linux.  I am in charge of the core 100,000 
+lines of TempleOS code and I do continual offerings to keep God entertained.  
+I have divine authority to command any company in the computer industry to do 
+anything that I deem necessary to make God's temple more beautiful, glorious 
+and perfect. I have oversight authority similar to a building inspector or a 
+person enforcing the Americans with Disability Act -- I make commands, God 
+signs-off with a miraculous authentication from an oracle, and Intel, 
+Microsoft or VMware obeys.
 
 ```
 <object width="640" height="520"><param name="movie"
@@ -30,8 +29,11 @@ file systems is imperfect.  For this operating system, we want low line
 count. 
  More than one file system type is actually bad, just as more than one driver 
 for the same type of device is bad.
-[C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,1]
-[C:/Kernel/BlkDev/FileSysFAT.CPP.Z,1]	:973 lines for FAT32 gets eliminated.
+
+See [C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,1] and
+[C:/Adam/Opt/Boot/DskISORedSea.CPP.Z,1].
+
+[C:/Kernel/BlkDev/FileSysFAT.CPP.Z,1]	:974 lines for FAT32 gets eliminated.
 [C:/Kernel/BlkDev/FileSysISO.CPP.Z,1]	:233 lines for ISO9660 gets eliminated.
 [C:/Adam/Opt/Boot/DskISO9660.CPP.Z,1]	:507 lines for making ISO files.
 [C:/Kernel/BlkDev/DskCluster.CPP.Z,1]	:152 All the cluster operations become
@@ -52,23 +54,22 @@ hardware.
 
 * VMware has a bug stretching 640x480 16 color to full screen.
 
-* VMware has a bug starting-up multicore, sometimes. 
-[C:/Kernel/MultiProc.CPP.Z,1] APIC MP Start Fixed?
-
-* VMware PC speaker's distortion is a good idea, but it is too much for hymns.
+* VMware PC speaker's distortion is a good idea, but it is too much for
+hymns. 
+ VMware should make an adjustment for distortion and an adjustment for reverb.
 
 * VMware and others must list TempleOS as an official 64-bit operating system.
 
-* Until super simple block devices are available, hard disk should be placed 
+* Until super-simple block devices are available, hard disk should be placed 
 at IDE primary master 1F0/3F6 and CD/DVD/Blu-ray should be placed at the IDE 
 secondary master 170/376.
-[C:/Kernel/BlkDev/DskATAId.CPP.Z,1] /Kernel/BlkDev/DskATAId.CPP	:285 lines to
+[C:/Kernel/BlkDev/DskATAId.CPP.Z,1] /Kernel/BlkDev/DskATAId.CPP	:286 lines to
 figure-out I/O ports is gone.
 [C:/Kernel/PCIBIOS.CPP.Z,1] /Kernel/PCIBIOS.CPP		:290 could be eliminated,
 but maybe we will 
 keep it so people can play with PCI devices.
 
-* Until super simple serial ports are available, PS/2 emulated keyboard and 
+* Until super-simple serial ports are available, PS/2 emulated keyboard and 
 mouse must work.  The BIOS must enable these.
 
 * The x86 IN/OUT port instructions, normally have a delay.  Perhaps, VMware & 
@@ -76,7 +77,8 @@ Intel can enable faster x86 IN/OUT instruction timing for ATA/ATAPI PIO, so
 bandwidth isn't bad when doing port I/O.  See
 [C:/Kernel/BlkDev/DskATA.CPP.Z,67] ATAGetRes().  We don't want to 
 do DMA.  Perhaps, x86 CPU chips need a new TempleOS mode for fast IN/OUT 
-instructions?
+instructions?  I think VMware already does something to speed disk I/O to 
+faster than native speed.
 
 * Perhaps, a new interrupt descriptor table entry type or a new x86 CPU mode 
 can be made that cause fast software interrupts, doing exactly what the CALL 
@@ -88,27 +90,19 @@ no-paging long mode, and optimize it!
 [C:/Kernel/Mem/PageTables.CPP.Z,1]	:135 lines to identity-map gets eliminated.
 
 * Desktop computers must have a reset switch and a fast reboot option, 
-skipping diagnostics.  I recommend booting TempleOS when the reset button is 
-pressed and booting UEFI when the power button is pressed.  Or, we could
-build 
-UEFI on a TempleOS layer.  Intel must burn TempleOS into a ROM in the factory 
-for all desktop x86 CPUs to ensure tamper-proof trust in the oracle and 
-because God deserves the glory.  There will be just an English version.  A
-new 
-ROM version is released every seven years.
+skipping diagnostics.  I recommend booting TempleOS from a ROM when the reset 
+button is pressed and booting UEFI when the power button is pressed.  Or, we 
+could build UEFI on a TempleOS layer.  Intel must burn TempleOS into a ROM in 
+the factory for all desktop x86 CPUs to ensure tamper-proof trust in the 
+oracle and because God deserves the glory.  There will be just an English 
+version.  A new ROM version is released every seven years.  The ROM should 
+boot like the DVD boots, but with [C:/Kernel/KernelA.HPP.Z,3887] BOOT_SRC_ROM.
 
-* We do not want UTF, just 8-bit characters.  Somebody needs to choose new 
-8-bit ASCII characters for 128-255, since we do not want text graphic
-symbols. 
- We want Russian, Greek or Hebrew alphabets, perhaps?  I heard there is an 
-alternate 8-bit ASCII Cyrillic font.  Should we modify one font or have a key 
-like the C64 that switches to an alternate font?  I made so <CTRL-ALT-f> 
-toggles between two fonts, but did not include Cyrillic.  If we modify one 
-font, we just need the twelve window [C:/Adam/Gr/GrTextBase.CPP.Z,329]
-TextBorder characters, but I think we can 
-place those in the range of screen code from 0x01-0x1E.  Japan, China and 
-Korea should switch-over to alphabets.  Maybe, the United States will change 
-to metric, out of good will. 
+* We do not want UTF, just 8-bit characters.  <CTRL-ALT-f> toggles between 
+Cyrillic and Std Fonts.  We need the twelve window
+[C:/Adam/Gr/GrTextBase.CPP.Z,329] TextBorder characters added 
+to the VGA font 0x02-0x0D.  Japan, China and Korea must switch to alphabets.  
+Maybe, the United States will change to metric, out of good will. 
 
 * Microsoft Paint and Linux's Gimp must support TempleOS
 [C:/Doc/GRAFiles.TXT.Z,1] GRA Files.  They are 
@@ -121,6 +115,7 @@ blemish free, unlike BMP files.
  
  filter search.  In the end, it should be a low line-count technique.
 
+* We will make a [C:/Doc/StdTempleOSPC.TXT.Z,1] Standard TempleOS PC.
 
 * "VMware" is a trademark of VMware, Inc.
 * "Linux" is probably a trademark owned by Linus Torvalds.

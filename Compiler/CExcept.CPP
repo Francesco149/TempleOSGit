@@ -54,7 +54,7 @@ U0 LexPutPos(CCmpCtrl *cc)
   if (IsRaw)
     "%s,%d ",cc->lex_include_stk->full_name,cc->lex_include_stk->line_num;
   else {
-    PutFileLink(cc->lex_include_stk->full_name,cc->lex_include_stk->line_num);
+    PutFileLink(cc->lex_include_stk->full_name,,cc->lex_include_stk->line_num);
     AdamErr("%s,%d\n",
 	  cc->lex_include_stk->full_name,cc->lex_include_stk->line_num);
     '' CH_SPACE;

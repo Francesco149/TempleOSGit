@@ -196,9 +196,11 @@ I64 TaskInit(CTask *task,I64 stk_size)
   task->win_top		=13;
   task->win_bottom	=text.rows-2;
 
-  if (blkdev.boot_drv_let) //Beware Adam [C:/Kernel/KStart.CPP.Z,1] TaskInit. I guess ok until [C:/Kernel/KEnd.CPP.Z,1] ChgDsk().
-    task->cur_dv=blkdev.let_to_drv[ToUpper(blkdev.boot_drv_let)-'A'];
-  task->cur_dir=StrNew("/Home",task);
+  if (blkdev.home_dir) {//Beware Adam [C:/Kernel/KStart.CPP.Z,1] TaskInit. I guess ok until [C:/Kernel/KEnd.CPP.Z,1] ChgDsk().
+    task->cur_dv=blkdev.let_to_drv[*blkdev.home_dir-'A'];
+    task->cur_dir=StrNew(blkdev.home_dir+2,task);
+  } else
+    task->cur_dir=StrNew("/Home",task);
 
   Seed(,task);
 
@@ -211,7 +213,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HPP.Z,3317] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HPP.Z,3318] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)
@@ -371,7 +373,7 @@ U0 UserTaskCont()
 
 U0 SrvCmdLine(I64 dummy=0)
 {
-  nounusedwarn dummy;
+  no_warn dummy;
   Fs->win_inhibit=WIG_USER_TASK_DFT;
   if (HashFind("SrvStartUp",adam_task->hash_table,HTT_FUN))
     CallExtStr("SrvStartUp");
@@ -380,7 +382,7 @@ U0 SrvCmdLine(I64 dummy=0)
 
 U0 UserCmdLine(I64 dummy=0)
 {//A user task ends-up calling this.
-  nounusedwarn dummy;
+  no_warn dummy;
   Fs->win_inhibit=WIG_USER_TASK_DFT;
   if (HashFind("UserStartUp",adam_task->hash_table,HTT_FUN))
     CallExtStr("UserStartUp");

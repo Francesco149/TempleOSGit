@@ -94,8 +94,8 @@ cc->pass==10 is final pass, code is placed into buf.
       }
 
       switch [tempi->ic_code] {
-	sub_switch_start:
-	  sub_switch_start:
+	start:
+	  start:
 	    case IC_ABS_ADDR:
 	      ICU16(tempi,0xB848);
 	      ICU64(tempi,tempi->ic_data);
@@ -145,7 +145,7 @@ cc->pass==10 is final pass, code is placed into buf.
 		tempa->ip=ip2+tempi->ic_cnt-8;
 	      }
 	      break;
-	  sub_switch_end:
+	  end:
 	    ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
 		  MDF_REG+RT_I64,REG_RAX,0,ip2);
 	    break;
@@ -381,7 +381,7 @@ cc->pass==10 is final pass, code is placed into buf.
 	      }
 	    }
 	    break;
-	sub_switch_end:
+	end:
 	  tempi->ic_flags&=~ICF_CODE_FINAL;
 	  break;
 	case IC_LEAVE:

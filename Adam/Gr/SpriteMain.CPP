@@ -1077,7 +1077,7 @@ I64 SpriteMainEd(CDoc *doc)
 	  break;
 	case MSG_IP_L_DOWN:
 	  switch (eletype) {
-	    sub_switch_start:
+	    start:
 	      case SPT_LINE:
 		tempg=SMLine(dc,x,y,a1,a2,color);
 		break;
@@ -1124,7 +1124,7 @@ I64 SpriteMainEd(CDoc *doc)
 	      case SPT_POLYPT:
 		tempg=SMPolyPoint(dc,x,y,a1,a2,color);
 		break;
-	    sub_switch_end:
+	    end:
 	      if (tempg) {
 		QueIns(tempg,insert_pt->last);
 		SpriteEdUpdate(doc,doc_ce,root);
