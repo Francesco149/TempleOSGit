@@ -47,6 +47,7 @@ public extern U8 *ScanCode2KeyName(I64 sc);
 public extern F64 Str2F64(U8 *src,U8 **_end_ptr=NULL);
 public extern I64 Str2I64(U8 *st,I64 radix=10,U8 **_end_ptr=NULL);
 public extern U8 *StrScan(U8 *src,U8 *fmt,...);
+
 #help_index "Char/Conversion;Time/Date/CDate;Date/CDate"
 public extern CDate Str2Date(U8 *src);
 
@@ -103,7 +104,6 @@ public extern U0 PutKey(I64 ch=0,I64 sc=0);
 extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,907] Print()
 public extern Bool Silent(Bool val=ON);
 extern U8 *StrPrintHex(U8 *dst,I64 num;I64 width);
-
 #help_index "Char;Debugging/Raw Output;TextBase Layer/Char"
 public extern CTextGlbls text;
 
