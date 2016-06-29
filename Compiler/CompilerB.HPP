@@ -7,6 +7,9 @@ public extern I64 ExePrint2(U8 *fmt,...);
 public extern I64 ExePutS(U8 *buf,U8 *filename=NULL,I64 ccf_flags=0,
 	CLexHashTableContext *htc=NULL);
 public extern I64 ExePutS2(U8 *buf,U8 *filename=NULL,I64 ccf_flags=0);
+public _extern _LAST_FUN I64 LastFun(I64 argc,I64 *argv);
+public extern I64 RunFile(U8 *name,I64 ccf_flags=0,...);
+public extern I64 RunFile2(U8 *name,I64 ccf_flags=0,...);
 public extern CCmpGlbls cmp;
 
 #help_index "Compiler/Directive"
@@ -68,6 +71,7 @@ public extern U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,
 	I64 *_jmp_dst=NULL,Bool just_ins=FALSE);
 public extern I64 Un(U8 *ip,I64 cnt=0x80,I64 seg_size=64);
 extern CUAsmGlbls uasm;
+
 #help_index "Hash/System"
 public extern I64 HashEntrySize(CHashSrcSym *temph);
 public extern I64 HashEntrySize2(CHashSrcSym *temph);

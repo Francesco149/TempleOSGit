@@ -71,18 +71,18 @@ find to a different string and achieve a AND search.  When finished, press <ES
 C>.
  
 * You can recompile and reinstall the kernel with
-[C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  
-You'll probably want to make a function for recompiling that uses the
-[C:/Kernel/SrvCmd.CPP.Z,483] Auto() 
-function to answer the cfg questions.  See my technique
+[C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().  You'll 
+probably want to make a function for recompiling that uses the
+[C:/Kernel/SrvCmd.CPP.Z,483] Auto() function 
+to answer the cfg questions.  See my technique
 [C:/Demo/AcctExample/TOSCfg.CPP,1] Cfg Strs,
 [C:/Demo/AcctExample/TOSDistro.CPP,1] Update Funs.
 
 * [C:/Kernel/Mem/MemPhysical.CPP.Z,182]
 Scale2Mem(min,max,limit=2*1024*1024*1024) can be used for cfg questions when 
-recompiling.  The [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall()
-cfg prompts accept expressions, not 
-just numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
+recompiling.  The [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns() cfg
+prompts accept expressions, not just 
+numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
 
 * You can permanently disable AutoComplete commenting-out
 [D:/Home/HomeSys.CPP,1] ACInit() in 
@@ -273,8 +273,8 @@ of tree indentations.
 WallPaper() to learn how the system 
 resources are put together.
 
-* The editor's select-text mechanism allows for disjoint portions of selected 
-text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
+* The editor's sel-text mechanism allows for disjoint portions of sel text.  
+This is a feature, not a bug -- you can cut-and-paste disjoint text.
 
 * [C:/Kernel/KernelA.HPP.Z,537] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
@@ -298,7 +298,7 @@ _CFG_HEAP_DBG.  You're on your own.
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,330] Type() to display .BMP or
 .GRA files.
 
-* Use [C:/Kernel/FunSeg.CPP.Z,316] Man() to jump to short sym name src code.
+* Use [C:/Kernel/FunSeg.CPP.Z,324] Man() to jump to short sym name src code.
 
 * Use [C:/Kernel/EdLite.CPP.Z,337] Fix() to edit and fix the last compiler
 err.

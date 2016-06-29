@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.CPP.Z,634] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,645] U(). [C:/Compiler/UAsm.CPP.Z,645]
-U([C:/Kernel/KernelA.HPP.Z,3428] _RIP); 
+U([C:/Kernel/KernelA.HPP.Z,3429] _RIP); 
 
 * [C:/Compiler/UAsm.CPP.Z,645] U(&FunName+offset) to unassemble mem or
 [C:/Adam/ADbg.CPP.Z,254] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.CPP.Z,645] U([C:/Kernel/KernelA.HPP.Z,3428]
+function. [C:/Compiler/UAsm.CPP.Z,645] U([C:/Kernel/KernelA.HPP.Z,3429]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -26,7 +26,7 @@ They're just global int vars.
 
 * You can use [C:/Kernel/SrvCmd.CPP.Z,424] AdamLog() to send text to the Adam
 task window.  It works like 
-[C:/Kernel/StrPrint.CPP.Z,907] Print().  I never use that.  Instead, I use
+[C:/Kernel/StrPrint.CPP.Z,888] Print().  I never use that.  Instead, I use
 [C:/Kernel/KDbg.CPP.Z,217] RawPrint().
 
 * [C:/Kernel/KDbg.CPP.Z,172] D(), [C:/Adam/DolDoc/DocPutS.CPP.Z,335] DocD(),
@@ -72,13 +72,13 @@ to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
 there 
 are compiler bugs.  Often, you place them in #exe{} blocks.
   
-[C:/Compiler/CMisc.CPP.Z,24] Echo() turns on or off raw data going into the
+[C:/Compiler/CMisc.CPP.Z,63] Echo() turns on or off raw data going into the
   lexical analyzer.
 
-[C:/Compiler/CMisc.CPP.Z,19] Trace() unassembles code generated from the
+[C:/Compiler/CMisc.CPP.Z,58] Trace() unassembles code generated from the
   HolyC compiler.
 
-[C:/Compiler/CMisc.CPP.Z,11] PassTrace() shows intermediate code coming-out
+[C:/Compiler/CMisc.CPP.Z,50] PassTrace() shows intermediate code coming-out
   after optimization.  The bits 
 ctrl which passes are displayed.
 
@@ -100,12 +100,13 @@ window mgr when it queues kbd msgs.  You can do [C:/Kernel/KMisc.CPP.Z,238]
 Raw() output.  <CTRL-ALT-lette
 r> handlers take a scan_code as an arg.
 
-* If you recompile Kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
-MakeOSDrvBootInstall(), you can set the MemInit
-, option to initialize memory to a value at boot, the HeapInit option to
-cause 
-mem alloced off the heap to be initialized or VarInit option so both global 
-and local vars will be initialized to a value.  Pick a non-zero value to 
-discover uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,184]
+* If you recompile Kernel with [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18]
+BootHDIns(), you can set the MemInit, option to 
+initialize memory to a value at boot, the HeapInit option to cause mem
+alloced 
+off the heap to be initialized or VarInit option so both global and local
+vars 
+will be initialized to a value.  Pick a non-zero value to discover 
+uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,184]
 sys_var_init_flag, and 
 [C:/Kernel/KernelB.HPP.Z,180] sys_heap_init_flag directly after booting.

@@ -70,6 +70,7 @@ extern I64 PopUpFile(U8 *filename,
 	Bool warn_ext=TRUE,CTask *parent=NULL,CTask **_pu_task=NULL);
 extern Bool PopUpForm(U8 *_d,U8 *class_name=lastclass,
 	I64 dof_flags=DOF_MIN_SIZE,U8 *header=NULL,U8 *footer=NULL);
+extern I64 PopUpGetI64(U8 *msg,I64 dft,I64 lo=MIN_I64,I64 hi=MAX_I64);
 extern U8 *PopUpGetStr(U8 *header=NULL);
 extern I64 PopUpMenu(CDoc *doc,I64 dof_flags=0);
 extern Bool PopUpNoYes(U8 *header=NULL,U8 *footer=NULL);

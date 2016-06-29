@@ -9,8 +9,8 @@ only use it in a virtual machine because it won't boot natively on my
 machine, 
 though.  For native dual booting, you need a partition for TempleOS.  Windows 
 often comes with a restore disk that does not allow repartitioning.  I 
-recommend connecting a spare additional hard drive and using the BIOS to 
-select which drive to boot.
+recommend connecting a spare additional hard drive and using the BIOS to sel 
+which drive to boot.
 
 The [C:/Misc/OSInstall.CPP.Z,1] script will automate much of this.  It runs
 if you 
@@ -26,9 +26,10 @@ gigabytes for your TempleOS partitions.
 
 1)
   [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount() use if the drive is partitioned.
-    This command mounts a drive making it accessible.  For simplicity, select 
-'C' as the first drive letter for your hard drive.  The first partition 
-will be 'C', second, 'D', etc.  TempleOS needs 3 numbers to utilize a hard 
+    This command mounts a drive making it accessible.  For simplicity, sel
+    'C' 
+as the first drive letter for your hard drive.  The first partition will 
+be 'C', second, 'D', etc.  TempleOS needs 3 numbers to utilize a hard 
 drive -- base0, base1, and unit.  When you enter a hexadecimal number, do 
 it like in C with a 0x prefix.  If the probe was successful, you can just 
 enter the number in the probe box instead of base0.
@@ -45,9 +46,9 @@ if you already have your hard drive partitioned.
 
 
 **WARNING:**  This command doesn't play well with other operating systems.  
-You'll need to do a [C:/Adam/Opt/Boot/BootIns.CPP.Z,132] MasterBootZero() to
-    restore your drive to a state 
-where other operating systems can partition it.
+You'll need to do a [C:/Adam/Opt/Boot/BootMHDIns.CPP.Z,52] BootMHDZero() to
+    restore your drive to a state where 
+other operating systems can partition it.
   
 2) [C:/Kernel/BlkDev/DskFmt.CPP.Z,53] Fmt('D',TRUE,FALSE,FSt_FAT32)
   This command formats a drive with FAT32 or the [C:/Doc/RedSea.TXT.Z,1]
@@ -62,7 +63,7 @@ Boot/OldMBR.BIN.C.
   This command is used to copy files onto a hard drive partition from the 
 CD/DVD.  Use the drive letter of the partition in place of 'D'.
 
-4) [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall('D')
+4) [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns('D')
   This command recompiles the source code on a drive and writes to the
   _drive's_ 
 boot record.  You'll need to reenter the [C:/Adam/ABlkDev/Mount.CPP.Z,114]
@@ -70,15 +71,14 @@ boot record.  You'll need to reenter the [C:/Adam/ABlkDev/Mount.CPP.Z,114]
 stored in the kernel.
 
 5) Use Linux's [C:/Doc/Grub.TXT.Z,1] Grub or TempleOS'
-[C:/Adam/Opt/Boot/BootIns.CPP.Z,149] MasterBootInstall('D')
+[C:/Adam/Opt/Boot/BootMHDIns.CPP.Z,69] BootMHDIns('D')
   
-The [C:/Adam/Opt/Boot/BootIns.CPP.Z,149] MasterBootInstall() command places a
-  boot loader on a drive.  It saves 
-the old master boot record to /0000Adam/Opt/Boot/OldMBR.BIN.C and replaces 
-it.  When you boot, you will have the option of booting the old master boot 
-record.  This command can be skipped if you already have a boot loader.  Be 
-sure not to lose the copy of the old boot record, like if you reformat the 
-drive.
+The [C:/Adam/Opt/Boot/BootMHDIns.CPP.Z,69] BootMHDIns() command places a boot
+  loader on a drive.  It saves the old 
+master boot record to /0000Adam/Opt/Boot/OldMBR.BIN.C and replaces it.  When 
+you boot, you will have the option of booting the old master boot record.  
+This command can be skipped if you already have a boot loader.  Be sure not 
+to lose the copy of the old boot record, like if you reformat the drive.
 
 Delete /0000Adam/Opt/Boot/OldMBR.BIN.C if you want to get a fresh copy of a 
 mbr, like if installing from your own custom CD containing it's own /0000Ada

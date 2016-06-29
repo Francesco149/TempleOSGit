@@ -66,7 +66,7 @@ Ident	Identifier, Identity, Identical
 IDT	Interrupt Descriptor Table
 Idx	Index
 Init	Initialize
-Ins	Insert
+Ins	Insert, Install
 Inst	Instruction
 Int	Interrupt, Integer
 ip_	Input Pointer.  See [C:/Kernel/SerialDev/InputPointer.CPP.Z,1]
@@ -116,6 +116,7 @@ Reg	Register, Registry, Regular
 Rem	Remove
 Rep	Report, Repeat
 Res	Result
+Rev	Reverse, Reversed
 Rqst	Request
 Rst	Reset
 Rot	Rotation
@@ -123,6 +124,7 @@ Rx	Receive
 Sched	Sceduler
 Sec	Second, Secondary
 Sect	Sector
+Sel	Select, Selected
 Seq	Sequence
 Snd	Sound
 SP	SingleProcessor
@@ -206,8 +208,8 @@ There is no main() routine.  Instead, stmts outside functions are
   automatically executed upon loading.  There is no way to unload except by
   killing the task.  To invoke AOT Compiled Mode, [C:/Compiler/CMain.CPP.Z,419]
   Cmp() is used.  The Kernel module and compiler are made in AOT compiled mode.
-   See [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall()  which calls
-  [C:/Adam/Opt/Boot/BootIns.CPP.Z,13] MakeAll() where Kernel.BIN.C and
+   See [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns()  which calls
+  [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,10] MakeAll() where Kernel.BIN.C and
   Compiler.BIN.Z are created.
 +] JIT Compile Mode
   In just-in-time mode, the compiler places code and data in memory alloced
@@ -220,11 +222,11 @@ There is no main() routine.  Instead, stmts outside functions are
   will compile and run a string.
 +] Compiler Intermediate Code
   The compiler generates insts one step before making actual assembly
-  (machine) language insts.  This code is reverse polish stack machine in
-  nature and can be viewed with [C:/Compiler/CMisc.CPP.Z,11] PassTrace().  The
+  (machine) language insts.  This code is rev polish stack machine in nature
+  and can be viewed with [C:/Compiler/CMisc.CPP.Z,50] PassTrace().  The
   compiler does not interpret code, except in the process of optimization to
   make the final machine code.  Assembly language output can be viewed when
-  code is compiled with the [C:/Compiler/CMisc.CPP.Z,19] Trace(), or,
+  code is compiled with the [C:/Compiler/CMisc.CPP.Z,58] Trace(), or,
   afterward, with [C:/Compiler/UAsm.CPP.Z,645] U() or [C:/Adam/ADbg.CPP.Z,254]
   Uf("").
 +] Drive/Partition
@@ -325,7 +327,7 @@ res is reserved for local variables that hold the function return val.
   [C:/Kernel/KernelA.HPP.Z,3318] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3442] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3443] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  They must

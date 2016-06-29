@@ -24,11 +24,11 @@ U0 SysGlblsInit()
   }
 
   InDbg(ON);
-  reverse_bits_table	=CAlloc(256);
+  rev_bits_table	=CAlloc(256);
   set_bits_table	=CAlloc(256);
   for (i=0;i<256;i++)
     for (j=0;j<8;j++) {
-      if (Bt(&i,7-j))	LBts(reverse_bits_table+i,j);
+      if (Bt(&i,7-j))	LBts(rev_bits_table+i,j);
       if (Bt(&i,j))	set_bits_table[i]++;
     }
 

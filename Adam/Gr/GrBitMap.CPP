@@ -1965,7 +1965,7 @@ public I64 GrVLine(CDC *dc=gr.dc,I64 x,I64 y1,I64 y2,I64 z1=0,I64 z2=0)
     d+=dc->width_internal;
     y1++;
     if (db)
-      db++;
+      db+=dc->width_internal;
     z+=dz;
     if (!(y1&(FONT_HEIGHT-1)) && y1<=y2) {
       if (!(dc->flags & DCF_SCREEN_BITMAP)||

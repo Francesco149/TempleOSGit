@@ -159,7 +159,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/DbgDemo.CPP,1]
   [C:/Demo/SubSwitch.CPP,1]
   [C:/Demo/DateTime.CPP,1]
-  [C:/Demo/ReverseFileDemo/Reverse.CPP,1]
+  [C:/Demo/RevFileDemo/Rev.CPP,1]
   [C:/Demo/ToHtmlToTXTDemo/HtmlGen.CPP,1]
   [C:/Demo/ToHtmlToTXTDemo/TXTGen.CPP,1]
   [C:/Demo/SortFileDemo/F64FileGen.CPP,1]

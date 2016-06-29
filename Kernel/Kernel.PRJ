@@ -1,5 +1,5 @@
-//Compile this by calling [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
-//Don't do it directly.  See [C:/Adam/Opt/Boot/BootIns.CPP.Z,1] Cmp("/Kernel/Kernel").
+//Compile this by calling [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().
+//Don't do it directly.  See [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,1] Cmp("/Kernel/Kernel").
 
 #exe {
   Cd(__DIR__);;

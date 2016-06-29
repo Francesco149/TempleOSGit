@@ -10,7 +10,7 @@ Put an extra semicolon #exe {Cd("DirName");;} in case a #include follows.
 
 #include "" 	There is no angle bracket <> form of this directive.
 #exe {}		Will execute code at compile-time and can be used to insert 
-code into the stream being compiled using [C:/Compiler/CMisc.CPP.Z,29]
+code into the stream being compiled using [C:/Compiler/CMisc.CPP.Z,68]
 StreamPrint().
 #define		Define string const
 #assert		Print a warning during compilation if an expression is not 

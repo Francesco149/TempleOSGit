@@ -7,7 +7,7 @@ public extern CAutoCompleteDictGlbls acd;
 
 #help_index "Bit"
 public extern I64 BCnt(I64 d);
-public extern U8 *reverse_bits_table,*set_bits_table;
+public extern U8 *rev_bits_table,*set_bits_table;
 
 #help_index "Boot"
 #help_file "::/Doc/Boot"
@@ -101,7 +101,7 @@ public extern U0 PrintWarn(U8 *fmt,...);
 public extern U0 PutChars(U64 ch);
 extern U0 PutHex(I64 num,I64 width);
 public extern U0 PutKey(I64 ch=0,I64 sc=0);
-extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,907] Print()
+extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,888] Print()
 public extern Bool Silent(Bool val=ON);
 extern U8 *StrPrintHex(U8 *dst,I64 num;I64 width);
 
@@ -483,7 +483,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3784] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3785] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -669,21 +669,21 @@ public extern U0 WinDerivedValsUpdate(CTask *task=NULL);
 #help_file "::/Doc/TaskSrv"
 
 #help_index "Task/Srv/Exe"
-public extern I64 Adam(U8 *fmt,...);
 public extern U0 AdamErr(U8 *fmt,...);
 public extern U0 AdamLog(U8 *fmt,...);
-public extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);
-public extern I64 PopUpPrint(U8 *fmt,...);
+public extern I64 ExeCmdLine(CCmpCtrl *cc);
 public extern U0 SrvCmdDel(CSrvCmd *tempc);
 extern U0 SrvCmdLine();
 public extern I64 SrvCmdsHandler(I64 run_flags,CTask *task=NULL);
 public extern U0 SrvTaskCont();
 public extern CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags);
 public extern U0 TaskRstAwaitingMsg(CTask *task=NULL);
+public extern U0 UserTaskCont();
 
 #help_index "Task/Srv/Exe;Compiler"
-public extern I64 ExeCmdLine(CCmpCtrl *cc);
-public extern U0 UserTaskCont();
+public extern I64 Adam(U8 *fmt,...);
+public extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);
+public extern I64 PopUpPrint(U8 *fmt,...);
 
 #help_index "Task/Srv/Exe;MultiCore"
 public extern I64 JobResGet(CSrvCmd *rqst=NULL);
@@ -746,6 +746,7 @@ public extern I64 SysTimerRead();//18.33333*65536Hz (SYS_TIMER_FREQ)
 #help_index "Time/Seconds"
 public extern Bool Blink(F64 Hz=2.5);
 public extern F64 tS(); //From SysTimerFreq.
+
 #help_index "Windows"
 public extern Bool WinInside(I64 x,I64 y,CTask *task=NULL,Bool border=FALSE);
 

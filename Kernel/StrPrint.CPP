@@ -1,16 +1,3 @@
-#define SPF_PAD_ZERO		0x001
-#define SPF_LEFT_JUSTIFY	0x002
-#define SPF_TRUNCATE		0x004
-#define SPF_COMMA		0x008
-#define SPF_DOLLAR		0x010
-#define SPF_SLASH		0x020
-#define SPF_QUESTION		0x040
-#define SPF_AUX_FMT_NUM		0x080
-#define SPF_DECIMAL		0x100
-#define SPF_NEG			0x200
-#define SPF_NEG_E		0x400
-#define SPF_NEG_AUX_FMT_NUM	0x800
-
 U0 SPutChar(U8 **_dst,U8 ch,U8 **_buf)
 {
   I64 i;
@@ -425,19 +412,13 @@ to avoid this.
 	case 'p':
 	  if (cur_arg>=argc)
 	    throw('StrPrint');
-	  if (flags&SPF_TRUNCATE)
-	    StrPrintFunSeg(temp_buf,argv[cur_arg++],len);
-	  else
-	    StrPrintFunSeg(temp_buf,argv[cur_arg++],0);
+	  StrPrintFunSeg(temp_buf,argv[cur_arg++],len,flags);
 	  OutStr(temp_buf,_buf,_dst,len,flags);
 	  break;
 	case 'P':
 	  if (cur_arg>=argc)
 	    throw('StrPrint');
-	  if (flags&SPF_TRUNCATE)
-	    StrPrintFunSeg(temp_buf,argv[cur_arg],len);
-	  else
-	    StrPrintFunSeg(temp_buf,argv[cur_arg],0);
+	  StrPrintFunSeg(temp_buf,argv[cur_arg],len,flags);
 	  if (!IsRaw || !_buf) {
 	    StrPrint(temp_buf2,"$LK,\"%s\",A=\"AD:0x%X\"$",
 		  temp_buf,argv[cur_arg]);
@@ -891,12 +872,12 @@ sp_out_eng: //Engineering notation
 }
 
 U8 *StrPrint(U8 *dst,U8 *fmt,...)
-{//See [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin().
+{//See [C:/Kernel/StrPrint.CPP.Z,206] StrPrintJoin().
   return StrPrintJoin(dst,fmt,argc,argv);
 }
 
 U8 *CatPrint(U8 *_dst,U8 *fmt,...)
-{//StrCat().  See [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin().
+{//StrCat().  See [C:/Kernel/StrPrint.CPP.Z,206] StrPrintJoin().
   U8 *dst=_dst;
   while (*dst)
     dst++;
@@ -905,7 +886,7 @@ U8 *CatPrint(U8 *_dst,U8 *fmt,...)
 }
 
 U0 Print(U8 *fmt,...)
-{//[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.  See [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin().
+{//[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.  See [C:/Kernel/StrPrint.CPP.Z,206] StrPrintJoin().
 //Don't use this.  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   PutS(buf);//Don't use PutS().  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
@@ -913,7 +894,7 @@ U0 Print(U8 *fmt,...)
 }
 
 U8 *MStrPrint(U8 *fmt,...)
-{//MAlloc StrPrint.  See [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin().
+{//MAlloc StrPrint.  See [C:/Kernel/StrPrint.CPP.Z,206] StrPrintJoin().
   U8 *res,*buf=StrPrintJoin(NULL,fmt,argc,argv);
   res=StrNew(buf);
   Free(buf);

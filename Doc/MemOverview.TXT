@@ -23,13 +23,13 @@ Memory alloced by a task will be freed when the task is killed.
 
 Eventually, memory will become fragmented, requiring a reboot.
 
-See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
+See [C:/Adam/Opt/Utils/MemRep.CPP.Z,192] MemRep() and [C:/Demo/MemDemo.CPP,1].
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003596F
+ 0x0000007C00- 0x00000359DF
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3882] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3883] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -46,11 +46,11 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
   VGA graphics mem, marked as write-through cache in
   [C:/Kernel/KGlbls.CPP.Z,29] text.vga_alias.
 
- 0x0000100000- 0x00001835FF
-  [C:/Kernel/KernelA.HPP.Z,3469] CSysFixedArea for page tables and misc.  128
+ 0x0000100000- 0x00001837FF
+  [C:/Kernel/KernelA.HPP.Z,3470] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
- 0x0000183600- 0x007FFDFFFF
+ 0x0000183800- 0x007FFDFFFF
   Code Heap mem.
 
              - 0x007FFFFFFF

@@ -81,7 +81,7 @@ U0 DrvFATBlkAlloc(CDrv *dv)
   RBlks(dv,dv->cur_fat_blk,dv->fat1,1);
 }
 
-U0 DrvFATBlkClean(CDrv *dv,I64 fat_select=3)
+U0 DrvFATBlkClean(CDrv *dv,I64 fat_sel=3)
 {
   if ((dv->fs_type==FSt_FAT32 || dv->fs_type==FSt_REDSEA) &&
        Bt(&dv->fat_blk_dirty,0)) {
@@ -89,9 +89,9 @@ U0 DrvFATBlkClean(CDrv *dv,I64 fat_select=3)
       WBlks(dv,dv->cur_fat_blk,dv->fat1+dv->cur_fat_blk_num,1);
       LBtr(&dv->fat_blk_dirty,0);
     } else {
-      if (fat_select==3 || !fat_select)
+      if (fat_sel==3 || !fat_sel)
 	WBlks(dv,dv->cur_fat_blk,dv->fat1+dv->cur_fat_blk_num,1);
-      if (fat_select==3 || fat_select==1) {
+      if (fat_sel==3 || fat_sel==1) {
 	WBlks(dv,dv->cur_fat_blk,dv->fat2+dv->cur_fat_blk_num,1);
 	LBtr(&dv->fat_blk_dirty,0);
       }
@@ -99,7 +99,7 @@ U0 DrvFATBlkClean(CDrv *dv,I64 fat_select=3)
   }
 }
 
-U0 DrvFATBlkSet(CDrv *dv,I64 c,I64 fat_select=3)
+U0 DrvFATBlkSet(CDrv *dv,I64 c,I64 fat_sel=3)
 {
   I64 fat_blk_num;
   if (c==INVALID_CLUSTER)
@@ -115,9 +115,9 @@ U0 DrvFATBlkSet(CDrv *dv,I64 c,I64 fat_select=3)
       throw('Drv');
   }
   if (fat_blk_num!=dv->cur_fat_blk_num) {
-    DrvFATBlkClean(dv,fat_select);
+    DrvFATBlkClean(dv,fat_sel);
     dv->cur_fat_blk_num=fat_blk_num;
-    if (fat_select==3 || !fat_select)
+    if (fat_sel==3 || !fat_sel)
       RBlks(dv,dv->cur_fat_blk,dv->fat1+dv->cur_fat_blk_num,1);
     else
       RBlks(dv,dv->cur_fat_blk,dv->fat2+dv->cur_fat_blk_num,1);

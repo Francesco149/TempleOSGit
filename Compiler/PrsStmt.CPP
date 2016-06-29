@@ -104,9 +104,9 @@ CHashFun *PrsFunJoin(CCmpCtrl *cc,
     tempf->clobbered_reg_mask=REGG_CLOBBERED+REGG_STK_TEMP;
     tempf->str=name;
     if (cc->flags&CCF_AOT_COMPILE)
-      tempf->executable_addr=aotc->ip;
+      tempf->exe_addr=aotc->ip;
     else
-      tempf->executable_addr=&UndefinedExtern;
+      tempf->exe_addr=&UndefinedExtern;
     LBts(&tempf->flags,Cf_EXTERN);
     tempf->flags|=fsp_flags&FSG_FUN_FLAGS1;
     if (name) //if not fun_ptr
@@ -161,7 +161,7 @@ U0 PrsFun(CCmpCtrl *cc,CHashClass *temp_return,U8 *name,I64 fsp_flags)
   ICAdd(cc,IC_LEAVE,0,cc->htc.fun->return_class);
   cc->htc.fun->size&=~7;
   if (cc->flags&CCF_AOT_COMPILE) {
-    cc->htc.fun->executable_addr=cc->aotc->ip;
+    cc->htc.fun->exe_addr=cc->aotc->ip;
     cc->htc.fun->type|=HTF_EXPORT|HTF_RESOLVE;
     r=COCCompile(cc,&size,&cc->htc.fun->dbg_info,NULL);
     if (r) {
@@ -172,11 +172,11 @@ U0 PrsFun(CCmpCtrl *cc,CHashClass *temp_return,U8 *name,I64 fsp_flags)
     }
   } else {
     old_trace=Btr(&cc->opts,OPTf_TRACE);
-    cc->htc.fun->executable_addr=COCCompile(
+    cc->htc.fun->exe_addr=COCCompile(
 	  cc,&size,&cc->htc.fun->dbg_info,NULL);
     if (old_trace) {
       Bts(&cc->opts,OPTf_TRACE);
-      Un(cc->htc.fun->executable_addr,size,64);
+      Un(cc->htc.fun->exe_addr,size,64);
     }
     SysSymImportsResolve(cc->htc.fun->str);
   }
@@ -235,13 +235,13 @@ U0 PrsGlblVarLst(CCmpCtrl *cc,I64 saved_mode,CHashClass *saved_tempc,
       switch (mode&255) {
 	case PRS0__INTERN:
 	  tempf=PrsFunJoin(cc,tempc,st,fsp_flags);
-	  tempf->executable_addr=val;
+	  tempf->exe_addr=val;
 	  Bts(&tempf->flags,Ff_INTERNAL);
 	  LBtr(&tempf->flags,Cf_EXTERN);
 	  return;
 	case PRS0__EXTERN:
 	  tempf=PrsFunJoin(cc,tempc,st,fsp_flags);
-	  tempf->executable_addr=val;
+	  tempf->exe_addr=val;
 	  SysSymImportsResolve(tempf->str);
 	  LBtr(&tempf->flags,Cf_EXTERN);
 	  if (saved_mode&255==PRS0__EXTERN)
@@ -859,9 +859,9 @@ U0 PrsTryBlk(CCmpCtrl *cc,I64 try_cnt)
     if (cc->flags&CCF_AOT_COMPILE)
       ICAdd(cc,IC_CALL_IMPORT,temp_try,tempc);
     else
-      ICAdd(cc,IC_CALL_INDIRECT2,&temp_try->executable_addr,tempc);
+      ICAdd(cc,IC_CALL_INDIRECT2,&temp_try->exe_addr,tempc);
   } else
-    ICAdd(cc,IC_CALL,temp_try->executable_addr,tempc);
+    ICAdd(cc,IC_CALL,temp_try->exe_addr,tempc);
   if ((Bt(&temp_try->flags,Ff_RET1) ||
 	Bt(&temp_try->flags,Ff_ARGPOP)) && !Bt(&temp_try->flags,Ff_NOARGPOP))
     ICAdd(cc,IC_ADD_RSP1,16,tempc);
@@ -879,9 +879,9 @@ U0 PrsTryBlk(CCmpCtrl *cc,I64 try_cnt)
     if (cc->flags&CCF_AOT_COMPILE)
       ICAdd(cc,IC_CALL_IMPORT,temp_untry,tempc);
     else
-      ICAdd(cc,IC_CALL_INDIRECT2,&temp_untry->executable_addr,tempc);
+      ICAdd(cc,IC_CALL_INDIRECT2,&temp_untry->exe_addr,tempc);
   } else
-    ICAdd(cc,IC_CALL,temp_untry->executable_addr,tempc);
+    ICAdd(cc,IC_CALL,temp_untry->exe_addr,tempc);
   ICAdd(cc,IC_CALL_END,0,tempc);
   ICAdd(cc,IC_END_EXP,0,0,ICF_RES_NOT_USED);
 
@@ -1095,10 +1095,10 @@ sm_import:
 				temp_untry,cmp.internal_types[RT_PTR]);
 			else
 			  ICAdd(cc,IC_CALL_INDIRECT2,
-				&temp_untry->executable_addr,
+				&temp_untry->exe_addr,
 				cmp.internal_types[RT_PTR]);
 		      } else
-			ICAdd(cc,IC_CALL,temp_untry->executable_addr,
+			ICAdd(cc,IC_CALL,temp_untry->exe_addr,
 			      cmp.internal_types[RT_PTR]);
 		    }
 		  }

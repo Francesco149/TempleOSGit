@@ -6,7 +6,7 @@ passed to routines.
 See [C:/Demo/Graphics/SpritePlot.CPP,1],
 [C:/Demo/Graphics/SpritePlot3D.CPP,1], 
 [C:/Demo/Graphics/SpritePut.CPP,1], [C:/Demo/Graphics/SpriteRaw.CPP,1] and 
-[C:/Adam/Gr/SpriteMesh.CPP.Z,878] SpriteMeshEd().
+[C:/Adam/Gr/SpriteMesh.CPP.Z,957] SpriteMeshEd().
 
 Be aware that copying SP, IB, or IS entries with the clipboard ress in 
 duplicate entries with different nums.  You can manually remove dups by 

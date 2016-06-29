@@ -1,13 +1,13 @@
                                  File Manager
 
 <SHIFT CURSOR>
-  Select files.
+  Sel files.
 
 <CTRL-y> or <DELETE>
   Delete file or tree.
 
 <CTRL-c> or <CTRL-INS>
-  Copy selected files to clipboard.
+  Copy sel files to clipboard.
 
 <CTRL-v> or <SHIFT-INS>
   Paste clipboard.

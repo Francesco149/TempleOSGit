@@ -17,7 +17,7 @@ Cd("::/Apps");Dir;
 `
 
 
-MakeAll with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+MakeAll with [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().
 Cd("::/Kernel");Dir;
 
 `Cd("::/Kernel");Dir;
@@ -41,8 +41,8 @@ Key Map
 `KeyMap;View;
 `
 
-RAMReboot("/Kernel.BIN.C");
-`RAMReboot("/Kernel.BIN.C");`
+BootRAM("/Kernel.BIN.C");
+`BootRAM("/Kernel.BIN.C");`
 
 
 MemRep

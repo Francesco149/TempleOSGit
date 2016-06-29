@@ -2,9 +2,31 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----06/20/16 07:14:22----
+----06/28/16 13:15:08----
+* Changed [C:/Adam/TaskRep.CPP.Z,21] TaskRep() and
+[C:/Adam/Opt/Utils/MemRep.CPP.Z,192] MemRep().
+* Changed [C:/Adam/WallPaper.CPP.Z,1].
+
+----06/26/16 14:01:16----
+* Added [C:/Compiler/CMisc.CPP.Z,48] LastFun(), [C:/Compiler/CMain.CPP.Z,625]
+RunFile(), [C:/Compiler/CMain.CPP.Z,667] RunFile2() and
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,310] PopUpRunFile().
+* Made boot code modular.
+
+----06/24/16 14:15:13----
+* Added A.I. to [C:/Apps/KeepAway/KeepAway.CPP,1] and changed scoring.
+
+----06/24/16 02:55:42----
+* **TempleOS version 4.08 Released**
+* Added Polygon, Fence, Prism and ResetColor commands to
+[C:/Adam/Gr/SpriteMesh.CPP.Z,957] SpriteMeshEd().
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Reverse","Rev");
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Select","Sel");
+
+----06/23/16 01:03:36----
+* Added [C:/Adam/Gr/GrPrimatives.CPP.Z,390] GrFillCircle().
 * Added [C:/Adam/Gr/GrBitMap.CPP.Z,1812] GrVLine() and
-[C:/Adam/Gr/GrPrimatives.CPP.Z,522] GrLineFat3().
+[C:/Adam/Gr/GrPrimatives.CPP.Z,650] GrLineFat3().
 
 ----06/18/16 16:16:22----
 * Modified [C:/Kernel/KeyDev.CPP.Z,70] KeyDevAdd().
@@ -148,7 +170,7 @@ automatically from the compiler's class information.
 [C:/Kernel/KernelA.HPP.Z,1793] REGG_STK_TEMP.
 
 ----03/18/16 09:53:33----
-* Made [C:/Adam/Gr/SpriteEd.CPP.Z,1079] SpriteEd() select foreground elem.
+* Made [C:/Adam/Gr/SpriteEd.CPP.Z,1079] SpriteEd() sel foreground elem.
 
 ----03/14/16 05:57:27----
 * **TempleOS version 4.04 Released**
@@ -226,7 +248,7 @@ automatically from the compiler's class information.
 * Added [C:/Demo/ToHtmlToTXTDemo/HtmlGen.CPP,1] and 
 [C:/Demo/ToHtmlToTXTDemo/TXTGen.CPP,1].
 * Now, [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() doesn't save with
-[C:/Kernel/KernelA.HPP.Z,3509] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3510] CH_CURSOR.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
 * Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to
@@ -273,8 +295,7 @@ R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS");
 * **TempleOS version 4.01 Released**
 * Standardized drive letters.  Your [C:/Kernel/SrvCmd.CPP.Z,483] Auto()
 config scripts for compiling the 
-kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() must
-be changed.
+kernel with [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns() must be changed.
 * Added [C:/Kernel/KernelA.HPP.Z,2130] CCF_QUESTION_HELP.
 
 ----01/11/16 00:04:38----
@@ -295,198 +316,3 @@ be changed.
 * Added null case option.  Next higher int with "case:" in switch stmts.  See
  
 [C:/Demo/NullCase.CPP,1].
-
-----12/31/15 00:44:44----
-* Made [C:/Compiler/OpCodes.TXT.Z,1] ASM_KEYWORDs usable in HolyC outside
-asm{} blocks.
-
-----12/26/15 19:39:31----
-* Added entry_lines to [C:/Adam/Opt/Utils/StrUtils.CPP.Z,8] Sort().
-
-----12/14/15 14:51:57----
-* Fixed missing compiler warning with dereferencing zero star array classes.
-* Changed Linear congruential generator, [C:/Kernel/KMathB.CPP.Z,122] Rand()
-from 32-bit to 64-bit.
-
-----11/22/15 21:02:38----
-* Improved [C:/Adam/God/HSNotes.TXT.Z,1].
-
-----11/03/15 22:40:18----
-* Added CTRL-ALT-f to toggle an aux font.
-* CTRL-ALT-v is now flush VGA cache.
-* Added [C:/Adam/God/GodBible.CPP.Z,279] BibleDoc to present Bible with tree
-widgets.
-* Fixed CTRL-ALT-C bug.
-
-----11/01/15 21:44:46----
-* **TempleOS version 3.12 Released**
-* Created /Kernel/Mem directory.
-
-----10/08/15 10:17:55----
-* [C:/Home/HomeWrappers.CPP.Z,13] R("BSP","Core0");
-
-----10/06/15 06:30:49----
-* Added [C:/Kernel/Sched.CPP.Z,38] TaskFocusNext().
-
-----09/27/15 11:46:44----
-* Got rid of preemption.
-
-----09/23/15 14:17:35----
-* No arrays in fun args.
-* Got rid of 4x4 array dimensions in function args.
-
-----09/05/15 11:26:12----
-* Gave [C:/Kernel/KernelA.HPP.Z,286] I_DIV_ZERO its own vector instead of
-common fault vector.
-* [C:/Home/HomeWrappers.CPP.Z,13] R("Dsk","BlkDev");
-
-----09/04/15 17:04:39----
-* **TempleOS version 3.11 Released**
-
-----08/28/15 01:50:15----
-*  Added [C:/Adam/God/GodBible.CPP.Z,335] BibleView() and <CTRL-ALT-b>.
-
-----08/25/15 23:29:48----
-* Moved [C:/Adam/Opt/Utils/ToDolDoc.CPP.Z,3] ToDolDoc() to /Adam/Opt/Utils.
-* [C:/Home/HomeWrappers.CPP.Z,13] R("map","fat");
-
-----08/22/15 20:38:15----
-* [C:/Home/HomeWrappers.CPP.Z,13]
-R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,147] DVDImageWrite");
-* [C:/Home/HomeWrappers.CPP.Z,13] R("MakeDistro","DoDistro");
-* [C:/Home/HomeWrappers.CPP.Z,13] R("~/Adam*.CPP","~/Home*.CPP");
-* Created Make*.CPP make dir files.
-* Moved /Adam/Boot and /Adam/Utils to /Adam/Opt.
-
-----08/21/15 19:14:29----
-* **TempleOS version 3.10 Released**
-
-----08/20/15 20:05:08----
-* Fixed bug in [C:/Adam/ABlkDev/FileMgr.CPP.Z,1].
-* Fixed bug in [C:/Demo/Games/TreeCheckers.CPP,1].
-
-----08/18/15 07:28:03----
-* Improved [C:/PersonalMenu.TXT.Z,1].
-* Improved [C:/Demo/Games/BattleLines.CPP,1].
-
-----08/16/15 14:42:01----
-* Improved [C:/Demo/Games/BlackDiamond.CPP,1].
-* Improved [C:/Demo/Games/EagleDive.CPP,1].
-* Improved [C:/Demo/Games/RawHide.CPP,1].
-* Improved [C:/Apps/TimeOut/TimeOut.CPP,1].
-* Improved [C:/Demo/Games/FlapBat.CPP,1].
-* Improved [C:/Demo/Games/Varoom.CPP,1].
-* Improved [C:/Demo/Games/BomberGolf.CPP,1].
-
-----08/09/15 09:47:10----
-* Cleaned-up Ultra distro.
-
-----08/08/15 06:14:09----
-* **TempleOS version 3.09 Released**
-
-----08/06/15 09:28:49----
-* Removed most Moses comics so you can make your own.
-* Removed most hymns so that you can make your own.
-
-----08/05/15 21:39:59----
-* Fixed bug parsing "$GREEN FG$".  It is an error.
-
-----08/05/15 13:49:10----
-* Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,350] SrvCmdsHandler() &&
-[C:/Kernel/KTask.CPP.Z,336] SrvTaskCont().
-
-----08/03/15 18:09:33----
-* Improved [C:/Demo/Games/FlapBat.CPP,1].
-
-----08/02/15 07:19:59----
-* [C:/Home/HomeWrappers.CPP.Z,13] R("BugBird","FlapBat");
-
-----08/02/15 02:51:04----
-* Rearranged [C:/Adam/DolDoc/MakeDoc.CPP.Z,1].
-* Got rid of ext ascii with alt-digits keys.  Just use <CTRL-ALT-a>.
-* Rearranged [C:/Adam/DolDoc/DocPutKey.CPP.Z,3] DocPutKey().
-* Got rid of PressKeyHelp().
-* [C:/Home/HomeWrappers.CPP.Z,13] R("CtrlAltLet","CtrlAlt");
-
-----07/30/15 22:26:22----
-* Fixed bug.  Now, turned-off preemption in [C:/Adam/WinB.CPP.Z,421]
-WinMgrTask().
-* Added [C:/Misc/Tour/Tour1.AUT,1].
-
-----07/30/15 03:38:10----
-* Added ::/Apps/Psalmody/Examples/caesar.CPP
-
-----07/29/15 10:17:29----
-* Improved [C:/Linux/TOSZ.CPP,1].
-* Rearranged AutoComplete and [C:/Adam/Training.CPP.Z,146] KeyMap() code.
-* Added [C:/Kernel/Display.CPP.Z,126] WinInside().
-* Added [C:/Kernel/KernelA.HPP.Z,612] SYS_SEMA_JUST_PUMP_MSGS.
-* Added help for <ALT> & <CTRL> keys.
-* Added [C:/Kernel/KernelA.HPP.Z,1447] WIf_SELF_KEY_DESC.
-
-----07/26/15 06:57:29----
-* Cleaned-up [C:/Compiler/LexLib.CPP.Z,87] MemberClassBaseFind() and
-[C:/Compiler/LexLib.CPP.Z,103] MemberAdd().
-* [C:/Home/HomeWrappers.CPP.Z,13] R("member_lst","member_lst_and_root");
-
-----07/24/15 19:35:12----
-* **TempleOS version 3.08 Released**
-* Fixed [C:/Compiler/UAsm.CPP.Z,1] UAsm bug.
-* [C:/Home/HomeWrappers.CPP.Z,13] R("CTrace","[C:/Compiler/CMisc.CPP.Z,19]
-Trace()");
-* [C:/Home/HomeWrappers.CPP.Z,13] R("OTrace","[C:/Compiler/CMisc.CPP.Z,11]
-PassTrace()");
-* [C:/Home/HomeWrappers.CPP.Z,13]
-R("OTraceMask","[C:/Compiler/CMisc.CPP.Z,11] PassTrace()");
-* [C:/Home/HomeWrappers.CPP.Z,13] R("GetEqu","[C:/Compiler/CMisc.CPP.Z,1]
-Option()");
-* [C:/Home/HomeWrappers.CPP.Z,13] R("GetOpt","[C:/Compiler/CMisc.CPP.Z,6]
-GetOption()");
-* [C:/Home/HomeWrappers.CPP.Z,13] R("OptOn","[C:/Compiler/CMisc.CPP.Z,1]
-Option(,ON)");
-* [C:/Home/HomeWrappers.CPP.Z,13] R("OptOff","[C:/Compiler/CMisc.CPP.Z,1]
-Option(,OFF)");
-* Added [C:/Doc/FileLowLevel.TXT.Z,1] Dsk Stk Diagram.
-
-----07/22/15 22:45:16----
-* Fixed bug in [C:/Adam/DolDoc/DocFind.CPP.Z,383] EdFindReplace().
-
-----07/20/15 19:48:53----
-* Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
-* Rearranged disk code.
-* [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2769] CDirContext");
-* [C:/Home/HomeWrappers.CPP.Z,13]
-R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,182] DrvIsWritable");
-* [C:/Home/HomeWrappers.CPP.Z,13]
-R("CDFileCreate","[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO");
-
-----07/10/15 05:05:41----
-* Turned-off preemption in [C:/Adam/WinB.CPP.Z,421] WinMgrTask().
-
-----07/04/15 00:56:18----
-* Added hex record option to [C:/Adam/God/GodDoodle.CPP.Z,181] GodDoodle().
-* Added [C:/Adam/God/HolySpirit.CPP.Z,51] GodHexIns(). 
-
-----06/30/15 15:35:31----
-* Added [C:/Adam/Opt/Utils/StrUtils.CPP.Z,103] Words().
-* Added [C:/Adam/Opt/Utils/StrUtils.CPP.Z,140] LongLines().
-
-----06/26/15 12:54:41----
-* **TempleOS version 3.07 Released**
-
-----06/19/15 18:16:11----
-* Added ::/Apps/Psalmody/Examples/science.CPP
-* Added ::/Apps/AfterEgypt/Comics/Moses84.TXT
-* Added ::/Apps/AfterEgypt/Comics/Moses85.TXT
-
-----06/13/15 07:36:01----
-* Improved [C:/Demo/Games/EagleDive.CPP,1].
-
-----06/11/15 19:26:27----
-* Fixed bug in <F2> macros.
-* Added [C:/Kernel/KernelA.HPP.Z,40] STR_LEN.
-
-----06/04/15 08:31:15----
-* Improved assembler and unassembler.
-* Added [C:/Doc/HelloWorld.TXT.Z,1].

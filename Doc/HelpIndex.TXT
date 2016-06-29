@@ -75,9 +75,9 @@ TempleOS PC
   Use [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount() to mount disk drives,
   perhaps, if you are booted to a LiveCD.
 
-You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
-  MakeOSDrvBootInstall(), and specify which drives should be mounted at boot. 
-  See [C:/Misc/DoDistro.CPP.Z,1].
+You recompile the kernel with [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18]
+  BootHDIns(), and specify which drives should be mounted at boot.  See
+  [C:/Misc/DoDistro.CPP.Z,1].
 
 [C:/Doc/Install.TXT.Z,1] Installing
 
@@ -103,7 +103,7 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
 [Keyboard Devices/System,1] Keyboard Devices
 [C:/Demo/Lectures/Mem/PageTableEntries.CPP,1] Page Table Entries
 [C:/Demo/Lectures/PCIInterrupts.CPP,1] PCIInterrupts.CPP
-[C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep
+[C:/Adam/Opt/Utils/MemRep.CPP.Z,192] MemRep
 [C:/Adam/WallPaper.CPP.Z,1] WallPaper
 [C:/Kernel/Sched.CPP.Z,1] Scheduler
 [C:/Adam/DolDoc/MakeDoc.CPP.Z,1] Doc

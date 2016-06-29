@@ -75,7 +75,7 @@ See also [C:/Adam/Gr/GrScreen.CPP.Z,398] GrUpdateScreen().
       ptr1+=text.raw_screen_image; //Write to cached image as well
       ptr2=&text.font[ch&255];
       for (i=0;i<FONT_HEIGHT;i++) {
-	*ptr=*ptr1=reverse_bits_table[*ptr2++];
+	*ptr=*ptr1=rev_bits_table[*ptr2++];
 	ptr+=GR_WIDTH>>3;
 	ptr1+=GR_WIDTH>>3;
       }

@@ -20,12 +20,12 @@ option checked and invoke the Run.CPP.Z file.
 
 /Kernel The core of the operating system is found here.  Since priviledge 
 levels are not used, calling it a kernel is deceptive.  It is AOT compiled by 
-[C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  It is loaded by
-the boot loader and must fit in 640K.
+[C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().  It is loaded by the boot
+loader and must fit in 640K.
 
 /Compiler The compiler module src code is found here.  The compiler is AOT 
 compiled to produce a binary file which is loaded at boot.  It, too, is AOT 
-compiled by [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+compiled by [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().
 
 /Adam The non-kernel part of the operating system is found here.  It is JIT 
 compiled during boot.  The [C:/Doc/Glossary.TXT.Z,1] Adam Task is the father
@@ -149,7 +149,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HPP.Z,3514] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HPP.Z,3515] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Opt/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
 
@@ -191,11 +191,11 @@ See [C:/Doc/Asm.TXT.Z,1].
 
 * FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3318] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3442] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3443] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
-anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and
-[C:/Kernel/KUtils.CPP.Z,434] SET_GS_BASE.
+anyway.  [C:/Kernel/KUtils.CPP.Z,445] SET_FS_BASE and
+[C:/Kernel/KUtils.CPP.Z,433] SET_GS_BASE.
 
 * When interacting with [C:/Doc/HolyC.TXT.Z,1] HolyC compiled code, preserve
 RBP, RSI, RDI, R10-R15 

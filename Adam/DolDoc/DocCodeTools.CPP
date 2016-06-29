@@ -1,29 +1,29 @@
 #help_index "DolDoc/Misc"
 
 U0 EdReplaceTroubleOne(CDoc *doc,U8 *st_original,U8 *st_safe,I64 num,
-	Bool to_safe,Bool select)
+	Bool to_safe,Bool sel)
 {
   U8 buf[STR_LEN];
   StrPrint(buf,st_safe,num);
   if (to_safe)
-    EdReplace(doc,st_original,buf,select);
+    EdReplace(doc,st_original,buf,sel);
   else
-    EdReplace(doc,buf,st_original,select);
+    EdReplace(doc,buf,st_original,sel);
 }
 
-U0 EdReplaceTroubleAll(CDoc *doc,Bool to_safe,Bool select)
+U0 EdReplaceTroubleAll(CDoc *doc,Bool to_safe,Bool sel)
 {
   I64 i=0;
-  EdReplaceTroubleOne(doc,"#assert" ,"//<@%d@>"  ,i++,to_safe,select);
-  EdReplaceTroubleOne(doc,"#define" ,"//<@%d@>"  ,i++,to_safe,select);
-  EdReplaceTroubleOne(doc,"#include","//<@%d@>"  ,i++,to_safe,select);
+  EdReplaceTroubleOne(doc,"#assert" ,"//<@%d@>"  ,i++,to_safe,sel);
+  EdReplaceTroubleOne(doc,"#define" ,"//<@%d@>"  ,i++,to_safe,sel);
+  EdReplaceTroubleOne(doc,"#include","//<@%d@>"  ,i++,to_safe,sel);
 //#if will match #if,#ifdef,#ifndef,#ifaot and #ifjit
-  EdReplaceTroubleOne(doc,"#if"     ,"//<@%d@>"  ,i++,to_safe,select);
-  EdReplaceTroubleOne(doc,"#endif"  ,"//<@%d@>"  ,i++,to_safe,select);
+  EdReplaceTroubleOne(doc,"#if"     ,"//<@%d@>"  ,i++,to_safe,sel);
+  EdReplaceTroubleOne(doc,"#endif"  ,"//<@%d@>"  ,i++,to_safe,sel);
 //Convert #exe to union because we want that indent pattern.
-  EdReplaceTroubleOne(doc,"#exe"    ,"union @%d@",i++,to_safe,select);
-  EdReplaceTroubleOne(doc,"'{'"     ,"'<@%d@>'"  ,i++,to_safe,select);
-  EdReplaceTroubleOne(doc,"'}'"     ,"'<@%d@>'"  ,i++,to_safe,select);
+  EdReplaceTroubleOne(doc,"#exe"    ,"union @%d@",i++,to_safe,sel);
+  EdReplaceTroubleOne(doc,"'{'"     ,"'<@%d@>'"  ,i++,to_safe,sel);
+  EdReplaceTroubleOne(doc,"'}'"     ,"'<@%d@>'"  ,i++,to_safe,sel);
 }
 
 #define C_INDENT_SPACES		2
@@ -336,7 +336,7 @@ I64 EdRAGetU8(CDoc *doc)
 {
   I64 res=-1;
   while (doc->cur_entry!=doc &&
-	doc->cur_entry->type&DOCET_SELECTED && res<0) {
+	doc->cur_entry->type&DOCET_SEL && res<0) {
     res=EdCurU8(doc);
     EdCursorRight(doc);
   }
@@ -393,7 +393,7 @@ U0 EdRenumAsm(CDoc *doc)
 	buf2[sizeof(CEdFindText.find_text)];
 
   QueInit(&root);
-  EdSelectFun(doc,TRUE);
+  EdSelFun(doc,TRUE);
   EdRACollect(doc,&root);
 
   tempr=root.next;
@@ -412,7 +412,7 @@ U0 EdRenumAsm(CDoc *doc)
     EdReplace(doc,buf,buf2,TRUE,TRUE,TRUE);
     num-=ASM_RENUM_SPACING;
   }
-  EdSelectAll(doc,FALSE);
+  EdSelAll(doc,FALSE);
   DocRecalc(doc);
   DocCenter(doc);
   if (unlock)
