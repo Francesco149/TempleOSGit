@@ -679,7 +679,6 @@ public extern U0 SrvTaskCont();
 public extern CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags);
 public extern U0 TaskRstAwaitingMsg(CTask *task=NULL);
 public extern U0 UserTaskCont();
-
 #help_index "Task/Srv/Exe;Compiler"
 public extern I64 Adam(U8 *fmt,...);
 public extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);
