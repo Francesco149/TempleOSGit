@@ -104,6 +104,7 @@ public extern U0 PutKey(I64 ch=0,I64 sc=0);
 extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,888] Print()
 public extern Bool Silent(Bool val=ON);
 extern U8 *StrPrintHex(U8 *dst,I64 num;I64 width);
+
 #help_index "Char;Debugging/Raw Output;TextBase Layer/Char"
 public extern CTextGlbls text;
 

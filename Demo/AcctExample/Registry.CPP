@@ -17,29 +17,29 @@
     #define MACHINE_CFG 0
       +] RawHide
       F64 best_score=96.1279;
-      +] BlackDiamond
-      I64 best_score=9;
       +] FlapBat
       F64 best_score=16.4090;
       +] Wenceslas
       F64 best_score=43.9944;
-      +] BomberGolf
-      I64 best_score=175;
       +] TimeOut
       I64 best_score=22202;
-      +] ZoneOut
-      F64 best_score=8.1373;
       +] KeepAway
       I64 best_score0=68,best_score1=30;
-      +] Varoom
-      F64 best_score=46.2643;
-      +] CastleFrankenstein
-      F64 best_score=33.8405;
       +] XCaliber
       I64 best_score=248;
     I64 msg_flags=1;
       +] EagleDive
       I64 best_score=8;
+      +] BomberGolf
+      I64 best_score=175;
+      +] Varoom
+      F64 best_score=46.2643;
+      +] BlackDiamond
+      I64 best_score=9;
+      +] ZoneOut
+      F64 best_score=8.1373;
+      +] CastleFrankenstein
+      F64 best_score=33.8405;
       +] DemoCompany
   
   +] Game1
