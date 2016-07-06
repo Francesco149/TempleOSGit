@@ -160,7 +160,6 @@ public extern U0	QueVectU8Del(CQueVectU8 *v);
 public extern I64	QueVectU8Get(CQueVectU8 *v,I64 idx);
 public extern CQueVectU8 *QueVectU8New(I64 min_idx=0);
 public extern U0	QueVectU8Put(CQueVectU8 *v,I64 idx,U8 ch);
-
 #help_index "Debugging"
 public extern U8 *Caller(I64 num=1);
 public extern Bool ChkCodePtr(U8 *ptr);
@@ -360,6 +359,7 @@ public extern Bool WBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt);
 public extern I64 WClusters(CDrv *dv,U8 *buf,I64 c,I64 cnt);
 public extern I64 WClustersBlks(CDrv *dv,U8 *buf,I64 c,I64 blks);
 public extern U0 WZeroBlks(CDrv *dv,I64 blk,I64 cnt);
+
 #help_index "File/Program Routines"
 public extern U0 DirEntryDel(CDirEntry *tempde);
 public extern U0 DirEntryDel2(CDirEntry *tempde);
