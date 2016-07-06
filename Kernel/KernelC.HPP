@@ -104,7 +104,6 @@ public extern U0 PutKey(I64 ch=0,I64 sc=0);
 extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,888] Print()
 public extern Bool Silent(Bool val=ON);
 extern U8 *StrPrintHex(U8 *dst,I64 num;I64 width);
-
 #help_index "Char;Debugging/Raw Output;TextBase Layer/Char"
 public extern CTextGlbls text;
 
@@ -195,6 +194,7 @@ public extern U0 S(U8 *ip=INVALID_PTR,CTask *task=NULL);
 #help_index "Debugging/Debugger;DolDoc/Cmd Line (Typically);"\
 	"Cmd Line (Typically);Help System"
 public extern Bool Man(U8 *st,I64 edf_dof_flags=0);
+
 #help_index "Debugging/Dump"
 public extern U0 CallerRep(U8 **rbp=NULL,CTask *task=NULL);
 public extern U0 D(U8 *addr,I64 cnt=0x80,Bool show_offset=TRUE);
