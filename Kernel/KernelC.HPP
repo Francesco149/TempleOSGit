@@ -453,7 +453,6 @@ extern CIPStateGlbls ip_last;
 #help_index "Input Pointer/Displayed Image"
 extern U0 IPVarsInit();
 extern U0 IPVarsUpdate(I64 x,I64 y,I64 z,Bool l,Bool r);
-
 #help_index "Input Pointer/Mouse"
 public extern CMouseStateGlbls mouse;
 extern CMouseStateGlbls mouse_last;
