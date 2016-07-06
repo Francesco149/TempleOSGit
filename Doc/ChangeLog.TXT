@@ -2,6 +2,21 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----07/04/16 14:13:54----
+* **TempleOS version 4.09 Released**
+* Improved [C:/Demo/Games/EagleDive.CPP,1].
+* Improved [C:/Adam/Gr/GrPrimatives.CPP.Z,1397] GrFillTri0().
+
+----07/03/16 04:30:05----
+* Added [C:/Adam/ABlkDev/Mount.CPP.Z,132] Unmount().
+* Made BootLoader mandatory in [C:/Adam/Opt/Boot/DskISORedSea.CPP.Z,128]
+RedSeaISO().
+* Added [C:/Kernel/KernelA.HPP.Z,2632] BDT_FILE_READ.
+
+----07/01/16 05:29:08----
+* Made underscore mandatory on [C:/Doc/HolyC.TXT.Z,1] HolyC callable asm
+functions.
+
 ----06/28/16 13:15:08----
 * Changed [C:/Adam/TaskRep.CPP.Z,21] TaskRep() and
 [C:/Adam/Opt/Utils/MemRep.CPP.Z,192] MemRep().
@@ -58,12 +73,12 @@ directory designator.
 * Added waterfall to [C:/Demo/Games/RawHide.CPP,1].
 
 ----05/23/16 01:30:28----
-* Added [C:/Adam/Opt/Boot/DskISORedSea.CPP.Z,132] RedSeaISO().
+* Added [C:/Adam/Opt/Boot/DskISORedSea.CPP.Z,128] RedSeaISO().
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("ISOFileCreate","[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO");
 
 ----05/19/16 02:16:09----
-* Added [C:/Kernel/KernelA.HPP.Z,2631] BDT_FILE.
+* Added [C:/Kernel/KernelA.HPP.Z,2633] BDT_FILE_WRITE.
 
 ----05/17/16 07:16:38----
 * Worked on compiler [C:/Kernel/KernelA.HPP.Z,1632] CICArg.a1_type_pointed_to.
@@ -96,7 +111,7 @@ R("ISOFileCreate","[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO");
 
 ----04/26/16 01:18:57----
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("MapDrv","[C:/Kernel/BlkDev/DskDrv.CPP.Z,225] DrvMap");
+R("MapDrv","[C:/Kernel/BlkDev/DskDrv.CPP.Z,242] DrvMap");
 
 ----04/25/16 13:17:49----
 * Changed args in [C:/Adam/AMath.CPP.Z,68] CAdd(), [C:/Adam/AMath.CPP.Z,75]
@@ -248,7 +263,7 @@ automatically from the compiler's class information.
 * Added [C:/Demo/ToHtmlToTXTDemo/HtmlGen.CPP,1] and 
 [C:/Demo/ToHtmlToTXTDemo/TXTGen.CPP,1].
 * Now, [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() doesn't save with
-[C:/Kernel/KernelA.HPP.Z,3510] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3512] CH_CURSOR.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
 * Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to
@@ -267,14 +282,14 @@ R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("Statement","Stmt");
 
 ----01/18/16 15:19:43----
-* Added except arg to [C:/Kernel/BlkDev/DskBlkDev.CPP.Z,161] Let2BlkDev(),
-[C:/Kernel/BlkDev/DskBlkDev.CPP.Z,149] BlkDevChk(),
-[C:/Kernel/BlkDev/DskDrv.CPP.Z,160] Let2Drv(),
-[C:/Kernel/BlkDev/DskDrv.CPP.Z,127] DrvChk() and 
-[C:/Kernel/BlkDev/DskDrv.CPP.Z,182] DrvIsWritable().
+* Added except arg to [C:/Kernel/BlkDev/DskBlkDev.CPP.Z,175] Let2BlkDev(),
+[C:/Kernel/BlkDev/DskBlkDev.CPP.Z,163] BlkDevChk(),
+[C:/Kernel/BlkDev/DskDrv.CPP.Z,177] Let2Drv(),
+[C:/Kernel/BlkDev/DskDrv.CPP.Z,142] DrvChk() and 
+[C:/Kernel/BlkDev/DskDrv.CPP.Z,199] DrvIsWritable().
 
 ----01/16/16 08:20:00----
-* Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,294] DrvTextAttrGet().
+* Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,312] DrvTextAttrGet().
 * Removed DrvTextAttrSet().
 
 ----01/15/16 00:47:31----
@@ -282,13 +297,13 @@ R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("$$LM,5$$","$$ID,5$$");
 
 ----01/15/16 00:12:02----
-* Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,146] Let2BlkDevType().
+* Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,161] Let2BlkDevType().
 * Added [C:/Kernel/KernelA.HPP.Z,1409] WIF_SELF_FOCUS to
 [C:/Misc/OSInstall.CPP.Z,1].
 * Added %$F to [C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.
 
 ----01/12/16 19:17:12----
-* Overhauled [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount() and
+* Overhauled [C:/Adam/ABlkDev/Mount.CPP.Z,127] Mount() and
 [C:/Kernel/KCfg.CPP.Z,1].
 
 ----01/12/16 10:06:18----
@@ -304,7 +319,7 @@ kernel with [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns() must be changed.
 * Added [C:/Demo/MemDemo.CPP,1].
 
 ----01/08/16 17:04:58----
-* Added [C:/Kernel/KernelA.HPP.Z,2600] FUF_RISKY to
+* Added [C:/Kernel/KernelA.HPP.Z,2601] FUF_RISKY to
 [C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt().
 * Fixed [C:/Doc/CompilerOverview.TXT.Z,1].
 

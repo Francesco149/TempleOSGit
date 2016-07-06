@@ -4,7 +4,7 @@
 
 U0 MakeMyISO(U8 *_out_iso_filename)
 {//Does everything with current drive.
-//If you have not recompiled Kernel and defined your CD/DVD drive, use [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount.
+//If you have not recompiled Kernel and defined your CD/DVD drive, use [C:/Adam/ABlkDev/Mount.CPP.Z,127] Mount.
   U8 *out_iso_filename=FileNameAbs(_out_iso_filename);
   if (!DrvIsWritable) {
     "Drive must be writable.  Install on Hard drive, first.\n";

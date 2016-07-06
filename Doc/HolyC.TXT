@@ -334,7 +334,7 @@ example.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2885] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2887] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,210]
 Spawn().  You can use 
 [C:/Kernel/KTask.CPP.Z,78] CallStkGrow(), but it's odd.  See

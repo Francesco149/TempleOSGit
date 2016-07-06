@@ -25,7 +25,7 @@ and fix the primary when you work on it.  Odds are, you only need a couple
 gigabytes for your TempleOS partitions.
 
 1)
-  [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount() use if the drive is partitioned.
+  [C:/Adam/ABlkDev/Mount.CPP.Z,127] Mount() use if the drive is partitioned.
     This command mounts a drive making it accessible.  For simplicity, sel
     'C' 
 as the first drive letter for your hard drive.  The first partition will 
@@ -36,7 +36,7 @@ enter the number in the probe box instead of base0.
   
 [C:/Adam/ABlkDev/PrtDsk.CPP.Z,16] PrtDsk('C') use if drive is not partitioned
 
-    This will perform a special [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount()
+    This will perform a special [C:/Adam/ABlkDev/Mount.CPP.Z,127] Mount()
     automatically.
 
 **WARNING:**  This command erases everything on a hard drive.  It
@@ -66,7 +66,7 @@ CD/DVD.  Use the drive letter of the partition in place of 'D'.
 4) [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns('D')
   This command recompiles the source code on a drive and writes to the
   _drive's_ 
-boot record.  You'll need to reenter the [C:/Adam/ABlkDev/Mount.CPP.Z,114]
+boot record.  You'll need to reenter the [C:/Adam/ABlkDev/Mount.CPP.Z,127]
   Mount information so it can be 
 stored in the kernel.
 

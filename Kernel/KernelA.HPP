@@ -294,7 +294,7 @@ public class CMathODE
 #define I_MP_CRASH		0x30
 #define I_WAKE			0x31
 #define I_DBG			0x32
-//See [C:/Kernel/KDefine.CPP.Z,125] ST_INT_NAMES
+//See [C:/Kernel/KDefine.CPP.Z,126] ST_INT_NAMES
 
 //You might want to start bwd from
 //0xFF for your own interrupts.
@@ -2296,6 +2296,7 @@ public class CATARep
 #define BLK_SIZE_BITS	9
 #define BLK_SIZE	(1<<BLK_SIZE_BITS)
 #define DVD_BLK_SIZE	(4*BLK_SIZE)
+#define DVD_BOOT_LOADER_SIZE	DVD_BLK_SIZE*1
 #define INVALID_CLUSTER (-1)
 
 class CMBRPrt
@@ -2543,7 +2544,7 @@ class CISO1PriDesc
 #define MT_DVD		2
 
 #help_index "File/Low Level;File/Program Routines"
-//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.CPP.Z,545] FileMgr())
+//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.CPP.Z,581] FileMgr())
 #define DEF_PROCESSED		1
 #define DEF_NOT_INITIALIZED	2
 
@@ -2624,13 +2625,14 @@ public class CDirEntry
   FUF_SCAN_PARENTS)
 
 #help_index "File/Low Level"
-//See [C:/Kernel/KDefine.CPP.Z,112] ST_BLKDEV_TYPES
+//See [C:/Kernel/KDefine.CPP.Z,113] ST_BLKDEV_TYPES
 #define BDT_NULL		0
 #define BDT_RAM			1
 #define BDT_ATA			2
-#define BDT_FILE		3
-#define BDT_ATAPI		4
-#define BDT_NUM_TYPES		5
+#define BDT_FILE_READ		3
+#define BDT_FILE_WRITE		4
+#define BDT_ATAPI		5
+#define BDT_NUM_TYPES		6
 
 #define BDF_REMOVABLE		0x001
 #define BDF_INITIALIZED		0x002
@@ -2680,7 +2682,7 @@ public class CBlkDev
 //Drive locked_flags
 #define DVlf_LOCKED	0
 
-//See [C:/Kernel/KDefine.CPP.Z,114] ST_DRV_TYPES
+//See [C:/Kernel/KDefine.CPP.Z,115] ST_DRV_TYPES
 #define FSt_NULL	0
 #define FSt_REDSEA	1 //Supported
 #define FSt_FAT32	2 //Supported except for short names, to some degree
@@ -2716,7 +2718,7 @@ class CFreeLst
 public class CDrv
 {
 //Don't access ->drv_let directly in case a drive has been remapped.
-  //Use [C:/Kernel/BlkDev/DskDrv.CPP.Z,138] Drv2Let().
+  //Use [C:/Kernel/BlkDev/DskDrv.CPP.Z,153] Drv2Let().
   I64	locked_flags;
   U32	dv_signature;
   U8	drv_let,pad;
@@ -2832,7 +2834,7 @@ class CMemUsed
 /*TempleOS does not mess with page tables after setting them up
 during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_PAGE_TABLES.
 
-[C:/Kernel/KernelA.HPP.Z,2875] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
+[C:/Kernel/KernelA.HPP.Z,2877] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
 and is not related to CPU hardware.
 
 All virtual addresses are ident to physical at all times.
@@ -2941,7 +2943,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2951] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2953] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3041,7 +3043,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3040] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3041] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3042] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3043] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3221,8 +3223,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3484] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3484] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3486] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3486] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3666,12 +3668,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2941] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2943] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2951] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2953] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3704,7 +3706,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3642] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3644] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

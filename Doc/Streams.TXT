@@ -6,7 +6,7 @@ not serialized!  Furthermore, the input can come from triggering macro
 widgets.  See [C:/Doc/DolDocOverview.TXT.Z,1] Doc Overview and [DolDoc,1] Doc
 Routines.
 
-If you had a remote term and sent key [C:/Kernel/KernelA.HPP.Z,3574] Scan
+If you had a remote term and sent key [C:/Kernel/KernelA.HPP.Z,3576] Scan
 Codes, the user would press <CTRL-m
 > to access his Personal Menu to trigger his macros.  However, the local 
 [C:/Home/PersonalMenu.TXT,1] might differ from the remote, causing loss of

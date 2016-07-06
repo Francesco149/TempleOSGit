@@ -13,7 +13,7 @@ extern I64 BIOSTotalMem();
 extern I64 BlkDevAdd(CBlkDev *bd,Bool one_drv,Bool make_free);
 extern CBlkDev *BlkDevChk(CBlkDev *bd,Bool except=TRUE);
 extern Bool BlkDevLock(CBlkDev *bd);
-extern CBlkDev *BlkDevNextFree(U8 first_drv_let,I64 type);
+extern CBlkDev *BlkDevNextFreeSlot(U8 first_drv_let,I64 type);
 extern Bool BlkDevUnlock(CBlkDev *bd,Bool rst=FALSE);
 extern U0 BlkDevsRelease();
 extern U8 *Caller(I64 num=1);
@@ -29,6 +29,7 @@ extern I64 Del(U8 *files_find_mask,Bool make_mask=FALSE,
 extern U8 *DftExt(U8 *name,U8 *extension);
 extern Bool Drv(U8 drv_let);
 extern U8 Drv2Let(CDrv *dv=NULL);
+extern U0 DrvBlkDevDel(CBlkDev *bd);
 extern CDrv *DrvChk(CDrv *dv,Bool except=TRUE);
 extern U8 DrvTextAttrGet(U8 drv_let=0);
 extern Bool DrvTypeSet(U8 drv_let,I64 type=FSt_REDSEA);

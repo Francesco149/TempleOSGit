@@ -151,7 +151,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3318]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3320]
   CTask.  There is only one window per task, and only core0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -286,30 +286,30 @@ POPFD pops the CPU flags.
 [C:/Kernel/KernelA.HPP.Z,2290] FILEMASK_AOT
 [C:/Kernel/KernelA.HPP.Z,2289] FILEMASK_JIT
 [C:/Kernel/KernelA.HPP.Z,2293] FILEMASK_GRA
-+] Naming Convention
-  Since there are no namespaces and I don't plan to implement name spaces, I
-  highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
-  Doc, Lex
+-] Naming Convention
+  Since there are no namespaces and I don't plan to implement name spaces, I 
+highly recommend putting a 2-3 character module code prefix on syms. e.g. WS
+, Doc, Lex
 
 ALL_CAPS
-  Assembly Language labels are capitalized with underscores between words. 
-  So are #define's.
+  Assembly Language labels are capitalized with underscores between words.  
+So are #define's.
 
 _ALL_CAPS
-  Asm routines which are [C:/Doc/HolyC.TXT.Z,1] HolyC callible should have a
+  Asm routines which are [C:/Doc/HolyC.TXT.Z,1] HolyC callable must have a
   leading underscore.
 
 MixedCaps
   [C:/Doc/HolyC.TXT.Z,1] HolyC Functions and class names are MixedCaps.
 
 lower_case
-  Local function vars and glbl vars are lower case.  Class member names are
-  also lower_case.
+  Local function vars and glbl vars are lower case.  Class member names are 
+also lower_case.
 
 _lower_case
   Function args which are outputs (passed as ptrs) have leading underscores. 
-  Also, args which have idently named local variable counterparts have leading
-  underscores. 
+ Also, args which have idently named local variable counterparts have 
+leading underscores. 
 
 DOCf_????
   Flags bit nums instead of bit values are designated with a lower case f.
@@ -319,15 +319,15 @@ DOCG_????
 
 res is reserved for local variables that hold the function return val.
 
-* I used C++ like naming.  I place New, Del, Init, Rst, ect. on the end of a
-  function name instead of at the beginning.  RstMusicSettings should be
-  MusicSettingsRst.
+* I used C++ like naming.  I place New, Del, Init, Rst, ect. on the end of a 
+function name instead of at the beginning.  RstMusicSettings should be Music
+SettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HPP.Z,3318] CTask.
+  [C:/Kernel/KernelA.HPP.Z,3320] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3443] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3445] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  They must

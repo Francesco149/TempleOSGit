@@ -72,7 +72,7 @@ TempleOS PC
 
 * See [C:/Misc/DoDistro.CPP.Z,1] Making a Distro ISO.
   +] Admin Help
-  Use [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount() to mount disk drives,
+  Use [C:/Adam/ABlkDev/Mount.CPP.Z,127] Mount() to mount disk drives,
   perhaps, if you are booted to a LiveCD.
 
 You recompile the kernel with [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18]

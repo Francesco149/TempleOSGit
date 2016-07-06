@@ -229,7 +229,7 @@ U0 PrsGlblVarLst(CCmpCtrl *cc,I64 saved_mode,CHashClass *saved_tempc,
     if (tempex && mode&255==PRS0_EXTERN && !(cc->flags&CCF_AOT_COMPILE) &&
 	  tempex->type&HTT_EXPORT_SYS_SYM) {
       val=tempex->val;
-      mode=PRS0__EXTERN|PRS1_NULL;
+      mode=PRS0__EXTERN|PRS1_NOT_REALLY__EXTERN;
     }
     if (cc->token=='(') {
       switch (mode&255) {
@@ -240,6 +240,8 @@ U0 PrsGlblVarLst(CCmpCtrl *cc,I64 saved_mode,CHashClass *saved_tempc,
 	  LBtr(&tempf->flags,Cf_EXTERN);
 	  return;
 	case PRS0__EXTERN:
+	  if (!(fsp_flags&FSF__) && !(mode&PRS1_NOT_REALLY__EXTERN))
+	    LexExcept(cc,"Expecting label with underscore at ");
 	  tempf=PrsFunJoin(cc,tempc,st,fsp_flags);
 	  tempf->exe_addr=val;
 	  SysSymImportsResolve(tempf->str);
@@ -252,8 +254,10 @@ U0 PrsGlblVarLst(CCmpCtrl *cc,I64 saved_mode,CHashClass *saved_tempc,
 	case PRS0_EXTERN:
 	  PrsFunJoin(cc,tempc,st,fsp_flags);
 	  return;
-	case PRS0_IMPORT:
 	case PRS0__IMPORT:
+	  if (!(fsp_flags&FSF__))
+	    LexExcept(cc,"Expecting label with underscore at ");
+	case PRS0_IMPORT:
 	  if (!(cc->flags&CCF_AOT_COMPILE))
 	    LexExcept(cc,"import not needed at ");
 	  else {
@@ -992,14 +996,13 @@ Bool PrsStmt(CCmpCtrl *cc,I64 try_cnt=0,
 		  case KW__EXTERN:
 		    if (Bt(&cc->opts,OPTf_EXTERNS_TO_IMPORTS))
 		      goto sm_underscore_import;
-		    if (cc->flags&CCF_AOT_COMPILE) {
-		      if (cc->token!=TK_IDENT || !(tempex=cc->hash_entry) ||
-			    !(tempex->type & HTT_EXPORT_SYS_SYM))
-			LexExcept(cc,"Expecting System sym at ");
-		      i=tempex->val;
-		      Lex(cc);
-		    } else
-		      i=LexExpressionI64(cc);
+		    if (cc->token!=TK_IDENT || !(tempex=cc->hash_entry) ||
+			  !(tempex->type & HTT_EXPORT_SYS_SYM))
+		      LexExcept(cc,"Expecting system sym at ");
+		    if (*cc->cur_str=='_')
+		      fsp_flags|=FSF__;
+		    i=tempex->val;
+		    Lex(cc);
 		    if (cc->token!=TK_IDENT || !(tempex=cc->hash_entry) ||
 			  !(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
 		      LexExcept(cc,"Expecting type at ");
@@ -1009,7 +1012,9 @@ Bool PrsStmt(CCmpCtrl *cc,I64 try_cnt=0,
 		  case KW__IMPORT:
 sm_underscore_import:
 		    if (cc->token!=TK_IDENT)
-		      LexExcept(cc,"Expecting System sym at ");
+		      LexExcept(cc,"Expecting system sym at ");
+		    if (*cc->cur_str=='_')
+		      fsp_flags|=FSF__;
 		    import_name=cc->cur_str;
 		    cc->cur_str=0;
 		    if (Lex(cc)!=TK_IDENT || !(tempex=cc->hash_entry) ||
@@ -1017,7 +1022,7 @@ sm_underscore_import:
 		      LexExcept(cc,"Expecting type at ");
 		    Lex(cc);
 		    PrsGlblVarLst(cc,PRS0__IMPORT|PRS1_NULL,tempex,
-			  import_name,FALSE);
+			  import_name,fsp_flags);
 		    Free(import_name);
 		    break;
 		  case KW_EXTERN:
@@ -1045,7 +1050,7 @@ sm_underscore_import:
 		      LexExcept(cc,"Expecting type at ");
 sm_import:
 		    Lex(cc);
-		    PrsGlblVarLst(cc,PRS0_IMPORT|PRS1_NULL,tempex,0,FALSE);
+		    PrsGlblVarLst(cc,PRS0_IMPORT|PRS1_NULL,tempex,0,fsp_flags);
 		    break;
 		  case KW__INTERN:
 		    i=LexExpressionI64(cc);

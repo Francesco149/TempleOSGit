@@ -327,7 +327,7 @@ extern I64 FileAttr(U8 *name,I64 old_attr=0);
 public extern CBlkDev *BlkDevChk(CBlkDev *bd,Bool except=TRUE);
 public extern U0 BlkDevDel(CBlkDev *bd);
 public extern Bool BlkDevLock(CBlkDev *bd);
-public extern CBlkDev *BlkDevNextFree(U8 first_drv_let,I64 type);
+public extern CBlkDev *BlkDevNextFreeSlot(U8 first_drv_let,I64 type);
 public extern Bool BlkDevUnlock(CBlkDev *bd,Bool rst=FALSE);
 public extern U0 BlkDevsRelease();
 public extern I64 Cluster2Blk(CDrv *dv,I64 c);
@@ -339,9 +339,9 @@ public extern U8 Drv2Let(CDrv *dv=NULL);
 public extern CDrv *DrvChk(CDrv *dv,Bool except=TRUE);
 public extern U0 DrvDel(CDrv *dv);
 public extern Bool DrvLock(CDrv *dv);
-public extern CDrv *DrvMakeFree(U8 drv_let);
+public extern CDrv *DrvMakeFreeSlot(U8 drv_let);
 public extern U8 *DrvModelNum(U8 drv_let=0);
-public extern CDrv *DrvNextFree(U8 first_drv_let='C');
+public extern U8 DrvNextFreeLet(U8 first_drv_let='C');
 public extern U8 *DrvSerialNum(U8 drv_let=0);
 public extern U8 DrvTextAttrGet(U8 drv_let=0);
 public extern Bool DrvUnlock(CDrv *dv,Bool rst=FALSE);
@@ -483,7 +483,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3785] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3787] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -679,6 +679,7 @@ public extern U0 SrvTaskCont();
 public extern CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags);
 public extern U0 TaskRstAwaitingMsg(CTask *task=NULL);
 public extern U0 UserTaskCont();
+
 #help_index "Task/Srv/Exe;Compiler"
 public extern I64 Adam(U8 *fmt,...);
 public extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);

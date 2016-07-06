@@ -108,7 +108,8 @@ U0 SysDefinesLoad()
   DefineLstLoad("ST_FILE_ATTRS","R\0H\0S\0V\0D\0A\0 \0 \0X\0T\0Z\0C\0F\0");
   DefineLstLoad("ST_FILE_UTIL_FLAGS","r\0d\0i\0a\0c\0R\0p\0m\0x\0s\0"
 	"D\0F\0T\0S\0A\0J\0G\0Z\0O\0P\0f\0l\0lb\0la\0");
-  DefineLstLoad("ST_BLKDEV_TYPES","NULL\0RAM\0ATA\0FILE\0ATAPI\0");
+  DefineLstLoad("ST_BLKDEV_TYPES",
+	"NULL\0RAM\0ATA\0FILE_READ\0FILE_WRITE\0ATAPI\0");
   DefineLstLoad("ST_DRV_TYPES",
 	"NULL\0REDSEA\0FAT32\0ISO9660\0ISO13490\0ISO13346\0NTFS\0UNKNOWN\0");
   DefineLstLoad("ST_COLORS","BLACK\0BLUE\0GREEN\0CYAN\0"
@@ -124,7 +125,7 @@ U0 SysDefinesLoad()
 }
 
 U8 *Color2Str(U8 *buf,CColorROPU32 c)
-{//[C:/Kernel/KernelA.HPP.Z,2980] CColorROPU32 with flags to [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting str.
+{//[C:/Kernel/KernelA.HPP.Z,2982] CColorROPU32 with flags to [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting str.
   *buf=0;
   if (c.c0.rop&ROPBF_TWO_SIDED)
     CatPrint(buf,"TWO|");
@@ -155,7 +156,7 @@ U8 *Color2Str(U8 *buf,CColorROPU32 c)
 U8 *str2color_lst="/,)}>";
 
 CColorROPU16 Str2ColorU16(U8 *st)
-{//[C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HPP.Z,2976] CColorROPU16.
+{//[C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HPP.Z,2978] CColorROPU16.
   CColorROPU16 res=COLOR_INVALID;
   I64 i;
   U8 *ptr,*ptr2,*st2;
@@ -199,7 +200,7 @@ CColorROPU16 Str2ColorU16(U8 *st)
 }
 
 CColorROPU32 Str2ColorU32(U8 *st)
-{//[C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HPP.Z,2980] CColorROPU32.
+{//[C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HPP.Z,2982] CColorROPU32.
   U8 *st2;
   CColorROPU32 res=0;
   if (!st) return COLOR_INVALID;

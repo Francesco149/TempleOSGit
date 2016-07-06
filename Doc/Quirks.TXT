@@ -9,23 +9,23 @@ the last write wins.
 ones with the ~s.  Not all FAT32 filenames are valid TempleOS names and it 
 will complain.  Do not access FAT32 drives not dedicated to TempleOS. 
 Disable 
-them with [C:/Kernel/BlkDev/DskAddDev.CPP.Z,158] DrvEnable(OFF), or they will
+them with [C:/Kernel/BlkDev/DskAddDev.CPP.Z,160] DrvEnable(OFF), or they will
 generate error messages.  FAT32 
 involves a long and short name for each file.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2885] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2887] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,210]
 Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
 
-* Call [C:/Kernel/BlkDev/DskDrv.CPP.Z,213] ChgDsk() when you insert a new
+* Call [C:/Kernel/BlkDev/DskDrv.CPP.Z,230] ChgDsk() when you insert a new
 removable media.
 
-* Accessing CD/DVD's is flacky.  Try [C:/Kernel/BlkDev/DskDrv.CPP.Z,236]
-Drv() or [C:/Kernel/BlkDev/DskDrv.CPP.Z,213] ChgDsk() twice.
+* Accessing CD/DVD's is flacky.  Try [C:/Kernel/BlkDev/DskDrv.CPP.Z,253]
+Drv() or [C:/Kernel/BlkDev/DskDrv.CPP.Z,230] ChgDsk() twice.
 
 * You can only extern something once.  There is a varient called _extern
 which 
