@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-80,442 lines of code including the kernel, the 64-bit compiler, the graphics 
+81,057 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a [C:/Doc/HelloWorld.TXT.Z,1] Hello World
@@ -145,9 +145,9 @@ Hardware graphics acceleration is not used, so this is possible.  See
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/KernelA.HPP.Z,3318] CTask, pointed to by the FS
+task record, [C:/Kernel/KernelA.HPP.Z,3320] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
-> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3442] CCPU for the current
+> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3445] CCPU for the current
 CPU core.  Each task can have 
 just one window, but a task can have children with windows.  (The segment
 regs 

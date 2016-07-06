@@ -35,7 +35,7 @@ tCAGqFC after pressing <CTRL-t>, now.
 play your songs.
 
 * To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/Kernel/KernelA.HPP.Z,3840] snd.record to TRUE, play music, and
+the Bool [C:/Kernel/KernelA.HPP.Z,3843] snd.record to TRUE, play music, and
 set it to FALSE.  Then, call 
 [C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate().  You might wish to make a
 <CTRL-ALT-key> to toggle this 
@@ -51,6 +51,6 @@ CtrlAltCBSet('R',&CtrlAltR,"Cmd /Toggle snd.record");
 
 * When calling [C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate() you can set a
 waveform.  The PC speaker is 
-[C:/Adam/Snd/SndMath.CPP.Z,118] WF_SQUARE.  You can select reverb and
-averaging, also.
+[C:/Adam/Snd/SndMath.CPP.Z,118] WF_SQUARE.  You can sel reverb and averaging,
+also.
 

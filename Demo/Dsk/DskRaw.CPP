@@ -37,5 +37,5 @@ U0 RawAccess(I64 drv_let=0)
 
 RawAccess;
 
-//See [C:/Kernel/BlkDev/DskBlk.CPP.Z,31] RBlks(), [C:/Kernel/BlkDev/DskBlk.CPP.Z,70] WBlks(), [C:/Kernel/BlkDev/DskDrv.CPP.Z,1] DrvLock(), [C:/Kernel/BlkDev/DskDrv.CPP.Z,14] DrvUnlock()
+//See [C:/Kernel/BlkDev/DskBlk.CPP.Z,31] RBlks(), [C:/Kernel/BlkDev/DskBlk.CPP.Z,71] WBlks(), [C:/Kernel/BlkDev/DskDrv.CPP.Z,1] DrvLock(), [C:/Kernel/BlkDev/DskDrv.CPP.Z,14] DrvUnlock()
 //[C:/Adam/ABlkDev/ADskA.CPP.Z,2] DBlk(), [C:/Adam/ABlkDev/ADskA.CPP.Z,21] DCluster(), [C:/Kernel/BlkDev/DskBlkDev.CPP.Z,1] BlkDevLock() and [C:/Kernel/BlkDev/DskBlkDev.CPP.Z,15] BlkDevUnlock().

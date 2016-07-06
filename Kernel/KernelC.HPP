@@ -7,7 +7,7 @@ public extern CAutoCompleteDictGlbls acd;
 
 #help_index "Bit"
 public extern I64 BCnt(I64 d);
-public extern U8 *reverse_bits_table,*set_bits_table;
+public extern U8 *rev_bits_table,*set_bits_table;
 
 #help_index "Boot"
 #help_file "::/Doc/Boot"
@@ -101,9 +101,10 @@ public extern U0 PrintWarn(U8 *fmt,...);
 public extern U0 PutChars(U64 ch);
 extern U0 PutHex(I64 num,I64 width);
 public extern U0 PutKey(I64 ch=0,I64 sc=0);
-extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,907] Print()
+extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,888] Print()
 public extern Bool Silent(Bool val=ON);
 extern U8 *StrPrintHex(U8 *dst,I64 num;I64 width);
+
 #help_index "Char;Debugging/Raw Output;TextBase Layer/Char"
 public extern CTextGlbls text;
 
@@ -194,7 +195,6 @@ public extern U0 S(U8 *ip=INVALID_PTR,CTask *task=NULL);
 #help_index "Debugging/Debugger;DolDoc/Cmd Line (Typically);"\
 	"Cmd Line (Typically);Help System"
 public extern Bool Man(U8 *st,I64 edf_dof_flags=0);
-
 #help_index "Debugging/Dump"
 public extern U0 CallerRep(U8 **rbp=NULL,CTask *task=NULL);
 public extern U0 D(U8 *addr,I64 cnt=0x80,Bool show_offset=TRUE);
@@ -326,7 +326,7 @@ extern I64 FileAttr(U8 *name,I64 old_attr=0);
 public extern CBlkDev *BlkDevChk(CBlkDev *bd,Bool except=TRUE);
 public extern U0 BlkDevDel(CBlkDev *bd);
 public extern Bool BlkDevLock(CBlkDev *bd);
-public extern CBlkDev *BlkDevNextFree(U8 first_drv_let,I64 type);
+public extern CBlkDev *BlkDevNextFreeSlot(U8 first_drv_let,I64 type);
 public extern Bool BlkDevUnlock(CBlkDev *bd,Bool rst=FALSE);
 public extern U0 BlkDevsRelease();
 public extern I64 Cluster2Blk(CDrv *dv,I64 c);
@@ -338,9 +338,9 @@ public extern U8 Drv2Let(CDrv *dv=NULL);
 public extern CDrv *DrvChk(CDrv *dv,Bool except=TRUE);
 public extern U0 DrvDel(CDrv *dv);
 public extern Bool DrvLock(CDrv *dv);
-public extern CDrv *DrvMakeFree(U8 drv_let);
+public extern CDrv *DrvMakeFreeSlot(U8 drv_let);
 public extern U8 *DrvModelNum(U8 drv_let=0);
-public extern CDrv *DrvNextFree(U8 first_drv_let='C');
+public extern U8 DrvNextFreeLet(U8 first_drv_let='C');
 public extern U8 *DrvSerialNum(U8 drv_let=0);
 public extern U8 DrvTextAttrGet(U8 drv_let=0);
 public extern Bool DrvUnlock(CDrv *dv,Bool rst=FALSE);
@@ -482,7 +482,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3784] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3787] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -668,21 +668,21 @@ public extern U0 WinDerivedValsUpdate(CTask *task=NULL);
 #help_file "::/Doc/TaskSrv"
 
 #help_index "Task/Srv/Exe"
-public extern I64 Adam(U8 *fmt,...);
 public extern U0 AdamErr(U8 *fmt,...);
 public extern U0 AdamLog(U8 *fmt,...);
-public extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);
-public extern I64 PopUpPrint(U8 *fmt,...);
+public extern I64 ExeCmdLine(CCmpCtrl *cc);
 public extern U0 SrvCmdDel(CSrvCmd *tempc);
 extern U0 SrvCmdLine();
 public extern I64 SrvCmdsHandler(I64 run_flags,CTask *task=NULL);
 public extern U0 SrvTaskCont();
 public extern CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags);
 public extern U0 TaskRstAwaitingMsg(CTask *task=NULL);
+public extern U0 UserTaskCont();
 
 #help_index "Task/Srv/Exe;Compiler"
-public extern I64 ExeCmdLine(CCmpCtrl *cc);
-public extern U0 UserTaskCont();
+public extern I64 Adam(U8 *fmt,...);
+public extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);
+public extern I64 PopUpPrint(U8 *fmt,...);
 
 #help_index "Task/Srv/Exe;MultiCore"
 public extern I64 JobResGet(CSrvCmd *rqst=NULL);

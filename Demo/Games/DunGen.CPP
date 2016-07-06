@@ -41,7 +41,7 @@ RegExeBranch("TempleOS/DunGen");
 
 
 //These are indexed by color #.
-//See [C:/Kernel/KernelA.HPP.Z,2959] COLORS.
+//See [C:/Kernel/KernelA.HPP.Z,2961] COLORS.
 
 U8 *tiles1[16]={NULL,__BIN_7 ,__BIN_5 ,NULL,NULL,NULL,NULL,NULL,
   __BIN_6 ,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
@@ -113,7 +113,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   //You could make it much more efficient
   //if you did it like [C:/Demo/Games/BigGuns.CPP.Z,1]
-  //with a [C:/Kernel/KernelA.HPP.Z,3657] CDC.
+  //with a [C:/Kernel/KernelA.HPP.Z,3660] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;

@@ -148,7 +148,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 //See [C:/Demo/Graphics/SpritePlot3D.CPP.Z,1].
 //for a CSprite example.
 
-//See [C:/Adam/Gr/SpriteMesh.CPP.Z,878] SpriteMeshEd() for a fancy example.
+//See [C:/Adam/Gr/SpriteMesh.CPP.Z,957] SpriteMeshEd() for a fancy example.
 
 U0 Main()
 {

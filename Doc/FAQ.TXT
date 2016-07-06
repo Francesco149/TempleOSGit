@@ -72,9 +72,9 @@
   Windows uncompress C/C++ code.
 +] Is it open source?  How do I build it?
   TempleOS is 100% open src.  All the src code is included in the distro. 
-  Use [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() to compile the
-  kernel and compiler.  The rest is [C:/Doc/Glossary.TXT.Z,1] JIT Compiled
-  during boot.  See [C:/StartOS.CPP.Z,1]. 
+  Use [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns() to compile the kernel
+  and compiler.  The rest is [C:/Doc/Glossary.TXT.Z,1] JIT Compiled during
+  boot.  See [C:/StartOS.CPP.Z,1]. 
 +] Where are object files?  How do I link?
   TempleOS does not use object files or a linker.  [C:/Doc/Glossary.TXT.Z,1]
   AOT Compile Mode is used to directly create flat binary files, /Kernel.BIN.C
@@ -152,11 +152,10 @@
   [C:/Adam/Opt/Boot/BootDVD.CPP.Z,1] CD-DVD-Boot-Loader.
 +] How do I get Kernel.BIN to boot?
   The boot-loaders must be patched by you running
-  [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() or
-  [C:/Adam/Opt/Boot/BootIns.CPP.Z,149] MasterBootInstall().  Those will write
-  the block address into the boot-loader because the boot-loaders do not
-  navigate file systems to find the [C:/Kernel/KStart.CPP.Z,1] Stage2 if you
-  relocate it.
+  [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns() or
+  [C:/Adam/Opt/Boot/BootMHDIns.CPP.Z,69] BootMHDIns().  Those will write the
+  block address into the boot-loader because the boot-loaders do not navigate
+  file systems to find the [C:/Kernel/KStart.CPP.Z,1] Stage2 if you relocate it.
 +] Why is there some 16-Bit code?
   TempleOS is 64-bit.  Like all PC operating systems, the boot-loader starts
   in 16-bit real-mode.  TempleOS calls a few BIOS info routines, switches to
@@ -171,7 +170,7 @@
 +] How do you use the FS and GS segment registers.
   MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP
   relative, so it's tricky to use.  FS is used for the current
-  [C:/Kernel/KernelA.HPP.Z,3318] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3442]
+  [C:/Kernel/KernelA.HPP.Z,3320] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3445]
   CCPU.
 +] How do I set ORG for position of code?
   The compiler creates pos independent code.  Don't create code which is
@@ -181,7 +180,7 @@
   Binary executable files have export syms which are loaded into the sym
   tables.  The operating system Kernel has such an export table.  In addition,
   some map files are processed to provide more information on syms -- src file
-  links.  This is how the [C:/Kernel/FunSeg.CPP.Z,316] Man()/AutoComplete
+  links.  This is how the [C:/Kernel/FunSeg.CPP.Z,324] Man()/AutoComplete
   feature can find src lines.
 +] Why doesn't assert work?
   #assert might print a message at COMPILE time, not run time.

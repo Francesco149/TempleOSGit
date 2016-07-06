@@ -23,5 +23,4 @@ differs from [C:/Kernel/SrvCmd.CPP.Z,465] AutoStr().  You'll probably use
 [C:/Kernel/SrvCmd.CPP.Z,465] AutoStr().  
 With [C:/Kernel/SrvCmd.CPP.Z,483] Auto(), for example, you can place answers
 to the prompts for recompiling 
-the Kernel module during [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
-MakeOSDrvBootInstall().
+the Kernel module during [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().

@@ -35,9 +35,9 @@ U0 DrvsRelease()
   }
 }
 
-CDrv *DrvMakeFree(U8 drv_let)
-{//Make a slot free for a new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount().
-//!!! drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,225] remapped drv.
+CDrv *DrvMakeFreeSlot(U8 drv_let)
+{//Make a slot free for a new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,127] Mount().
+//!!! drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,242] remapped drv.
   I64 i=ToUpper(drv_let)-'A';
   CDrv *res;
   if (!(0<=i<NUM_DRVS))
@@ -48,18 +48,22 @@ CDrv *DrvMakeFree(U8 drv_let)
   return res;
 }
 
-CDrv *DrvNextFree(U8 first_drv_let='C')
-{//Locate free slot for new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount().
-//!!! first_drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,225] remapped drv.
-  I64 i=ToUpper(first_drv_let)-'A';
+U8 DrvNextFreeLet(U8 first_drv_let='C')
+{//Locate free slot for new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,127] Mount().
+//!!! first_drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,242] remapped drv.
+  I64 i=ToUpper(first_drv_let)-'A',type=Let2BlkDevType(first_drv_let);
   if (!(0<=i<NUM_DRVS))
     throw('Drv');
   do
-    if (blkdev.drvs[i].dv_signature!=DRV_SIGNATURE_VAL)
-      return DrvMakeFree(i+'A');
+    if (blkdev.drvs[i].dv_signature!=DRV_SIGNATURE_VAL) {
+      if (Let2BlkDevType(i+'A')!=type)
+	throw('Drv');
+      else
+	return i+'A';
+    }
   while (++i<NUM_DRVS);
   throw('Drv');
-  return NULL; //never gets here
+  return 0; //Never gets here.
 }
 
 U0 DrvDel(CDrv *dv)
@@ -69,6 +73,17 @@ U0 DrvDel(CDrv *dv)
   Free(dv->cur_fat_blk);
   Free(dv->fis);
   MemSet(dv,0,sizeof(CDrv));
+}
+
+U0 DrvBlkDevDel(CBlkDev *bd)
+{//Delete drv's of BlkDev
+  I64 i;
+  CDrv *dv;
+  for (i=0;i<NUM_DRVS;i++) {
+    dv=&blkdev.drvs[i];
+    if (dv->bd==bd)
+      DrvDel(dv);
+  }
 }
 
 U0 DrvFATBlkAlloc(CDrv *dv)
@@ -81,7 +96,7 @@ U0 DrvFATBlkAlloc(CDrv *dv)
   RBlks(dv,dv->cur_fat_blk,dv->fat1,1);
 }
 
-U0 DrvFATBlkClean(CDrv *dv,I64 fat_select=3)
+U0 DrvFATBlkClean(CDrv *dv,I64 fat_sel=3)
 {
   if ((dv->fs_type==FSt_FAT32 || dv->fs_type==FSt_REDSEA) &&
        Bt(&dv->fat_blk_dirty,0)) {
@@ -89,9 +104,9 @@ U0 DrvFATBlkClean(CDrv *dv,I64 fat_select=3)
       WBlks(dv,dv->cur_fat_blk,dv->fat1+dv->cur_fat_blk_num,1);
       LBtr(&dv->fat_blk_dirty,0);
     } else {
-      if (fat_select==3 || !fat_select)
+      if (fat_sel==3 || !fat_sel)
 	WBlks(dv,dv->cur_fat_blk,dv->fat1+dv->cur_fat_blk_num,1);
-      if (fat_select==3 || fat_select==1) {
+      if (fat_sel==3 || fat_sel==1) {
 	WBlks(dv,dv->cur_fat_blk,dv->fat2+dv->cur_fat_blk_num,1);
 	LBtr(&dv->fat_blk_dirty,0);
       }
@@ -99,7 +114,7 @@ U0 DrvFATBlkClean(CDrv *dv,I64 fat_select=3)
   }
 }
 
-U0 DrvFATBlkSet(CDrv *dv,I64 c,I64 fat_select=3)
+U0 DrvFATBlkSet(CDrv *dv,I64 c,I64 fat_sel=3)
 {
   I64 fat_blk_num;
   if (c==INVALID_CLUSTER)
@@ -115,9 +130,9 @@ U0 DrvFATBlkSet(CDrv *dv,I64 c,I64 fat_select=3)
       throw('Drv');
   }
   if (fat_blk_num!=dv->cur_fat_blk_num) {
-    DrvFATBlkClean(dv,fat_select);
+    DrvFATBlkClean(dv,fat_sel);
     dv->cur_fat_blk_num=fat_blk_num;
-    if (fat_select==3 || !fat_select)
+    if (fat_sel==3 || !fat_sel)
       RBlks(dv,dv->cur_fat_blk,dv->fat1+dv->cur_fat_blk_num,1);
     else
       RBlks(dv,dv->cur_fat_blk,dv->fat2+dv->cur_fat_blk_num,1);
@@ -144,14 +159,16 @@ U8 Drv2Let(CDrv *dv=NULL)
 }
 
 I64 Let2BlkDevType(U8 drv_let)
-{//Drv letter to BlkDev Type. drv_let=0 not allowed. See [C:/Kernel/KernelA.HPP.Z,2628] BDT_NULL.
+{//Drv letter to BlkDev Type. drv_let=0 not allowed. See [C:/Kernel/KernelA.HPP.Z,2629] BDT_NULL.
   drv_let=ToUpper(drv_let);
   if ('A'<=drv_let<='B')
     return BDT_RAM;
   if ('C'<=drv_let<='L')
     return BDT_ATA;
-  if ('M'<=drv_let<='S')
-    return BDT_FILE;
+  if ('M'<=drv_let<='P')
+    return BDT_FILE_READ;
+  if ('Q'<=drv_let<='S')
+    return BDT_FILE_WRITE;
   if ('T'<=drv_let<='Z')
     return BDT_ATAPI;
   return BDT_NULL;
@@ -192,7 +209,7 @@ CBlkDev *DrvIsWritable(U8 drv_let=0,Bool except=FALSE)
 }
 
 U0 DskCacheInvalidate(CDrv *dv)
-{//Needed for removable media. Called by [C:/Kernel/BlkDev/DskDrv.CPP.Z,213] ChgDsk().
+{//Needed for removable media. Called by [C:/Kernel/BlkDev/DskDrv.CPP.Z,230] ChgDsk().
   Bool unlock;
   CBlkDev *bd=dv->bd;
   DrvChk(dv);
@@ -241,7 +258,8 @@ Bool Drv(U8 drv_let)
   if (dv!=Fs->cur_dv) {
     if (bd->flags & BDF_REMOVABLE && !(bd->flags & BDF_INITIALIZED))
       ChgDsk(Drv2Let(dv));
-    if (bd->type==BDT_RAM || bd->type=BDT_FILE)
+    if (bd->type==BDT_RAM ||
+	bd->type==BDT_FILE_READ || bd->type==BDT_FILE_WRITE)
       BlkDevInit(bd);
   }
   Fs->cur_dv=dv;
@@ -288,7 +306,7 @@ U8 *DrvModelNum(U8 drv_let=0)
   return res;
 }
 
-U8 blkdev_text_attr[BDT_NUM_TYPES]={BLACK,LTCYAN,WHITE,LTGREEN,LTBLUE};
+U8 blkdev_text_attr[BDT_NUM_TYPES]={BLACK,LTCYAN,WHITE,LTGREEN,LTRED,LTBLUE};
 U8 drv_text_attr[3]={BLACK,BLUE,RED};
 
 U8 DrvTextAttrGet(U8 drv_let=0)
@@ -325,7 +343,7 @@ U0 DrvRep()
       else
 	ch='+';
       attr=DrvTextAttrGet(drv_let);
-      "$FG,%d$$BG,%d$%C %-8Z %-9Z %04X %04X %02X\n",
+      "$FG,%d$$BG,%d$%C %-8Z %-10Z %04X %04X %02X\n",
 	    attr&15,attr>>4,drv_let,dv->fs_type&FSG_TYPE_MASK,"ST_DRV_TYPES",
 	    bd->type,"ST_BLKDEV_TYPES",bd->base0,bd->base1,bd->unit;
       if (st=DrvModelNum(drv_let)) {
@@ -336,6 +354,8 @@ U0 DrvRep()
 	"   Serial#:%s\n",st;
 	Free(st);
       }
+      if (bd->type==BDT_FILE_READ || bd->type==BDT_FILE_WRITE)
+	"   File=\"%s\"\n",bd->file_dsk_name;
       "   %016X-%016X\n$FG$$BG$",dv->drv_offset,dv->drv_offset+dv->size-1;
     }
   }

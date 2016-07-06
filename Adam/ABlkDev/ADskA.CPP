@@ -235,7 +235,7 @@ public U0 Touch(U8 *files_find_mask="*",U8 *attr="+?",
 Default lists attributes.
 attr: "+?" =show current
 "+T" =resident
-[C:/Kernel/KernelA.HPP.Z,2525] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
+[C:/Kernel/KernelA.HPP.Z,2526] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
 To Set DateL:
 Touch(filename,"",,datetime);
 */

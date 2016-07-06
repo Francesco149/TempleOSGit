@@ -274,6 +274,141 @@ ff_done:
   return res;
 }
 
+I64 GrFillSemiCircle(CDC *dc=gr.dc,I64 cx,I64 cy,I64 z=0,I64 diameter,I64 n)
+{//2D. Clipping but not transformation.
+  I64 res=0,i,k,r=diameter>>1,rr;
+  if (diameter>=1)
+    switch (n) {
+      case 0:
+	if (diameter<GR_NUM_PEN_BRUSHES)
+	  for (i=0;i<r;i++)
+	    res+=GrHLine(dc,gr.circle_lo[diameter][i]+cx,
+		  gr.circle_hi[diameter][i]+cx,cy+i-r,z,z);
+	else {
+	  k=diameter+1;
+	  rr=SqrI64((k+1)>>1);
+	  for (i=0;i<r;i++)
+	    res+=GrHLine(dc,-Sqrt(rr-SqrI64(r-i))+cx,
+		  Sqrt(rr-SqrI64(r-i))+cx,cy+i-r,z,z);
+	}
+	break;
+      case 1:
+	if (diameter<GR_NUM_PEN_BRUSHES)
+	  for (i=r+1;i<diameter;i++)
+	    res+=GrHLine(dc,gr.circle_lo[diameter][i]+cx,
+		  gr.circle_hi[diameter][i]+cx,cy+i-r,z,z);
+	else {
+	  k=diameter+1;
+	  rr=SqrI64((k+1)>>1);
+	  for (i=r+1;i<k;i++)
+	    res+=GrHLine(dc,-Sqrt(rr-SqrI64(i-r))+cx,
+		  Sqrt(rr-SqrI64(i-r))+cx,cy+i-r,z,z);
+	}
+	break;
+      case 2:
+	if (diameter<GR_NUM_PEN_BRUSHES)
+	  for (i=0;i<r;i++)
+	    res+=GrVLine(dc,cx+i-r,gr.circle_lo[diameter][i]+cy,
+		  gr.circle_hi[diameter][i]+cy,z,z);
+	else {
+	  k=diameter+1;
+	  rr=SqrI64((k+1)>>1);
+	  for (i=0;i<r;i++)
+	    res+=GrVLine(dc,cx+i-r,-Sqrt(rr-SqrI64(r-i))+cy,
+		  Sqrt(rr-SqrI64(r-i))+cy,z,z);
+	}
+	break;
+      case 3:
+	if (diameter<GR_NUM_PEN_BRUSHES)
+	  for (i=r+1;i<diameter;i++)
+	    res+=GrVLine(dc,cx+i-r,gr.circle_lo[diameter][i]+cy,
+		  gr.circle_hi[diameter][i]+cy,z,z);
+	else {
+	  k=diameter+1;
+	  rr=SqrI64((k+1)>>1);
+	  for (i=r+1;i<k;i++)
+	    res+=GrVLine(dc,cx+i-r,-Sqrt(rr-SqrI64(i-r))+cy,
+		  Sqrt(rr-SqrI64(i-r))+cy,z,z);
+	}
+	break;
+      case 4:
+	if (diameter<GR_NUM_PEN_BRUSHES)
+	  for (i=0;i<r;i++)
+	    res+=GrHLine(dc,gr.circle_lo[diameter][i]+cx,
+		  gr.circle_hi[diameter][i]+cx,cy+i-r,z,z);
+	else {
+	  k=diameter+1;
+	  rr=SqrI64((k+1)>>1);
+	  for (i=0;i<r;i++)
+	    res+=GrHLine(dc,-Sqrt(rr-SqrI64(r-i))+cx,
+		  Sqrt(rr-SqrI64(r-i))+cx,cy+i-r,z,z);
+	}
+	break;
+      case 5:
+	if (diameter<GR_NUM_PEN_BRUSHES)
+	  for (i=r+1;i<diameter;i++)
+	    res+=GrHLine(dc,gr.circle_lo[diameter][i]+cx,
+		  gr.circle_hi[diameter][i]+cx,cy+i-r,z,z);
+	else {
+	  k=diameter+1;
+	  rr=SqrI64((k+1)>>1);
+	  for (i=r+1;i<k;i++)
+	    res+=GrHLine(dc,-Sqrt(rr-SqrI64(i-r))+cx,
+		  Sqrt(rr-SqrI64(i-r))+cx,cy+i-r,z,z);
+	}
+	break;
+      case 6:
+	if (diameter<GR_NUM_PEN_BRUSHES)
+	  for (i=0;i<r;i++)
+	    res+=GrVLine(dc,cx+i-r,gr.circle_lo[diameter][i]+cy,
+		  gr.circle_hi[diameter][i]+cy,z,z);
+	else {
+	  k=diameter+1;
+	  rr=SqrI64((k+1)>>1);
+	  for (i=0;i<r;i++)
+	    res+=GrVLine(dc,cx+i-r,-Sqrt(rr-SqrI64(r-i))+cy,
+		  Sqrt(rr-SqrI64(r-i))+cy,z,z);
+	}
+	break;
+      case 7:
+	if (diameter<GR_NUM_PEN_BRUSHES)
+	  for (i=r+1;i<diameter;i++)
+	    res+=GrVLine(dc,cx+i-r,gr.circle_lo[diameter][i]+cy,
+		  gr.circle_hi[diameter][i]+cy,z,z);
+	else {
+	  k=diameter+1;
+	  rr=SqrI64((k+1)>>1);
+	  for (i=r+1;i<k;i++)
+	    res+=GrVLine(dc,cx+i-r,-Sqrt(rr-SqrI64(i-r))+cy,
+		  Sqrt(rr-SqrI64(i-r))+cy,z,z);
+	}
+	break;
+    }
+  return res;
+}
+
+public I64 GrFillCircle(CDC *dc=gr.dc,I64 cx,I64 cy,I64 z=0,I64 diameter)
+{//2D. Clipping but not transformation.
+  I64 res=0,i,k,r=diameter>>1,rr;
+  if (diameter>=1) {
+    if (diameter<GR_NUM_PEN_BRUSHES)
+      for (i=0;i<diameter;i++)
+	res+=GrHLine(dc,gr.circle_lo[diameter][i]+cx,
+	      gr.circle_hi[diameter][i]+cx,cy+i-r,z,z);
+    else {
+      k=diameter+1;
+      rr=SqrI64((k+1)>>1);
+      for (i=0;i<=r;i++)
+	res+=GrHLine(dc,-Sqrt(rr-SqrI64(r-i))+cx,
+	      Sqrt(rr-SqrI64(r-i))+cx,cy+i-r,z,z);
+      for (;i<k;i++)
+	res+=GrHLine(dc,-Sqrt(rr-SqrI64(i-r))+cx,
+	      Sqrt(rr-SqrI64(i-r))+cx,cy+i-r,z,z);
+    }
+  }
+  return res;
+}
+
 public Bool GrPlot3B(CDC *dc=gr.dc,I64 x,I64 y,I64 z)
 {//3D. Clipping and transformation but no pen_width.
   I64 _x,_y,_z;
@@ -305,7 +440,7 @@ gr_done:
 
 public Bool GrPlot3(CDC *dc=gr.dc,I64 x,I64 y,I64 z)
 {//3D. Clipping and transformation and pen width.
-  I64 _x,_y,_z,i,j,w,dist;
+  I64 _x,_y,_z,w,dist;
   CColorROPU32 old_color=dc->color;
   Bool record,was_transform=FALSE,was_symmetry=FALSE;
   CTask *win_task;
@@ -401,15 +536,8 @@ public Bool GrPlot3(CDC *dc=gr.dc,I64 x,I64 y,I64 z)
 	}
       }
     }
-  } else if (dc->pen_width & 1) {//TODO Dither
-    for (i=-w;i<=w;i++)
-      for (j=-w;j<=w;j++)
-	GrPlot1(dc,x+i,y+j);
-  } else {
-    for (i=-w;i<w;i++)
-      for (j=-w;j<w;j++)
-	GrPlot1(dc,x+i,y+j);
-  }
+  } else
+    GrFillCircle(dc,x,y,dc->db_z,dc->pen_width);
 gr_done:
   dc->color=old_color;
   if (was_transform)
@@ -523,68 +651,119 @@ I64 GrLineFat3(CDC *dc=gr.dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,
 	I64 width,I64 start=0)
 {//Step through line segment calling callback.
 //Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
-  I64 res=0,i,j,d,dx=x2-x1,dy=y2-y1,dz=z2-z1,_x,_y,_z,
-	d_lo=width>>1,d_hi=(width-1)>>1,
+  I64 res=0,i,j,d,dx=x2-x1,dy=y2-y1,dz=z2-z1,_x,_y,_z,d_lo,d_hi,
 	adx=AbsI64(dx),ady=AbsI64(dy),adz=AbsI64(dz);
-  if (adx>=ady) {
-    if (adx>=adz) {
-      if (d=adx) {
-	if (dx>=0)
-	  dx=0x100000000;
-	else
-	  dx=-0x100000000;
-	dy=dy<<32/d;
-	dz=dz<<32/d;
+  if (width>0) {
+    if (adx>=ady) {
+      if (adx>=adz) {
+	if (d=adx) {
+	  if (dx>=0)
+	    dx=0x100000000;
+	  else
+	    dx=-0x100000000;
+	  dy=dy<<32/d;
+	  dz=dz<<32/d;
+	}
+      } else {
+	if (d=adz) {
+	  dx=dx<<32/d;
+	  dy=dy<<32/d;
+	  if (dz>=0)
+	    dz=0x100000000;
+	  else
+	    dz=-0x100000000;
+	}
+      }
+      x1<<=32; y1<<=32; z1<<=32;
+      for (j=0;j<start;j++) {
+	x1+=dx; y1+=dy; z1+=dz;
+      }
+      if (start>=d)
+	res+=GrFillCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width);
+      else {
+	if (width==1)
+	  for (i=start;i<=d;i++) {
+	    dc->db_z=z1.i32[1];
+	    res+=GrPlot1(dc,x1.i32[1],y1.i32[1]);
+	    _x=x1.i32[1]; _y=y1.i32[1]; _z=z1.i32[1];
+	    x1+=dx; y1+=dy; z1+=dz;
+	  }
+	else {
+	  i=width*Sqrt(SqrI64(adx)+SqrI64(ady))/adx;
+	  d_lo=i>>1; d_hi=(i-1)>>1;
+
+	  if (dx>=0)
+	    res+=GrFillSemiCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width,2);
+	  else
+	    res+=GrFillSemiCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width,7);
+	  for (i=start;i<=d;i++) {
+	    res+=GrVLine(dc,x1.i32[1],y1.i32[1]-d_lo,y1.i32[1]+d_hi,
+		  z1.i32[1],z1.i32[1]);
+	    _x=x1.i32[1]; _y=y1.i32[1]; _z=z1.i32[1];
+	    x1+=dx; y1+=dy; z1+=dz;
+	  }
+	  x1-=dx; y1-=dy; z1-=dz;
+	  if (dx>=0)
+	    res+=GrFillSemiCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width,3);
+	  else
+	    res+=GrFillSemiCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width,6);
+	}
       }
     } else {
-      if (d=adz) {
-	dx=dx<<32/d;
-	dy=dy<<32/d;
-	if (dz>=0)
-	  dz=0x100000000;
-	else
-	  dz=-0x100000000;
+      if (ady>=adz) {
+	if (d=ady) {
+	  dx=dx<<32/d;
+	  if (dy>=0)
+	    dy=0x100000000;
+	  else
+	    dy=-0x100000000;
+	  dz=dz<<32/d;
+	}
+      } else {
+	if (d=adz) {
+	  dx=dx<<32/d;
+	  dy=dy<<32/d;
+	  if (dz>=0)
+	    dz=0x100000000;
+	  else
+	    dz=-0x100000000;
+	}
       }
-    }
-    x1<<=32; y1<<=32; z1<<=32;
-    for (j=0;j<start;j++) {
-      x1+=dx; y1+=dy; z1+=dz;
-    }
-    for (i=start;i<=d;i++) {
-      res+=GrVLine(dc,x1.i32[1],y1.i32[1]-d_lo,y1.i32[1]+d_hi,
-	    z1.i32[1],z1.i32[1]);
-      _x=x1.i32[1]; _y=y1.i32[1]; _z=z1.i32[1];
-      x1+=dx; y1+=dy; z1+=dz;
-    }
-  } else {
-    if (ady>=adz) {
-      if (d=ady) {
-	dx=dx<<32/d;
-	if (dy>=0)
-	  dy=0x100000000;
-	else
-	  dy=-0x100000000;
-	dz=dz<<32/d;
+      x1<<=32; y1<<=32; z1<<=32;
+      for (j=0;j<start;j++) {
+	x1+=dx; y1+=dy; z1+=dz;
       }
-    } else {
-      if (d=adz) {
-	dx=dx<<32/d;
-	dy=dy<<32/d;
-	if (dz>=0)
-	  dz=0x100000000;
-	else
-	  dz=-0x100000000;
+      if (start>=d)
+	res+=GrFillCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width);
+      else {
+	if (width==1)
+	  for (i=start;i<=d;i++) {
+	    dc->db_z=z1.i32[1];
+	    res+=GrPlot1(dc,x1.i32[1],y1.i32[1]);
+	    _x=x1.i32[1]; _y=y1.i32[1]; _z=z1.i32[1];
+	    x1+=dx; y1+=dy; z1+=dz;
+	  }
+	else {
+	  i=width*Sqrt(SqrI64(ady)+SqrI64(adx))/ady;
+	  d_lo=i>>1; d_hi=(i-1)>>1;
+
+	  if (dy>=0)
+	    res+=GrFillSemiCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width,0);
+	  else
+	    res+=GrFillSemiCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width,5);
+	  for (i=start;i<=d;i++) {
+	    res+=GrHLine(dc,x1.i32[1]-d_lo,x1.i32[1]+d_hi,y1.i32[1],
+		  z1.i32[1],z1.i32[1]);
+	    _x=x1.i32[1]; _y=y1.i32[1]; _z=z1.i32[1];
+	    x1+=dx; y1+=dy; z1+=dz;
+	  }
+	  x1-=dx; y1-=dy; z1-=dz;
+	  if (dy>=0)
+	    res+=GrFillSemiCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width,1);
+	  else
+	    res+=GrFillSemiCircle(dc,x1.i32[1],y1.i32[1],z1.i32[1],width,4);
+	}
       }
-    }
-    x1<<=32; y1<<=32; z1<<=32;
-    for (j=0;j<start;j++) {
-      x1+=dx; y1+=dy; z1+=dz;
-    }
-    for (i=start;i<=d;i++) {
-      res+=GrHLine(dc,x1.i32[1]-d_lo,x1.i32[1]+d_hi,y1.i32[1],
-	    z1.i32[1],z1.i32[1]);
-      _x=x1.i32[1]; _y=y1.i32[1]; _z=z1.i32[1];
-      x1+=dx; y1+=dy; z1+=dz;
     }
   }
   return res;
@@ -612,11 +791,7 @@ public Bool GrLine3(CDC *dc=gr.dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,
 	if (DCClipLine(dc,&_x1,&_y1,&_x2,&_y2))
 	  res=Line(dc,_x1,_y1,0,_x2,_y2,0,&GrLinePlot0,step,start);
       } else {
-	if (GrPlot3(dc,_x1,_y1,_z1))
-	  res=TRUE;
 	if (GrLineFat3(dc,_x1,_y1,_z1,_x2,_y2,_z2,dc->pen_width,start))
-	  res=TRUE;
-	if (GrPlot3(dc,_x2,_y2,_z2))
 	  res=TRUE;
       }
     } else
@@ -630,11 +805,7 @@ public Bool GrLine3(CDC *dc=gr.dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,
       if (DCClipLine(dc,&x1,&y1,&x2,&y2))
 	res|=Line(dc,x1,y1,0,x2,y2,0,&GrLinePlot0,step,start);
     } else {
-      if (GrPlot3(dc,x1,y1,z1))
-	res=TRUE;
       if (GrLineFat3(dc,x1,y1,z1,x2,y2,z2,dc->pen_width,start))
-	res=TRUE;
-      if (GrPlot3(dc,x2,y2,z2))
 	res=TRUE;
     }
   } else
@@ -1225,312 +1396,424 @@ gr_done:
 
 public I64 GrFillTri0(CDC *dc=gr.dc,CD3I32 *p1,CD3I32 *p2,CD3I32 *p4)
 {//3D. Returns cnt of pixs changed
-  I64 x1,x2,y,z1,z2,dx1,dy1,dz1,dx2,dy2,dz2,res=0,i,y_min,y_max;
+  I64 x1,x2,y1,y2,z1,z2,dx1,dy1,dz1,dx2,dy2,dz2,res=0,i,min,max;
   CTask *win_task;
+
+  if (AbsI64(p1->y-p2->y)+AbsI64(p1->y-p4->y)<=
+	AbsI64(p1->x-p2->x)+AbsI64(p1->x-p4->x)) {
 //p1 is min x
-  if (p4->x<p2->x)
-    SwapI64(&p4,&p2);
-  if (p2->x<p1->x)
-    SwapI64(&p2,&p1);
+    if (p4->x<p2->x)
+      SwapI64(&p4,&p2);
+    if (p2->x<p1->x)
+      SwapI64(&p2,&p1);
 
-    //p2y<=p4y
-  if (p4->y<p2->y)
-    SwapI64(&p4,&p2);
+      //p2y<=p4y
+    if (p4->y<p2->y)
+      SwapI64(&p4,&p2);
 
-  y_min=0;
-  y_max=dc->height;
-  if (dc->flags & DCF_SCREEN_BITMAP) {
-    win_task=dc->win_task;
-    y_min-=win_task->scroll_y+win_task->pix_top;
-    y_max-=win_task->scroll_y+win_task->pix_top;
-    if (y_max>win_task->pix_bottom-(win_task->scroll_y+win_task->pix_top))
-      y_max=win_task->pix_bottom-(win_task->scroll_y+win_task->pix_top);
-  }
-
-  if ((dy2=p4->y-p1->y)<0) {
-/*
-p1x<= {p2x,p4x}
-
-p2y<=
-p4y<
-p1y
-
- 6
- 1
-
-  6
- 1
-
- 24
- 1
-
- 42
- 1
-
- 2
-  4
- 1
-
-  24
- 1
-
-  42
- 1
-
-     2
-  4
- 1
-
-*/
-    dy1=p2->y-p1->y;
-    dx1=(p1->x-p2->x)<<32/dy1;
-    dz1=(p1->z-p2->z)<<32/dy1;
-
-    dx2=(p1->x-p4->x)<<32/dy2;
-    dz2=(p1->z-p4->z)<<32/dy2;
-    x1=x2=p1->x<<32; y=p1->y; z1=z2=p1->z<<32;
-    if (y+dy2<y_min) {
-      i=y_min-(y+dy2);
-      if (i>-dy2) goto ft_done;
-      dy2+=i;
+    min=0;
+    max=dc->height;
+    if (dc->flags & DCF_SCREEN_BITMAP) {
+      win_task=dc->win_task;
+      min-=win_task->scroll_y+win_task->pix_top;
+      max-=win_task->scroll_y+win_task->pix_top;
+      if (max>win_task->pix_bottom-(win_task->scroll_y+win_task->pix_top))
+	max=win_task->pix_bottom-(win_task->scroll_y+win_task->pix_top);
     }
-    if (y>=y_max) {
-      i=y-y_max+1;
-      if (i>-dy2)
-	i=-dy2;
-      dy2+=i;
-      y-=i;
-      x1+=dx1*i;
-      x2+=dx2*i;
-      z1+=dz1*i;
-      z2+=dz2*i;
-    }
-    while (dy2++) {
-      res+=GrHLine(dc,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
-      y--;
-      x1+=dx1;
-      x2+=dx2;
-      z1+=dz1;
-      z2+=dz2;
-    }
-    if (dy2=p2->y-p4->y) {
-      dx2=(p4->x-p2->x)<<32/dy2;
-      dz2=(p4->z-p2->z)<<32/dy2;
-      if (y+dy2<y_min) {
-	i=y_min-(y+dy2);
+
+    if ((dy2=p4->y-p1->y)<0) {
+      dy1=p2->y-p1->y;
+      dx1=(p1->x-p2->x)<<32/dy1;
+      dz1=(p1->z-p2->z)<<32/dy1;
+
+      dx2=(p1->x-p4->x)<<32/dy2;
+      dz2=(p1->z-p4->z)<<32/dy2;
+      x1=x2=p1->x<<32; y1=p1->y; z1=z2=p1->z<<32;
+      if (y1+dy2<min) {
+	i=min-(y1+dy2);
 	if (i>-dy2) goto ft_done;
 	dy2+=i;
       }
-      if (y>=y_max) {
-	i=y-y_max+1;
-	if (i>-dy2) goto ft_done;
+      if (y1>=max) {
+	i=y1-max+1;
+	if (i>-dy2)
+	  i=-dy2;
 	dy2+=i;
-	y-=i;
+	y1-=i;
 	x1+=dx1*i;
 	x2+=dx2*i;
 	z1+=dz1*i;
 	z2+=dz2*i;
       }
-    }
-    while (dy2++<=0) {
-      res+=GrHLine(dc,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
-      y--;
-      x1+=dx1;
-      x2+=dx2;
-      z1+=dz1;
-      z2+=dz2;
-    }
-  } else if ((dy2=p2->y-p1->y)>0) {
-/*
-p1x<= {p2x,p4x}
+      while (dy2++) {
+	res+=GrHLine(dc,x1.i32[1],x2.i32[1],y1,z1.i32[1],z2.i32[1]);
+	y1--;
+	x1+=dx1;
+	x2+=dx2;
+	z1+=dz1;
+	z2+=dz2;
+      }
+      if (dy2=p2->y-p4->y) {
+	dx2=(p4->x-p2->x)<<32/dy2;
+	dz2=(p4->z-p2->z)<<32/dy2;
+	if (y1+dy2<min) {
+	  i=min-(y1+dy2);
+	  if (i>-dy2) goto ft_done;
+	  dy2+=i;
+	}
+	if (y1>=max) {
+	  i=y1-max+1;
+	  if (i>-dy2) goto ft_done;
+	  dy2+=i;
+	  y1-=i;
+	  x1+=dx1*i;
+	  x2+=dx2*i;
+	  z1+=dz1*i;
+	  z2+=dz2*i;
+	}
+      }
+      while (dy2++<=0) {
+	res+=GrHLine(dc,x1.i32[1],x2.i32[1],y1,z1.i32[1],z2.i32[1]);
+	y1--;
+	x1+=dx1;
+	x2+=dx2;
+	z1+=dz1;
+	z2+=dz2;
+      }
+    } else if ((dy2=p2->y-p1->y)>0) {
+      dy1=p4->y-p1->y;
+      dx1=(p4->x-p1->x)<<32/dy1;
+      dz1=(p4->z-p1->z)<<32/dy1;
 
-p1y<
-p2y<=
-p4y
-
- 1
- 6
-
- 1
-  6
-
- 1
-  2
-  4
-
- 1
-   2
-  4
-
- 1
-  2
-       4
-
-*/
-    dy1=p4->y-p1->y;
-    dx1=(p4->x-p1->x)<<32/dy1;
-    dz1=(p4->z-p1->z)<<32/dy1;
-
-    dx2=(p2->x-p1->x)<<32/dy2;
-    dz2=(p2->z-p1->z)<<32/dy2;
-    x1=x2=p1->x<<32; y=p1->y; z1=z2=p1->z<<32;
-    if (y+dy2>=y_max) {
-      i=y+dy2-y_max+1;
-      if (i>dy2) goto ft_done;
-      dy2-=i;
-    }
-    if (y<y_min) {
-      i=y_min-y;
-      if (i>dy2)
-	i=dy2;
-      dy2-=i;
-      y+=i;
-      x1+=dx1*i;
-      x2+=dx2*i;
-      z1+=dz1*i;
-      z2+=dz2*i;
-    }
-    while (dy2--) {
-      res+=GrHLine(dc,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
-      y++;
-      x1+=dx1;
-      x2+=dx2;
-      z1+=dz1;
-      z2+=dz2;
-    }
-    if (dy2=p4->y-p2->y) {
-      dx2=(p4->x-p2->x)<<32/dy2;
-      dz2=(p4->z-p2->z)<<32/dy2;
-      if (y+dy2>=y_max) {
-	i=y+dy2-y_max+1;
+      dx2=(p2->x-p1->x)<<32/dy2;
+      dz2=(p2->z-p1->z)<<32/dy2;
+      x1=x2=p1->x<<32; y1=p1->y; z1=z2=p1->z<<32;
+      if (y1+dy2>=max) {
+	i=y1+dy2-max+1;
 	if (i>dy2) goto ft_done;
 	dy2-=i;
       }
-      if (y<y_min) {
-	i=y_min-y;
-	if (i>dy2) goto ft_done;
+      if (y1<min) {
+	i=min-y1;
+	if (i>dy2)
+	  i=dy2;
 	dy2-=i;
-	y+=i;
+	y1+=i;
 	x1+=dx1*i;
 	x2+=dx2*i;
 	z1+=dz1*i;
 	z2+=dz2*i;
       }
-    }
-    while (dy2-->=0) {
-      res+=GrHLine(dc,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
-      y++;
-      x1+=dx1;
-      x2+=dx2;
-      z1+=dz1;
-      z2+=dz2;
+      while (dy2--) {
+	res+=GrHLine(dc,x1.i32[1],x2.i32[1],y1,z1.i32[1],z2.i32[1]);
+	y1++;
+	x1+=dx1;
+	x2+=dx2;
+	z1+=dz1;
+	z2+=dz2;
+      }
+      if (dy2=p4->y-p2->y) {
+	dx2=(p4->x-p2->x)<<32/dy2;
+	dz2=(p4->z-p2->z)<<32/dy2;
+	if (y1+dy2>=max) {
+	  i=y1+dy2-max+1;
+	  if (i>dy2) goto ft_done;
+	  dy2-=i;
+	}
+	if (y1<min) {
+	  i=min-y1;
+	  if (i>dy2) goto ft_done;
+	  dy2-=i;
+	  y1+=i;
+	  x1+=dx1*i;
+	  x2+=dx2*i;
+	  z1+=dz1*i;
+	  z2+=dz2*i;
+	}
+      }
+      while (dy2-->=0) {
+	res+=GrHLine(dc,x1.i32[1],x2.i32[1],y1,z1.i32[1],z2.i32[1]);
+	y1++;
+	x1+=dx1;
+	x2+=dx2;
+	z1+=dz1;
+	z2+=dz2;
+      }
+    } else {
+      if (dy1=p2->y-p1->y) {
+	dx1=(p2->x-p1->x)<<32/dy1;
+	dz1=(p2->z-p1->z)<<32/dy1;
+	if (dy2=p2->y-p4->y) {
+	  dx2=(p2->x-p4->x)<<32/dy2;
+	  dz2=(p2->z-p4->z)<<32/dy2;
+	} else {
+	  dx2=0;
+	  dz2=0;
+	}
+	x1=x2=p2->x<<32; y1=p2->y; z1=z2=p2->z<<32;
+	if (y1<min) {
+	  i=min-y1;
+	  if (i>-dy1)
+	    i=-dy1;
+	  dy1+=i;
+	  y1+=i;
+	  x1+=dx1*i;
+	  x2+=dx2*i;
+	  z1+=dz1*i;
+	  z2+=dz2*i;
+	}
+	while (dy1++<=0) {
+	  if (y1<max)
+	    res+=GrHLine(dc,x1.i32[1],x2.i32[1],y1,z1.i32[1],z2.i32[1]);
+	  y1++;
+	  x1+=dx1;
+	  x2+=dx2;
+	  z1+=dz1;
+	  z2+=dz2;
+	}
+      }
+      if (dy1=p4->y-p1->y) {
+	dx1=(p1->x-p4->x)<<32/dy1;
+	dz1=(p1->z-p4->z)<<32/dy1;
+	if (dy2=p4->y-p2->y) {
+	  dx2=(p2->x-p4->x)<<32/dy2;
+	  dz2=(p2->z-p4->z)<<32/dy2;
+	} else {
+	  dx2=0;
+	  dz2=0;
+	}
+	x1=x2=p4->x<<32; y1=p4->y; z1=z2=p4->z<<32;
+	if (y1-dy1<min) {
+	  i=min-(y1-dy1);
+	  if (i>dy1) goto ft_done;
+	  dy1-=i;
+	}
+	if (y1>=max) {
+	  i=y1-max+1;
+	  if (i>dy1) goto ft_done;
+	  dy1-=i;
+	  y1-=i;
+	  x1+=dx1*i;
+	  x2+=dx2*i;
+	  z1+=dz1*i;
+	  z2+=dz2*i;
+	}
+	while (dy1-->=0) {
+	  res+=GrHLine(dc,x1.i32[1],x2.i32[1],y1,z1.i32[1],z2.i32[1]);
+	  y1--;
+	  x1+=dx1;
+	  x2+=dx2;
+	  z1+=dz1;
+	  z2+=dz2;
+	}
+      }
     }
   } else {
-/*
-p1x<= {p2x,p4x}
+//p1 is min y
+    if (p4->y<p2->y)
+      SwapI64(&p4,&p2);
+    if (p2->y<p1->y)
+      SwapI64(&p2,&p1);
 
-p2y<=
-p1y<=
-p4y
+      //p2x<=p4x
+    if (p4->x<p2->x)
+      SwapI64(&p4,&p2);
 
- 7
-
- 16
-
- 124
-
- 3
- 4
-
- 2
- 5
-
- 3
-  4
-
- 2
- 1
- 4
-
-  2
- 1
-  4
-
-    2
- 1
-  4
-
-
-  2
- 1
-    4
- 
-*/
-    if (dy1=p2->y-p1->y) {
-      dx1=(p2->x-p1->x)<<32/dy1;
-      dz1=(p2->z-p1->z)<<32/dy1;
-      if (dy2=p2->y-p4->y) {
-	dx2=(p2->x-p4->x)<<32/dy2;
-	dz2=(p2->z-p4->z)<<32/dy2;
-      } else {
-	dx2=0;
-	dz2=0;
-      }
-      x1=x2=p2->x<<32; y=p2->y; z1=z2=p2->z<<32;
-      if (y<y_min) {
-	i=y_min-y;
-	if (i>-dy1)
-	  i=-dy1;
-	dy1+=i;
-	y+=i;
-	x1+=dx1*i;
-	x2+=dx2*i;
-	z1+=dz1*i;
-	z2+=dz2*i;
-      }
-      while (dy1++<=0) {
-	if (y<y_max)
-	  res+=GrHLine(dc,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
-	y++;
-	x1+=dx1;
-	x2+=dx2;
-	z1+=dz1;
-	z2+=dz2;
-      }
+    min=0;
+    max=dc->width;
+    if (dc->flags & DCF_SCREEN_BITMAP) {
+      win_task=dc->win_task;
+      min-=win_task->scroll_x+win_task->pix_left;
+      max-=win_task->scroll_x+win_task->pix_left;
+      if (max>win_task->pix_right-(win_task->scroll_x+win_task->pix_left))
+	max=win_task->pix_right-(win_task->scroll_x+win_task->pix_left);
     }
-    if (dy1=p4->y-p1->y) {
-      dx1=(p1->x-p4->x)<<32/dy1;
-      dz1=(p1->z-p4->z)<<32/dy1;
-      if (dy2=p4->y-p2->y) {
-	dx2=(p2->x-p4->x)<<32/dy2;
-	dz2=(p2->z-p4->z)<<32/dy2;
-      } else {
-	dx2=0;
-	dz2=0;
+
+    if ((dx2=p4->x-p1->x)<0) {
+      dx1=p2->x-p1->x;
+      dy1=(p1->y-p2->y)<<32/dx1;
+      dz1=(p1->z-p2->z)<<32/dx1;
+
+      dy2=(p1->y-p4->y)<<32/dx2;
+      dz2=(p1->z-p4->z)<<32/dx2;
+      y1=y2=p1->y<<32; x1=p1->x; z1=z2=p1->z<<32;
+      if (x1+dx2<min) {
+	i=min-(x1+dx2);
+	if (i>-dx2) goto ft_done;
+	dx2+=i;
       }
-      x1=x2=p4->x<<32; y=p4->y; z1=z2=p4->z<<32;
-      if (y-dy1<y_min) {
-	i=y_min-(y-dy1);
-	if (i>dy1) goto ft_done;
-	dy1-=i;
-      }
-      if (y>=y_max) {
-	i=y-y_max+1;
-	if (i>dy1) goto ft_done;
-	dy1-=i;
-	y-=i;
-	x1+=dx1*i;
-	x2+=dx2*i;
+      if (x1>=max) {
+	i=x1-max+1;
+	if (i>-dx2)
+	  i=-dx2;
+	dx2+=i;
+	x1-=i;
+	y1+=dy1*i;
+	y2+=dy2*i;
 	z1+=dz1*i;
 	z2+=dz2*i;
       }
-      while (dy1-->=0) {
-	res+=GrHLine(dc,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
-	y--;
-	x1+=dx1;
-	x2+=dx2;
+      while (dx2++) {
+	res+=GrVLine(dc,x1,y1.i32[1],y2.i32[1],z1.i32[1],z2.i32[1]);
+	x1--;
+	y1+=dy1;
+	y2+=dy2;
 	z1+=dz1;
 	z2+=dz2;
+      }
+      if (dx2=p2->x-p4->x) {
+	dy2=(p4->y-p2->y)<<32/dx2;
+	dz2=(p4->z-p2->z)<<32/dx2;
+	if (x1+dx2<min) {
+	  i=min-(x1+dx2);
+	  if (i>-dx2) goto ft_done;
+	  dx2+=i;
+	}
+	if (x1>=max) {
+	  i=x1-max+1;
+	  if (i>-dx2) goto ft_done;
+	  dx2+=i;
+	  x1-=i;
+	  y1+=dy1*i;
+	  y2+=dy2*i;
+	  z1+=dz1*i;
+	  z2+=dz2*i;
+	}
+      }
+      while (dx2++<=0) {
+	res+=GrVLine(dc,x1,y1.i32[1],y2.i32[1],z1.i32[1],z2.i32[1]);
+	x1--;
+	y1+=dy1;
+	y2+=dy2;
+	z1+=dz1;
+	z2+=dz2;
+      }
+    } else if ((dx2=p2->x-p1->x)>0) {
+      dx1=p4->x-p1->x;
+      dy1=(p4->y-p1->y)<<32/dx1;
+      dz1=(p4->z-p1->z)<<32/dx1;
+
+      dy2=(p2->y-p1->y)<<32/dx2;
+      dz2=(p2->z-p1->z)<<32/dx2;
+      y1=y2=p1->y<<32; x1=p1->x; z1=z2=p1->z<<32;
+      if (x1+dx2>=max) {
+	i=x1+dx2-max+1;
+	if (i>dx2) goto ft_done;
+	dx2-=i;
+      }
+      if (x1<min) {
+	i=min-x1;
+	if (i>dx2)
+	  i=dx2;
+	dx2-=i;
+	x1+=i;
+	y1+=dy1*i;
+	y2+=dy2*i;
+	z1+=dz1*i;
+	z2+=dz2*i;
+      }
+      while (dx2--) {
+	res+=GrVLine(dc,x1,y1.i32[1],y2.i32[1],z1.i32[1],z2.i32[1]);
+	x1++;
+	y1+=dy1;
+	y2+=dy2;
+	z1+=dz1;
+	z2+=dz2;
+      }
+      if (dx2=p4->x-p2->x) {
+	dy2=(p4->y-p2->y)<<32/dx2;
+	dz2=(p4->z-p2->z)<<32/dx2;
+	if (x1+dx2>=max) {
+	  i=x1+dx2-max+1;
+	  if (i>dx2) goto ft_done;
+	  dx2-=i;
+	}
+	if (x1<min) {
+	  i=min-x1;
+	  if (i>dx2) goto ft_done;
+	  dx2-=i;
+	  x1+=i;
+	  y1+=dy1*i;
+	  y2+=dy2*i;
+	  z1+=dz1*i;
+	  z2+=dz2*i;
+	}
+      }
+      while (dx2-->=0) {
+	res+=GrVLine(dc,x1,y1.i32[1],y2.i32[1],z1.i32[1],z2.i32[1]);
+	x1++;
+	y1+=dy1;
+	y2+=dy2;
+	z1+=dz1;
+	z2+=dz2;
+      }
+    } else {
+      if (dx1=p2->x-p1->x) {
+	dy1=(p2->y-p1->y)<<32/dx1;
+	dz1=(p2->z-p1->z)<<32/dx1;
+	if (dx2=p2->x-p4->x) {
+	  dy2=(p2->y-p4->y)<<32/dx2;
+	  dz2=(p2->z-p4->z)<<32/dx2;
+	} else {
+	  dy2=0;
+	  dz2=0;
+	}
+	y1=y2=p2->y<<32; x1=p2->x; z1=z2=p2->z<<32;
+	if (x1<min) {
+	  i=min-x1;
+	  if (i>-dx1)
+	    i=-dx1;
+	  dx1+=i;
+	  x1+=i;
+	  y1+=dy1*i;
+	  y2+=dy2*i;
+	  z1+=dz1*i;
+	  z2+=dz2*i;
+	}
+	while (dx1++<=0) {
+	  if (x1<max)
+	    res+=GrVLine(dc,x1,y1.i32[1],y2.i32[1],z1.i32[1],z2.i32[1]);
+	  x1++;
+	  y1+=dy1;
+	  y2+=dy2;
+	  z1+=dz1;
+	  z2+=dz2;
+	}
+      }
+      if (dx1=p4->x-p1->x) {
+	dy1=(p1->y-p4->y)<<32/dx1;
+	dz1=(p1->z-p4->z)<<32/dx1;
+	if (dx2=p4->x-p2->x) {
+	  dy2=(p2->y-p4->y)<<32/dx2;
+	  dz2=(p2->z-p4->z)<<32/dx2;
+	} else {
+	  dy2=0;
+	  dz2=0;
+	}
+	y1=y2=p4->y<<32; x1=p4->x; z1=z2=p4->z<<32;
+	if (x1-dx1<min) {
+	  i=min-(x1-dx1);
+	  if (i>dx1) goto ft_done;
+	  dx1-=i;
+	}
+	if (x1>=max) {
+	  i=x1-max+1;
+	  if (i>dx1) goto ft_done;
+	  dx1-=i;
+	  x1-=i;
+	  y1+=dy1*i;
+	  y2+=dy2*i;
+	  z1+=dz1*i;
+	  z2+=dz2*i;
+	}
+	while (dx1-->=0) {
+	  res+=GrVLine(dc,x1,y1.i32[1],y2.i32[1],z1.i32[1],z2.i32[1]);
+	  x1--;
+	  y1+=dy1;
+	  y2+=dy2;
+	  z1+=dz1;
+	  z2+=dz2;
+	}
       }
     }
   }

@@ -3,10 +3,10 @@
 To upgrade, you generally boot the new TempleOS CD/DVD, install on top of
 your 
 drive, modify your files and set it to boot your account by executing 
-[C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  Often, your code
-will have to be modified to work 
-with the new version.  See [C:/Doc/ChangeLog.TXT.Z,1] Change Log.  You might
-have to boot an alternate 
-drive or the CD and modify your code until it boots okay.
+[C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().  Often, your code will
+have to be modified to work with the new 
+version.  See [C:/Doc/ChangeLog.TXT.Z,1] Change Log.  You might have to boot
+an alternate drive or the CD 
+and modify your code until it boots okay.
 
 See the [C:/Doc/Install.TXT.Z,1] Installing documentation.

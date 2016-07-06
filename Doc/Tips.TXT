@@ -29,7 +29,7 @@ reboot to make them take effect.  (You don't compile anything.)  You should
 have two TempleOS partitions on your hard drive because a syntax error in a 
 start-up file will make the partition unbootable.  Boot to the second 
 partition or boot to a standard TempleOS CD/DVD and use
-[C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount() to mount your 
+[C:/Adam/ABlkDev/Mount.CPP.Z,127] Mount() to mount your 
 hard drive.
 
 * I copy my files to a mirrored ident partition, periodically with
@@ -71,18 +71,18 @@ find to a different string and achieve a AND search.  When finished, press <ES
 C>.
  
 * You can recompile and reinstall the kernel with
-[C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  
-You'll probably want to make a function for recompiling that uses the
-[C:/Kernel/SrvCmd.CPP.Z,483] Auto() 
-function to answer the cfg questions.  See my technique
+[C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().  You'll 
+probably want to make a function for recompiling that uses the
+[C:/Kernel/SrvCmd.CPP.Z,483] Auto() function 
+to answer the cfg questions.  See my technique
 [C:/Demo/AcctExample/TOSCfg.CPP.Z,1] Cfg Strs,
 [C:/Demo/AcctExample/TOSDistro.CPP.Z,1] Update Funs.
 
 * [C:/Kernel/Mem/MemPhysical.CPP.Z,182]
 Scale2Mem(min,max,limit=2*1024*1024*1024) can be used for cfg questions when 
-recompiling.  The [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall()
-cfg prompts accept expressions, not 
-just numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
+recompiling.  The [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns() cfg
+prompts accept expressions, not just 
+numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
 
 * You can permanently disable AutoComplete commenting-out
 [D:/Home/HomeSys.CPP,1] ACInit() in 
@@ -106,15 +106,15 @@ the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1354] CDoc
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3318] CTask,
-[C:/Kernel/KernelA.HPP.Z,1181] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2551]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3320] CTask,
+[C:/Kernel/KernelA.HPP.Z,1181] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2552]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,210] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2885] MEM_DFT_STK, and using
+[C:/Kernel/KernelA.HPP.Z,2887] MEM_DFT_STK, and using
 [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,176] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -273,8 +273,8 @@ of tree indentations.
 WallPaper() to learn how the system 
 resources are put together.
 
-* The editor's select-text mechanism allows for disjoint portions of selected 
-text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
+* The editor's sel-text mechanism allows for disjoint portions of sel text.  
+This is a feature, not a bug -- you can cut-and-paste disjoint text.
 
 * [C:/Kernel/KernelA.HPP.Z,537] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
@@ -292,13 +292,13 @@ be confused by [C:/Kernel/KernelA.HPP.Z,1354] CDoc allocations.  Those are
 generated when text is written to 
 the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2795]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2797]
 _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,330] Type() to display .BMP or
 .GRA files.
 
-* Use [C:/Kernel/FunSeg.CPP.Z,316] Man() to jump to short sym name src code.
+* Use [C:/Kernel/FunSeg.CPP.Z,324] Man() to jump to short sym name src code.
 
 * Use [C:/Kernel/EdLite.CPP.Z,337] Fix() to edit and fix the last compiler
 err.

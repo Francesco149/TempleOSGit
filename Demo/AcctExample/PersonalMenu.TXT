@@ -13,12 +13,12 @@ Drv('D');
 `Drv('D');
 `
 
-RAMReboot("C:/Kernel.BIN.C");
-`RAMReboot("C:/Kernel.BIN.C");`
+BootRAM("C:/Kernel.BIN.C");
+`BootRAM("C:/Kernel.BIN.C");`
 
-TOSMakeOSDrvBootInstall('C');
+TOSBootHDIns('C');
 
-`TOSMakeOSDrvBootInstall('C');
+`TOSBootHDIns('C');
 `
 
 [C:/Doc/ChangeLog.TXT.Z,1] Change Log [C:/Doc/HelpIndex.TXT.Z,1] Help & Index [C:/Doc/DemoIndex.TXT.Z,1] Demo Index Key Map
@@ -444,12 +444,12 @@ BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29> (imag
 Psalmody Downloads
 `#include "::/Apps/Psalmody/Load";Psalmody("~/Downloads/Psalmody");`
 
-RAMReboot("D:/Kernel.BIN.C");
-`RAMReboot("D:/Kernel.BIN.C");`
+BootRAM("D:/Kernel.BIN.C");
+`BootRAM("D:/Kernel.BIN.C");`
 
-TOSMakeOSDrvBootInstall('D');
+TOSBootHDIns('D');
 
-`TOSMakeOSDrvBootInstall('D');
+`TOSBootHDIns('D');
 `
 
 MemRep

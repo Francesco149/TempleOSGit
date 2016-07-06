@@ -311,7 +311,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	outside_cnt,t,best_score);
 }
 
-U0 BuddySelect(I64 i)
+U0 BuddySel(I64 i)
 {
   I64 b,best_b=i,score,best_score=MAX_I64;
   for (b=0;b<NUM_ANIMALS;b++) {
@@ -409,10 +409,10 @@ U0 AnimateTask(CTask *parent)
 	  tempa->dy+=f*dy;
 	}
 
-	//Reselect buddy about every NUM_ANIMALS*10ms=5.12 seconds
+	//Resel buddy about every NUM_ANIMALS*10ms=5.12 seconds
 	tempa1=&a[tempa->buddy];
 	if (tempa1->dead || i==updates%NUM_ANIMALS) {
-	  BuddySelect(i);
+	  BuddySel(i);
 	  tempa1=&a[tempa->buddy];
 	}
 
@@ -550,7 +550,7 @@ U0 ReInit()
     else
       a[i].imgs=bull_imgs;
     a[i].frame0=RandU16&3;
-    BuddySelect(i);
+    BuddySel(i);
   }
   outside_cnt=NUM_ANIMALS;
   gate_t=0;

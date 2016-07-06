@@ -221,8 +221,8 @@ U0 GrUpdateTextBG()
   for (row=num_rows;row--;) {
     for (col=num_cols;col--;) {
       cur_ch=*src++;
-      if (cur_ch & (ATTRF_SELECTED|ATTRF_INVERT|ATTRF_BLINK)) {
-	if (cur_ch & ATTRF_SELECTED)
+      if (cur_ch & (ATTRF_SEL|ATTRF_INVERT|ATTRF_BLINK)) {
+	if (cur_ch & ATTRF_SEL)
 	  cur_ch.u8[1]=cur_ch.u8[1]^0xFF;
 	if (cur_ch & ATTRF_INVERT)
 	  cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
@@ -286,8 +286,8 @@ U0 GrUpdateTextFG()
   for (row=num_rows;row--;) {
     for (col=num_cols;col--;) {
       cur_ch=*src++;
-      if (cur_ch & (ATTRF_UNDERLINE|ATTRF_SELECTED|ATTRF_INVERT|ATTRF_BLINK)) {
-	if (cur_ch & ATTRF_SELECTED)
+      if (cur_ch & (ATTRF_UNDERLINE|ATTRF_SEL|ATTRF_INVERT|ATTRF_BLINK)) {
+	if (cur_ch & ATTRF_SEL)
 	  cur_ch.u8[1]=cur_ch.u8[1]^0xFF;
 	if (cur_ch & ATTRF_INVERT)
 	  cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
@@ -333,7 +333,7 @@ U0 GrUpdateTextModeText()
   if (LBtr(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0)) {
     while (i--) {
       cur_ch=*src++;
-      if (cur_ch & ATTRF_SELECTED)
+      if (cur_ch & ATTRF_SEL)
 	cur_ch.u8[1]=cur_ch.u8[1]^0xFF;
       if (cur_ch & ATTRF_INVERT)
 	cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
@@ -345,7 +345,7 @@ U0 GrUpdateTextModeText()
   } else {
     while (i--) {
       cur_ch=*src++;
-      if (cur_ch & ATTRF_SELECTED)
+      if (cur_ch & ATTRF_SEL)
 	cur_ch.u8[1]=cur_ch.u8[1]^0xFF;
       if (cur_ch & ATTRF_INVERT)
 	cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;

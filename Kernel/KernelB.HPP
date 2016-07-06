@@ -45,7 +45,7 @@ public _extern _CALL I64 Call(U8 *machine_code); //Call addr with no args.
 public _extern _CALLEXTSTR I64 CallExtStr(
 	/*argpop*/ U8 *name,...); //Search sym table for fun and pass it args.
 //Can have any fixed number of arguments.
-public _extern _CALLIND I64 CallInd(
+public _extern _CALL_IND I64 CallInd(
 	/*argpop*/I64 (*fp_addr)(...),...); //Call with fixed number of args.
 
 #help_index "Call/System Extern Num"
@@ -67,7 +67,7 @@ public _intern IC_QUE_INIT U0 QueInit(
 public _intern IC_QUE_INS U0 QueIns(
 	CQue *entry,CQue *pred);//Insert item into que after predecessor.
 public _intern IC_QUE_INS_REV U0 QueInsRev(
-	CQue *entry,CQue *succ);//Reversed insert into que.
+	CQue *entry,CQue *succ);//Revd insert into que.
 //Ins item into que before successor.
 public _intern IC_QUE_REM U0 QueRem(CQue *entry); //Remove item from queue.
 
@@ -223,14 +223,14 @@ public _extern SYS_PROGRESSES
 
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,233] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3442] CCPU.
+public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,233] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3445] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
 _extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,284] Core0StartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3442] CCPU.
+public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3445] CCPU.
 
 #help_index "PCI"
 public _extern SYS_PCI_BUSES U16 sys_pci_busses; //Number of PCI buses.
@@ -272,7 +272,7 @@ public _intern IC_INVLPG
 	U0 InvlPg(U8 *a); //Invalidate page at addr inst.
 
 #help_index "Task;Processor"
-public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3318] CTask.
+public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3320] CTask.
 
 #help_index "Time/CPU Cycles"
 #help_file "::/Doc/TimeCycles"

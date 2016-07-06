@@ -3,7 +3,7 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/Kernel/KernelA.HPP.Z,3111] CCtrl type for the tempo/stacatto
+  2) The [C:/Kernel/KernelA.HPP.Z,3113] CCtrl type for the tempo/stacatto
 sliders.
 
   3) The active [C:/Kernel/KernelA.HPP.Z,1354] CDoc sprite buttons with
@@ -35,8 +35,8 @@ See [C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin(),
 #define PSMT_NOTE	1
 #define PSMT_METER	2
 
-#define PSMf_SELECTED	0
-#define PSMF_SELECTED	1
+#define PSMf_SEL	0
+#define PSMF_SEL	1
 #define PSMf_SHARP	1
 #define PSMf_FLAT	2
 #define PSMf_TIE	3

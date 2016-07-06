@@ -29,7 +29,7 @@ public CTask *PopUpViewPrint(U8 *fmt,...)
 
 #help_index "DolDoc/Input;File/FileNames;StdIn/DolDoc"
 public U8 *PopUpPickFile(U8 *dir=NULL)
-{//Filename chooser.  Uses [C:/Adam/ABlkDev/FileMgr.CPP.Z,545] FileMgr().
+{//Filename chooser.  Uses [C:/Adam/ABlkDev/FileMgr.CPP.Z,581] FileMgr().
   U8 *res,*st,*st2;
   if (dir)
     st=MStrPrint("Cd(\"%Q\");FileMgr(FM_PICK_FILE,Fs->parent_task);",dir);
@@ -44,7 +44,7 @@ public U8 *PopUpPickFile(U8 *dir=NULL)
 }
 
 public U8 *PopUpPickDir(U8 *dir=NULL)
-{//File dir name chooser.  Uses [C:/Adam/ABlkDev/FileMgr.CPP.Z,545] FileMgr().
+{//File dir name chooser.  Uses [C:/Adam/ABlkDev/FileMgr.CPP.Z,581] FileMgr().
   U8 *res,*st,*st2;
   if (dir)
     st=MStrPrint("Cd(\"%Q\");FileMgr(FM_PICK_DIR,Fs->parent_task);",dir);
@@ -72,7 +72,7 @@ public U8 *FileNameForm(U8 *dft=NULL,I64 dof_flags=0,CTask *mem_task=NULL)
 }
 
 public U8 *PopUpFileName(U8 *dft=NULL,I64 dof_flags=0)
-{//Filename chooser. Uses form, not [C:/Adam/ABlkDev/FileMgr.CPP.Z,545] FileMgr().
+{//Filename chooser. Uses form, not [C:/Adam/ABlkDev/FileMgr.CPP.Z,581] FileMgr().
   U8 *st=MStrPrint("FileNameForm(\"%Q\",0x%X,Fs->parent_task);",
 	dft,dof_flags|DOF_MIN_SIZE),*res=PopUp(st,Fs);
   Free(st);
@@ -265,9 +265,9 @@ public F64 PopUpRangeF64Log(F64 lo,F64 hi,I64 steps,
   return PopUpRangeF64Exp(lo,hi,Exp(Ln(hi/lo)/(steps-1)),fmt,header,footer);
 }
 
-#help_index "Task/Srv/Exe"
+#help_index "Task/Srv/Exe;Compiler"
 public I64 AdamFile(U8 *filename,Bool warn_ext=TRUE)
-{//Tell adam task to compile and run a file.
+{//Make adam_task execute file.
   Bool okay=TRUE;
   U8 *name=FileNameAbs(filename),
 	*name2=DftExt(name,"CPP.Z");
@@ -285,7 +285,7 @@ public I64 AdamFile(U8 *filename,Bool warn_ext=TRUE)
 
 public I64 PopUpFile(U8 *filename,Bool warn_ext=TRUE,
 	CTask *parent=NULL,CTask **_pu_task=NULL)
-{//Run code file in PopUp win task.
+{//[C:/Compiler/CMain.CPP.Z,657] ExeFile2() in [C:/Kernel/SrvCmd.CPP.Z,377] PopUp task. Cont as User.
   Bool okay=TRUE;
   U8 *st,*name=FileNameAbs(filename),
 	*name2=DftExt(name,"CPP.Z");
@@ -302,6 +302,21 @@ public I64 PopUpFile(U8 *filename,Bool warn_ext=TRUE,
     res=PopUp(st,parent,_pu_task);
     Free(st);
   }
+  Free(name2);
+  Free(name);
+  return res;
+}
+
+public I64 PopUpRunFile(U8 *filename,I64 ccf_flags=0,...)
+{//[C:/Compiler/CMain.CPP.Z,614] ExeFile() with args using [C:/Compiler/CMisc.CPP.Z,48] LastFun() in [C:/Kernel/SrvCmd.CPP.Z,377] PopUp task.
+  U8 *st,*name=FileNameAbs(filename),
+	*name2=DftExt(name,"CPP.Z");
+  I64 res=0;
+  st=MStrPrint(
+	"\"$$WW+H,1$$\";ExeFile2(\"%s\",0x%X);LastFun(0x%X,0x%X);",
+	name2,ccf_flags,argc,argv);
+  res=PopUp(st,Fs);
+  Free(st);
   Free(name2);
   Free(name);
   return res;

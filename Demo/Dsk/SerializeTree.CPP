@@ -11,7 +11,7 @@ U0 SerializeTree()
   U8 *ptr;
   CArcCompress *arc;
 
-  LineRep1(tempde); //We have [C:/Kernel/KernelA.HPP.Z,2551] CDirEntry.fullname
+  LineRep1(tempde); //We have [C:/Kernel/KernelA.HPP.Z,2552] CDirEntry.fullname
   LineRep2(DocPut,tempde);
   "$GREEN$***************$FG$\n";
   ptr=DirTreeSerialize(tempde,&size);
@@ -28,7 +28,7 @@ U0 SerializeTree()
   D(ptr,size);
   "$GREEN$***************:%7d$FG$\n",size;
   tempde=DirTreeUnserialize(ptr);
-  LineRep2(DocPut,tempde); //We don't have [C:/Kernel/KernelA.HPP.Z,2551] CDirEntry.fullname
+  LineRep2(DocPut,tempde); //We don't have [C:/Kernel/KernelA.HPP.Z,2552] CDirEntry.fullname
   DirTreeDel(tempde);
 }
 

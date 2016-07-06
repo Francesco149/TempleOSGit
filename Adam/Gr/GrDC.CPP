@@ -132,7 +132,7 @@ public U0 DCClear(CDC *dc=NULL)
 }
 
 public U0 DCRst(CDC *dc)
-{//Reset [C:/Kernel/KernelA.HPP.Z,3657] CDC structure members but not image body, itself.
+{//Reset [C:/Kernel/KernelA.HPP.Z,3660] CDC structure members but not image body, itself.
   dc->color=BLACK;
   dc->color2=BLACK;
   dc->bkcolor=BLACK;

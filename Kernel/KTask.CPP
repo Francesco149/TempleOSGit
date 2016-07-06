@@ -171,7 +171,7 @@ I64 TaskInit(CTask *task,I64 stk_size)
 	(&task->next_child_task)(U8 *)-offset(CTask.next_sibling_task);
 
   SrvCtrlInit(&task->srv_ctrl);
-  QueInit(&task->next_lex);
+  QueInit(&task->next_cc);
   QueInit(&task->next_except);
   QueInit(&task->next_ctrl);
   QueInit(&task->next_ode);
@@ -213,7 +213,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HPP.Z,3318] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HPP.Z,3320] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)
@@ -356,7 +356,7 @@ U0 UserTaskCont()
   Bool cont=TRUE;
   do {
     cc=CmpCtrlNew(,CCF_CMD_LINE|CCF_PMT|CCF_QUESTION_HELP);
-    QueIns(cc,Fs->last_lex);
+    QueIns(cc,Fs->last_cc);
     try {
       Lex(cc);
       ExeCmdLine(cc);

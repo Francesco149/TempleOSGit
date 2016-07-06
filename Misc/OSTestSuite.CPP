@@ -1848,11 +1848,11 @@ U0 DoWebLog()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoReverseFile()
+U0 DoRevFile()
 {
   CTask *task=User;
   Del("~/DemoPoemForward.TXT*");
-  XTalkWait(task,"#include \"::/Demo/ReverseFileDemo/Reverse\";\n");
+  XTalkWait(task,"#include \"::/Demo/RevFileDemo/Rev\";\n");
   XTalkWait(task,"Type(\"~/DemoPoemFwd.TXT.Z\");\n");
   Sleep(750);
   XTalk(task,"Exit;\n");
@@ -2397,7 +2397,7 @@ U0 OSTestSuite()
   TS; DoCompileDemo;
   TS; DoPrompt;
   TS; if (DrvIsWritable('~')) DoWebLog;
-  TS; if (DrvIsWritable('~')) DoReverseFile;
+  TS; if (DrvIsWritable('~')) DoRevFile;
   TS; if (DrvIsWritable('~')) DoSortFile;
   TS; if (DrvIsWritable('~')) DoToHtmlToTXT;
   TS; if (DrvIsWritable('~')) DoRegistryDemo;

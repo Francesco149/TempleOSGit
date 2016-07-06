@@ -11,5 +11,5 @@ bit, important when multitasking.  For multicore use "locked" forms.
 
 These don't take a pointer, but the actual field.
 Bsf:	Bit Scan Fwd (Pos of first low one bit or -1)
-Bsr:	Bit Scan Reverse (Pos of first high one bit or -1)
+Bsr:	Bit Scan Rev (Pos of first high one bit or -1)
 BCnt:	Bit Cnt (Cnt of set bits)

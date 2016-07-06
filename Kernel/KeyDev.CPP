@@ -27,7 +27,7 @@ U0 PutChars(U64 ch)
 }
 
 U0 PutS(U8 *st)
-{//Use [C:/Kernel/StrPrint.CPP.Z,907] Print(). See [Keyboard Devices/System,1] Keyboard Devices.
+{//Use [C:/Kernel/StrPrint.CPP.Z,888] Print(). See [Keyboard Devices/System,1] Keyboard Devices.
 //Don't use this.  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
   I64 ch;
   U8 *ptr;

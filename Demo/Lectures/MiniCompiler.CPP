@@ -3,25 +3,25 @@
   The mini compiler is like the main compiler, except the main compiler's 
 lexical analyser removes comments and does
   preprocessing.  [C:/Compiler/Lex.CPP.Z,443]
-  Lex(),[C:/Compiler/CMisc.CPP.Z,24] Echo(ON).
+  Lex(),[C:/Compiler/CMisc.CPP.Z,63] Echo(ON).
 
 The main compiler generates [C:/Compiler/CompilerA.HPP.Z,1] Intermediate Code
   at the parser stage.  See 
 [C:/Compiler/PrsExp.CPP.Z,264] PrsExpression(),
-  [C:/Compiler/PrsStmt.CPP.Z,900] PrsStmt().
+  [C:/Compiler/PrsStmt.CPP.Z,904] PrsStmt().
 
 The main compiler optimizes   See [C:/Compiler/CInit.CPP.Z,16] Intermediate
   Code Attributes, 
 [C:/Compiler/OptPass012.CPP.Z,1] Combining Consts,
   [C:/Compiler/OptPass3.CPP.Z,1] Choosing Reg Vars.  Use
-  [C:/Compiler/CMisc.CPP.Z,11] PassTrace() to see the 
+  [C:/Compiler/CMisc.CPP.Z,50] PassTrace() to see the 
 optimization stages.
 
 The main compiler makes machine code in the back end.  See
   [C:/Kernel/KernelA.HPP.Z,1655] IC Struct, 
 [C:/Compiler/PrsLib.CPP.Z,249] COCCompile and
   [C:/Compiler/OptPass789A.CPP.Z,1] OptPass789A(), [C:/Compiler/BackA.CPP.Z,1]
-  BackEnd.  Set [C:/Compiler/CMisc.CPP.Z,19] Trace(ON) to see the output of 
+  BackEnd.  Set [C:/Compiler/CMisc.CPP.Z,58] Trace(ON) to see the output of 
 the backend.
 
 +] Mini Compiler
@@ -237,7 +237,7 @@ U0 Main()
 	"$RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
 //[C:/Kernel/KernelB.HPP.Z,44] Call() is a function.  See [C:/Kernel/KUtils.CPP.Z,1] _CALL::
-	//See also [C:/Kernel/KernelB.HPP.Z,49] CallInd().  See [C:/Kernel/KUtils.CPP.Z,1] _CALLIND::
+	//See also [C:/Kernel/KernelB.HPP.Z,49] CallInd().  See [C:/Kernel/KUtils.CPP.Z,1] _CALL_IND::
 	"$LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
 	"$RED$Error$FG$\n";

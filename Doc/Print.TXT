@@ -2,7 +2,7 @@
 
 <fmt_arg> := %[-][0][<width>][.<decimals>][<flags>][h<aux_fmt_num>]<fmt_code>
 
-See [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin().
+See [C:/Kernel/StrPrint.CPP.Z,206] StrPrintJoin().
 
 <flags>:
 
@@ -57,18 +57,18 @@ second.
 "%Q" convert "\" to "\\" and quote to backslash quote. (For use in creating 
 strs in strs.)
 
-"%q" reverse a "%Q".
+"%q" rev a "%Q".
 
 
                                  Print Family
 
-[C:/Kernel/StrPrint.CPP.Z,915] MStrPrint(U8 *fmt,...) is like
-[C:/Kernel/StrPrint.CPP.Z,893] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
+[C:/Kernel/StrPrint.CPP.Z,896] MStrPrint(U8 *fmt,...) is like
+[C:/Kernel/StrPrint.CPP.Z,874] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAllocated str.  It is vary handy
 because you don't have to worry about 
 overflow.
 
-[C:/Kernel/StrPrint.CPP.Z,898] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
+[C:/Kernel/StrPrint.CPP.Z,879] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
 formated string.
 
 [C:/Kernel/SrvCmd.CPP.Z,483] Auto(U8 *fmt,...) sends text to the current
@@ -95,7 +95,7 @@ be compiled and run.
 to be 
 displayed.
 
-[C:/Compiler/CMisc.CPP.Z,29] StreamPrint(U8 *fmt,...) sends text to the
+[C:/Compiler/CMisc.CPP.Z,68] StreamPrint(U8 *fmt,...) sends text to the
 stream of code being compiled and 
 must reside in a #exe{} blk.
 

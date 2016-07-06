@@ -8,7 +8,7 @@ inserting a command.  Then, use <CTRL-t> to toggle to plain text to see it.
 Here is the grammar:
 
 <DolDocCmd> := $<[C:/Adam/DolDoc/DocInit.CPP.Z,1]
-TwoLetterCmd>[<FlagList>][,<ArgList>]$ | $[C:/Kernel/KDefine.CPP.Z,117]
+TwoLetterCmd>[<FlagList>][,<ArgList>]$ | $[C:/Kernel/KDefine.CPP.Z,118]
 ColorName$
 
 <FlagList> := +|- <[C:/Adam/DolDoc/DocInit.CPP.Z,1] FlagCode>[<FlagList>]
@@ -20,7 +20,7 @@ ArgCode>=<ArgExpression>[,<ArgList>]
 The format of DolDoc cmds is a two character code, +/-flags, a comma and args 
 separated by commas.  Some commands have mandatory args.  Optional args are 
 indicated with <[C:/Adam/DolDoc/DocInit.CPP.Z,1] ArgCode>=.  A
-[C:/Kernel/KDefine.CPP.Z,117] ColorName bracked by dollars, will change the 
+[C:/Kernel/KDefine.CPP.Z,118] ColorName bracked by dollars, will change the 
 foreground color.
 
 See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
@@ -65,7 +65,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HPP.Z,2955] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HPP.Z,2957] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -136,14 +136,14 @@ Examples: <CTRL-t> to see
 3)File link with same tag str.  [C:/Doc/HelpIndex.TXT.Z,1]
 4)[C:/Doc/HelpIndex.TXT.Z,1] File find link searching for 'Admin'
 5)[C:/Kernel/KernelA.HPP.Z,5] File find link searching for 5th 'CTRL'
-6)[C:/Kernel/StrPrint.CPP.Z,907] Manual page link
+6)[C:/Kernel/StrPrint.CPP.Z,888] Manual page link
 7)[C:/Kernel/KernelA.HPP.Z,200] File line num link
 8)[C:/Kernel/KEnd.CPP.Z,1] File anchor link -- <CTRL-t> to see anchor after
   you click
 9)[C:/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually just does
   a text search.
 10) [Doc,1] Help Index Link.
-11) [C:/Kernel/StrPrint.CPP.Z,117] Address Link.
+11) [C:/Kernel/StrPrint.CPP.Z,104] Address Link.
 
 12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.CPP.Z,680]
   SpriteEdText().

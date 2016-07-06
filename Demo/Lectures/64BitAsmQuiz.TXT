@@ -73,7 +73,7 @@ ANSWERS:
 2) The upper 32-bits are set to zero.
 
 3) To set FS or GS, you use WRMSR to write a model specific reg.  See 
-[C:/Kernel/KernelA.HPP.Z,522] IA32_FS_BASE and [C:/Kernel/KUtils.CPP.Z,446]
+[C:/Kernel/KernelA.HPP.Z,522] IA32_FS_BASE and [C:/Kernel/KUtils.CPP.Z,445]
 SET_FS_BASE.
 
 4) Displacement addressing is now RIP relative, so RIP would be added to 

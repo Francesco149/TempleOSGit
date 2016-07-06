@@ -118,7 +118,7 @@ CSrvCmd *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags)
 
 CSrvCmd *TaskMsg(CTask *_srv,CTask *master,I64 msg_code,I64 a1,I64 a2,I64 flags)
 {//Post message to servant task.  Tell who the master task is.
-//See [C:/Kernel/KernelA.HPP.Z,3175] flags and [C:/Kernel/KernelA.HPP.Z,3223] msg_code.
+//See [C:/Kernel/KernelA.HPP.Z,3177] flags and [C:/Kernel/KernelA.HPP.Z,3225] msg_code.
   CSrvCmd *tempc1,*tempc;
   CTask *srv=_srv;
   if (!TaskValidate(srv) || master && !TaskValidate(master)||
@@ -238,7 +238,7 @@ U0 TaskWait(CTask *task=NULL)
 }
 
 U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
-{//Post message to a task and return immediately.  See [C:/Kernel/KernelA.HPP.Z,3223] msg_code.
+{//Post message to a task and return immediately.  See [C:/Kernel/KernelA.HPP.Z,3225] msg_code.
   if (TaskValidate(task)) {
     if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
       TaskMsg(task->last_input_filter_task,NULL,msg_code,a1,a2,
@@ -249,14 +249,14 @@ U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 }
 
 U0 PostMsgWait(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
-{//Post message to a task and wait until task is idle.See [C:/Kernel/KernelA.HPP.Z,3223] msg_code.
+{//Post message to a task and wait until task is idle.See [C:/Kernel/KernelA.HPP.Z,3225] msg_code.
   PostMsg(task,msg_code,a1,a2,flags);
   TaskWait(task);
 }
 
 U0 Msg(I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 {//Post message to current task and return immediately.
-//See [C:/Kernel/KernelA.HPP.Z,3223] msg_code.
+//See [C:/Kernel/KernelA.HPP.Z,3225] msg_code.
   PostMsg(Fs,msg_code,a1,a2,flags);
 }
 
@@ -375,7 +375,7 @@ sch_done:
 }
 
 I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL)
-{//Execute code text in PopUp win task.
+{//Execute code in [C:/Kernel/SrvCmd.CPP.Z,377] PopUp task.
   I64 res;
   CSrvCmd *tempc;
   CTask *task=Spawn(&SrvCmdLine,NULL,"Servant",,parent);
@@ -396,7 +396,7 @@ I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL)
 }
 
 I64 PopUpPrint(U8 *fmt,...)
-{//Execute code text in PopUp win task.
+{//Execute code in [C:/Kernel/SrvCmd.CPP.Z,377] PopUp task.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   I64 res;
   res=PopUp(buf,Fs);
@@ -405,7 +405,7 @@ I64 PopUpPrint(U8 *fmt,...)
 }
 
 I64 Adam(U8 *fmt,...)
-{//Sends text to the adam task which gets compiled and run.
+{//Make adam_task execute code.
   I64 res;
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   CSrvCmd *tempc;
@@ -422,7 +422,7 @@ I64 Adam(U8 *fmt,...)
 }
 
 U0 AdamLog(U8 *fmt,...)
-{//Sends text to the adam task which gets displayed.
+{//Display text in adam_task.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   if (Fs==adam_task)
     "%s",buf;
@@ -432,7 +432,7 @@ U0 AdamLog(U8 *fmt,...)
 }
 
 U0 AdamErr(U8 *fmt,...)
-{//Sends text to the adam task which gets displayed as red and blinking.
+{//Display red blinking Err text in adam_task.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv),
 	*st=MStrPrint(ST_ERR_ST "%s",buf);
   if (Fs==adam_task)

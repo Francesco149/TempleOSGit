@@ -294,7 +294,7 @@ public class CMathODE
 #define I_MP_CRASH		0x30
 #define I_WAKE			0x31
 #define I_DBG			0x32
-//See [C:/Kernel/KDefine.CPP.Z,125] ST_INT_NAMES
+//See [C:/Kernel/KDefine.CPP.Z,126] ST_INT_NAMES
 
 //You might want to start bwd from
 //0xFF for your own interrupts.
@@ -858,7 +858,7 @@ public class CHashFun:CHashClass
   CHashClass *return_class;
   U32	arg_cnt,pad,
 	used_reg_mask,clobbered_reg_mask;
-  U8	*executable_addr;
+  U8	*exe_addr;
   CExternUsage *ext_lst;
 };
 
@@ -888,12 +888,12 @@ public class CHashGlblVar:CHashSrcSym
 //See [TextBase Layer,1] TextBase Layer.
 #define ATTRF_BLINK	0x10000000
 #define ATTRF_INVERT	0x20000000
-#define ATTRF_SELECTED	0x40000000
+#define ATTRF_SEL	0x40000000
 #define ATTRF_UNDERLINE	0x80000000
 
 #define ATTRf_BLINK		28
 #define ATTRf_INVERT		29
-#define ATTRf_SELECTED		30
+#define ATTRf_SEL		30
 #define ATTRf_UNDERLINE		31
 
 //CDocEntry.type codes (Low 8 bits)
@@ -946,13 +946,13 @@ public class CHashGlblVar:CHashSrcSym
 //CDocEntry.type flags upper bits
 #define DOCET_BLINK		ATTRF_BLINK
 #define DOCET_INVERT		ATTRF_INVERT
-#define DOCET_SELECTED		ATTRF_SELECTED
+#define DOCET_SEL		ATTRF_SEL
 #define DOCET_UNDERLINE		ATTRF_UNDERLINE
 #define DOCG_BL_IV_UL		0xB0000000
 
 #define DOCEt_BLINK		ATTRf_BLINK
 #define DOCEt_INVERT		ATTRf_INVERT
-#define DOCEt_SELECTED		ATTRf_SELECTED
+#define DOCEt_SEL		ATTRf_SEL
 #define DOCEt_UNDERLINE		ATTRf_UNDERLINE
 
 #define DOCG_DBL_BUF_FLAGS	(DOCF_OVERSTRIKE|DOCF_PLAIN_TEXT|\
@@ -1040,13 +1040,13 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_WORD_WRAP		0x8000000
 #define DOCEF_BLINK		ATTRF_BLINK
 #define DOCEF_INVERT		ATTRF_INVERT
-#define DOCEF_SELECTED		ATTRF_SELECTED
+#define DOCEF_SEL		ATTRF_SEL
 #define DOCEF_UNDERLINE		ATTRF_UNDERLINE
 #define DOCEf_HIGHLIGHT		26
 #define DOCEf_WORD_WRAP		27
 #define DOCEf_BLINK		ATTRf_BLINK
 #define DOCEf_INVERT		ATTRf_INVERT
-#define DOCEf_SELECTED		ATTRf_SELECTED
+#define DOCEf_SEL		ATTRf_SEL
 #define DOCEf_UNDERLINE		ATTRf_UNDERLINE
 
 //CDocEntry.de_flags.  These first 16 are arg=
@@ -1229,7 +1229,7 @@ class CEdFindText
 	"A=\"Replace     :%s\"$\n";
   Bool	replace			fmtstr "$CB,\"Replace\"$\n",
 	scan_fwd		fmtstr "$CB,\"Fwd\"$\n",
-	scan_selected_text	fmtstr "$CB,\"Selection\"$\n",
+	scan_sel_text	fmtstr "$CB,\"Sellection\"$\n",
 	match_case		fmtstr "$CB,\"Match Case\"$\n",
 	whole_labels		fmtstr "$CB,\"Whole Labels\"$\n",
 	local_var		fmtstr "$CB,\"Rename Local Var\"$\n",
@@ -1282,7 +1282,7 @@ class CEdFileName
 #define DOCF_WORD_WRAP		DOCEF_WORD_WRAP
 #define DOCF_BLINK		DOCEF_BLINK
 #define DOCF_INVERT		DOCEF_INVERT
-#define DOCF_SELECTED		DOCEF_SELECTED
+#define DOCF_SEL		DOCEF_SEL
 #define DOCF_UNDERLINE		DOCEF_UNDERLINE
 
 #define DOCF_OVERSTRIKE 	0x100000000
@@ -1319,7 +1319,7 @@ class CEdFileName
 #define DOCf_WORD_WRAP		DOCEf_WORD_WRAP
 #define DOCf_BLINK		DOCEf_BLINK
 #define DOCf_INVERT		DOCEf_INVERT
-#define DOCf_SELECTED		DOCEf_SELECTED
+#define DOCf_SEL		DOCEf_SEL
 #define DOCf_UNDERLINE		DOCEf_UNDERLINE
 
 #define DOCf_OVERSTRIKE 	32
@@ -2025,11 +2025,11 @@ class CCodeCtrl
 #define __DATE__ #exe{StreamPrint("\"%D\"",Now);}
 #define __TIME__ #exe{StreamPrint("\"%T\"",Now);}
 #define __LINE__ #exe{StreamPrint("%d",\
-	Fs->last_lex->lex_include_stk->line_num);}
-#define __CMD_LINE__ #exe{StreamPrint("%d",Fs->last_lex->flags&CCF_CMD_LINE &&\
-	Fs->last_lex->lex_include_stk->depth<2);}
+	Fs->last_cc->lex_include_stk->line_num);}
+#define __CMD_LINE__ #exe{StreamPrint("%d",Fs->last_cc->flags&CCF_CMD_LINE &&\
+	Fs->last_cc->lex_include_stk->depth<2);}
 #define __FILE__ #exe{StreamPrint("\"%s\"",\
-	Fs->last_lex->lex_include_stk->full_name);}
+	Fs->last_cc->lex_include_stk->full_name);}
 #define __DIR__  #exe{StreamDir;}
 
 #define LFSF_DOC	1
@@ -2280,7 +2280,7 @@ public class CATARep
 #define ATAR0_SECT	3
 #define ATAR0_LCYL	4
 #define ATAR0_HCYL	5
-#define ATAR0_SELECT	6
+#define ATAR0_SEL	6
 #define ATAR0_STAT	7
 #define ATAR0_CMD	7
 #define ATAR1_CTRL	2
@@ -2296,6 +2296,7 @@ public class CATARep
 #define BLK_SIZE_BITS	9
 #define BLK_SIZE	(1<<BLK_SIZE_BITS)
 #define DVD_BLK_SIZE	(4*BLK_SIZE)
+#define DVD_BOOT_LOADER_SIZE	DVD_BLK_SIZE*1
 #define INVALID_CLUSTER (-1)
 
 class CMBRPrt
@@ -2543,7 +2544,7 @@ class CISO1PriDesc
 #define MT_DVD		2
 
 #help_index "File/Low Level;File/Program Routines"
-//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.CPP.Z,545] FileMgr())
+//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.CPP.Z,581] FileMgr())
 #define DEF_PROCESSED		1
 #define DEF_NOT_INITIALIZED	2
 
@@ -2624,13 +2625,14 @@ public class CDirEntry
   FUF_SCAN_PARENTS)
 
 #help_index "File/Low Level"
-//See [C:/Kernel/KDefine.CPP.Z,112] ST_BLKDEV_TYPES
+//See [C:/Kernel/KDefine.CPP.Z,113] ST_BLKDEV_TYPES
 #define BDT_NULL		0
 #define BDT_RAM			1
 #define BDT_ATA			2
-#define BDT_FILE		3
-#define BDT_ATAPI		4
-#define BDT_NUM_TYPES		5
+#define BDT_FILE_READ		3
+#define BDT_FILE_WRITE		4
+#define BDT_ATAPI		5
+#define BDT_NUM_TYPES		6
 
 #define BDF_REMOVABLE		0x001
 #define BDF_INITIALIZED		0x002
@@ -2680,7 +2682,7 @@ public class CBlkDev
 //Drive locked_flags
 #define DVlf_LOCKED	0
 
-//See [C:/Kernel/KDefine.CPP.Z,114] ST_DRV_TYPES
+//See [C:/Kernel/KDefine.CPP.Z,115] ST_DRV_TYPES
 #define FSt_NULL	0
 #define FSt_REDSEA	1 //Supported
 #define FSt_FAT32	2 //Supported except for short names, to some degree
@@ -2716,7 +2718,7 @@ class CFreeLst
 public class CDrv
 {
 //Don't access ->drv_let directly in case a drive has been remapped.
-  //Use [C:/Kernel/BlkDev/DskDrv.CPP.Z,138] Drv2Let().
+  //Use [C:/Kernel/BlkDev/DskDrv.CPP.Z,153] Drv2Let().
   I64	locked_flags;
   U32	dv_signature;
   U8	drv_let,pad;
@@ -2832,7 +2834,7 @@ class CMemUsed
 /*TempleOS does not mess with page tables after setting them up
 during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_PAGE_TABLES.
 
-[C:/Kernel/KernelA.HPP.Z,2875] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
+[C:/Kernel/KernelA.HPP.Z,2877] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
 and is not related to CPU hardware.
 
 All virtual addresses are ident to physical at all times.
@@ -2941,7 +2943,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2951] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2953] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3041,7 +3043,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3040] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3041] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3042] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3043] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3221,8 +3223,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3483] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3483] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3486] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3486] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3386,7 +3388,8 @@ U0 pad;#assert $==offset(CTaskDying.wake_jiffy)
   CHashTable *hash_table;
 
   CSrvCtrl srv_ctrl;
-  CCmpCtrl *next_lex,*last_lex;
+  CCmpCtrl *next_cc,*last_cc;
+  CHashFun *last_fun;
 
   I64	win_old_left,win_old_right,win_old_top,win_old_bottom;
 
@@ -3665,12 +3668,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2941] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2943] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2951] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2953] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3703,7 +3706,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3641] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3644] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3889,7 +3892,7 @@ public class CDbgGlbls
 #define BOOT_SRC_HARDDRV	3
 #define BOOT_SRC_DVD		4
 
-// [C:/Kernel/SrvCmd.CPP.Z,483] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+// [C:/Kernel/SrvCmd.CPP.Z,483] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().
 #define STD_DISTRO_DVD_CFG	"Tb\nScale2Mem(2048,0x40000)\nt \n\n\n\n"
 
 #help_index "Misc/Registry"
@@ -3910,5 +3913,19 @@ class CProgress
   I64	val,max;
   U8	desc[PROGRESS_DESC_LEN];
 };
+
+#help_index "Char/Operations"
+#define SPF_PAD_ZERO		0x001
+#define SPF_LEFT_JUSTIFY	0x002
+#define SPF_TRUNCATE		0x004
+#define SPF_COMMA		0x008
+#define SPF_DOLLAR		0x010
+#define SPF_SLASH		0x020
+#define SPF_QUESTION		0x040
+#define SPF_AUX_FMT_NUM		0x080
+#define SPF_DECIMAL		0x100
+#define SPF_NEG			0x200
+#define SPF_NEG_E		0x400
+#define SPF_NEG_AUX_FMT_NUM	0x800
 
 #help_index ""
