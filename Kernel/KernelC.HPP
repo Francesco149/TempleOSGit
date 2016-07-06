@@ -360,7 +360,6 @@ public extern Bool WBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt);
 public extern I64 WClusters(CDrv *dv,U8 *buf,I64 c,I64 cnt);
 public extern I64 WClustersBlks(CDrv *dv,U8 *buf,I64 c,I64 blks);
 public extern U0 WZeroBlks(CDrv *dv,I64 blk,I64 cnt);
-
 #help_index "File/Program Routines"
 public extern U0 DirEntryDel(CDirEntry *tempde);
 public extern U0 DirEntryDel2(CDirEntry *tempde);
