@@ -61,7 +61,7 @@
 #define UP_TIME		0.2
 #define SPREAD_RATE	5
 
-CSprite *imgs[FRAMES]={__BIN_1,__BIN_2,__BIN_3,__BIN_4};
+U8 *imgs[FRAMES]={__BIN_1,__BIN_2,__BIN_3,__BIN_4};
 
 F64 t0_down,t0_up;
 Bool down_stroke;
@@ -71,7 +71,7 @@ U0 DrawWaterRock(CTask *task,CDC *dc)
   I64 i,r,
 	cx=task->pix_width>>1,
 	cy=task->pix_height>>1;
-  CSprite *temps;
+  U8 *temps;
   F64 tt;
   if (t0_down) {
     tt=(tS-t0_down);

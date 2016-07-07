@@ -58,8 +58,6 @@ GetStr() all the way down into [C:/Kernel/KeyDev.CPP.Z,1] PutKey() code.
 
 * [C:/Demo/Games/FlatTops.CPP.Z,1] is torpedo, not bombs.
 
-* [C:/Demo/Games/EagleDive.CPP.Z,1] foreground clipping issues.
-
 * Reset MPs with [C:/Kernel/MultiProc.CPP.Z,284] Core0StartMP() after boot. 
 Free old task memory?
 
@@ -82,7 +80,7 @@ others need to be in separate cache lines?
 
 * Change %h*c so the character is not a arg?
 
-* [C:/Adam/Gr/GrPrimatives.CPP.Z,650] GrLineFat3() needs work.
+* [C:/Adam/Gr/GrPrimatives.CPP.Z,650] GrLineFat3() needs a little work.
 
 
                                   TODO? Meh

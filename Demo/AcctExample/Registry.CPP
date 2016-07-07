@@ -10,40 +10,40 @@
       F64 best_score=4.9425;
       +] DiningStars
       F64 best_score=9999.0000;
-      +] DunGen
-      F64 best_score=20.5295;
       +] Staff
       #define PERSONAL_INITIALS "TAD"
     #define MACHINE_CFG 0
-      +] RawHide
-      F64 best_score=96.1279;
+      +] BlackDiamond
+      I64 best_score=9;
+      +] DunGen
+      F64 best_score=20.5295;
+      +] ZoneOut
+      F64 best_score=8.1373;
+      +] Varoom
+      F64 best_score=46.2643;
       +] FlapBat
       F64 best_score=16.4090;
-      +] Wenceslas
-      F64 best_score=43.9944;
       +] TimeOut
       I64 best_score=22202;
+      +] RawHide
+      F64 best_score=96.1279;
       +] KeepAway
       I64 best_score0=68,best_score1=30;
       +] XCaliber
       I64 best_score=248;
     I64 msg_flags=1;
-      +] EagleDive
-      I64 best_score=8;
+      +] Wenceslas
+      F64 best_score=43.9944;
       +] BomberGolf
       I64 best_score=175;
-      +] Varoom
-      F64 best_score=46.2643;
-      +] BlackDiamond
-      I64 best_score=9;
-      +] ZoneOut
-      F64 best_score=8.1373;
       +] CastleFrankenstein
       F64 best_score=33.8405;
+      +] EagleDive
+      I64 best_score=8;
       +] DemoCompany
   
   +] Game1
-      F64 best_score=166.57305;
+      F64 best_score=168.87967;
     +] SimpleVal
-          1329;
+          1330;
             

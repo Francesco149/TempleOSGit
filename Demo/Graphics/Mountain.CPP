@@ -27,7 +27,7 @@
 
 /* <5> <5> (image) */	 /* <6> <6> (image) */	  /* <7> <7> (image) */
 
-CSprite *right_imgs[4]={__BIN_2,__BIN_3,__BIN_4,__BIN_3},
+U8 *right_imgs[4]={__BIN_2,__BIN_3,__BIN_4,__BIN_3},
 	*left_imgs [4]={__BIN_5,__BIN_6,__BIN_5,__BIN_7};
 I64 x=0,y=0;
 

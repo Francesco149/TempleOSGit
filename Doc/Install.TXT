@@ -89,5 +89,5 @@ master boot record.
 
 
 
-* "Windows" is a trademark of MicroSoft Corp.
-* "Linux" is probably a trademark owned by Linus Torvalds.
+* "Windows" is a trademark owned by MicroSoft Corp.
+* "Linux" is a trademark owned by Linus Torvalds.

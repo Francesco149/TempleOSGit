@@ -11,4 +11,4 @@ used to mark the cursor pos and ASCII 31 is used for shifted space characters
 and will cause problems unless you convert them.)
 
 
-* "Linux" is probably a trademark owned by Linus Torvalds.
+* "Linux" is a trademark owned by Linus Torvalds.

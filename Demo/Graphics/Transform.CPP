@@ -7,7 +7,7 @@ with a matrix multiplication.
 Scroll bar works.
 
 The multiplication takes place in the
-[C:/Adam/Gr/GrSpritePlot.CPP.Z,303] SpriteZ3B routine.
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,291] SpriteZ3B routine.
 */
 
 #define SLIDER_SPACING 20

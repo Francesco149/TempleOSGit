@@ -1585,7 +1585,6 @@
 [C:/Kernel/KernelA.HPP.Z,2943] ROP_COLLISION
 [C:/Kernel/KernelA.HPP.Z,2078] TK_PLUS_PLUS
 [C:/Kernel/KernelB.HPP.Z,181] sys_heap_init_val
-[C:/Kernel/KernelA.HPP.Z,2633] BDT_FILE_WRITE
 [C:/Kernel/Mem/MemPhysical.CPP.Z,156] MemVGAAlloc
 [C:/Kernel/KernelA.HPP.Z,1011] DOCEF_DEREF_DATA
 [C:/Kernel/KernelA.HPP.Z,3737] VGAP_REG_WRITE
@@ -1748,7 +1747,6 @@
 [C:/Kernel/KernelA.HPP.Z,1547] OPTf_USE_IMM64
 [C:/Kernel/KMisc.CPP.Z,238] Raw
 [C:/Kernel/SrvCmd.CPP.Z,257] Msg
-[C:/Kernel/KernelA.HPP.Z,2632] BDT_FILE_READ
 [C:/Kernel/KernelA.HPP.Z,1544] OPTf_GLBLS_ON_DATA_HEAP
 [C:/Kernel/SerialDev/Keyboard.CPP.Z,424] KbdInit
 [C:/Kernel/StrA.CPP.Z,368] chars_bmp_zero_tab_ff_cr_nl_cursor_dollar
@@ -2121,6 +2119,7 @@
 [C:/Kernel/Mem/HeapCtrl.CPP.Z,15] HeapCtrlDel
 [C:/Kernel/KUtils.CPP.Z,392] _CALLEXTSTR
 [C:/Kernel/KernelA.HPP.Z,2785] FF_USE_OLD_DATETIME
+[C:/Kernel/KernelA.HPP.Z,2632] BDT_ISO_FILE_READ
 [C:/Kernel/KernelA.HPP.Z,2164] CCf_PAREN
 [C:/Kernel/KernelA.HPP.Z,2163] CCF_PAREN
 [C:/Kernel/KernelA.HPP.Z,1513] ACD_BLK_SIZE
@@ -2308,6 +2307,7 @@
 [C:/Kernel/KernelB.HPP.Z,283] C:/Doc/TimeHPET.TXT.Z
 [C:/Kernel/KernelA.HPP.Z,1294] DOCf_PLAIN_TEXT
 [C:/Kernel/KernelA.HPP.Z,3752] CArcEntry
+[C:/Kernel/KernelA.HPP.Z,2633] BDT_ISO_FILE_WRITE
 [C:/Kernel/KernelA.HPP.Z,1798] AOT_BIN_BLK_SIZE
 [C:/Kernel/KernelA.HPP.Z,1302] DOCf_FORM
 [C:/Kernel/KernelA.HPP.Z,1266] DOCF_FORM

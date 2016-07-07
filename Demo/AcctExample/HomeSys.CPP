@@ -9,7 +9,7 @@ U0 UserStartUp()
   WinToTop;
   WinZBufUpdate;
   Dir;
-  "81,056LOC:";
+  "81,046LOC:";
   CPURep;
 }
 

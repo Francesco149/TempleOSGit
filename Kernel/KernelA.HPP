@@ -2629,8 +2629,8 @@ public class CDirEntry
 #define BDT_NULL		0
 #define BDT_RAM			1
 #define BDT_ATA			2
-#define BDT_FILE_READ		3
-#define BDT_FILE_WRITE		4
+#define BDT_ISO_FILE_READ	3
+#define BDT_ISO_FILE_WRITE	4
 #define BDT_ATAPI		5
 #define BDT_NUM_TYPES		6
 
@@ -3644,7 +3644,7 @@ public class CTextGlbls
 #define DCF_RECORD_EXTENTS	0x10000
 #define DCF_ON_TOP		0x20000
 
-//[C:/Adam/Gr/GrDC.CPP.Z,285] DCSave() flags.
+//[C:/Adam/Gr/GrDC.CPP.Z,286] DCSave() flags.
 #define DCSF_COMPRESSED		1
 #define DCSF_PALETTE_GET	2
 
@@ -3714,7 +3714,7 @@ public class CDC
   CDC	*alias;
   U8	*body;
 
-  //Set by [C:/Adam/Gr/GrDC.CPP.Z,235] DCDepthBufAlloc()
+  //Set by [C:/Adam/Gr/GrDC.CPP.Z,236] DCDepthBufAlloc()
   I32	*depth_buf;
   I64	db_z; //private
   U0 pad;#assert !($&7) //(compiler lags one token)

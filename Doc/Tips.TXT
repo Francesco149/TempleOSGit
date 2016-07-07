@@ -325,4 +325,4 @@ can set the song rating in [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox()
 by pressing 0-9.  You can press <DELETE> to delete songs.
 
 
-* "Linux" is probably a trademark owned by Linus Torvalds.
+* "Linux" is a trademark owned by Linus Torvalds.

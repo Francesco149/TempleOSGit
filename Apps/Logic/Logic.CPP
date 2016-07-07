@@ -69,7 +69,7 @@ U8 *gate_type_lst="NULL\0OUTPUT\0INPUT\0"
 
 #define MAX_SEL_GATES	128
 
-CSprite *imgs[GT_NUM_ENTRIES]={NULL,NULL,NULL,
+U8 *imgs[GT_NUM_ENTRIES]={NULL,NULL,NULL,
 __BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_7,__BIN_8,__BIN_9,__BIN_10};
 
 I64 num_inputs_entered,num_outputs_entered;

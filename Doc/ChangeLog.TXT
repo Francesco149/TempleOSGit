@@ -2,6 +2,12 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----07/07/16 00:41:12----
+
+----07/06/16 23:45:30----
+* Fixed multicore bug in [C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3().
+* Improved [C:/Demo/Games/EagleDive.CPP.Z,1].
+
 ----07/05/16 06:03:47----
 * **TempleOS version 4.09 Released**
 * Improved [C:/Demo/Games/EagleDive.CPP.Z,1].
@@ -11,7 +17,7 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 * Added [C:/Adam/ABlkDev/Mount.CPP.Z,132] Unmount().
 * Made BootLoader mandatory in [C:/Adam/Opt/Boot/DskISORedSea.CPP.Z,128]
 RedSeaISO().
-* Added [C:/Kernel/KernelA.HPP.Z,2632] BDT_FILE_READ.
+* Added [C:/Kernel/KernelA.HPP.Z,2632] BDT_ISO_FILE_READ.
 
 ----07/01/16 05:29:08----
 * Made underscore mandatory on [C:/Doc/HolyC.TXT.Z,1] HolyC callable asm
@@ -78,7 +84,7 @@ directory designator.
 R("ISOFileCreate","[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO");
 
 ----05/19/16 02:16:09----
-* Added [C:/Kernel/KernelA.HPP.Z,2633] BDT_FILE_WRITE.
+* Added [C:/Kernel/KernelA.HPP.Z,2633] BDT_ISO_FILE_WRITE.
 
 ----05/17/16 07:16:38----
 * Worked on compiler [C:/Kernel/KernelA.HPP.Z,1632] CICArg.a1_type_pointed_to.
@@ -143,7 +149,7 @@ size.
 * Fixed double ASCII#5 cursor bug.
 
 ----04/01/16 14:59:49----
-* Changed [C:/Adam/Gr/GrSpritePlot.CPP.Z,342] SpriteInterpolate() args.
+* Changed [C:/Adam/Gr/GrSpritePlot.CPP.Z,330] SpriteInterpolate() args.
 * [C:/Home/HomeWrappers.CPP.Z,13] R("Index","Idx");
 
 ----03/31/16 11:20:13----

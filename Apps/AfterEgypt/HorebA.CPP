@@ -104,7 +104,7 @@
 #define OT_GOAT2	8
 #define OT_NUM_TYPES	9
 
-CSprite *imgs[OT_NUM_TYPES]={NULL,__BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_7,__BIN_8};
+U8 *imgs[OT_NUM_TYPES]={NULL,__BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_7,__BIN_8};
 
 F64 theta,vx,vz;
 Bool horeb_done;

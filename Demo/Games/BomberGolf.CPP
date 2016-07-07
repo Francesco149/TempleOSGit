@@ -68,7 +68,7 @@ I64 target_cnt,key_cnt;
 class Target
 {
   F64	x,y,theta;
-  CSprite *alive_img,*dead_img1,*dead_img2;
+  U8	*alive_img,*dead_img1,*dead_img2;
   U8	type;
   Bool	dead,pad[6];
 } targets[NUM_TARGETS];

@@ -24,47 +24,268 @@ RegExeBranch("TempleOS/EagleDive");
 //Too big makes off-screen draws take place.
 #define MAX_PANEL_SIZE		16
 
-class Panel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			/* <1> <1> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			/* <2> <2> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			/* <3> <3> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			/* <4> <4> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Obj
 {
-  Panel *next;
-  I32	n,   //num polygon sides
-	num; //panel number
-  CD3I32 *pts;
-  I64 color,cnt;
+  Obj *next,*last;
+  CD3I64 p;
+  U8 *img;
+  Bool fish;
 };
 
-class Fish
-{
-  Fish *next,*last;
-  CD3I64 p;
-} fish_root;
-
-
-
-
-/* <1> <1> (image) */
-
-
-
-
+class Panel
+{//Polygon or Obj
+  Panel *next;
+  CD3I32 *pts;
+  I64 cnt;
+  U16 update,num_sides;
+  CColorROPU32 color;
+  Obj *next_obj,*last_obj;
+} *panel_root,*panels[MAP_HEIGHT][MAP_WIDTH];
 
 I64 critical_section_flag;
-
-/*These are **NOT** dealloced after the program ends,
-but I did them this way for your benefit
-so 2D array indexing is not done by hand.
-You can type "EagleDive;" at the command line
-to rerun without new allocations.
-Normally, just spawn a popup task,
-run it and kill it using an icon.
-*/
 I16 elevations[MAP_HEIGHT][MAP_WIDTH];
 CD3 normals[MAP_HEIGHT][MAP_WIDTH];
-Panel *panels[MAP_HEIGHT][MAP_WIDTH];
-
-I64 num_panels;
-Panel *panel_root;
-U8 *panels_processed_bitmap;
 
 F64 game_t0,phi,theta1,theta2,speed;
 
@@ -84,11 +305,12 @@ U0 EDTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
   Mat4x4MulXYZ(dc->r,x,y,z);
   *z=zz=-*z;
   if (zz>0) {
-    *x = *x * DISPLAY_SCALE/ zz; //Foreshortening
-    *y = *y * DISPLAY_SCALE/ zz;
+    *x = dc->x + *x * DISPLAY_SCALE/zz; //Foreshortening
+    *y = dc->y - *y * DISPLAY_SCALE/zz;
+  } else {
+    *x = dc->x + *x;
+    *y = dc->y - *y;
   }
-  *x+=dc->x;
-  *y =dc->y-*y;
 }
 
 U0 CalcNormals()
@@ -137,7 +359,7 @@ U0 MPDoPanels(CTask *task)
   Bool cont;
   Panel *tempp,*start_ptr=NULL,*end_ptr=NULL;
   CD3I32 *poly;
-  Fish *tempf;
+  Obj *tempo;
   lo=Gs->num*(MAP_HEIGHT-1)/mp_cnt;
   hi=(Gs->num+1)*(MAP_HEIGHT-1)/mp_cnt;
   for (threshold=8;threshold>=1;threshold--)
@@ -159,7 +381,7 @@ U0 MPDoPanels(CTask *task)
 	  } while (cont);
 	  if (w>=threshold || h>=threshold) {
 	    tempp=CAlloc(sizeof(Panel),task);
-	    lock {tempp->num=num_panels++;}
+	    QueInit(&tempp->next_obj);
 	    l=elevations[j][i];
 	    if (l<=WATER_ELEVATION*MAP_SCALE &&
 		  elevations[j][i+w-1]<=WATER_ELEVATION*MAP_SCALE &&
@@ -167,48 +389,66 @@ U0 MPDoPanels(CTask *task)
 		  elevations[j+h-1][i+w-1]<=WATER_ELEVATION*MAP_SCALE) {
 	      tempp->color=BLUE;
 	      if (Rand<0.05) {
-		tempf=MAlloc(sizeof(Fish),task);
-		tempf->p.x=(i+w/2)*MAP_SCALE;
-		tempf->p.y=(j+h/2)*MAP_SCALE;
-		tempf->p.z=l;
-		while (LBts(&critical_section_flag,0))
-		  Yield;
-		QueIns(tempf,fish_root.last);
-		LBtr(&critical_section_flag,0);
+		tempo=MAlloc(sizeof(Obj),task);
+		tempo->p.x=(i+w/2)*MAP_SCALE;
+		tempo->p.y=(j+h/2)*MAP_SCALE;
+		if (Rand<0.2) {
+		  tempo->fish=FALSE;
+		  if (RandI16&1)
+		    tempo->img=__BIN_2; //Boat
+		  else
+		    tempo->img=__BIN_3; //Boat
+		  tempo->p.z=(WATER_ELEVATION+1)*MAP_SCALE;
+		} else {
+		  tempo->fish=TRUE;
+		  tempo->img=__BIN_1; //Fish
+		  tempo->p.z=WATER_ELEVATION*MAP_SCALE;
+		}
+		QueIns(tempo,tempp->last_obj);
 	      }
 	    } else {
-	      if (RandI16&1) {
-		if (l<ROCK_ELEVATION*MAP_SCALE)
+	      if (l<ROCK_ELEVATION*MAP_SCALE) {
+		if (RandI16&1)
 		  tempp->color=LTGREEN;
-		else if (l<SNOW_ELEVATION*MAP_SCALE) {
-		  if (!(RandU16&3))
+		else
+		  tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
+		if (Rand<0.03) {
+		  tempo=MAlloc(sizeof(Obj),task);
+		  tempo->p.x=(i+w/2)*MAP_SCALE;
+		  tempo->p.y=(j+h/2)*MAP_SCALE;
+		  tempo->p.z=l;
+		  tempo->img=__BIN_4; //Tree
+		  tempo->fish=FALSE;
+		  QueIns(tempo,tempp->last_obj);
+		}
+	      } else if (l<SNOW_ELEVATION*MAP_SCALE) {
+		if (!(RandU16&3)) {
+		  if (RandI16&1)
 		    tempp->color=LTGRAY;
 		  else
-		    tempp->color=LTGREEN;
+		    tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
 		} else {
-		  if (!(RandU16&3))
+		  if (RandI16&1)
+		    tempp->color=LTGREEN;
+		  else
+		    tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
+		}
+	      } else {
+		if (!(RandU16&3)) {
+		  if (RandI16&1)
 		    tempp->color=WHITE;
 		  else
 		    tempp->color=LTGRAY;
-		}
-	      } else {
-		if (l<ROCK_ELEVATION*MAP_SCALE)
-		  tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
-		else if (l<SNOW_ELEVATION*MAP_SCALE) {
-		  if (!(RandU16&3))
-		    tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
-		  else
-		    tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
 		} else {
-		  if (!(RandU16&3))
+		  if (RandI16&1)
 		    tempp->color=LTGRAY+WHITE<<16+ROPF_DITHER;
 		  else
 		    tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
 		}
 	      }
 	    }
-	    tempp->n=4;
-	    poly=tempp->pts=MAlloc(sizeof(CD3I32)*tempp->n,task);
+	    tempp->num_sides=4;
+	    poly=tempp->pts=MAlloc(sizeof(CD3I32)*tempp->num_sides,task);
 	    poly[0].x=MAP_SCALE*i;
 	    poly[0].y=MAP_SCALE*j;
 	    poly[0].z=elevations[j][i];
@@ -284,13 +524,11 @@ for each spot.
   MemSet(panels,0,sizeof(panels));
   CalcNormals;
   panel_root=NULL;
-  num_panels=0;
   mp.init_not_done_flags=1<<mp_cnt-1;
   for (i=0;i<mp_cnt;i++)
     Spawn(&MPDoPanels,Fs,"Do Panels",i);
   while (mp.init_not_done_flags)
     Sleep(1);
-  panels_processed_bitmap=MAlloc((num_panels+7)>>3);
 }
 
 F64 claws_down;
@@ -301,8 +539,8 @@ F64 claws_down;
 
 
 
-/* <2> <2> (image) */
-/* <3> <3> (image) */
+/* <5> <5> (image) */
+/* <6> <6> (image) */
 
 
 
@@ -327,9 +565,9 @@ U0 ClawDraw(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,I64 w,I64 segments,Bool talon)
   }
   if (talon) {
     if (y1<y2)
-      Sprite3B(dc,x1,y1,0,__BIN_2);
+      Sprite3B(dc,x1,y1,0,__BIN_5);
     else
-      Sprite3B(dc,x1,y1,0,__BIN_3);
+      Sprite3B(dc,x1,y1,0,__BIN_6);
   }
 }
 
@@ -350,7 +588,6 @@ U0 ClawsDraw(CTask *task,CDC *dc)
 }
 
 CDC *main_dc;
-
 U0 DrawIt(CTask *task,CDC *dc)
 {
   main_dc->flags|=DCF_NO_TRANSPARENTS;
@@ -360,7 +597,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 }
 
 /*
-/* <4> <4> (image) */
+/* <7> <7> (image) */
 
 
 
@@ -379,7 +616,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 
 
-/* <5> <5> (image) */
+/* <8> <8> (image) */
 
 
 
@@ -423,12 +660,13 @@ I64 update_jiffy_limit;
 
 U0 MPDrawIt(CTask *task,CDC *dc)
 {
-  I64 j,strip_width,*s2w,x1,y1,z1, xx,yy,
+  I64 j,update=winmgr.updates&65535,strip_width,*s2w,x1,y1,z1,xx,yy,
 	xh,yh,zh,yh2,xh2,x1h,y1h,x1wa,y1wa,x1wb,y1wb,
 	x3,y3,z3,dd,dd_old,
 	cx=task->pix_width>>1,
 	cy=task->pix_height>>1;
   Panel reg *tempp;
+  Obj	*tempo;
   Bool	w_on_map,h_on_map;
 
   xx=x/(MAP_SCALE*COORDINATE_SCALE);
@@ -515,13 +753,18 @@ U0 MPDrawIt(CTask *task,CDC *dc)
     for (j=0;j<strip_height && cnts.jiffies<update_jiffy_limit;j++) {
       x1=x1h>>8; y1=y1h>>8;
       if (0<=x1<MAP_WIDTH && 0<=y1<MAP_HEIGHT) {
-	if ((tempp=panels[y1][x1]) &&
-	      !LBts(panels_processed_bitmap,tempp->num)) {
+	if ((tempp=panels[y1][x1]) && tempp->update!=update) {
+	  tempp->update=update;
 	  if (tempp->cnt>8*(1.1-Gs->idle_factor)) {
 	    dc->color=tempp->color;
-	    tempp->cnt=GrFillPoly3(dc,tempp->n,tempp->pts);
+	    tempp->cnt=GrFillPoly3(dc,tempp->num_sides,tempp->pts);
 	  } else
 	    tempp->cnt++;
+	  tempo=tempp->next_obj;
+	  while (tempo!=&tempp->next_obj) {
+	    Sprite3(dc,tempo->p.x,tempo->p.y,tempo->p.z,tempo->img);
+	    tempo=tempo->next;
+	  }
 	}
 	h_on_map=TRUE;
       } else if (h_on_map)
@@ -676,10 +919,8 @@ U0 Core0EagleDive()
   CDC *dc=DCAlias(main_dc,Fs);
   I64 i,xx,yy,elev,height,bkcolor,cx=Fs->pix_width>>1,cy=Fs->pix_height>>1;
   F64 min_strip_width,roll,pitch,heading;
-  Fish *tempf;
 
   update_jiffy_limit=cnts.jiffies+JIFFY_FREQ/40;
-  MemSet(panels_processed_bitmap,0,(num_panels+7)>>3);
 
   xx=x/(MAP_SCALE*COORDINATE_SCALE);
   yy=y/(MAP_SCALE*COORDINATE_SCALE);
@@ -710,15 +951,6 @@ U0 Core0EagleDive()
 
     mp.update_not_done_flags=1<<mp_cnt-1;
     MPDrawIt(Fs,dc);
-
-    xx=x/COORDINATE_SCALE;
-    yy=y/COORDINATE_SCALE;
-    tempf=fish_root.next;
-    while (tempf!=&fish_root) {
-      if (SqrI64(tempf->p.x-xx)+SqrI64(tempf->p.y-yy)<MAP_SCALE*MAP_SCALE*20*20)
-	Sprite3(dc,tempf->p.x,tempf->p.y,tempf->p.z,__BIN_1);
-      tempf=tempf->next;
-    }
 
     while (mp.update_not_done_flags)
       Sleep(1);
@@ -770,18 +1002,24 @@ U0 Core0EagleDive()
 }
 
 
-Fish *FishFind(I64 x1,I64 y1,I64 *_dd)
+Obj *FishFind(I64 x1,I64 y1,I64 *_dd)
 {
   I64 dd,best_dd=MAX_I64;
-  Fish *res=NULL,*tempf;
-  tempf=fish_root.next;
-  while (tempf!=&fish_root) {
-    dd=SqrI64(tempf->p.x-x1)+SqrI64(tempf->p.y-y1);
-    if (dd<best_dd) {
-      best_dd=dd;
-      res=tempf;
+  Obj *res=NULL,*tempo;
+  Panel *tempp=panel_root;
+  while (tempp) {
+    tempo=tempp->next_obj;
+    while (tempo!=&tempp->next_obj) {
+      if (tempo->fish) {
+	dd=SqrI64(tempo->p.x-x1)+SqrI64(tempo->p.y-y1);
+	if (dd<best_dd) {
+	  best_dd=dd;
+	  res=tempo;
+	}
+      }
+      tempo=tempo->next;
     }
-    tempf=tempf->next;
+    tempp=tempp->next;
   }
   *_dd=best_dd;
   return res;
@@ -793,7 +1031,7 @@ U0 AnimateTask(I64)
 {//Steadily moves the airplane fwd.
   I64 *s2w,x1,y1,z1,dx,dy,dz,dd;
   F64 t0=tS,mS,theta,d,pitch;
-  Fish *tempf;
+  Obj *tempo;
   while (TRUE) {
     mS=1000*(tS-t0);
     t0=tS;
@@ -823,10 +1061,10 @@ U0 AnimateTask(I64)
 	    phi+=mS/1000.0*Sign(-3*pi/8-phi);
 	}
 	speed=1.0;
-	if (tempf=FishFind(x1,y1,&dd)) {
+	if (tempo=FishFind(x1,y1,&dd)) {
 	  d=Sqrt(dd);
-	  x1-=tempf->p.x;
-	  y1-=tempf->p.y;
+	  x1-=tempo->p.x;
+	  y1-=tempo->p.y;
 	  theta=ACos((dx*x1+dy*y1)/(d*1<<16));
 	  if (theta>0 && d<MAP_SCALE*4)
 	    claws_down=Saw(d,MAP_SCALE*4);
@@ -836,8 +1074,8 @@ U0 AnimateTask(I64)
 	    game_score++;
 	    if (game_score>best_score)
 	      best_score=game_score;
-	    QueRem(tempf);
-	    Free(tempf);
+	    QueRem(tempo);
+	    Free(tempo);
 	    music.mute=TRUE;
 	    Snd(1000); Sleep(200); Snd(0);
 	    music.mute=FALSE;
@@ -894,14 +1132,13 @@ U0 Init()
   game_score=0;
 
   MemSet(&mp,0,sizeof(MPCtrl));
-  QueInit(&fish_root);
   InitMap;
   DCDepthBufAlloc(main_dc);
 
   strip_height=128;
   phi	=-90.0*pi/180.0;
-  theta1=  0.0*pi/180.0;
-  theta2=  0.0*pi/180.0;
+  theta1	=  0.0*pi/180.0;
+  theta2	=  0.0*pi/180.0;
   speed =  2.5;
   claws_down=0;
 
@@ -921,24 +1158,15 @@ U0 Init()
 
 U0 CleanUp()
 {
-  Fish *tempf=fish_root.next,*tempf1;
   Panel *tempp=panel_root,*tempp1;
-
   MPEnd;
-
-  while (tempf!=&fish_root) {
-    tempf1=tempf->next;
-    QueRem(tempf);
-    Free(tempf);
-    tempf=tempf1;
-  }
   while (tempp) {
     tempp1=tempp->next;
+    QueDel(&tempp->next_obj);
     Free(tempp->pts);
     Free(tempp);
     tempp=tempp1;
   }
-  Free(panels_processed_bitmap);
   DCDel(main_dc);
 }
 

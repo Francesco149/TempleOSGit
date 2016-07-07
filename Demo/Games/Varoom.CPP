@@ -129,7 +129,7 @@ class Car
 {
   CD3I32 p;
   F64 theta,dtheta,speed;
-  CSprite *img;
+  U8 *img;
   Track *t;
 } c[NUM_CARS];
 
@@ -563,7 +563,7 @@ U0 AnimateTask(I64)
   }
 }
 
-CSprite *imgs[8]={__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4};
+U8 *imgs[8]={__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4};
 
 
 U0 InitBushes()

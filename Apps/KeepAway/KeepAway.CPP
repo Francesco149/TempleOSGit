@@ -159,7 +159,7 @@
 
 class Frame
 {
-  CSprite *img[2];
+  U8 *img[2];
   F64 dt;
 };
 

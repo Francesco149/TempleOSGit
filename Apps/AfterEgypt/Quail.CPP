@@ -38,7 +38,7 @@ F64 t0,t_last;
 U0 DrawQuail(CTask *,CDC *dc)
 {
   I64 i;
-  CSprite *temps;
+  U8 *temps;
   F64 tt,t1=tS-t0;
   Sprite3(dc,0,SKY_HEIGHT,0,__BIN_4);
   for (i=0;i<NUM_QUAIL;i++) {

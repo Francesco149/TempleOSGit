@@ -154,14 +154,14 @@ Bool game_over;
 #define T_BIG_ROCK	2
 #define T_WOLF		3
 #define T_CHAIR_LIFT	4
-CSprite *imgs[5]={__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_9};
+U8 *imgs[5]={__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_9};
 
 #define DC_WOLF_WIDTH	48
 #define DC_WOLF_HEIGHT	38
 U0 DrawRunningWolf(CDC *dc,I64 i)
 {//Draw wolf on small DC so bottom gets clipped looking like sunk into snow.
 //Then, copy onto main DC.
-  CSprite *temps;
+  U8 *temps;
   CDC *dc_wolf=DCNew(DC_WOLF_WIDTH,DC_WOLF_HEIGHT);
   DCFill(dc_wolf);
   if (x<obj_x[i]) {

@@ -55,7 +55,7 @@ Bool game_over;
 
 
 
-CSprite *friendly_imgs[4]={__BIN_3,__BIN_2,__BIN_3,__BIN_4};
+U8 *friendly_imgs[4]={__BIN_3,__BIN_2,__BIN_3,__BIN_4};
 
 
 
@@ -75,7 +75,7 @@ CSprite *friendly_imgs[4]={__BIN_3,__BIN_2,__BIN_3,__BIN_4};
 
 
 
-CSprite *friendly_hacking_imgs[4]={__BIN_6,__BIN_5,__BIN_6,__BIN_7};
+U8 *friendly_hacking_imgs[4]={__BIN_6,__BIN_5,__BIN_6,__BIN_7};
 
 
 
@@ -92,7 +92,7 @@ CSprite *friendly_hacking_imgs[4]={__BIN_6,__BIN_5,__BIN_6,__BIN_7};
 
 
 
-CSprite *enemy_imgs[4]={__BIN_9,__BIN_8,__BIN_9,__BIN_10};
+U8 *enemy_imgs[4]={__BIN_9,__BIN_8,__BIN_9,__BIN_10};
 
 
 
@@ -112,7 +112,7 @@ CSprite *enemy_imgs[4]={__BIN_9,__BIN_8,__BIN_9,__BIN_10};
 
 
 
-CSprite *enemy_hacking_imgs[4]={__BIN_12,__BIN_11,__BIN_12,__BIN_13};
+U8 *enemy_hacking_imgs[4]={__BIN_12,__BIN_11,__BIN_12,__BIN_13};
 
 
 
@@ -155,7 +155,7 @@ CSprite *enemy_hacking_imgs[4]={__BIN_12,__BIN_11,__BIN_12,__BIN_13};
 
 
 
-CSprite *landscape_imgs[LANDSCAPE_TYPES]=
+U8 *landscape_imgs[LANDSCAPE_TYPES]=
   {__BIN_14,__BIN_15,__BIN_16,__BIN_17};
 
 #define MAX_LANDSCAPE 64
@@ -173,7 +173,7 @@ U0 MPDrawMen(CDC *dc2)
   I64 i,r[16],lo=Gs->num*MAX_MAN/mp_cnt,hi=(Gs->num+1)*MAX_MAN/mp_cnt,
 	yy,phase,scroll_y=MAP_HEIGHT-100-100*(tS-t0);
   Man *tempm;
-  CSprite *temps,**_temps;
+  U8 *temps,**_temps;
   F64 tt,ts=tS;
 
   for (i=lo;i<hi;i++) {
@@ -215,7 +215,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   F64 tt,ts=tS;
   Man *tempm;
   Bullet *tempb;
-  CSprite *temps;
+  U8 *temps;
 
   for (i=0;i<MAX_LANDSCAPE;i++) {
     yy=(ls[i].y-scroll_y)&(MAP_HEIGHT-1);

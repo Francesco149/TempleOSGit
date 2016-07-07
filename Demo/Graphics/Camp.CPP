@@ -51,7 +51,7 @@ class Obj
 
 	/* <6> <6> (image) */
 
-CSprite *right_imgs[4]={__BIN_2,__BIN_1,__BIN_3,__BIN_1},
+U8	*right_imgs[4]={__BIN_2,__BIN_1,__BIN_3,__BIN_1},
 	*left_imgs[4]={__BIN_5,__BIN_4,__BIN_6,__BIN_4};
 
 
@@ -69,7 +69,7 @@ CSprite *right_imgs[4]={__BIN_2,__BIN_1,__BIN_3,__BIN_1},
 
 	/* <7> <7> (image) */
 
-CSprite *tent_img=__BIN_7;
+U8 *tent_img=__BIN_7;
 
 
 	/* <8> <8> (image) */
@@ -120,7 +120,7 @@ U0 MPDrawMeeting(CTask *task)
 {
   CDC *dc=DCAlias(gr.dc2,task);
   F64 s;
-  CSprite *img,*img1,*img2;
+  U8 *img,*img1,*img2;
   I64 i,x,y,z,*r2,*old_r=dc->r,
 	lo= Gs->num   *num_objs/mp_cnt,
 	hi=(Gs->num+1)*num_objs/mp_cnt;

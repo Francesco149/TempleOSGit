@@ -162,7 +162,7 @@
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  CSprite *temps;
+  U8 *temps;
   Sprite3(dc,100,task->pix_height-60,0,__BIN_3);
   Sprite3(dc,194,task->pix_height-140,0,__BIN_4);
   Sprite3(dc,400,task->pix_height-10,0,__BIN_5);

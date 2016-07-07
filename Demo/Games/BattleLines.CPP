@@ -23,7 +23,7 @@
 
 #define FRAMES 6
 
-CSprite *imgs[FRAMES]={
+U8 *imgs[FRAMES]={
 __BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_3,__BIN_2};
 
 F64 fire_end_time;
@@ -53,7 +53,7 @@ I64 ai_targets[10];
 
 U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
 {
-  CSprite *temps;
+  U8 *temps;
   I64 x,y,gx,gy;
   F64 speed,tt;
 

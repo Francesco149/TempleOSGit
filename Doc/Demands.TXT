@@ -117,6 +117,6 @@ blemish free, unlike BMP files.
 
 * We will make a [C:/Doc/StdTempleOSPC.TXT.Z,1] Standard TempleOS PC.
 
-* "VMware" is a trademark of VMware, Inc.
-* "Linux" is probably a trademark owned by Linus Torvalds.
-* "Windows" and "Paint" are trademarks of MicroSoft Corp.
+* "VMware" is a trademark owned by VMware, Inc.
+* "Linux" is a trademark owned by Linus Torvalds.
+* "Windows" and "Paint" are trademarks owned by MicroSoft Corp.

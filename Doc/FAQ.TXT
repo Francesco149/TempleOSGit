@@ -218,7 +218,8 @@
   a file of the same name.
 
 
-* "Windows" is a trademark of MicroSoft Corp.
-* "Linux" is probably a trademark owned by Linus Torvalds.
-* "VMware" is a trademark of VMware, Inc.
-* "VirtualBox" is a trademark of Oracle.
+* "Windows" is a trademark owned by MicroSoft Corp.
+* "Linux" is a trademark owned by Linus Torvalds.
+* "QEMU" is a trademark owned by Fabrice Bellard.
+* "VMware" is a trademark owned by VMware, Inc.
+* "VirtualBox" is a trademark owned by Oracle.

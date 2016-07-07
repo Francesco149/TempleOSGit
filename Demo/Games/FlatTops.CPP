@@ -154,7 +154,7 @@ U0 ObjDel(Obj *tempo)
 
 /* <6> <6> (image) */
 
-CSprite *imgs[NUM_PLAYERS][OT_NUM_TYPES]={{__BIN_1,__BIN_2,__BIN_3},{__BIN_4,__BIN_5,__BIN_6}};
+U8 *imgs[NUM_PLAYERS][OT_NUM_TYPES]={{__BIN_1,__BIN_2,__BIN_3},{__BIN_4,__BIN_5,__BIN_6}};
 
 U0 DrawIt(CTask *task,CDC *dc)
 {

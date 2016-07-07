@@ -69,7 +69,7 @@ class PickFrame
   /* <3> <3> (image) */
 
 
-CSprite *imgs[NUM_IMGS]={__BIN_1,__BIN_2,__BIN_3};
+U8 *imgs[NUM_IMGS]={__BIN_1,__BIN_2,__BIN_3};
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
