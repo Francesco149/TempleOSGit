@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#Transfer my /Home files into VirtualBox.
+
+rm ~/TAD/Bin/*~
+rm ~/TAD/Home/*~
+rm ~/TAD/Home/Downloads/Bin/*~
+cp -R --preserve=timestamps ~/TAD/Bin/emu* ~/TAD/Home/Downloads/Bin
+cp -R --preserve=timestamps ~/TAD/Bin/vm* ~/TAD/Home/Downloads/Bin
+cp -R --preserve=timestamps ~/TAD/Bin/vb* ~/TAD/Home/Downloads/Bin
+cp -R --preserve=timestamps ~/TAD/Bin/mix* ~/TAD/Home/Downloads/Bin
+cp -R --preserve=timestamps ~/TAD/Bin/God* ~/TAD/Home/Downloads/Bin
+cp -R --preserve=timestamps ~/TAD/IRCBots/TempleBot ~/TAD/Home/Downloads/Bin
+
+~/TAD/Bin/vb_mnt
+rm -R /mnt/vb_disk/Home
+cp -R --preserve=timestamps ~/TAD/Home /mnt/vb_disk
+~/TAD/Bin/vb_umnt
+

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#Start QEMU use with no CDROM.
+
+qemu-system-x86_64 -hda ~/qemu_disk.qcow2 -machine kernel_irqchip=off -smp cores=8 -enable-kvm -cpu host -m 4096 -rtc base=localtime -soundhw pcspk

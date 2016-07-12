@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#Mount QEMU drive.
+
+echo EMU Mnt
+sudo modprobe nbd max_part=16
+sudo qemu-nbd -c /dev/nbd0 ~/qemu_disk.qcow2
+sudo partprobe /dev/nbd0
+sudo mount /dev/nbd0p2 /mnt/qemu_disk
+

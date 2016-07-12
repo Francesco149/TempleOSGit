@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#Unmount QEMU drive.
+
+echo EMU Umnt
+sudo umount /mnt/qemu_disk
+sudo qemu-nbd -d /dev/nbd0
+sudo partprobe
+

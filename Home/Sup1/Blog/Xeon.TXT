@@ -1,0 +1,163 @@
+                                My Xeon System
+
+
+It was changed to this:	Xeon E5-2687WV4
+
+System as Configured
+System ID
+W7320-395
+JNCS Warranty - Pricing adjusts with change of components
+12 Month JNCS Warranty
+Note: Individual items in system also have varying warranties from manufacturer, usually a minimum of three years. Manufacturer warranty is specified in description of each item. After 12 months, warranty is through manufacturer.
+Services
+Full System Assembly
+
+    Full assembly
+    Burn-in Tested
+    BIOS flashed to most recent stable version
+    Cables routed and tied
+    Excellent heavy-duty packaging
+    All original boxes, CDs, manuals included
+    If ordered with operating system, all device drivers loaded, all updates and patches applied
+
+Case - ATX, Choose Power Supply from Next Group
+Antec Three Hundred Two
+
+    Dimensions: 18"(H) 18.3"(D) 8.1"(W)
+    Bays: 3 5.25" External 6 3.5" Internal
+    Cooling: 1 Rear 120mm, 1 top 140mm included, optional space for 2 120mm front, 1 120mm side
+    Top I/O: 2 USB 3.0 Ports,HDA and ACgammaco97 Audio In and Out
+
+Power Supply
+EVGA 500B 100-B1-0500-KR
+
+    500 Watt ATX PS2
+    Rails:
+        3.3V: 24A
+        5V: 20A
+        12V: Split 40A/40A
+        5Vsb: 3A
+        -12V: .3A
+    Dimensions: 85mm x 150mm x 140mm
+    Efficiency: 80%
+    Warranty: 3 Year, requires EVGA Registration
+
+Motherboard
+Gigabyte MW50-SV0 Motherboard
+
+    CPU: Supports Intel Xeon 16xx,26xx, Socket 2011-3
+    Memory: Supports 8 DDR4-ECC Registered Memory Modules (2x4)
+    Slots:
+        2x PCIe x16 (3.0)
+        1x PCIe x8 in x16 (3.0)
+        1x PCIe x4 mezzanine card slot
+        1x PCI slot
+    Storage:
+        Intel: 8x SATA 6Gb/s ports
+        Marvel: 4x SATA 3Gb/s ports
+    USB:
+        3.0: 4 on back IO, 2 via header
+        2.0: 4 on back IO, 2 via header
+    Ethernet: 2x GbE Intel+<< i210, 1x Gbe Intel+<< i218 vPro
+    Audio: Realtek+<< ALC887 with Optical S/PDIF
+
+CPU
+Intel+<< Xeongammaao E5-2687W v3
+
+    Cores/Threads: 10/20
+    Frequency: 3.1Ghz 3.5Ghz Turbo
+    Cache: 25MB
+    TDP: 160 Watt
+    QPI: 9.6 GT/s
+    Packaging: Retail Box
+
+CPU Cooling Solution
+Heatsink/Fan for Intel Socket 2011 CPU
+Memory
+64GB DDR4-2133
+
+    Crucial or Kingston RDIMMs
+    DDR4-2133
+    4 Modules 16GB
+    ECC Registered Low Voltage (1.2v)
+
+Video Card (Dual Cards operate in Independent Mode)
+EVGA GT730 (01G-P3-2731-KR)b>
+
+    Specs & Pictures
+    Superclocked
+    Memory: 1024MB, DDR5 64bit
+    GPU Clock Speed: 902MHz
+    Processing Cores: 384
+    Memory Clock Speed: 5000Mhz
+    Memory Bandwidth: 40GB/sec
+    Bus: PCI-E 2.0
+    Interface: DVI-D, HDMI, VGA
+    Concurrent Display: 3 Monitors
+    Resolution Max
+        Digital: 4096x2160
+        Analog: 2048x1536
+    Slots: 2
+    Supports: DirectX 11, Blu-ray 3D
+    Choose Minimum 300 Watt Power Supply
+
+PCIe SSD
+Samsung 512GB M.2 SSD
+
+    Series: 950 PRO
+    Model Z-V5P512BW
+    Capacity: 512GB
+    Interface: M.2 (PCIe 3.0 x4)
+    Form Factor: M.2
+    Transfer Speeds:
+        Max Sequential Read: 2,500MB/s
+        Max Sequential Write: 1,500 MB/s
+        Random Read:
+            Up to 300,000 IOPS (4KB, QD32)
+            Up to 12,000 IOPS (4KB, QD1)
+        Random Write:
+            Up to 110,000 IOPS (4KB, QD32)
+            Up to 43,000 IOPS (4KB, QD1)
+    Power:
+        idle: 70m Watts
+        Maximum: 7.0 Watts
+        Average: 5.7 Watts 
+    MTBF: 1.5 Million Hours
+    Warranty: 5 Year Limited (Samsung)
+
+SSD 1 - 2.5"
+Item Not Selected
+SSD 2 - 2.5"
+Item Not Selected
+Hard Drive 1
+Western Digital Model WD10EZEX
+
+    Caviargammaao Blue Edition
+    1 Tb SATA 600, 64mb Cache
+    7200RPM
+
+Hard Drive 2
+Not Selected
+Professional Video Cards (AutoCad, Solidworks, etc)
+No Professional Video Card Selected
+Primary Optical Drive
+LG Blu-ray Combo
+
+    SATA
+    Does NOT write Blu-Ray media
+    Read: BD-ROM 10x, DVD-ROM 16x
+    Write: DVD+R 16x, DVD+RW 8x, DVD-R 16x, DVD-RW 6x, CD-R 48X CD-RW 24X
+    SATA
+
+Productivity Software
+Not Selected
+Operating System
+No Operating System Selected
+LCD Monitor
+No Monitor Selected
+Keyboards
+Microsoft Desktop Combo
+
+    Basic Value Pack
+    Includes Keyboard and Optical Mouse
+    Wired

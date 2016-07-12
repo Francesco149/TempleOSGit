@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Unmount VMware drive.
+
+echo VMware Umnt
+/usr/bin/vmware-mount -d /mnt/vm_disk
+

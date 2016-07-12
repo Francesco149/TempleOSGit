@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Install VMware for the first time.
+
+mkdir /mnt/vm_disk
+sudo chmod 777 /mnt/vm_disk
+
