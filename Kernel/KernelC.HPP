@@ -388,7 +388,6 @@ extern I64 BlkDevAdd(CBlkDev *bd,Bool one_drv,Bool make_free);
 extern U0 DskCacheInit(I64 size_in_U8s);
 public extern U0 DskCacheInvalidate(CDrv *dv);
 public extern CBlkDevGlbls blkdev;
-
 #help_index "Graphics/Color"
 extern U0 (*fp_set_std_palette)();
 public extern U8 *Color2Str(U8 *buf,CColorROPU32 c);
@@ -431,6 +430,7 @@ extern U0 SysSymImportsResolve(U8 *sptr,I64 ld_flags=0);
 
 #help_index "Hash/System;Char/Lists"
 public extern I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table);
+
 #help_index "Hash/System;Define;Char/Define;Char/Lists"
 public extern I64 HashDefineLstAdd(U8 *dname,I64 type,CHashTable *table);
 
