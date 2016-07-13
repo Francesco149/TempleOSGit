@@ -76,7 +76,7 @@ and over again.  See [C:/Demo/Graphics/Box.CPP,1].
 
 * Use the graphic sprite resource editor, <CTRL-r>, to create a sprite that 
 can be plotted with [C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3() or output to
-the cmd line with [C:/Adam/Gr/GrSpritePlot.CPP.Z,486] Sprite().  Use $I
+the cmd line with [C:/Adam/Gr/GrSpritePlot.CPP.Z,474] Sprite().  Use $I
 B,"",BI=1$ in a src program to insert the addr of sprite binary data item #1.
  
 To learn how the numbers work, after creating a sprite with <CTRL-r>, toggle 

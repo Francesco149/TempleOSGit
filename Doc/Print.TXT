@@ -2,7 +2,7 @@
 
 <fmt_arg> := %[-][0][<width>][.<decimals>][<flags>][h<aux_fmt_num>]<fmt_code>
 
-See [C:/Kernel/StrPrint.CPP.Z,206] StrPrintJoin().
+See [C:/Kernel/StrPrint.CPP.Z,208] StrPrintJoin().
 
 <flags>:
 
@@ -62,13 +62,13 @@ strs in strs.)
 
                                  Print Family
 
-[C:/Kernel/StrPrint.CPP.Z,896] MStrPrint(U8 *fmt,...) is like
-[C:/Kernel/StrPrint.CPP.Z,874] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
+[C:/Kernel/StrPrint.CPP.Z,898] MStrPrint(U8 *fmt,...) is like
+[C:/Kernel/StrPrint.CPP.Z,876] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAllocated str.  It is vary handy
 because you don't have to worry about 
 overflow.
 
-[C:/Kernel/StrPrint.CPP.Z,879] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
+[C:/Kernel/StrPrint.CPP.Z,881] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
 formated string.
 
 [C:/Kernel/SrvCmd.CPP.Z,483] Auto(U8 *fmt,...) sends text to the current

@@ -79,8 +79,8 @@ but you can only do ptr references to the class.
   U16 *_w=0xA0000;
   *_w|=0x8000;
 }
-  The |= will be coded as a U32 Bts inst resing in a U32 access instead of a U
-16 access.  This affects some hardware operations.
+  The |= will be coded as a U32 Bts inst resulting in a U32 access instead of 
+a U16 access.  This affects some hardware operations.
 
 * Compiler warning or error message line numbers will be off if you have a 
 block of word-wrapped comments.  You might press <CTRL-t> before doing an 

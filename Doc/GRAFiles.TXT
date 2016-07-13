@@ -44,6 +44,6 @@ class GRAFile
   U8	body[];
 };
 
-See [C:/Adam/Gr/GrDC.CPP.Z,285] DCSave(), [C:/Adam/Gr/GrDC.CPP.Z,378]
-GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,337] DCLoad(), and
-[C:/Adam/Gr/GrDC.CPP.Z,389] GRARead().
+See [C:/Adam/Gr/GrDC.CPP.Z,286] DCSave(), [C:/Adam/Gr/GrDC.CPP.Z,379]
+GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,338] DCLoad(), and
+[C:/Adam/Gr/GrDC.CPP.Z,390] GRARead().

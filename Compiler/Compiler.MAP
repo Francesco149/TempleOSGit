@@ -228,7 +228,7 @@
 [C:/Compiler/BackA.CPP.Z,408] ICDivEqu
 [C:/Compiler/PrsStmt.CPP.Z,486] PrsWhile
 [C:/Compiler/BackFB.CPP.Z,219] ICFCmpAndBranch
-[C:/Compiler/Lex.CPP.Z,443] Lex
+[C:/Compiler/Lex.CPP.Z,447] Lex
 [C:/Compiler/BackB.CPP.Z,634] ICTestAndBranch
 [C:/Compiler/Compiler.PRJ.Z,21] uasm
 [C:/Compiler/BackLib.CPP.Z,127] MODR_INDIRECT_REG

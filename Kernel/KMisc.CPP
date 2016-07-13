@@ -176,7 +176,7 @@ U0 Snd(F64 freq)
       d=ACAlloc(sizeof(CSndData));
       d->freq=freq;
       d->time=tS;
-      QueIns(d,snd.record_root.last);
+      QueIns(d,snd.record_head.last);
     }
     LBtr(&sys_semas[SYS_SEMA_SND],0);
   }

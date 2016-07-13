@@ -63,7 +63,7 @@ public _intern IC_STRLEN I64 StrLen(U8 *st); //String length.
 #help_index "Data Types/Circular Queue"
 #help_file "::/Doc/Que"
 public _intern IC_QUE_INIT U0 QueInit(
-	CQue *root); //Init queue root links.
+	CQue *head); //Init queue head links.
 public _intern IC_QUE_INS U0 QueIns(
 	CQue *entry,CQue *pred);//Insert item into que after predecessor.
 public _intern IC_QUE_INS_REV U0 QueInsRev(
@@ -106,7 +106,7 @@ public _intern IC_SIN F64 Sin(F64 d); //Sine.
 public _intern IC_SQR F64 Sqr(F64 d); //Square of F64.
 public _intern IC_SQR_I64  I64 SqrI64(I64 i); //Square of I64.
 public _intern IC_SQR_U64  U64 SqrU64(U64 i); //Square of U64.
-public _intern IC_SQRT F64 Sqrt(F64 d); //Square root of F64.
+public _intern IC_SQRT F64 Sqrt(F64 d); //Square head of F64.
 public _intern IC_SWAP_I64 U0 SwapI64(
 	I64 *n1,I64 *n2); //Swap two I64s. Not atomic.
 public _intern IC_SWAP_U16 U0 SwapU16(

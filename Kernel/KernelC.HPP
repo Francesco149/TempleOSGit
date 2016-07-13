@@ -101,7 +101,7 @@ public extern U0 PrintWarn(U8 *fmt,...);
 public extern U0 PutChars(U64 ch);
 extern U0 PutHex(I64 num,I64 width);
 public extern U0 PutKey(I64 ch=0,I64 sc=0);
-extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,888] Print()
+extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,890] Print()
 public extern Bool Silent(Bool val=ON);
 extern U8 *StrPrintHex(U8 *dst,I64 num;I64 width);
 
@@ -126,11 +126,12 @@ public extern U0 ArcCtrlDel(CArcCtrl *c);
 public extern CArcCtrl *ArcCtrlNew(Bool expand,I64 compression_type=CT_8_BIT);
 public extern U0 ArcExpandBuf(CArcCtrl *c);
 public extern Bool ArcFinishCompression(CArcCtrl *c);
+
 #help_index "Data Types/Circular Queue"
-public extern I64	QueCnt(CQue *root);
-public extern CQue	*QueCopy(CQue *root,CTask *mem_task=NULL);
-public extern U0	QueDel(CQue *root,Bool querem=FALSE);
-public extern I64	QueSize(CQue *root);
+public extern I64	QueCnt(CQue *head);
+public extern CQue	*QueCopy(CQue *head,CTask *mem_task=NULL);
+public extern U0	QueDel(CQue *head,Bool querem=FALSE);
+public extern I64	QueSize(CQue *head);
 
 #help_index "Data Types/Fifo"
 public extern I64	FifoI64Cnt(CFifoI64 *f);
@@ -374,7 +375,7 @@ public extern I64 FileWrite(U8 *filename,
 public extern CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0);
 
 #help_index "File/System"
-public extern CATARep *ATAIDDrvs(CATARep *root,CATARep **_ata_drv,
+public extern CATARep *ATAIDDrvs(CATARep *head,CATARep **_ata_drv,
 	CATARep **_atapi_drv);
 extern CBlkDev *ATAMount(U8 first_drv_let,
 	I64 type,I64 base0,I64 base1,I64 unit);
@@ -459,7 +460,7 @@ extern CMouseStateGlbls mouse_last;
 
 #help_index "Install"
 #help_file "::/Doc/Install"
-extern CATARep *ATARepFind(CATARep *haystack_root,I64 needle_num);
+extern CATARep *ATARepFind(CATARep *haystack_head,I64 needle_num);
 public extern Bool DrvEnable(U8 drv_let,Bool val);
 
 #help_index "Install;File/Cmd Line (Typically);Cmd Line (Typically);"
@@ -478,7 +479,7 @@ public extern CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),
 	Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE);
 public extern U0 KeyDevRem(CKeyDevEntry *tempp);
 extern CKeyDevGlbls keydev;
-extern CSrvCmd sys_macro_root;
+extern CSrvCmd sys_macro_head;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
@@ -610,7 +611,7 @@ public _extern SYS_PCI_SERVICES
 
 #help_index "PCI;Info;File/System;Devices"
 public extern I64 ATARep(Bool pmt=TRUE,
-	Bool just_ide=FALSE,CATARep **_root=NULL);
+	Bool just_ide=FALSE,CATARep **_head=NULL);
 
 #help_index "Processor"
 public extern U8 *IntEntryGet(I64 irq);

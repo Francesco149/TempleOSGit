@@ -279,7 +279,7 @@ public U0 BibleVerse(CDoc *doc_out=NULL,U8 *verse,I64 lines)
 public CDoc *BibleDoc()
 {//Return Bible as DolDoc with trees.
   CDoc	*res=DocRead(BIBLE_FILENAME);
-  CDocEntry *doc_e=res->root.next,*doc_e1;
+  CDocEntry *doc_e=res->head.next,*doc_e1;
   Bool open_chapter=FALSE;
   U8	*ptr=Define("ST_BIBLE_BOOK_LINES");
   I64	book,book_cnt=DefineCnt("ST_BIBLE_BOOK_LINES")-1,

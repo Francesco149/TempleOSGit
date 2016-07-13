@@ -1,7 +1,7 @@
 //Compiler initializes glbls in AOT bin modules to zero.
 //[C:/Compiler/PrsStmt.CPP.Z,1] Globals Set to Zero Here.
 
-CSrvCmd sys_macro_root;
+CSrvCmd sys_macro_head;
 CTask *sys_macro_task;
 CDoc *sys_clipboard_doc;
 

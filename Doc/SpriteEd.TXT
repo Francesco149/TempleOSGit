@@ -11,5 +11,5 @@ Insert Shift Suborigin is an element which shifts subsequent elements.
 Perhaps, you inserted a sprite's elements from the clipboard and want to
 shift 
 it around?  This command is also useful if you call
-[C:/Adam/Gr/GrSpritePlot.CPP.Z,342] SpriteInterpolate() in 
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,330] SpriteInterpolate() in 
 programs.

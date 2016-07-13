@@ -4,7 +4,7 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
   I64 cnt,res=0,num_hints,drv_let,type,unit;
   U8 blks_buf[STR_LEN],addr_buf[STR_LEN],base0_buf[STR_LEN],base1_buf[STR_LEN],
 	*filename=NULL,*filename2=NULL;
-  CATARep *root=NULL,*tempha;
+  CATARep *head=NULL,*tempha;
   Bool one_drv,make_free;
   CDoc *doc;
   boot_drv_let=ToUpper(boot_drv_let);
@@ -15,8 +15,8 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
     "\n****** Mount Drives ******\n"
 	  "$GREEN$A$FG$-$GREEN$B$FG$ are RAM drives.\n"
 	  "$GREEN$C$FG$-$GREEN$L$FG$ are ATA hard drives.\n"
-	  "$GREEN$M$FG$-$GREEN$P$FG$ are file read drives.\n"
-	  "$GREEN$Q$FG$-$GREEN$S$FG$ are file write drives.\n"
+	  "$GREEN$M$FG$-$GREEN$P$FG$ are ISO file read drives.\n"
+	  "$GREEN$Q$FG$-$GREEN$S$FG$ are ISO file write drives.\n"
 	  "$GREEN$T$FG$-$GREEN$Z$FG$ are ATAPI CD/DVD drives.\n"
 	  "\nDrive Letter ($PURPLE$<ENTER>$FG$ to exit):";
     drv_let=ToUpper(GetChar);
@@ -36,16 +36,16 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
 	case BDT_RAM:
 	  "Addr of RAM disk ($PURPLE$<ENTER>$FG$ to MAlloc):";
 	  GetS(addr_buf,STR_LEN);
-	case BDT_FILE_WRITE:
+	case BDT_ISO_FILE_WRITE:
 	  "Blks of 512 bytes:";
 	  GetS(blks_buf,STR_LEN);
 	  break;
-	case BDT_FILE_READ:
+	case BDT_ISO_FILE_READ:
 	  filename=GetStr("File Name:");
 	  break;
 	case BDT_ATA:
 	case BDT_ATAPI:
-	  num_hints=ATARep(,,&root);
+	  num_hints=ATARep(,,&head);
 	  if (type==BDT_ATAPI && boot_drv_let)
 	    "<ENTER> to use booted CD/DVD\n"; //Only [C:/Kernel/KCfg.CPP.Z,1]
 	  do {
@@ -57,7 +57,7 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
 	    GetS(base0_buf,STR_LEN);
 	  } while (!Str2I64(base0_buf) && (type!=BDT_ATAPI || !boot_drv_let));
 	  if (1<=Str2I64(base0_buf)<=num_hints) {
-	    tempha=ATARepFind(root,Str2I64(base0_buf));
+	    tempha=ATARepFind(head,Str2I64(base0_buf));
 	    StrPrint(base0_buf,"0x%X",tempha->base0);
 	    StrPrint(base1_buf,"0x%X",tempha->base1);
 	    unit=tempha->unit;
@@ -75,7 +75,7 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
 	    } while (!(0<=unit<=1));
 	    '\n';
 	  }
-	  LinkedLstDel(root);
+	  LinkedLstDel(head);
 	  break;
       }
       DocPrint(doc,"bd=BlkDevNextFreeSlot(\'%C\',%d);bd->unit=%d;\n",
@@ -84,11 +84,11 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
 	case BDT_RAM:
 	  if (!*addr_buf) StrCpy(addr_buf,"0");
 	  DocPrint(doc,"bd->RAM_dsk=%s;\n",addr_buf);
-	case BDT_FILE_WRITE:
+	case BDT_ISO_FILE_WRITE:
 	  if (!*blks_buf) StrCpy(blks_buf,"0");
 	  DocPrint(doc,"bd->max_blk=(%s)-1;\n",blks_buf);
 	  break;
-	case BDT_FILE_READ:
+	case BDT_ISO_FILE_READ:
 	  filename2=FileNameAbs(filename);
 	  DocPrint(doc,"bd->file_dsk_name=AStrNew(\"%s\");\n",filename2);
 	  DocPrint(doc,"bd->drv_offset=19<<2+"
@@ -137,8 +137,8 @@ public U0 Unmount(U8 drv_let=0)
 public U8 MountFile(U8 *filename)
 {//Mount ISO.C file.
   U8 *filename2=DftExt(filename,"ISO.C"),*filename3=FileNameAbs(filename2);
-  CDrv *dv=DrvMakeFreeSlot(DrvNextFreeLet('M')); //First [C:/Kernel/KernelA.HPP.Z,2632] BDT_FILE_READ
-  CBlkDev *bd=BlkDevNextFreeSlot(dv->drv_let,BDT_FILE_READ);
+  CDrv *dv=DrvMakeFreeSlot(DrvNextFreeLet('M')); //First [C:/Kernel/KernelA.HPP.Z,2632] BDT_ISO_FILE_READ
+  CBlkDev *bd=BlkDevNextFreeSlot(dv->drv_let,BDT_ISO_FILE_READ);
   bd->drv_offset=19<<2+(DVD_BLK_SIZE*2+DVD_BOOT_LOADER_SIZE)/BLK_SIZE;
   bd->file_dsk_name=AStrNew(filename3);
   BlkDevAdd(bd,TRUE,TRUE);

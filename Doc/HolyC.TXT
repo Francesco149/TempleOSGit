@@ -38,7 +38,7 @@ Test(,3);
 
 * A char const all alone is sent to [C:/Kernel/KeyDev.CPP.Z,20] PutChars(). 
 A string with or without args 
-is sent to [C:/Kernel/StrPrint.CPP.Z,888] Print().  An empty string literal
+is sent to [C:/Kernel/StrPrint.CPP.Z,890] Print().  An empty string literal
 signals a variable fmt_str 
 follows.
 
@@ -112,7 +112,7 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
   
   public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
-    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,206] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc()ed string.
+    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,208] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc()ed string.
     [C:/Adam/Gr/GrBitMap.CPP.Z,863] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }
@@ -163,12 +163,12 @@ area.  See [C:/Demo/SubSwitch.CPP,1].
 for (i=0;i<10;i++)
   switch (i) {
     case 0: "Zero ";	break;
-    case 2: "Two ";		break;
+    case 2: "Two ";	break;
     case 4: "Four ";	break;
     start:
       "[";
       case 1: "One";	break;
-      case 3: "Three";	break;
+      case 3: "Three";break;
       case 5: "Five";	break;
     end:
       "] ";
@@ -351,7 +351,7 @@ are done with 64-bit values.
 {
   I16 i1;
   I32 j1;
-  j1=i1=0x12345678;		//Resing i1 is 0x5678 but j1 is 0x12345678
+  j1=i1=0x12345678;		//Resulting i1 is 0x5678 but j1 is 0x12345678
 
   I64 i2=0x8000000000000000;
   Print("%X\n",i2>>1);	//Res is 0xC000000000000000 as expected

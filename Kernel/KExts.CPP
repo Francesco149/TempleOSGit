@@ -74,7 +74,7 @@ extern U0 Msg(I64 code,I64 a1,I64 a2,I64 flags=0);
 extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);
 extern U0 Print(U8 *fmt,...);
 extern U0 PutChars(U64 ch);
-extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,888] Print()
+extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,890] Print()
 extern Bool RBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt);
 extern I64 RedSeaAllocClusters(CDrv *dv,I64 cnt);
 extern Bool RedSeaDirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempdee,
@@ -89,7 +89,7 @@ extern CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
     U8 *task_name=NULL,I64 target_cpu,CTask *parent=NULL, //NULL means adam
     I64 stk_size=0,I64 flags=1<<SVCf_ADD_TO_QUE);
 extern U0 SrvCmdDel(CSrvCmd *tempc);
-extern U0 SrvCmdQueDel(CSrvCmd *root);
+extern U0 SrvCmdQueDel(CSrvCmd *head);
 extern I64 SrvCmdsHandler(I64 run_flags,CTask *task=NULL);
 extern U0 SrvCtrlInit(CSrvCtrl *ctrl);
 extern U8 *StrPrint(U8 *dst,U8 *fmt,...);

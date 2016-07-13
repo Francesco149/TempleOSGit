@@ -222,4 +222,4 @@ used to display the call stk, such as for the wallpaper.
 
 * RAX holds function return values, of course.
 
-* "MagicISO" is a trademark of MagicISO Corp.
+* "MagicISO" is a trademark owned by MagicISO Corp.

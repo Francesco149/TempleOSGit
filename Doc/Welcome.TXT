@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-81,056 lines of code including the kernel, the 64-bit compiler, the graphics 
+81,078 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a [C:/Doc/HelloWorld.TXT.Z,1] Hello World
@@ -25,14 +25,15 @@ It's a kayak, not a Titanic -- it will crash if you do something wrong.  You
 quickly reboot, however.  DOS and the 8-bit home computers of the 80's worked 
 fine without memory protection and most computers in the world -- the
 embedded 
-ones -- operate without protection.  The resing simplicity of no protections 
-is why TempleOS has value.  In facts, that's the point of TempleOS.  See the 
-[C:/Doc/Charter.TXT.Z,1] TempleOS Charter.
+ones -- operate without protection.  The resulting simplicity of no 
+protections is why TempleOS has value.  In facts, that's the point of 
+TempleOS.  See the [C:/Doc/Charter.TXT.Z,1] TempleOS Charter.
 
 Conventional thinking is "failure is not an option" for general purpose 
 operating systems.  Since this OS is used in addition to Windows or Linux, 
-however, failure is an option -- just use Windows if you can't do something.  
-I cherry-pick what it will and won't do to make it maximally beautiful.
+however, failure is an option -- just use Windows or Linux if you can't do 
+something.  I cherry-pick what it will and won't do to make it maximally 
+beautiful.
 
 Two things to know about TempleOS are that _tasks_ have
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387]
@@ -41,7 +42,7 @@ not applications, and tasks have compiler symbol tables that persist at a
 scope like environment variables in other operating systems, and the symbols 
 can include functions.
 
-In other operating systems, I hated learning one language for command line 
+For other operating systems, I hated learning one language for command line 
 scripts and another for programming.  With TempleOS, the command line feeds 
 right into the [C:/Doc/HolyC.TXT.Z,1] HolyC compiler, line by line, and it
 places code into memory it 
@@ -52,19 +53,18 @@ it.
 
 During the boot process, many files get [C:/StartOS.CPP.Z,1] compiled before
 you have access to the 
-command line.  (Don't worry, booting takes only a couple of seconds.)  All
-the 
-header declarations for the operating system are compiled and are available 
-for use in your programs without needing to #include them.  Everything is 
-truly compiled to native x86_64 machine code, nothing is interpreted and
-there 
-is no byte code.
+command line.  (Don't worry, booting takes only two seconds.)  All the header 
+declarations for the operating system are compiled and are available for use 
+in your programs without needing to #include them.  Everything is truly 
+compiled to native x86_64 machine code, nothing is interpreted and there is
+no 
+byte code.
 
-Stmts at the global scope -- outside the scope of functions -- execute 
+Statements at the global scope -- outside the scope of functions -- execute 
 immediately.  There is no main() function.  Instead, you give meaningful
 names 
 to what would be main() functions and you invoke them by calling them with a 
-stmt in the global scope, usually at the bottom of your file.
+statement in the global scope, usually at the bottom of your file.
 
 I started with C syntax, but didn't like the command line for a directory 
 listing looking like this:
@@ -80,10 +80,11 @@ it, now, looks like this:
 
 >Dir;
 
-The syntax change created an ambiguity when specifying function addresses. 
-To 
-resolve it, I  made a '&' required in front of function names when specifying 
-an address of a function, which is better anyway.
+The syntax change created an ambiguity when specifying function addresses, 
+like for calling [C:/Kernel/QSort.CPP.Z,85] QSort().  To resolve it, I  made
+a '&' required in front of 
+function names when specifying an address of a function, which is better 
+anyway.
 
 Once I was no longer using standard C/C++ syntax, I decided to change 
 everything I didn't like and call it [C:/Doc/HolyC.TXT.Z,1] HolyC.  Here are
@@ -184,7 +185,7 @@ Dir() listing.  You left-click files to
 edit them and right-click to #include them.  To begin a project, type
 [C:/Adam/DolDoc/DocEd.CPP.Z,189] Ed("file
 name");, supplying a filename.  You can also run programs with <F5> when in 
-the editor.  <ESC> to save and exit the file.  You'll need to do a new
+the editor. <ESC> to save and exit the file.  You'll need to do a new
 [C:/Kernel/BlkDev/DskDirB.CPP.Z,105] Dir() 
 cmd, periodically, so make a macro on your PersonalMenu.  Access your 
 PersonalMenu by pressing <CTRL-m>, cursoring until you are on top of it and 
@@ -208,6 +209,7 @@ The ALT keys are defined in [C:/Home/HomeKeyPlugIns.CPP,1].  You can
 customize them.
 
 <CTRL-ALT-t> new terminal window.
+<CTRL-ALT-n> switches to the next window.
 <CTRL-ALT-x> kills a window.
 
 [C:/Adam/Opt/Utils/Find.CPP.Z,145] Find() is your best friend.  There's a
@@ -230,6 +232,31 @@ Demo Index to find-out what exists.  Press <F1> for
 help or use the links on your menu (<CTRL-m>).  Also, look in the /Demo or /Ap
 ps directories for inspiration.
 
+Software is distributed as [C:/Doc/RedSea.TXT.Z,1] RedSea ISO files.  Burn a
+CD/DVD, or set your 
+CD/DVD in QEMU, VMware or VirtualBox to the ISO file.  Then, access the 'T' 
+drive.  Or, [C:/Adam/ABlkDev/Mount.CPP.Z,127] Mount() the ISO.C file and
+access the 'M' drive in TempleOS.  It 
+must be a contiguous ISO.C file, so rename it under TempleOS to ISO.C.
+
+Ideally, do not install applications such as games onto your hard drive 
+because we wish to keep hard drive usage low, so the whole 'C' drive can be 
+copied quickly to 'D'.  Also, the [C:/Adam/ABlkDev/FileMgr.CPP.Z,581]
+FileMgr() <CTRL-d> starts too slowly when 
+there are lots of hard drive files, but that is how we want it.
+
+3rd party libraries are banned, since they circumvent the 100,000 line of
+code 
+limit in the [C:/Doc/Charter.TXT.Z,1] TempleOS Charter.  All applications
+must only depend on the core 
+TempleOS files and whatever they bring along in the ISO.  This is similar to 
+how Commodore 64 applications only depended on the ROM.
+
+Create a [C:/Doc/RedSea.TXT.Z,1] RedSea ISO file with
+[C:/Adam/Opt/Boot/DskISORedSea.CPP.Z,128] RedSeaISO().  Send an email to 
+tdavis@templeos.org if you want me to post a link to your TempleOS code in
+the 
+App Store.
 
 Take Tour
 `User("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
@@ -237,5 +264,9 @@ Take Tour
 
 
 
-* "Linux" is probably a trademark owned by Linus Torvalds.
-* "Windows" is a trademark of MicroSoft Corp.
+* "Linux" is a trademark owned by Linus Torvalds.
+* "Windows" is a trademark owned by MicroSoft Corp.
+* "Commodore 64" was a trademark owned by Commodore Business Machines.
+* "QEMU" is a trademark owned by Fabrice Bellard.
+* "VMware" is a trademark owned by VMware, Inc.
+* "VirtualBox" is a trademark owned by Oracle.

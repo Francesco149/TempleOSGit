@@ -320,7 +320,7 @@ _extern _STRIMATCH U8 *StrIMatch(
 _extern _STRCPY U0 StrCpy(
 	U8 *dst,U8 *src); //Copy string.
 
-//These bitmaps go to 0-511 so that [C:/Compiler/Lex.CPP.Z,443] Lex() can use them with [C:/Kernel/KernelA.HPP.Z,2069] Token Codes.
+//These bitmaps go to 0-511 so that [C:/Compiler/Lex.CPP.Z,447] Lex() can use them with [C:/Kernel/KernelA.HPP.Z,2069] Token Codes.
 U32
   chars_bmp_alpha[16]=
   {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,

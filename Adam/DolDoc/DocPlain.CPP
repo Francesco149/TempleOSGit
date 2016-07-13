@@ -215,7 +215,7 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
 }
 
 CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
-{//Uses [C:/Compiler/Lex.CPP.Z,443] Lex() to parse a string and make Doc entries.
+{//Uses [C:/Compiler/Lex.CPP.Z,447] Lex() to parse a string and make Doc entries.
   I64 i,j,de_flags,processed_flags,attr=DOC_DFT;
   U8 *ptr,*st2;
   CDocEntry *doc_e=NULL;
@@ -575,7 +575,7 @@ U0 DocEntryToggle(CDoc *doc)
       st=Doc2PlainText(doc,doc_ce);
       LBEqu(&doc->flags,DOCf_COLOR_NAMES,old_color_names);
       DocEntryDel(doc,doc_ce);
-      DocPrint(doc,"$$%Q$$",st);
+      DocPrint(doc,"$$%$Q$$",st);
     }
     DocRecalc(doc);
   }
@@ -593,13 +593,13 @@ U0 DocFlagsToggle(CDoc *doc,I64 tog_flags)
   doc->flags=doc->flags&~DOCF_NO_CURSOR|DOCF_COLOR_NAMES;
   st=DocSave(doc,&size);
 
-  u_next=doc->undo_root.next;
-  u_last=doc->undo_root.last;
-  doc->undo_root.next=doc->undo_root.last=&doc->undo_root;
+  u_next=doc->undo_head.next;
+  u_last=doc->undo_head.last;
+  doc->undo_head.next=doc->undo_head.last=&doc->undo_head;
 
   DocRst(doc,TRUE);
-  doc->undo_root.next=u_next;
-  doc->undo_root.last=u_last;
+  doc->undo_head.next=u_next;
+  doc->undo_head.last=u_last;
   DocUndoCntSet(doc);
   doc->flags=flags&~(DOCF_NO_CURSOR|DOCG_BL_IV_UL|DOCF_WORD_WRAP);
   DocLoad(doc,st,size);
