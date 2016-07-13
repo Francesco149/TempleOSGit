@@ -200,7 +200,7 @@ U0 KernelMain()
   InDbg(OFF);
   cnts.time_stamp_freq_initial=TimeStampFreqCal;
   Cd("/");
-  try ExeFile("StartOS"); //Continues [D:/StartOS.CPP,1] /StartOS.CPP
+  try ExeFile("StartOS"); //Continues [D:/StartOS.CPP.Z,1] /StartOS.CPP
   catch {
     Raw(ON);
     Silent(OFF);
