@@ -175,15 +175,15 @@ class RiverDrop
 {
   RiverDrop *next,*last;
   I64 idx,dx,dy;
-} rd_root;
+} rd_head;
 Bool rd_lock;
 
 U0 RiverDropsDel()
 {
   while (LBts(&rd_lock,0))
     Yield;
-  QueDel(&rd_root,TRUE);
-  QueInit(&rd_root);
+  QueDel(&rd_head,TRUE);
+  QueInit(&rd_head);
   LBtr(&rd_lock,0);
 }
 
@@ -192,8 +192,8 @@ U0 RiverDropsNext(CTask *mem_task)
   RiverDrop *tempr,*tempr1;
   while (LBts(&rd_lock,0))
     Yield;
-  tempr=rd_root.next;
-  while (tempr!=&rd_root) {
+  tempr=rd_head.next;
+  while (tempr!=&rd_head) {
     tempr1=tempr->next;
     if (++tempr->idx>river_hi) {
       QueRem(tempr);
@@ -218,7 +218,7 @@ U0 RiverDropsNext(CTask *mem_task)
   tempr->idx=river_lo;
   tempr->dx=0;
   tempr->dy=0;
-  QueIns(tempr,rd_root.last);
+  QueIns(tempr,rd_head.last);
   LBtr(&rd_lock,0);
 }
 
@@ -229,8 +229,8 @@ U0 RiverDropsDraw(CDC *dc,I64 cx,I64 cy)
   RiverDrop *tempr;
   while (LBts(&rd_lock,0))
     Yield;
-  tempr=rd_root.next;
-  while (tempr!=&rd_root) {
+  tempr=rd_head.next;
+  while (tempr!=&rd_head) {
     if ((MAP_HEIGHT-WATERFALL_HEIGHT)/2<r_y[tempr->idx]
 	  <(MAP_HEIGHT+WATERFALL_HEIGHT)/2)
       dc->color=WHITE;
@@ -563,7 +563,7 @@ U0 Init()
 {
   RiverNew;
   rd_lock=0;
-  QueInit(&rd_root);
+  QueInit(&rd_head);
   map_dc=DCNew(MAP_WIDTH,MAP_HEIGHT);
   a=MAlloc(NUM_ANIMALS*sizeof(Animal));
   ReInit;

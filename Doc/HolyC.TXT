@@ -38,7 +38,7 @@ Test(,3);
 
 * A char const all alone is sent to [C:/Kernel/KeyDev.CPP.Z,20] PutChars(). 
 A string with or without args 
-is sent to [C:/Kernel/StrPrint.CPP.Z,888] Print().  An empty string literal
+is sent to [C:/Kernel/StrPrint.CPP.Z,890] Print().  An empty string literal
 signals a variable fmt_str 
 follows.
 
@@ -112,7 +112,7 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
   
   public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
-    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,206] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc()ed string.
+    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,208] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc()ed string.
     [C:/Adam/Gr/GrBitMap.CPP.Z,863] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }

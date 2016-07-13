@@ -136,14 +136,14 @@ Examples: <CTRL-t> to see
 3)File link with same tag str.  [C:/Doc/HelpIndex.TXT.Z,1]
 4)[C:/Doc/HelpIndex.TXT.Z,1] File find link searching for 'Admin'
 5)[C:/Kernel/KernelA.HPP.Z,5] File find link searching for 5th 'CTRL'
-6)[C:/Kernel/StrPrint.CPP.Z,888] Manual page link
+6)[C:/Kernel/StrPrint.CPP.Z,890] Manual page link
 7)[C:/Kernel/KernelA.HPP.Z,200] File line num link
 8)[C:/Kernel/KEnd.CPP.Z,1] File anchor link -- <CTRL-t> to see anchor after
   you click
 9)[C:/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually just does
   a text search.
 10) [Doc,1] Help Index Link.
-11) [C:/Kernel/StrPrint.CPP.Z,104] Address Link.
+11) [C:/Kernel/StrPrint.CPP.Z,103] Address Link.
 
 12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.CPP.Z,680]
   SpriteEdText().

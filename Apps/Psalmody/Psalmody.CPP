@@ -31,7 +31,7 @@ See [C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin(),
 #define NOTE_REST	MIN_I64
 #define OCTAVE_REST	MIN_I64
 
-#define PSMT_ROOT	0
+#define PSMT_HEAD	0
 #define PSMT_NOTE	1
 #define PSMT_METER	2
 
@@ -65,7 +65,7 @@ class PsmNote
 
 class PsmCtrl
 {
-  PsmNote root;
+  PsmNote head;
   PsmNote clipboard;
   CMenuEntry *incomplete_entry,*record_entry;
   I64 screen_x,

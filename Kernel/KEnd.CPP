@@ -7,7 +7,7 @@ U0 SysGlblsInit()
   sys_cache_line_width=ee.rbx.u8[1]*8;
 
   sys_focus_task=Fs;
-  QueInit(&sys_macro_root);
+  QueInit(&sys_macro_head);
 
   blkdev.dft_iso_filename=AStrNew("::/Temp/CDDVD.ISO");
   blkdev.temp_filename=AStrNew("~/Temp.TXT.Z");
@@ -47,14 +47,14 @@ U0 SysGlblsInit()
   for (i=-308;i<309;i++)
     pow10_I64[i+309]=Pow10(i);
 
-  QueInit(&snd.record_root);
-  snd.record_root.time=tS;
+  QueInit(&snd.record_head);
+  snd.record_head.time=tS;
 
   ProgressBarsRst;
 
   //Independent HeapCtrl Example
   i=1; //Rqst 1 blk, we might get more.
-  QueInit(&dev.pci_root);
+  QueInit(&dev.pci_head);
   dev.mem64_ptr=MEM_MAPPED_SPACE;
 
   dbg.fun_seg_cache=CAlloc(FUN_SEG_CACHE_SIZE*sizeof(CFunSegCache));

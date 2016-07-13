@@ -836,7 +836,7 @@ public class CHashClass:CHashSrcSym
   U32	member_cnt;
   U8	ptr_stars_cnt,raw_type;
   U16	flags;
-  CMemberLst *member_lst_and_root, //Head of linked list and root of tree.
+  CMemberLst *member_lst_and_root, //Head of linked list and head of tree.
 	*member_class_base_root, //For finding dup class local vars.
 	*last_in_member_lst;
   CHashClass	*base_class,
@@ -1353,7 +1353,7 @@ class CDocUndo
 
 public class CDoc //Linked Text File header
 {//See [Doc,1] Doc for documentation.
-  CDocEntryBase root;
+  CDocEntryBase head;
   I64	flags,locked_flags;
   CDocEntry *cur_entry,*old_cur_entry;
   I32	cur_col,old_cur_col,
@@ -1390,9 +1390,9 @@ public class CDoc //Linked Text File header
   CDoc	*parent_doc; //(When browsing deeper, opening deeper docs.)
   U64	desc; //8 characters. See [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,43] DocBorderLstDraw().
 
-  CDocBin bin_root;
-  CDocSettings settings_root;
-  CDocUndo undo_root;
+  CDocBin bin_head;
+  CDocSettings settings_head;
+  CDocUndo undo_head;
 
   I64	user_data;
   U0 pad;#assert !($&7) //(compiler lags one token)
@@ -2018,7 +2018,7 @@ class CCodeCtrl
 {
   CCodeCtrl *coc_next;
   CCodeMisc *coc_next_misc,*coc_last_misc;
-  CIntermediateCodeBase	coc_root;
+  CIntermediateCodeBase	coc_head;
 };
 
 #help_index "Compiler/Lex"
@@ -2923,8 +2923,8 @@ public class CDevGlbls
   I64	*idt;
   U8	*mem64_ptr;
   U8	mp_apic_ids[MP_MAX_PROCESSORS];
-  CMemRange mem32_root;
-  CPCIDev pci_root;
+  CMemRange mem32_head;
+  CPCIDev pci_head;
 };
 
 #help_index "Graphics/Color;Graphics/Device Contexts"
@@ -3823,7 +3823,7 @@ class CKeyDevEntry
 
 class CKeyDevGlbls
 {
-  CKeyDevEntry put_key_root;
+  CKeyDevEntry put_key_head;
   U0	(**fp_ctrl_alt_cbs)(I64 sc);
   I64	ctrl_alt_in_irq_flags,
 	**ctrl_alt_ret_addr; //addr of ret addr on stack in kbd irq
@@ -3843,7 +3843,7 @@ class CSndData
 public class CSndGlbls
 {
   F64	freq;
-  CSndData record_root;
+  CSndData record_head;
   Bool	record;
 };
 

@@ -49,7 +49,7 @@ U0 OptPass3(CCmpCtrl *cc,COptReg *reg_offsets)
   } else
     member_cnt=0;
 
-  tempi=cc->coc.coc_root.next;
+  tempi=cc->coc.coc_head.next;
   while (code=tempi->ic_code) {
     tempi_next=tempi->next;
     if (code==IC_NOP1)

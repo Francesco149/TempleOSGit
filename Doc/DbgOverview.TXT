@@ -26,7 +26,7 @@ They're just global int vars.
 
 * You can use [C:/Kernel/SrvCmd.CPP.Z,424] AdamLog() to send text to the Adam
 task window.  It works like 
-[C:/Kernel/StrPrint.CPP.Z,888] Print().  I never use that.  Instead, I use
+[C:/Kernel/StrPrint.CPP.Z,890] Print().  I never use that.  Instead, I use
 [C:/Kernel/KDbg.CPP.Z,217] RawPrint().
 
 * [C:/Kernel/KDbg.CPP.Z,172] D(), [C:/Adam/DolDoc/DocPutS.CPP.Z,335] DocD(),

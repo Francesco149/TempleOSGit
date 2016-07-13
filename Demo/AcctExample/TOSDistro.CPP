@@ -51,13 +51,13 @@ public U0 CopySongs(U8 threshold='7')
 {
   CDoc *doc;
   CDocEntry *doc_e;
-  CDirEntry *tempde=FilesFind("/Home/Downloads/Psalmody/*.CPP*",
+  CDirEntry *tempde=FilesFind("/Home/Sup1/Psalmody/*.CPP*",
 	FUF_CLUSTER_ORDER),*tempde1=tempde;
   DelTree("/Apps/Psalmody/Examples");
   MkDir("/Apps/Psalmody/Examples");
   while (tempde) {
     doc=DocRead(tempde->full_name);
-    doc_e=doc->root.next;
+    doc_e=doc->head.next;
     if (doc_e->type_u8==DOCT_TEXT && doc_e->tag[2]>=threshold)
       Copy(tempde->full_name,"/Apps/Psalmody/Examples");
     DocDel(doc);
@@ -70,7 +70,7 @@ U0 DistroPrep()
 {
   Del("/Home/Demo*");
   DelTree("/Home/*Temp.TXT.Z");
-  if (FileFind("/Home/Downloads/Psalmody"))
+  if (FileFind("/Home/Sup1/Psalmody"))
     CopySongs;
 
   DelTree("/Temp");
@@ -84,17 +84,18 @@ U0 DistroPrep()
   CopyTree("/Home","/Demo/AcctExample");
   DelTree("/Demo/AcctExample/Budget");
   DelTree("/Demo/AcctExample/Private");
-  DelTree("/Demo/AcctExample/Downloads");
+  DelTree("/Demo/AcctExample/Sup1");
   DelTree("/Demo/AcctExample/Web");
   Del("/Demo/AcctExample/Test*");
+  Copy("/Home/Web/index.TXT.Z",
+	"/Demo/ToHtmlToTXTDemo/DemoInPage.TXT.Z");
+  if (FileFind("/Home/Sup1/Utils/SortHeaders.CPP.Z"))
+    ExeFile("/Home/Sup1/Utils/SortHeaders.CPP.Z");
 
-  if (FileFind("/Home/Downloads/Utils/SortHeaders.CPP.Z"))
-    ExeFile("/Home/Downloads/Utils/SortHeaders.CPP.Z");
+  if (FileFind("/Home/Sup1/Blog/YouTube.TXT.Z"))
+    Sort("/Home/Sup1/Blog/YouTube.TXT.Z",,2);
 
-  if (FileFind("/Home/Downloads/Blog/YouTube.TXT.Z"))
-    Sort("/Home/Downloads/Blog/YouTube.TXT.Z",,2);
-
-  //Once in a while, do [C:/Home/Downloads/Utils/DblSpaceScan.CPP,1].
+  //Once in a while, do [C:/Home/Sup1/Utils/DblSpaceScan.CPP,1].
 
   CursorRem("/*");
   DelTree("/Demo/*.BI*");
@@ -123,11 +124,11 @@ U0 MakeBootRescueDrvFile()
   Copy("C:/Kernel/*.HPP*",		"A:/Kernel");
   CopyTree("C:/Kernel/BlkDev",		"A:/Kernel/BlkDev");
 
-  Copy("C:/Home/Downloads/Distro/DbgStartOS.CPP.Z","A:/StartOS.CPP.Z");
+  Copy("C:/Home/Sup1/Distro/DbgStartOS.CPP.Z","A:/StartOS.CPP.Z");
 
   MkDir("A:/Adam");
-  Copy("C:/Home/Downloads/Distro/DbgMakeAdam.CPP.Z","A:/Adam/MakeAdam.CPP.Z");
-  Copy("C:/Home/Downloads/Distro/DbgMount.CPP.Z","A:/Adam");
+  Copy("C:/Home/Sup1/Distro/DbgMakeAdam.CPP.Z","A:/Adam/MakeAdam.CPP.Z");
+  Copy("C:/Home/Sup1/Distro/DbgMount.CPP.Z","A:/Adam");
   Copy("C:/Adam/AExts.CPP.Z",	"A:/Adam");
   Copy("C:/Adam/AMath.CPP.Z",	"A:/Adam");
   Copy("C:/Adam/Training.CPP.Z","A:/Adam");
@@ -360,7 +361,7 @@ FileManager, WindowManager, PCSpeaker, Documentation.
   Del(TOS_DISTRO_DIR "/Adam/AutoComplete/ACWords.DAT*");
   Del(TOS_DISTRO_DIR "/Adam/God/Vocab.TXT.Z");
   Del(TOS_DISTRO_DIR "/Misc/OSTestSuite.CPP.Z");
-  Copy("C:/Home/Downloads/Distro/UltraMenu.TXT.Z",
+  Copy("C:/Home/Sup1/Distro/UltraMenu.TXT.Z",
 	TOS_DISTRO_DIR "/PersonalMenu.TXT.Z");
   Copy("C:/Demo/Games/EagleDive.CPP.Z",
 	TOS_DISTRO_DIR "/Misc");
@@ -381,6 +382,15 @@ U0 MakeUltraRedSeaDistro()
   RedSeaISO(TOS_ISO_C_NAME,TOS_DISTRO_DIR,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_RS_SIZE",
 	"Download TempleOS V4.09 - UltraSmall RedSea Distro (%0.2f MB)",
+	0.01*(100*Size(TOS_ISO_C_NAME,"+s")/1024/1024));
+  Drv('C');
+}
+
+U0 MakeSup1ISO()
+{
+  RedSeaISO(TOS_ISO_C_NAME,"::/Home/Sup1");
+  DefinePrint("DD_TEMPLEOS_SUP1_SIZE",
+	"Supplemental ISO #1 (%0.2f MB)",
 	0.01*(100*Size(TOS_ISO_C_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -411,6 +421,12 @@ U0 UpdateISODocDefines()
 	  0.01*(100*Size("D:/Wb/TempleOSUltraRS.ISO","+s")/1024/1024));
     DefinePrint("DD_TEMPLEOSULTRA_RS_K_SIZE",
 	  "%d KB",Size("D:/Wb/TempleOSUltraRS.ISO","+s")/1024);
+
+    DefinePrint("DD_TEMPLEOS_SUP1_SIZE",
+	  "Supplemental ISO #1 (%0.2f MB)",
+	  0.01*(100*Size("D:/Wb/TempleOSSup1.ISO","+s")/1024/1024));
+    DefinePrint("DD_TEMPLEOS_SUP1_K_SIZE",
+	  "%d KB",Size("D:/Wb/TempleOSSup1.ISO","+s")/1024);
   } catch
     Fs->catch_except=TRUE;
 }
@@ -420,7 +436,7 @@ public U0 MakeDistrosAndBackUp()
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   progress4=*progress4_desc=0;
-  progress4_max=19;
+  progress4_max=22;
   AutoComplete;
   WinBorder;
   WinMax;
@@ -447,6 +463,10 @@ public U0 MakeDistrosAndBackUp()
   MakeUltraRedSeaDistro; progress4++;
   DocClear;
   Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSUltraRS.ISO"); progress4++;
+
+  MakeSup1ISO; progress4++;
+  DocClear;
+  Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSSup1.ISO"); progress4++;
 
   MakeStaffDistro; progress4++;
   DocClear;
@@ -475,9 +495,9 @@ public U0 MakeDistrosAndBackUp()
 
 public U0 PreBackUp()
 {
-  Copy("D:/Home/Downloads/Blog/Bookmarks.html","C:/Home/Downloads/Blog");
-  Del("C:/Home/Downloads/Bin/*");
-  Copy("D:/Home/Downloads/Bin/*","C:/Home/Downloads/Bin");
-  Copy("D:/Home/Downloads/Bin/TempleBot","C:/Linux");
-  Copy("D:/Home/Downloads/Bin/God*","C:/Linux");
+  Copy("D:/Home/Sup1/Blog/Bookmarks.html","C:/Home/Sup1/Blog");
+  Del("C:/Home/Sup1/Bin/*");
+  Copy("D:/Home/Sup1/Bin/*","C:/Home/Sup1/Bin");
+  Copy("D:/Home/Sup1/Bin/TempleBot","C:/Linux");
+  Copy("D:/Home/Sup1/Bin/God*","C:/Linux");
 }

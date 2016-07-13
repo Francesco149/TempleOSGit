@@ -10,8 +10,8 @@ U0 BadCodeJump()
   U8 *st;
   while (tempde) {
     doc=DocRead(tempde->full_name);
-    tempde->user_data=doc->root.y;
-    cnt+=doc->root.y;
+    tempde->user_data=doc->head.y;
+    cnt+=doc->head.y;
     DocDel(doc);
     tempde=tempde->next;
   }
@@ -34,7 +34,7 @@ U0 BadCodeJump()
   Free(st);
 }
 
-U8 *WebBookMarks(U8 *filename="~/Downloads/Blog/Bookmarks.html")
+U8 *WebBookMarks(U8 *filename="~/Sup1/Blog/Bookmarks.html")
 {
   U8 *st;
   CDocEntry *doc_e;
@@ -42,7 +42,7 @@ U8 *WebBookMarks(U8 *filename="~/Downloads/Blog/Bookmarks.html")
   CCmpCtrl *cc=CmpCtrlNew(MStrPrint("#include \"%s\"",filename));
   while (Lex(cc))
     if (cc->token==TK_STR && *cc->cur_str(U32 *)=='http') {
-      DocPrint(doc,"$MU-UL,\"%Q\",LE=0x%X$\n",cc->cur_str,cc->cur_str);
+      DocPrint(doc,"$MU-UL,\"%$Q\",LE=0x%X$\n",cc->cur_str,cc->cur_str);
       cc->cur_str=NULL;
     }
   CmpCtrlDel(cc);
@@ -52,7 +52,7 @@ U8 *WebBookMarks(U8 *filename="~/Downloads/Blog/Bookmarks.html")
   else
     st=NULL;
 
-  doc_e=doc->root.next;
+  doc_e=doc->head.next;
   while (doc_e!=doc) {
     if (doc_e->type_u8==DOCT_MENU_VAL)
       Free(doc_e->left_exp);
@@ -63,7 +63,7 @@ U8 *WebBookMarks(U8 *filename="~/Downloads/Blog/Bookmarks.html")
   return st;
 }
 
-U8 *YouTubeGet(U8 *filename="C:/Home/Downloads/Blog/YouTube.TXT.Z",U8 *needle)
+U8 *YouTubeGet(U8 *filename="C:/Home/Sup1/Blog/YouTube.TXT.Z",U8 *needle)
 {
   I64 i=0,line=MIN_I64;
   CDoc	*doc=DocRead(filename,DOCF_PLAIN_TEXT_TABS|DOCF_NO_CURSOR),
@@ -100,7 +100,7 @@ U8 *YouTubeGet(U8 *filename="C:/Home/Downloads/Blog/YouTube.TXT.Z",U8 *needle)
   return res;
 }
 
-U0 YouTubeAdd(U8 *filename="C:/Home/Downloads/Blog/YouTube.TXT.Z",
+U0 YouTubeAdd(U8 *filename="C:/Home/Sup1/Blog/YouTube.TXT.Z",
 	U8 *title,U8 *code)
 {
   CDoc *doc=DocRead(filename,DOCF_PLAIN_TEXT_TABS|DOCF_NO_CURSOR);
@@ -374,7 +374,7 @@ U0 MyBibleLines(U8 *st,I64 num_lines,I64 radix,Bool modulo,Bool plus_one)
     doc_in=DocNew;
     BibleLines(doc_in,start,num_lines);
     while (TRUE) {//Del leading blanks
-      doc_e=doc_in->root.next;
+      doc_e=doc_in->head.next;
       if (doc_e==doc_in)
 	break;
       else {
@@ -491,7 +491,7 @@ U0 InsMyURL()
 	      "HTML=\"http://www.templeos.org/Wb"
 	      "/Home/Web/TAD/NISTPassage.html\"$\n";
 	tag=MStrPrint("https:/beacon.nist.gov/rest/record/%d",url->timestamp);
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	Free(tag);
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
@@ -504,9 +504,9 @@ U0 InsMyURL()
 	      "HTML=\"http://www.templeos.org/Wb"
 	      "/Home/Web/TAD/NISTPick001.html\"$\n";
 	tag=MStrPrint("https:/beacon.nist.gov/rest/record/%d",url->timestamp);
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	Free(tag);
-	GodBooksPassage("C:/Home/Downloads/Text/*",,
+	GodBooksPassage("C:/Home/Sup1/Text/*",,
 	      Str2I64(url->special,16),GBP_MEDIUM);
       }
       break;
@@ -519,7 +519,7 @@ U0 InsMyURL()
 	Free(st2);
 	if (*url->tag)
 	  tag=url->tag;
-	"$TX,\"%Q\",HTML=\"%Q\"$",tag,st;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$",tag,st;
 	Free(st);
       }
       break;
@@ -532,7 +532,7 @@ U0 InsMyURL()
 	Free(st2);
 	if (*url->tag)
 	  tag=url->tag;
-	"$TX,\"%Q\",HTML=\"%Q\"$",tag,st;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$",tag,st;
 	Free(st);
       }
       break;
@@ -577,7 +577,7 @@ U0 InsMyURL()
 	st=MStrPrint("http://en.wikipedia.org/wiki/%s",url->special);
 	if (*url->tag)
 	  tag=url->tag;
-	"$TX,\"%Q\",HTML=\"%Q\"$",tag,st;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$",tag,st;
 	Free(st);
       }
       break;
@@ -586,7 +586,7 @@ U0 InsMyURL()
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://www.randomnumbers.info";
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,TRUE);
       }
       break;
@@ -595,7 +595,7 @@ U0 InsMyURL()
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://www.random.org";
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
@@ -604,7 +604,7 @@ U0 InsMyURL()
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="https://passed.pw";
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
@@ -613,11 +613,11 @@ U0 InsMyURL()
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://virtual-notary.org";
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	tag="Here is the certificate";
 	st=MStrPrint("http://www.templeos.org/Certs/virtual-notary-cert"
 	      "-randomnum-%d.p12",url->cert);
-	"\n$TX,\"%Q: %d\",HTML=\"%Q\"$.\n",tag,url->cert,st;
+	"\n$TX,\"%$Q: %d\",HTML=\"%$Q\"$.\n",tag,url->cert,st;
 	Free(st);
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
@@ -627,7 +627,7 @@ U0 InsMyURL()
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://qrng.anu.edu.au/NIST.php";
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
       break;
@@ -636,7 +636,7 @@ U0 InsMyURL()
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="https://www.fourmilab.ch/hotbits/secure_generate.html";
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
       break;
@@ -645,7 +645,7 @@ U0 InsMyURL()
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://www.generatedata.com";
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
@@ -654,7 +654,7 @@ U0 InsMyURL()
 	tag=st=WebBookMarks;
 	if (*url->tag)
 	  tag=url->tag;
-	"$TX,\"%Q\",HTML=\"%Q\"$",tag,st;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$",tag,st;
 	Free(st);
       }
       break;
@@ -663,26 +663,26 @@ U0 InsMyURL()
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="https://www.dublinbet.com";
-	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	"$TX,\"%$Q\",HTML=\"%$Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
     case:
       if (DocForm(url(CTopMoviesForm *)))
 	RandVideo("Top 100 Movies","http://www.afi.com/100years/movies10.aspx",
-	      url,"C:/Home/Downloads/Blog/Movies.TXT.Z");
+	      url,"C:/Home/Sup1/Blog/Movies.TXT.Z");
       break;
     case:
       if (DocForm(url(CMetallicaForm *)))
 	RandVideo("Metallica Song",
 	      "http://home.hccnet.nl/a.r.adams/lyrics/metallica/songindex.html",
-	      url,"C:/Home/Downloads/Blog/Metallica.TXT.Z");
+	      url,"C:/Home/Sup1/Blog/Metallica.TXT.Z");
       break;
   }
   Free(url);
 }
 
-//if (FileFind("~/Downloads/Words/LinuxDict.TXT"))
-//  GodInit("~/Downloads/Words/LinuxDict.TXT");
-if (FileFind("~/Downloads/Words/HappyWords.TXT"))
-  GodInit("~/Downloads/Words/HappyWords.TXT");
+//if (FileFind("~/Sup1/Words/LinuxDict.TXT"))
+//  GodInit("~/Sup1/Words/LinuxDict.TXT");
+if (FileFind("~/Sup1/Words/HappyWords.TXT"))
+  GodInit("~/Sup1/Words/HappyWords.TXT");

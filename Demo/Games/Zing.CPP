@@ -4,7 +4,7 @@ class Arrow
 {
   Arrow *next,*last;
   F64 x,y,dx,dy;
-} root;
+} head;
 
    /* <1> <1> (image) */
 
@@ -68,8 +68,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (bow_drawn)
     SpriteZ3B(dc,x,y,0,__BIN_1,bow_theta);
 
-  tempa=root.next;
-  while (tempa!=&root) {
+  tempa=head.next;
+  while (tempa!=&head) {
     theta=Arg(tempa->dx,tempa->dy);
     SpriteZ3B(dc,tempa->x,tempa->y,0,__BIN_1,theta);
     tempa=tempa->next;
@@ -96,8 +96,8 @@ U0 AnimateTask(I64)
     if (ip.pos.x!=x || ip.pos.y!=y)
       IPSet(x,y);
 
-    tempa=root.next;
-    while (tempa!=&root) {
+    tempa=head.next;
+    while (tempa!=&head) {
       tempa1=tempa->next;
       tempa->x+=tempa->dx*dt;
       tempa->y+=tempa->dy*dt;
@@ -118,7 +118,7 @@ U0 Init()
 {
   I64 w=Fs->pix_width,
 	h=Fs->pix_height;
-  QueInit(&root);
+  QueInit(&head);
   bow_drawn=FALSE;
   box_x_min=7*w/16;
   box_y_min=6*h/8;
@@ -133,7 +133,7 @@ U0 Init()
 
 U0 CleanUp()
 {
-  QueDel(&root,TRUE);
+  QueDel(&head,TRUE);
 }
 
 U0 Zing()
@@ -186,7 +186,7 @@ U0 Zing()
 	    tempa->dy=10.0*(bow_y-a2);
 	    tempa->x=a1;
 	    tempa->y=a2;
-	    QueIns(tempa,root.last);
+	    QueIns(tempa,head.last);
 	    Noise(50,8000,10000);
 	  }
 	  bow_drawn=FALSE;

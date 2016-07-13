@@ -40,7 +40,7 @@ cc->pass==10 is final pass, code is placed into buf.
 	  "$FG$$IV,0$$BK,0$";
 
   cc->last_float_op_ic=NULL;
-  tempi=&cc->coc.coc_root;
+  tempi=&cc->coc.coc_head;
   tempi->ic_last_start=-1;
   tempi->ic_cnt=0;
   tempi=tempi->next;

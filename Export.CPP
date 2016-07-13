@@ -400,7 +400,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
   is_code=StrEqAny(ext,"CPP","HPP","PRJ","AUT");
 
   out=StrNew("");
-  for (b=l->bin_root.next;b!=&l->bin_root;b=b->next) {
+  for (b=l->bin_head.next;b!=&l->bin_head;b=b->next) {
     if (StrCmp(ext,"MAP"))
       ExportBinary(out_path,b);
 //MP files are symbol maps and the binary data is just debug info (line nums)
@@ -408,7 +408,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
   }
   if (*out)
     out=StrAdd(out,"\n");
-  for (cl=l->root.next;cl!=l;cl=cl->next) {
+  for (cl=l->head.next;cl!=l;cl=cl->next) {
     switch (cl->type_u8) {
       case DOCT_ERROR:
       case DOCT_TEXT:

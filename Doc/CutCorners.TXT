@@ -39,7 +39,7 @@ for the document buffer until the system runs out of memory and crashes.
 * Even if a local function variable is declared less than 64 bits, the 
 compiler does calculations with 64-bit.
 
-* [C:/Doc/Print.TXT.Z,1] Print() uses [C:/Kernel/StrPrint.CPP.Z,206]
+* [C:/Doc/Print.TXT.Z,1] Print() uses [C:/Kernel/StrPrint.CPP.Z,208]
 StrPrintJoin().  You cannot use vastly over-sized fields for 
 %f.
 

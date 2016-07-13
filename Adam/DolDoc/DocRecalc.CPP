@@ -353,8 +353,8 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
     doc->line_start_col=0;
     recalc_flags&=~RECALCF_HAS_CURSOR;
     if (recalc_flags&RECALCG_MASK==RECALCt_TO_SCREEN)
-      doc->settings_root.cur_text_attr=
-	    doc->settings_root.dft_text_attr=win_task->border_attr;
+      doc->settings_head.cur_text_attr=
+	    doc->settings_head.dft_text_attr=win_task->border_attr;
   } else {
     if (recalc_flags&RECALCF_HAS_CURSOR && full_refresh) {
       if (Bt(&hss->flags,WSSf_SET_TO_POS)||Bt(&vss->flags,WSSf_SET_TO_POS)) {
@@ -374,8 +374,8 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
       }
     }
     if (recalc_flags&RECALCG_MASK==RECALCt_TO_SCREEN)
-      doc->settings_root.cur_text_attr=
-	    doc->settings_root.dft_text_attr=win_task->text_attr;
+      doc->settings_head.cur_text_attr=
+	    doc->settings_head.dft_text_attr=win_task->text_attr;
   }
   x0=doc->line_start_col;
   y0=doc->top_line_num;
@@ -395,16 +395,16 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
 
   if (doc->cur_col<=doc->cur_entry->min_col)
     doc->cur_col=doc->cur_entry->min_col;
-  doc_e=doc->root.next;
+  doc_e=doc->head.next;
   doc_e->de_flags&=~(DOCG_BL_IV_UL|DOCEF_WORD_WRAP|DOCEF_HIGHLIGHT);
-  if (doc_e==doc->root.next)
-    s=&doc->settings_root;
+  if (doc_e==doc->head.next)
+    s=&doc->settings_head;
   else
     s=&doc_e->last->settings;
   doc->flags=doc_e->de_flags& (DOCG_BL_IV_UL|DOCEF_WORD_WRAP) |
 	doc->flags&~(DOCG_BL_IV_UL|DOCEF_WORD_WRAP);
   cur_u8_attr=s->cur_text_attr;
-  if (doc_e==doc->root.next) {
+  if (doc_e==doc->head.next) {
     doc->flags&=~DOCF_BWD_MOVEMENT;
     if (recalc_flags&RECALCG_MASK==RECALCt_TO_SCREEN && full_refresh)
       doc->flags&=~DOCF_HAS_SONG;
@@ -412,14 +412,14 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
     doc->flags=doc_e->de_flags& DOCEF_HIGHLIGHT |
 	  doc->flags&~DOCEF_HIGHLIGHT;
 
-  if (doc->root.next==doc) {
+  if (doc->head.next==doc) {
     best_doc_e=doc;
     best_col=0;
     doc->cur_entry=doc;
     doc->cur_col=0;
     doc_e=doc;
   }
-  skipped_update= doc_e==doc && doc->root.next!=doc;
+  skipped_update= doc_e==doc && doc->head.next!=doc;
 
   if (full_refresh) {
     doc->min_x=MAX_I32; doc->min_y=MAX_I32;

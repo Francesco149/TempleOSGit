@@ -1,7 +1,7 @@
 Bool Mem32DevIns(CMemRange *tempmr)
 {
-  CMemRange *tempmr1=dev.mem32_root.next,*tempmr2;
-  while (tempmr1!=&dev.mem32_root) {
+  CMemRange *tempmr1=dev.mem32_head.next,*tempmr2;
+  while (tempmr1!=&dev.mem32_head) {
     if (!tempmr1->type && tempmr->base>=tempmr1->base &&
 	  tempmr->base+tempmr->size<=tempmr1->base+tempmr1->size) {
       if (tempmr->base>tempmr1->base) {
@@ -32,14 +32,14 @@ U0 Mem32DevInit()
   CMemRange *tempmr;
   CMemE820 *m20=SYS_MEM_E820;
 
-  QueInit(&dev.mem32_root);
+  QueInit(&dev.mem32_head);
   tempmr=AMAlloc(sizeof(CMemRange));
   tempmr->type=MRT_UNUSED;
   tempmr->flags=0;
 //Maybe !!! Change this to 0xF0000000 !!!
   tempmr->base=0xE0000000;
   tempmr->size=0x10000000;
-  QueIns(tempmr,dev.mem32_root.last);
+  QueIns(tempmr,dev.mem32_head.last);
 
   if (m20->type) {
     while (m20->type) {
@@ -83,8 +83,8 @@ U8 *Mem32DevAlloc(I64 size,I64 alignment)
   CMemRange *tempmr,*tempmr1;
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))
     Yield;
-  tempmr1=dev.mem32_root.next;
-  while (tempmr1!=&dev.mem32_root) {
+  tempmr1=dev.mem32_head.next;
+  while (tempmr1!=&dev.mem32_head) {
     base=(tempmr1->base+alignment-1)&~(alignment-1);
     limit=base+size-1;
     if (!tempmr1->type &&
@@ -114,8 +114,8 @@ U0 Mem32DevFree(U8 *base)
   if (!base) return;
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))
     Yield;
-  tempmr=dev.mem32_root.next;
-  while (tempmr!=&dev.mem32_root) {
+  tempmr=dev.mem32_head.next;
+  while (tempmr!=&dev.mem32_head) {
     if (tempmr->base==base) {
       tempmr->type=MRT_UNUSED;
       break;

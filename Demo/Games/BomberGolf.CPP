@@ -80,7 +80,7 @@ class Bomb
   Bomb *next,*last;
   F64 x,y,t;
   Bool exploding;
-} bomb_root;
+} bomb_head;
  
 F64 v,x,y,
     theta,thetaf; //thetaf is the final theta. theta is gradually changed until it reaches thetaf.
@@ -138,8 +138,8 @@ U0 DrawIt(CTask *task,CDC *dc)
     }
   }
 
-  tempb=bomb_root.next;
-  while (tempb!=&bomb_root) {
+  tempb=bomb_head.next;
+  while (tempb!=&bomb_head) {
     if (tempb->t+FALL_TIME<tS) {
       if (Blink(10))
 	Sprite3(dc,tempb->x,tempb->y,0,__BIN_9);
@@ -180,7 +180,7 @@ U0 BombDrop(F64 x,F64 y)
   tempb->y=y;
   tempb->t=tS;
   tempb->exploding=FALSE;
-  QueIns(tempb,bomb_root.last);
+  QueIns(tempb,bomb_head.last);
   Sweep(FALL_TIME*1000,1000,500);
 }
  
@@ -190,7 +190,7 @@ I64 AnimateTask(CTask *)
   Bomb *tempb,*tempb1;
   Target *tempt;
   while (TRUE) {
-    if (bomb_root.next==&bomb_root) {
+    if (bomb_head.next==&bomb_head) {
       if (target_cnt)
 	Snd(100+60*Clamp(0.1*(1.0+Abs(Wrap(thetaf-theta,-pi)))`4.0,-3,3));
       else if (key_cnt<best_score) {
@@ -217,8 +217,8 @@ I64 AnimateTask(CTask *)
       }
     }
 
-    tempb=bomb_root.next;
-    while (tempb!=&bomb_root) {
+    tempb=bomb_head.next;
+    while (tempb!=&bomb_head) {
       tempb1=tempb->next;
       if (tempb->t+FALL_TIME+EXPLODE_TIME<tS)
 	BombHit(tempb);
@@ -244,7 +244,7 @@ U0 Init()
   y=-MAP_HEIGHT>>1;
   thetaf=theta=1*pi/4;
 
-  QueInit(&bomb_root);
+  QueInit(&bomb_head);
 
   MemSet(trees,0,sizeof(trees));
   for (i=0;i<NUM_TREES;i++) {
@@ -277,7 +277,7 @@ U0 Init()
 
 U0 CleanUp()
 {
-  QueDel(&bomb_root,TRUE);
+  QueDel(&bomb_head,TRUE);
 }
 
 U0 BomberGolf()

@@ -17,8 +17,7 @@ Not only do boot sectors have a size limit, 512 bytes or 2048 bytes for
 CD/DVD, the files they load have to fit within 640K because they run in
 16-bit 
 mode.  This means they usually can't just load the whole operating system and 
-start it running.  I guess some boot loaders, like [C:/Doc/Grub.TXT.Z,1]
-Grub, have a capability of 
+start it running.  I guess some boot loaders, like Grub, have a capability of 
 switching modes before handing-off control to the operating system.  Anyway, 
 the operating system must load the rest of itself.  My
 [C:/Kernel/KStart.CPP.Z,1] Kernel module is what 

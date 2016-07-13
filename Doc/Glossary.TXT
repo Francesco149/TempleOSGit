@@ -333,9 +333,6 @@ SettingsRst.
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  They must
   [C:/Kernel/Mem/MAllocFree.CPP.Z,383] Free() it when finished.  Ptrs are used
   to refer to the chunk.  The heap is dynamically alloced mem.
-+] Root
-  The base of a binary tree or the head of a queue is the root.  (I don't
-  like the word head.)
 +] Join
   When two parts of a program have a common low-level routine, that routine
   is often labeled SomethingJoin.

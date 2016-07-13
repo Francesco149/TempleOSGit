@@ -14,8 +14,8 @@ ellipse/polygon w,h is off when rotated.
 * God said this is bad.  [C:/Adam/DolDoc/DocFind.CPP.Z,41]
 * Backward <SHIFT-F3> is broken?
 
-* Cannot entering a '$' in $TX command's tag.
-
+* Cannot include ':' in [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links
+search string.
 * $DA fixed width string: <Del> or <BACKSPACE> permanently shortens.
 
 * Editor overstrike mode at cmd line with menu macro?  Probably, many other 
@@ -25,9 +25,6 @@ overstrike issues.
 edited.
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
-
-* Cannot include ':' in [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links
-search string.
 
 * [C:/Adam/DolDoc/DocChar.CPP.Z,1] DOCEF_REMALLOC_DATA HexEdit Remalloc.
 
@@ -63,7 +60,7 @@ Free old task memory?
 
 * Use pen_width and pen_height when clipping with pen_width>1.
 
-* [C:/Home/Downloads/Games/Rocks.CPP,1].
+* [C:/Home/Sup1/Games/Rocks.CPP,1].
 
 * Asm LIST NOLIST bugs.
 
@@ -81,6 +78,11 @@ others need to be in separate cache lines?
 * Change %h*c so the character is not a arg?
 
 * [C:/Adam/Gr/GrPrimatives.CPP.Z,650] GrLineFat3() needs a little work.
+
+* [C:/Adam/Gr/GrPrimatives.CPP.Z,1397] GrFillTri0() with both
+[C:/Adam/Gr/GrBitMap.CPP.Z,1641] GrHLine() and
+[C:/Adam/Gr/GrBitMap.CPP.Z,1812] GrVLine() don't match in 
+[C:/Demo/Games/CastleFrankenstein.CPP.Z,1] causing wall spot pixels.
 
 
                                   TODO? Meh
@@ -198,7 +200,7 @@ then reboot in TestSuite.
 * 6/8/14:After or in [C:/Misc/OSTestSuite.CPP.Z,1] PageTableEntries in
 TestSuite crash.
 
-* [C:/Kernel/StrPrint.CPP.Z,206] StrPrintJoin(,st); With st="\n\\"; (Forgot
+* [C:/Kernel/StrPrint.CPP.Z,208] StrPrintJoin(,st); With st="\n\\"; (Forgot
 what this is talking about.)
 
 * [C:/Adam/Opt/Utils/FileBMP.CPP.Z,65] BMPRLE4To() has files_size too big by

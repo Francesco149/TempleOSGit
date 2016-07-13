@@ -12,7 +12,7 @@
 +] Shouldn't it be GNU/TempleOS?
   TempleOS executes no code not written by me at any time except for a few
   BIOS calls for configuration.  I even wrote boot-loaders, so I do not need
-  [C:/Doc/Grub.TXT.Z,1] Grub.  See [C:/Doc/Credits.TXT.Z,1].
+  Grub.  See [C:/Doc/Credits.TXT.Z,1].
 +] Don't you use GNU's gcc?
   TempleOS was written from scratch, starting with TASM long ago, launching
   from real-mode DOS.  Now, there is no Linux or GNU or any other code in
@@ -144,8 +144,8 @@
   expect them to run.  You enter C-like code.  [C:/Doc/CmdLineOverview.TXT.Z,1]
   Get Started Here.
 +] How do I boot it with Grub?
-  If you use [C:/Doc/Grub.TXT.Z,1] Grub, you chain-load like Windows.  See
-  [C:/Doc/Boot.TXT.Z,1] Boot.  You can use the TempleOS boot-loader. 
+  If you use Grub, you chain-load like Windows.  See [C:/Doc/Boot.TXT.Z,1]
+  Boot.  You can use the TempleOS boot-loader. 
   [C:/Adam/Opt/Boot/BootMHD.CPP.Z,1] Master-Boot-Loader-Stage1,
   [C:/Adam/Opt/Boot/BootMHD2.CPP.Z,1] Master-Boot-Loader-Stage2,
   [C:/Adam/Opt/Boot/BootHD.CPP.Z,1] Partition-Boot-Loader,

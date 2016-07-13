@@ -142,24 +142,24 @@ Cd("/Home/Web/TAD");Dir;
 `Cd("/Home/Web/TAD");Dir;
 `
 
-Cd("/Home/Downloads");Dir;
+Cd("/Home/Sup1");Dir;
 
-`Cd("/Home/Downloads");Dir;
+`Cd("/Home/Sup1");Dir;
 `
 
-Cd("/Home/Downloads/Blog");Dir;
+Cd("/Home/Sup1/Blog");Dir;
 
-`Cd("/Home/Downloads/Blog");Dir;
+`Cd("/Home/Sup1/Blog");Dir;
 `
 
-Cd("/Home/Downloads/CodeScraps");Dir;
+Cd("/Home/Sup1/CodeScraps");Dir;
 
-`Cd("/Home/Downloads/CodeScraps");Dir;
+`Cd("/Home/Sup1/CodeScraps");Dir;
 `
 
-Cd("/Home/Downloads/Psalmody");Dir;
+Cd("/Home/Sup1/Psalmody");Dir;
 
-`Cd("/Home/Downloads/Psalmody");Dir;
+`Cd("/Home/Sup1/Psalmody");Dir;
 `
 
 Cd("/Apps");Dir;
@@ -303,25 +303,25 @@ ChgDsk('T');
 `
 
 LinuxDict
-`Adam("GodInit(\"~/Downloads/Words/LinuxDict.TXT**\");");
+`Adam("GodInit(\"~/Sup1/Words/LinuxDict.TXT**\");");
 `
  AugustWords
-`Adam("GodInit(\"~/Downloads/Words/AugustWords.TXT**\");");
+`Adam("GodInit(\"~/Sup1/Words/AugustWords.TXT**\");");
 `
  HappyWords
-`Adam("GodInit(\"~/Downloads/Words/HappyWords.TXT*\");");
+`Adam("GodInit(\"~/Sup1/Words/HappyWords.TXT*\");");
 `
  BibleWords
-`Adam("GodInit(\"~/Downloads/Words/BibleWords.TXT*\");");
+`Adam("GodInit(\"~/Sup1/Words/BibleWords.TXT*\");");
 `
  HuckWords
-`Adam("GodInit(\"~/Downloads/Words/HuckWords.TXT*\");");
+`Adam("GodInit(\"~/Sup1/Words/HuckWords.TXT*\");");
 `
  Ingredients
-`Adam("GodInit(\"~/Downloads/Words/Ingredients.TXT*\");");
+`Adam("GodInit(\"~/Sup1/Words/Ingredients.TXT*\");");
 `
  Chess
-`Adam("GodInit(\"~/Downloads/Words/Chess.TXT*\");");
+`Adam("GodInit(\"~/Sup1/Words/Chess.TXT*\");");
 `
 
 PreBackUp;
@@ -442,7 +442,7 @@ JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24> (image
 BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29> (image)
 
 Psalmody Downloads
-`#include "::/Apps/Psalmody/Load";Psalmody("~/Downloads/Psalmody");`
+`#include "::/Apps/Psalmody/Load";Psalmody("~/Sup1/Psalmody");`
 
 BootRAM("D:/Kernel.BIN.C");
 `BootRAM("D:/Kernel.BIN.C");`

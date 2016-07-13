@@ -70,8 +70,8 @@ boot record.  You'll need to reenter the [C:/Adam/ABlkDev/Mount.CPP.Z,127]
   Mount information so it can be 
 stored in the kernel.
 
-5) Use Linux's [C:/Doc/Grub.TXT.Z,1] Grub or TempleOS'
-[C:/Adam/Opt/Boot/BootMHDIns.CPP.Z,69] BootMHDIns('D')
+5) Use Linux's Grub or TempleOS' [C:/Adam/Opt/Boot/BootMHDIns.CPP.Z,69]
+BootMHDIns('D')
   
 The [C:/Adam/Opt/Boot/BootMHDIns.CPP.Z,69] BootMHDIns() command places a boot
   loader on a drive.  It saves the old 

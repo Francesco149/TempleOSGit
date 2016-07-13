@@ -2,7 +2,22 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----07/07/16 00:41:12----
+----07/11/16 10:44:35----
+
+----07/09/16 08:46:36----
+* Changed scoring in [C:/Demo/Games/EagleDive.CPP.Z,1].
+* Replaced many "%Q" with "%$Q".
+* Fixed '\x24'.
+* Added '\d' for '$'.
+
+----07/08/16 14:30:19----
+* [C:/Home/HomeWrappers.CPP.Z,13] R("root","head");
+* Fixed REP_STOSB and [C:/Kernel/KernelB.HPP.Z,170] MemSet() for 64-bit.
+
+----07/07/16 07:21:03----
+* [C:/Adam/DolDoc/DocFile.CPP.Z,35] DocRead() changes to file's dir so
+relative filenames work.
+* Added AppStore to website with Supplemental #1 ISO for download.
 
 ----07/06/16 23:45:30----
 * Fixed multicore bug in [C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3().
@@ -237,15 +252,15 @@ automatically from the compiler's class information.
 * Fixed scheduler, so doesn't idle so high.
 * Fixed many memory leaks.
 * Changed args to  [C:/Kernel/Mem/Mem512.CPP.Z,11] Mem512Alloc(),
-[C:/Kernel/Mem/Mem512.CPP.Z,83] Mem512Free(), and
-[C:/Kernel/Mem/Mem512.CPP.Z,114] Mem512TaskAlloc().
+[C:/Kernel/Mem/Mem512.CPP.Z,84] Mem512Free(), and
+[C:/Kernel/Mem/Mem512.CPP.Z,115] Mem512TaskAlloc().
 
 ----01/30/16 11:14:29----
 * Changed arg in [C:/Adam/DolDoc/DocNew.CPP.Z,50] DocEntryNewTag().
 * Added [C:/Adam/DolDoc/DocNew.CPP.Z,38] DocEntryNewBase().
 
 ----01/29/16 02:44:38----
-* Overhauled [C:/Adam/DolDoc/DocFile.CPP.Z,53] DocSave() and
+* Overhauled [C:/Adam/DolDoc/DocFile.CPP.Z,56] DocSave() and
 [C:/Adam/DolDoc/DocRecalc.CPP.Z,256] DocRecalc().
 
 ----01/28/16 20:45:35----
