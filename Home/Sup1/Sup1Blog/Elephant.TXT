@@ -1,0 +1,10 @@
+The master said to the novice, "Create a 5-animated-frame elephant sprite in 
+Gimp with 24-bit color and create a 5-animated-frame elephant sprite in 16 
+color TempleOS."
+
+The novice said, "I don't want that 80's crap!"
+
+The master said, "Just do it."
+
+The novice did two elephant frames in 24-bit and was enlightened.
+

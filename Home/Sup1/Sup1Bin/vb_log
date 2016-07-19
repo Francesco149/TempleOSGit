@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer my website log files into VirtualBox.
+
+echo VB Log
+sudo ~/TAD/Bin/vb_log2
+

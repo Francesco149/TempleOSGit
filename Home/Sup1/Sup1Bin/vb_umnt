@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#Unmount VirtualBox drive.
+
+echo VB Umnt
+#sudo umount /mnt/vb_disk
+/usr/bin/vmware-mount -d /mnt/vb_disk
+

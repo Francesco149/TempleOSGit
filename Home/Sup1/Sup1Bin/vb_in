@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer my /Home files into VirtualBox.
+
+echo VB In
+sudo ~/TAD/Bin/vb_in2
+

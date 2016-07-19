@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#Mount VMware drive.
+
+echo VMware Mnt
+chmod -R 777 ~/vmware
+/usr/bin/vmware-mount ~/vmware/TOS/TOS.vmdk 2 /mnt/vm_disk
+

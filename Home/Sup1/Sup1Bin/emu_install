@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#Install QEMU for the first time.
+
+qemu-img create -f qcow2 ~/qemu_disk.qcow2 3G
+chmod 777 ~/qemu_disk.qcow2
+mkdir /mnt/qemu_disk
+chmod 777 /mnt/qemu_disk
+~/TAD/Bin/emu_new
+

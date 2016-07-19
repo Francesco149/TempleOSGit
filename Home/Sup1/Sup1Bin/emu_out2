@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#Transfer my /Home files out of QEMU.
+
+~/TAD/Bin/emu_mnt
+rm -R ~/TAD/www.templeos.org/Wb
+rm -R ~/TAD/Home
+mv /mnt/qemu_disk/Wb/TempleOSStaff.ISO ~/Dropbox/Dianna
+cp -R --preserve=timestamps /mnt/qemu_disk/Wb ~/TAD/www.templeos.org/Wb
+cp --preserve=timestamps /mnt/qemu_disk/Wb/Home/Web/index.html ~/TAD/www.templeos.org
+cp --preserve=timestamps /mnt/qemu_disk/Wb/Home/Web/index.html ~/TAD/www.templeos.org/TempleOS.html
+cp -R --preserve=timestamps /mnt/qemu_disk/Home ~/TAD
+chmod -R 777 ~/TAD
+~/TAD/Bin/emu_umnt
+

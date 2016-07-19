@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Unmount VirtualBox drive.
-
-echo VB Umnt
-sudo umount /mnt/vb_disk
-

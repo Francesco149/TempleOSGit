@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#Install VirtualBox for the first time.
+
+mkdir /mnt/vb_fuse
+chmod 777 /mnt/vb_fuse
+mkdir /mnt/vb_disk
+chmod 777 /mnt/vb_disk
+

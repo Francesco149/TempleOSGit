@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer my /Home files out of QEMU.
-
-echo EMU Out
-sudo ~/TAD/Bin/emu_out2
-

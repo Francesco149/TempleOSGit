@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#Mount VirtualBox drive.
+
+echo VB Mnt
+#sudo vdfuse -a -f "~/VirtualBox VMs/TOS/TOS.vdi" /mnt/vb_fuse
+#sudo mount -o loop /mnt/vb_fuse/Parition2 /mnt/vb_disk
+chmod -R 777 ~/vmware
+/usr/bin/vmware-mount "/home/tad/VirtualBox VMs/TOS/TOS.vmdk" 2 /mnt/vb_disk
+
