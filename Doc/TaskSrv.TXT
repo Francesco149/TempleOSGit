@@ -7,7 +7,7 @@
 
 
 
- [C:/Kernel/KEnd.CPP.Z,135] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,374] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,194] AP SethTask[C:/Kernel/KTask.CPP.Z,383] UserCmdLine
+ [C:/Kernel/KEnd.CPP.Z,134] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,374] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,194] AP SethTask[C:/Kernel/KTask.CPP.Z,383] UserCmdLine
 
 
 
@@ -27,8 +27,8 @@
 
 
 
-[C:/Kernel/KernelA.HPP.Z,3195] CSrvCmd nodes are one of
-[C:/Kernel/KernelA.HPP.Z,3188] five types.  User applications deal with text
+[C:/Kernel/KernelA.HPP.Z,3196] CSrvCmd nodes are one of
+[C:/Kernel/KernelA.HPP.Z,3189] five types.  User applications deal with text
 or 
 msgs.  [C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRunOne() will call a function,
 spawn a task or execute some text 

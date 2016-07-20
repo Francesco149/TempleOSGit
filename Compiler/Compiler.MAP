@@ -42,7 +42,7 @@
 [C:/Compiler/BackLib.CPP.Z,41] ICU24
 [C:/Compiler/BackLib.CPP.Z,35] ICU16
 [C:/Compiler/BackLib.CPP.Z,250] SLASH_OP_DIV
-[C:/Compiler/CInit.CPP.Z,240] CmpFillTables
+[C:/Compiler/CInit.CPP.Z,239] CmpFillTables
 [C:/Compiler/AsmLib.CPP.Z,30] AOTStoreCodeU32
 [C:/Compiler/BackLib.CPP.Z,53] ICU64
 [C:/Compiler/BackLib.CPP.Z,244] SLASH_OP_INC
@@ -96,7 +96,7 @@
 [C:/Compiler/BackLib.CPP.Z,709] ICDeref
 [C:/Compiler/BackLib.CPP.Z,677] ICLea
 [C:/Compiler/CMain.CPP.Z,157] CmpBuf
-[C:/Compiler/Templates.CPP.Z,394] CMP_TEMPLATES_DONT_PUSH_POP
+[C:/Compiler/Templates.CPP.Z,385] CMP_TEMPLATES_DONT_PUSH_POP
 [C:/Compiler/BackA.CPP.Z,1] ICAddEct
 [C:/Compiler/BackB.CPP.Z,283] ICToF64
 [C:/Compiler/Asm.CPP.Z,888] PrsBinFile
@@ -130,7 +130,7 @@
 [C:/Compiler/PrsVar.CPP.Z,247] PrsArrayDims
 [C:/Compiler/BackC.CPP.Z,453] ICSqr
 [C:/Compiler/OptLib.CPP.Z,92] FBO1_NOT_CONST
-[C:/Compiler/Templates.CPP.Z,178] CMP_TEMPLATES_DONT_POP
+[C:/Compiler/Templates.CPP.Z,173] CMP_TEMPLATES_DONT_POP
 [C:/Compiler/PrsStmt.CPP.Z,1] PrsClass
 [C:/Compiler/LexLib.CPP.Z,45] MemberMetaData
 [C:/Compiler/BackC.CPP.Z,599] ICSwitch
@@ -206,7 +206,7 @@
 [C:/Compiler/BackFA.CPP.Z,545] ICFModEqu
 [C:/Compiler/OptLib.CPP.Z,535] CmpF1PushPop
 [C:/Compiler/OptLib.CPP.Z,33] OptFree
-[C:/Compiler/Templates.CPP.Z,458] CMP_TEMPLATES_DONT_PUSH2
+[C:/Compiler/Templates.CPP.Z,447] CMP_TEMPLATES_DONT_PUSH2
 [C:/Compiler/CInit.CPP.Z,3] CInternalType
 [C:/Compiler/Lex.CPP.Z,93] LexDollar
 [C:/Compiler/AsmResolve.CPP.Z,188] AsmUnresolvedAdd
@@ -263,7 +263,7 @@
 [C:/Compiler/BackA.CPP.Z,56] ICAddSubEctImm
 [C:/Compiler/BackLib.CPP.Z,293] ICPush
 [C:/Compiler/BackC.CPP.Z,487] ICSwap
-[C:/Compiler/Templates.CPP.Z,267] CMP_TEMPLATES_DONT_PUSH
+[C:/Compiler/Templates.CPP.Z,260] CMP_TEMPLATES_DONT_PUSH
 [C:/Compiler/CInit.CPP.Z,16] intermediate_code_table
 [C:/Compiler/BackLib.CPP.Z,385] ICZero
 [C:/Compiler/Lex.CPP.Z,58] CmpCtrlDel
@@ -292,7 +292,7 @@
 [C:/Compiler/PrsLib.CPP.Z,6] PrsPop
 [C:/Compiler/Asm.CPP.Z,393] asm_seg_prefixes
 [C:/Compiler/BackC.CPP.Z,415] ICMinMax
-[C:/Compiler/CInit.CPP.Z,205] CmpLoadDefines
+[C:/Compiler/CInit.CPP.Z,204] CmpLoadDefines
 [C:/Compiler/PrsStmt.CPP.Z,459] PrsIf
 [C:/Compiler/BackLib.CPP.Z,404] ICBuiltInFloatConst
 [C:/Compiler/BackFA.CPP.Z,194] ICFUnaryMinus

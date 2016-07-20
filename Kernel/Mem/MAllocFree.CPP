@@ -385,7 +385,7 @@ _extern _MSIZE I64 MSize(U8 *src); //Size of heap object.
 _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size of heap object.
 _extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/Kernel/KernelA.HPP.Z,2907] CHeapCtrl of object.
 _extern _MALLOC U8 *MAlloc(I64 size,CTask *mem_task=NULL); //Alloc memory chunk.
-//Accepts a [C:/Kernel/KernelA.HPP.Z,3320] CTask or [C:/Kernel/KernelA.HPP.Z,2907] CHeapCtrl. NULL allocs off current task's heap.
+//Accepts a [C:/Kernel/KernelA.HPP.Z,3321] CTask or [C:/Kernel/KernelA.HPP.Z,2907] CHeapCtrl. NULL allocs off current task's heap.
 
 U8 *AMAlloc(I64 size)
 {//Alloc memory in Adam's heap.
@@ -393,7 +393,7 @@ U8 *AMAlloc(I64 size)
 }
 
 U8 *CAlloc(I64 size,CTask *mem_task=NULL)
-{//Accepts a [C:/Kernel/KernelA.HPP.Z,3320] CTask or [C:/Kernel/KernelA.HPP.Z,2907] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/KernelA.HPP.Z,3321] CTask or [C:/Kernel/KernelA.HPP.Z,2907] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *res=MAlloc(size,mem_task);
   MemSet(res,0,size);
   return res;
@@ -405,7 +405,7 @@ U8 *ACAlloc(I64 size)
 }
 
 U8 *MAllocIdent(U8 *src,CTask *mem_task=NULL)
-{//Accepts a [C:/Kernel/KernelA.HPP.Z,3320] CTask or [C:/Kernel/KernelA.HPP.Z,2907] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/KernelA.HPP.Z,3321] CTask or [C:/Kernel/KernelA.HPP.Z,2907] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *res;
   I64 size;
   if (!src) return NULL;
@@ -444,7 +444,7 @@ U8 *CAllocAligned(I64 size,I64 alignment,
 }
 
 U8 *StrNew(U8 *buf,CTask *mem_task=NULL)
-{//Accepts a [C:/Kernel/KernelA.HPP.Z,3320] CTask or [C:/Kernel/KernelA.HPP.Z,2907] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/KernelA.HPP.Z,3321] CTask or [C:/Kernel/KernelA.HPP.Z,2907] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *res;
   I64 size;
   if (buf) {

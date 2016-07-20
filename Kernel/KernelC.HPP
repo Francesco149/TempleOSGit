@@ -243,8 +243,8 @@ public extern U8 *DefineSub(I64 sub,U8 *dname);
 #help_index "Devices;Memory/Page Tables"
 public extern U8 *Mem32DevAlloc(I64 size,I64 alignment);
 public extern U0 Mem32DevFree(U8 *base);
-public extern U8 *Mem64DevAlloc(I64 *_pages2Meg);
-public extern U0 Mem64DevFree(U8 *base,I64 pages2Meg);
+public extern U8 *Mem64DevAlloc(I64 *_pages1Gig);
+public extern U0 Mem64DevFree(U8 *base,I64 pages1Gig);
 public extern CDevGlbls dev;
 
 #help_index "DolDoc/Clipboard"
@@ -483,7 +483,7 @@ extern CSrvCmd sys_macro_head;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3787] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3788] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -554,6 +554,7 @@ public extern CHeapCtrl *HeapCtrlInit(CHeapCtrl *hc=NULL,
 
 #help_index "Memory/Page Tables"
 public extern Bool MemPagePresentMark(U8 *a,Bool val);
+public extern I64 MemPageSize(U8 *a);
 public extern I64 *MemPageTable(U8 *a);
 
 #help_index "Messages"
@@ -738,6 +739,10 @@ public extern I64 LastDayOfYear(I64 i);
 public extern I64 YearStartDate(I64 year);
 public extern U16 mon_start_days1[12];
 public extern U16 mon_start_days2[12];
+
+#help_index "Time/HPET"
+#help_file "::/Doc/TimeHPET"
+public extern I64 HPET();
 
 #help_index "Time/Jiffies"
 #help_file "::/Doc/TimeJiffy"

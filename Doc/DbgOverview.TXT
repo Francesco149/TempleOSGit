@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.CPP.Z,634] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,645] U(). [C:/Compiler/UAsm.CPP.Z,645]
-U([C:/Kernel/KernelA.HPP.Z,3431] _RIP); 
+U([C:/Kernel/KernelA.HPP.Z,3432] _RIP); 
 
 * [C:/Compiler/UAsm.CPP.Z,645] U(&FunName+offset) to unassemble mem or
 [C:/Adam/ADbg.CPP.Z,254] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.CPP.Z,645] U([C:/Kernel/KernelA.HPP.Z,3431]
+function. [C:/Compiler/UAsm.CPP.Z,645] U([C:/Kernel/KernelA.HPP.Z,3432]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -20,7 +20,7 @@ label, as in _MALLOC+0x20.  You specify [C:/Doc/HolyC.TXT.Z,1] HolyC function
 names with & before 
 functions as in &Print+0x10.
 
-* I use [C:/Kernel/KernelB.HPP.Z,205] progress1-[C:/Kernel/KernelB.HPP.Z,217]
+* I use [C:/Kernel/KernelB.HPP.Z,206] progress1-[C:/Kernel/KernelB.HPP.Z,218]
 progress4 for debugging because they show on the wallpaper.  
 They're just global int vars.
 
@@ -58,14 +58,14 @@ AutoFile.)
 * Use [C:/Kernel/KDbg.CPP.Z,217] RawPrint() to print debug info bypassing the
 window framework.  You pass 
 these routines a count in milliseconds for how long it should be displayed.  
-You can use [C:/Kernel/KMisc.CPP.Z,238] Raw(TRUE) to make all output bypass
+You can use [C:/Kernel/KMisc.CPP.Z,243] Raw(TRUE) to make all output bypass
 the window framework.  The Win
 Mgr runs on core0 and will overwrite raw text from other cores when it
 updates 
 the screen.
 
-* Use [C:/Kernel/KMisc.CPP.Z,228] SysDbg() to set a flag which you can read
-with [C:/Kernel/KMisc.CPP.Z,233] IsSysDbg() when you wish 
+* Use [C:/Kernel/KMisc.CPP.Z,233] SysDbg() to set a flag which you can read
+with [C:/Kernel/KMisc.CPP.Z,238] IsSysDbg() when you wish 
 to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
 
 * There are flags for various trace options that can help debugging when
@@ -96,7 +96,7 @@ issues.
 * You can define handler functions for <CTRL-ALT-letter> keys with 
 [C:/Kernel/KeyDev.CPP.Z,178] CtrlAltCBSet().  They operate either in a
 interrupt environment or in the 
-window mgr when it queues kbd msgs.  You can do [C:/Kernel/KMisc.CPP.Z,238]
+window mgr when it queues kbd msgs.  You can do [C:/Kernel/KMisc.CPP.Z,243]
 Raw() output.  <CTRL-ALT-lette
 r> handlers take a scan_code as an arg.
 
@@ -107,6 +107,6 @@ alloced
 off the heap to be initialized or VarInit option so both global and local
 vars 
 will be initialized to a value.  Pick a non-zero value to discover 
-uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,184]
+uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,185]
 sys_var_init_flag, and 
-[C:/Kernel/KernelB.HPP.Z,180] sys_heap_init_flag directly after booting.
+[C:/Kernel/KernelB.HPP.Z,181] sys_heap_init_flag directly after booting.

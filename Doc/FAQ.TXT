@@ -44,8 +44,8 @@
   [C:/Kernel/KernelB.HPP.Z,14] Bt() is bit test, like the x86 inst, not bit
   torrent.
 +] Is 'Fs->' in the code file system?
-  [C:/Kernel/KernelB.HPP.Z,275] Fs is a segment reg, not file system. 
-  ([C:/Kernel/KernelB.HPP.Z,275] Fs is kept pointing to the current task's
+  [C:/Kernel/KernelB.HPP.Z,276] Fs is a segment reg, not file system. 
+  ([C:/Kernel/KernelB.HPP.Z,276] Fs is kept pointing to the current task's
   record.)  There is no memory segmentation.  It is 64-bit and flat. FS and GS
   are used as general purpose regs, more or less.
 +] Is it Pascal?
@@ -53,7 +53,7 @@
   is not Pascal.  I altered the syntax making parenthesis optional on function
   calls with no paramaters.
 +] Why doesn't Sleep() make my laptop hibernate?
-  [C:/Kernel/KMisc.CPP.Z,150] Sleep() makes a program pause.  It is not
+  [C:/Kernel/KMisc.CPP.Z,155] Sleep() makes a program pause.  It is not
   hibernation for a laptop.
 +] What is Yield() for in loops?
   [C:/Kernel/Sched.CPP.Z,284] Yield() saves the current task's regs (context)
@@ -110,7 +110,7 @@
   looks like a memory leak.
 +] Why is it in text mode?
   TempleOS runs in VGA 640x480 16 color graphics mode, not text mode.  It
-  changes to this mode with a [C:/Kernel/KStart.CPP.Z,1] BIOS call while in
+  changes to this mode with a [C:/Kernel/KStart16.CPP.Z,1] BIOS call while in
   real-mode before it switches to 64-bit mode.  The text is
   [C:/Adam/Gr/GrScreen.CPP.Z,255] drawn by hand.  See
   [C:/Kernel/FontStd.CPP.Z,1].  If graphics mode fails, it falls-back on text
@@ -155,7 +155,8 @@
   [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns() or
   [C:/Adam/Opt/Boot/BootMHDIns.CPP.Z,69] BootMHDIns().  Those will write the
   block address into the boot-loader because the boot-loaders do not navigate
-  file systems to find the [C:/Kernel/KStart.CPP.Z,1] Stage2 if you relocate it.
+  file systems to find the [C:/Kernel/KStart16.CPP.Z,1] Stage2 if you relocate
+  it.
 +] Why is there some 16-Bit code?
   TempleOS is 64-bit.  Like all PC operating systems, the boot-loader starts
   in 16-bit real-mode.  TempleOS calls a few BIOS info routines, switches to
@@ -170,7 +171,7 @@
 +] How do you use the FS and GS segment registers.
   MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP
   relative, so it's tricky to use.  FS is used for the current
-  [C:/Kernel/KernelA.HPP.Z,3320] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3445]
+  [C:/Kernel/KernelA.HPP.Z,3321] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3446]
   CCPU.
 +] How do I set ORG for position of code?
   The compiler creates pos independent code.  Don't create code which is

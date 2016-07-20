@@ -1214,7 +1214,6 @@ args.
       case IC_GET_LABEL:
       case IC_TYPE:
       case IC_RDTSC:
-      case IC_HPET:
       case IC_SET_RFLAGS:
       case IC_SET_RBP:
       case IC_SET_RSP:

@@ -587,7 +587,6 @@ p4_sib:
 	case IC_GET_RFLAGS:
 	case IC_CARRY:
 	case IC_RDTSC:
-	case IC_HPET:
 	case IC_SET_RFLAGS:
 	case IC_GET_RBP:
 	case IC_SET_RBP:

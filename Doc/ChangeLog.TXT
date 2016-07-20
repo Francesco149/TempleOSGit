@@ -2,7 +2,24 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----07/11/16 10:44:35----
+----07/19/16 11:32:01----
+
+----07/17/16 13:03:12----
+* Improved [C:/Adam/DolDoc/DocOpt.CPP.Z,109] DocOpt().
+
+----07/17/16 03:23:53----
+* Improved [C:/Demo/Games/RawHide.CPP,1].
+
+----07/15/16 10:11:10----
+* **TempleOS version 4.10 Released**
+* Improved [C:/Demo/Games/EagleDive.CPP,1].
+
+----07/15/16 05:17:24----
+* Created [C:/Kernel/KernelA.HPP.Z,2921] CDevGlbls.uncached_alias.
+* Added 1 Gig page table support.
+
+----07/13/16 17:21:19----
+* Added [C:/Demo/MultiCore/RateCores.CPP,1].
 
 ----07/09/16 08:46:36----
 * Changed scoring in [C:/Demo/Games/EagleDive.CPP,1].
@@ -119,7 +136,7 @@ R("ISOFileCreate","[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO");
 
 ----05/03/16 19:26:45----
 * Made [C:/Kernel/FunSeg.CPP.Z,54] FunSegFind() search all hash tables when
-[C:/Kernel/KMisc.CPP.Z,265] IsDbg.
+[C:/Kernel/KMisc.CPP.Z,270] IsDbg.
 * Added missiles to [C:/Apps/X-Caliber/X-Caliber.CPP,1].
 * Fixed bug in [C:/Kernel/KernelB.HPP.Z,161] D3Unit().
 
@@ -191,7 +208,7 @@ automatically from the compiler's class information.
 * Added aliases to [C:/Compiler/OpCodes.TXT.Z,1].
 
 ----03/21/16 02:12:08----
-* Added [C:/Kernel/KernelA.HPP.Z,904] DOCT_MARKER.
+* Added [C:/Kernel/KernelA.HPP.Z,906] DOCT_MARKER.
 * Added [C:/Kernel/KernelA.HPP.Z,1627] CICType.
 * Optimized [C:/Kernel/KernelA.HPP.Z,1586] MDG_MASK and
 [C:/Kernel/KernelA.HPP.Z,1570] RTG_MASK values.
@@ -227,7 +244,7 @@ automatically from the compiler's class information.
 
 ----02/09/16 23:54:23----
 * Created [C:/Kernel/KernelA.HPP.Z,966] DOCEF_LEN with arg. 
-[C:/Kernel/KernelA.HPP.Z,929] DOCT_DATA has default 64 len.
+[C:/Kernel/KernelA.HPP.Z,930] DOCT_DATA has default 64 len.
 
 ----02/09/16 09:34:32----
 * **TempleOS version 4.03 Released**
@@ -284,7 +301,7 @@ automatically from the compiler's class information.
 * Added [C:/Demo/ToHtmlToTXTDemo/HtmlGen.CPP,1] and 
 [C:/Demo/ToHtmlToTXTDemo/TXTGen.CPP,1].
 * Now, [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() doesn't save with
-[C:/Kernel/KernelA.HPP.Z,3512] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3513] CH_CURSOR.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
 * Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to
@@ -341,7 +358,7 @@ kernel with [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns() must be changed.
 
 ----01/08/16 17:04:58----
 * Added [C:/Kernel/KernelA.HPP.Z,2601] FUF_RISKY to
-[C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt().
+[C:/Adam/DolDoc/DocOpt.CPP.Z,109] DocOpt().
 * Fixed [C:/Doc/CompilerOverview.TXT.Z,1].
 
 ----01/06/16 11:01:57----

@@ -269,7 +269,7 @@ CSprite *SMScreenBitMap(I64 eletype,CDC *dc,CDC *dc2,I64 x,I64 y,I64 a1,I64 a2,
   WinMgrSync(2,TRUE);
 
   dc3=DCScreenCapture;
-  img=DCExtract(dc3,Fs->pix_left+Fs->scroll_x+xx1,Fs->pix_top+Fs->scroll_y+yy1,
+  img=DCExt(dc3,Fs->pix_left+Fs->scroll_x+xx1,Fs->pix_top+Fs->scroll_y+yy1,
 	Fs->pix_left+Fs->scroll_x+xx2-1,Fs->pix_top+Fs->scroll_y+yy2-1);
   if (eletype==SPT_INS_TRANSPARENT_SCREEN_BITMAP)
     DCColorChg(img,bm_bkcolor);

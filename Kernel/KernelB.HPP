@@ -26,7 +26,7 @@ public _intern IC_LBTS Bool LBts(
 	U8 *bit_field,I64 bit); //Locked bit test and set to one.
 public _extern _BEQU Bool BEqu(
 	U8 *bit_field,I64 bit,Bool val);//Set bit equ to val.
-public _extern _BIT_FIELD_EXTRACT_U32 U32 BFieldExtU32(
+public _extern _BIT_FIELD_EXT_U32 U32 BFieldExtU32(
 	U8 *bit_field,I64 bit,I64 size); //Extract U32 from bit field.
 public _extern _BIT_FIELD_OR_U32 U0 BFieldOrU32(
 	U8 *bit_field,I64 bit,U32 pattern); //Or U32 into bit field.
@@ -176,6 +176,7 @@ public _extern _MEMSET_U32 U32 *MemSetU32(
 	U32 *dst,I64 val,I64 U32cnt); //Set chunk of U32s to value.
 public _extern _MEMSET U8 *MemSetU8(
 	U8 *dst,I64 val,I64 U8cnt); //Set chunk of U8s to value.
+_extern SYS_GIG_PAGES		U8 sys_gig_pages;
 _extern SYS_HEAP_DBG_FLAG	U8 sys_heap_dbg;
 _extern SYS_HEAP_INIT_FLAG	U8 sys_heap_init_flag;
 _extern SYS_HEAP_INIT_VAL	U8 sys_heap_init_val;
@@ -223,14 +224,14 @@ public _extern SYS_PROGRESSES
 
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,233] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3445] CCPU.
+public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,234] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3446] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
 _extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,284] Core0StartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3445] CCPU.
+public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3446] CCPU.
 
 #help_index "PCI"
 public _extern SYS_PCI_BUSES U16 sys_pci_busses; //Number of PCI buses.
@@ -272,14 +273,10 @@ public _intern IC_INVLPG
 	U0 InvlPg(U8 *a); //Invalidate page at addr inst.
 
 #help_index "Task;Processor"
-public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3320] CTask.
+public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3321] CTask.
 
 #help_index "Time/CPU Cycles"
 #help_file "::/Doc/TimeCycles"
 public _intern IC_RDTSC I64 GetTSC(); //Get time stamp counter.
-
-#help_index "Time/HPET"
-#help_file "::/Doc/TimeHPET"
-public _intern IC_HPET I64 HPET(); //Get high precision event timer.
 
 #help_index ""

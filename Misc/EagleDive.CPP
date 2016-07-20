@@ -209,15 +209,32 @@ I64 critical_section_flag;
 I16 elevations[MAP_HEIGHT][MAP_WIDTH];
 CD3 normals[MAP_HEIGHT][MAP_WIDTH];
 
-F64 game_t0,game_tf,phi,theta1,theta2,speed;
-
-I64 strip_height,x,y,z,fish_left;
-
 class MPCtrl {
   I64 init_not_done_flags,update_not_done_flags,app_not_done_flags;
   I64 strip_width[MP_MAX_PROCESSORS];
   Bool app_done;
 } mp;
+
+F64 game_t0,game_tf,pitch,roll,heading,phi,speed;
+Bool invert_pitch,rolled_over;
+I64 strip_height,x,y,z,fish_left;
+
+U0 WrapAngles()
+{
+  phi=Wrap(phi);
+  pitch=Wrap(-phi-pi/2);
+  if (Abs(pitch)>pi/2) {
+    invert_pitch=TRUE;
+    pitch=Wrap(pi-pitch);
+  } else
+    invert_pitch=FALSE;
+  roll=Wrap(roll);
+  if (invert_pitch ^^ -pi/2<=roll<pi/2)
+    rolled_over=FALSE;
+  else
+    rolled_over=TRUE;
+  heading=Wrap(heading,0);
+}
 
 U0 EDTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 {
@@ -594,9 +611,9 @@ U0 MPDrawIt(CTask *task,CDC *dc)
 
   //World to screen coordinates
   Mat4x4IdentEqu(dc->r);
-  Mat4x4RotZ(dc->r,theta2);
+  Mat4x4RotZ(dc->r,heading);
   Mat4x4RotX(dc->r,phi);
-  Mat4x4RotZ(dc->r,theta1);
+  Mat4x4RotZ(dc->r,roll);
   DCMat4x4Set(dc,dc->r);
 
   //Screen to world coordinates
@@ -607,9 +624,10 @@ U0 MPDrawIt(CTask *task,CDC *dc)
   //y=mx+b and y=(-1/m)x+b are perpendicular.
 
   s2w=Mat4x4IdentNew;
-  Mat4x4RotZ(s2w,-theta1);
+  Mat4x4RotZ(s2w,-roll);
   Mat4x4RotX(s2w,-phi);
-  Mat4x4RotZ(s2w,-theta2);
+  Mat4x4RotZ(s2w,-heading);
+
   xh=0;
   yh=0;
   zh=-256;
@@ -747,31 +765,31 @@ U0 DrawHorizon(CDC *dc)
   dc->depth_buf=NULL;
   CColorROPU32 ground_color;
 
-  if (game_tf && fish_left) {
-    dc->color=BLACK;
-    GrRect(dc,0,0,dc->width,dc->height);
-  } else if (-pi/4<=Wrap(phi-pi)<pi/4) {
-    dc->color=LTCYAN;
-    GrRect(dc,0,0,dc->width,dc->height);
-  } else {
+  if (game_tf && fish_left)
+    DCFill(dc,BLACK);
+  else if (-pi/4<=Wrap(phi-pi)<pi/4)
+    DCFill(dc,LTCYAN);
+  else {
     if (z/COORDINATE_SCALE<(WATER_ELEVATION+3)*MAP_SCALE)
       ground_color=BLUE;
     else
       ground_color=LTGREEN;
 
     Mat4x4IdentEqu(dc->r);
-    Mat4x4RotZ(dc->r,theta2);
+    Mat4x4RotZ(dc->r,heading);
     Mat4x4RotX(dc->r,phi);
-    Mat4x4RotZ(dc->r,theta1);
+    Mat4x4RotZ(dc->r,roll);
+
     DCMat4x4Set(dc,dc->r);
     dc->flags&=~DCF_TRANSFORMATION;
     dc->transform=&EDTransform;
     dc->x=cx;
     dc->y=cy;
 
-    Mat4x4RotZ(s2w,-theta1);
+    Mat4x4RotZ(s2w,-roll);
     Mat4x4RotX(s2w,-phi);
-    Mat4x4RotZ(s2w,-theta2);
+    Mat4x4RotZ(s2w,-heading);
+
     xh=0;
     yh=0;
     zh=-256;
@@ -798,17 +816,17 @@ U0 DrawHorizon(CDC *dc)
       p[2].y=y2;
       p[3].x=0;
       p[3].y=y1;
-      if (-pi/2<=theta1<pi/2 ^^ -pi/2<=Wrap(phi-pi/2)<pi/2)
-	dc->color=LTCYAN;
-      else
+      if (rolled_over)
 	dc->color=ground_color;
+      else
+	dc->color=LTCYAN;
       GrFillPoly3(dc,4,p);
       p[0].y=dc->height-1;
       p[1].y=dc->height-1;
-      if (-pi/2<=theta1<pi/2 ^^ -pi/2<=Wrap(phi-pi/2)<pi/2)
-	dc->color=ground_color;
-      else
+      if (rolled_over)
 	dc->color=LTCYAN;
+      else
+	dc->color=ground_color;
       GrFillPoly3(dc,4,p);
     } else {
       if (y2<y1) {
@@ -824,19 +842,20 @@ U0 DrawHorizon(CDC *dc)
 	p[2].y=dc->height-1;
 	p[3].x=x1;
 	p[3].y=0;
-	if (x1<x2 ^^ -pi/2<=theta1<pi/2 ^^ -pi/2<=Wrap(phi-pi/2)<pi/2)
-	  dc->color=LTCYAN;
-	else
+	if (x1<x2 ^^ rolled_over)
 	  dc->color=ground_color;
+	else
+	  dc->color=LTCYAN;
 	GrFillPoly3(dc,4,p);
 	p[0].x=dc->width-1;
 	p[1].x=dc->width-1;
-	if (x1<x2 ^^ -pi/2<=theta1<pi/2 ^^ -pi/2<=Wrap(phi-pi/2)<pi/2)
-	  dc->color=ground_color;
-	else
+	if (x1<x2 ^^ rolled_over)
 	  dc->color=LTCYAN;
+	else
+	  dc->color=ground_color;
 	GrFillPoly3(dc,4,p);
-      }
+      } else
+	DCFill(dc,LTCYAN); //Not correct.
     }
   }
   dc->depth_buf=old_db;
@@ -846,7 +865,7 @@ U0 Core0EagleDive()
 {
   CDC *dc=DCAlias(main_dc,Fs);
   I64 i,xx,yy,elev,height,cx=Fs->pix_width>>1,cy=Fs->pix_height>>1;
-  F64 min_strip_width,roll,pitch,heading,tt;
+  F64 min_strip_width,tt;
 
   update_jiffy_limit=cnts.jiffies+JIFFY_FREQ/40;
 
@@ -904,17 +923,15 @@ U0 Core0EagleDive()
   dc->flags&=~DCF_TRANSFORMATION;
   GrLine3(dc,cx+5,cy,0,cx-5,cy,0);
   GrLine3(dc,cx,cy+5,0,cx,cy-5,0);
-  heading=Wrap(theta2,0);
-  roll=theta1;
-  pitch=Wrap(-phi-pi/2,-pi);
-  if (Abs(pitch)>pi/2) {
-    pitch=Wrap(pi-pitch,-pi);
-    roll=Wrap(roll+pi,-pi);
-    heading=Wrap(heading+pi,0);
-  }
-  GrPrint(dc,0,0,"Roll:%5.1f Pitch:%5.1f Heading:%5.1f "
-	"Height:%5d [Core Strip:%3d]",
-	roll*180/pi,pitch*180/pi,heading*180/pi,height,strip_height);
+  if (invert_pitch)
+    GrPrint(dc,0,0,"Pitch:%5.1f Roll:%5.1f Heading:%5.1f "
+	  "Height:%5d [Core Strip:%3d]",
+	  pitch*180/pi,Wrap(roll+pi)*180/pi,Wrap(heading+pi,0)*180/pi,
+	  height,strip_height);
+  else
+    GrPrint(dc,0,0,"Pitch:%5.1f Roll:%5.1f Heading:%5.1f "
+	  "Height:%5d [Core Strip:%3d]",
+	  pitch*180/pi,roll*180/pi,heading*180/pi,height,strip_height);
   GrPrint(dc,0,FONT_HEIGHT,"Fish Remaining:%d Time:%3.2f Best:%3.2f",
 	fish_left,tt,best_score);
 
@@ -953,7 +970,7 @@ Obj *FishFind(I64 x1,I64 y1,I64 *_dd)
 U0 AnimateTask(I64)
 {//Steadily moves the airplane fwd.
   I64 *s2w,x1,y1,z1,dx,dy,dz,dd;
-  F64 t0=tS,mS,theta,d,pitch;
+  F64 t0=tS,mS,theta,d;
   Obj *tempo;
   while (TRUE) {
     mS=1000*(tS-t0);
@@ -961,9 +978,10 @@ U0 AnimateTask(I64)
     if (!game_tf) {
 //Screen to world coordinates
       s2w=Mat4x4IdentNew;
-      Mat4x4RotZ(s2w,-theta1);
+      Mat4x4RotZ(s2w,-roll);
       Mat4x4RotX(s2w,-phi);
-      Mat4x4RotZ(s2w,-theta2);
+      Mat4x4RotZ(s2w,-heading);
+
       dx=0;dy=0;dz=1<<16;
       Mat4x4MulXYZ(s2w,&dx,&dy,&dz);
       x-=speed*mS*COORDINATE_SCALE*dx/1<<16;
@@ -971,20 +989,20 @@ U0 AnimateTask(I64)
       z-=speed*mS*COORDINATE_SCALE*dz/1<<16;
       Free(s2w);
       x1=x/COORDINATE_SCALE; y1=y/COORDINATE_SCALE; z1=z/COORDINATE_SCALE;
-
       if (z1<(WATER_ELEVATION+3)*MAP_SCALE) {
 	if (z1<WATER_ELEVATION*MAP_SCALE) {
 	  z=WATER_ELEVATION*MAP_SCALE*COORDINATE_SCALE;
-	  pitch=Wrap(-phi-pi/2,-pi);
-	  if (Abs(pitch)>pi/2) {
-	    pitch=Wrap(pi-pitch,-pi);
+	  if (invert_pitch) {
 	    if (pitch<-pi/8)
 	      phi+=mS/1000.0*Sign(3*pi/8-phi);
 	  } else if (pitch<-pi/8)
 	    phi+=mS/1000.0*Sign(-3*pi/8-phi);
+	  WrapAngles;
 	}
 	speed=1.0;
-	if (tempo=FishFind(x1,y1,&dd)) {
+	if (rolled_over || !(tempo=FishFind(x1,y1,&dd)))
+	  claws_down=0;
+	else {
 	  d=Sqrt(dd);
 	  x1-=tempo->p.x;
 	  y1-=tempo->p.y;
@@ -1061,11 +1079,13 @@ U0 Init()
   DCDepthBufAlloc(main_dc);
 
   strip_height=128;
+
   phi	=-90.0*pi/180.0;
-  theta1	=  0.0*pi/180.0;
-  theta2	=  0.0*pi/180.0;
-  speed =  2.5;
+  roll	=0;
+  heading=0;
+  speed =2.5;
   claws_down=0;
+  WrapAngles;
 
   x=MAP_WIDTH>>1 *COORDINATE_SCALE*MAP_SCALE;
   y=MAP_HEIGHT>>1*COORDINATE_SCALE*MAP_SCALE;
@@ -1098,8 +1118,6 @@ U0 CleanUp()
 U0 EagleDive()
 {
   I64 ch,sc;
-  F64 pp,tt1,tt2;
-
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   MenuPush(
 	"File {"
@@ -1127,24 +1145,26 @@ U0 EagleDive()
   try //in case <CTRL-ALT-c> is pressed.
     do {
       if (ScanKey(&ch,&sc)) {
-	pp=phi; tt1=theta1; tt2=theta2;
 	switch (ch) {
 	  case 0:
 	    switch (sc.u8[0]) {
-	      case SC_CURSOR_DOWN:
-		phi +=-CTRLS_SCALE*Cos(tt1);
-		theta2+=-CTRLS_SCALE*Sin(tt1)*Sin(phi);
-		break;
-	      case SC_CURSOR_UP:
-		phi -=-CTRLS_SCALE*Cos(tt1);
-		theta2-=-CTRLS_SCALE*Sin(tt1)*Sin(phi);
-		break;
-	      case SC_CURSOR_RIGHT:
-		theta1+=CTRLS_SCALE;
-		break;
-	      case SC_CURSOR_LEFT:
-		theta1-=CTRLS_SCALE;
-		break;
+	      start:
+		case SC_CURSOR_DOWN:
+		  phi-=CTRLS_SCALE*Cos(roll);
+		  heading-=CTRLS_SCALE*Sin(roll)*Sin(phi);
+		  break;
+		case SC_CURSOR_UP:
+		  phi+=CTRLS_SCALE*Cos(roll);
+		  heading+=CTRLS_SCALE*Sin(roll)*Sin(phi);
+		  break;
+		case SC_CURSOR_RIGHT:
+		  roll+=CTRLS_SCALE;
+		  break;
+		case SC_CURSOR_LEFT:
+		  roll-=CTRLS_SCALE;
+		  break;
+	      end:
+		WrapAngles;
 	    }
 	    break;
 	  case '\n':
@@ -1155,9 +1175,6 @@ U0 EagleDive()
 	    Fs->draw_it=&DrawIt;
 	    break;
 	}
-	theta1=Wrap(theta1);
-	phi =Wrap(phi);
-	theta2=Wrap(theta2);
       } else
 	Core0EagleDive;
     } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);
