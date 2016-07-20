@@ -42,7 +42,7 @@ public class CGrGlbls
 	hide_row,hide_col;
 } gr;
 
-//See [C:/Kernel/KStart.CPP.Z,1] RLf_VGA
+//See [C:/Kernel/KStart16.CPP.Z,1] RLf_VGA
 //See [C:/Kernel/KEnd.CPP.Z,64] SysGrInit()
 //Allows consts to be used instead of vars.
 HashPublic("GR_WIDTH",HTT_DEFINE_STR);;

@@ -28,7 +28,7 @@ you can define your own handlers with [C:/Kernel/KeyDev.CPP.Z,178]
 CtrlAltCBSet().  They operate either in 
 a interrupt environment or in the window mgr when it queues kbd msgs.  You
 can 
-do [C:/Kernel/KMisc.CPP.Z,238] Raw() output.  <CTRL-ALT-letter> handlers take
+do [C:/Kernel/KMisc.CPP.Z,243] Raw() output.  <CTRL-ALT-letter> handlers take
 a scan_code as an arg.
 
 <CTRL-function key>  Auto-completes local words.

@@ -65,7 +65,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HPP.Z,2957] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HPP.Z,2958] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -143,7 +143,7 @@ Examples: <CTRL-t> to see
 9)[C:/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually just does
   a text search.
 10) [Doc,1] Help Index Link.
-11) [C:/Kernel/StrPrint.CPP.Z,103] Address Link.
+11) [C:/Kernel/StrPrint.CPP.Z,66] Address Link.
 
 12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.CPP.Z,680]
   SpriteEdText().

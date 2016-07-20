@@ -187,6 +187,7 @@ U0 BlockIPNums(LogStruct *head)
   BlockedStructAdd(&blocked_head,68<<24+96<<16+110<<8+213);
   BlockedStructAdd(&blocked_head,68<<24+96<<16+242<<8+108);
   BlockedStructAdd(&blocked_head,68<<24+227<<16+61<<8+11);
+  BlockedStructAdd(&blocked_head,68<<24+227<<16+61<<8+139);
 
   //pass 1: collect robot lst
   while (templg!=head) {

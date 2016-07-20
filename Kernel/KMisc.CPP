@@ -77,6 +77,11 @@ I64 SysTimerRead()
   return res;
 }
 
+I64 HPET()
+{ //Get high precision event timer.
+  return *(dev.uncached_alias+HPET_MAIN_CNT)(I64 *);
+}
+
 I64 TimeStampFreqCal()
 {
   static I64 time_stamp_start=0,timer_start=0,HPET_start=0;

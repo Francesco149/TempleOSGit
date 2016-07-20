@@ -1,5 +1,5 @@
                                      TODO
-* [C:/Demo/Games/RawHide.CPP.Z,1] fix waterfall code so not in center.
+* Cursor in [C:/Home/TOSToHtml.CPP,1].
 
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
 
@@ -21,7 +21,7 @@ search string.
 * Editor overstrike mode at cmd line with menu macro?  Probably, many other 
 overstrike issues.
 
-* [C:/Kernel/KernelA.HPP.Z,934] DOCT_HEX_ED with odd size, ASCII cannot be
+* [C:/Kernel/KernelA.HPP.Z,935] DOCT_HEX_ED with odd size, ASCII cannot be
 edited.
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
@@ -51,7 +51,7 @@ GetStr() all the way down into [C:/Kernel/KeyDev.CPP.Z,1] PutKey() code.
 
 * Can [C:/Kernel/KernelA.HPP.Z,2882] MEM_EXTRA_HASH2_PAGES be just one?
 
-* Bible ranges in [C:/Adam/God/GodBible.CPP.Z,239] BibleVerse(). 
+* Bible ranges in [C:/Adam/God/GodBible.CPP.Z,240] BibleVerse(). 
 
 * [C:/Demo/Games/FlatTops.CPP.Z,1] is torpedo, not bombs.
 
@@ -60,12 +60,12 @@ Free old task memory?
 
 * Use pen_width and pen_height when clipping with pen_width>1.
 
-* [C:/Home/Sup1/Games/Rocks.CPP,1].
+* [C:/Home/Sup1/Sup1Games/Rocks.CPP,1].
 
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
-[C:/Kernel/KernelA.HPP.Z,3320] CTask->task_flags and 
+[C:/Kernel/KernelA.HPP.Z,3321] CTask->task_flags and 
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.CPP.Z,52] KbdLEDsSet().
@@ -92,7 +92,7 @@ others need to be in separate cache lines?
 
 * Asm could support R4u8 by adding 0x40 byte.
 
-* [C:/Kernel/Mem/MemPhysical.CPP.Z,78] Mem32DevAlloc() is broken.  Devices
+* [C:/Kernel/Mem/MemPhysical.CPP.Z,81] Mem32DevAlloc() is broken.  Devices
 should be in free spot of E820 report.
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,1] SpriteEd: Strip [C:/Adam/Gr/Gr.HPP.Z,124]
@@ -183,10 +183,9 @@ imagination.
 
 * 1/1/2015 Bug messing-up keyboard, like no CTRL key.  Was working on Sprites.
 
-* 4/13/14 Strut or RawHide crashed when [C:/Kernel/KernelB.HPP.Z,184]
+* 4/13/14 Strut or RawHide crashed when [C:/Kernel/KernelB.HPP.Z,185]
 sys_var_init_flag was set during 
 testsuite.  Perhaps, floodfill?
-* 3/19/14: RESET during RawHide. 
 
 * [C:/Adam/ABlkDev/ChkDsk.CPP.Z,207] ChkDsk alloc unalloced.  I don't know if
 I fixed this.
@@ -271,22 +270,22 @@ routines.
 Every country make own version?
 * International Date input: [C:/Kernel/StrScan.CPP.Z,138] Str2Date().
 
-* [C:/Kernel/KernelA.HPP.Z,3633] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3634] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
-* [C:/Kernel/KernelA.HPP.Z,2956] TRANSPARENT does not work with
-[C:/Kernel/KernelA.HPP.Z,2952] ROPF_DITHER.
+* [C:/Kernel/KernelA.HPP.Z,2957] TRANSPARENT does not work with
+[C:/Kernel/KernelA.HPP.Z,2953] ROPF_DITHER.
 
-* [C:/Kernel/KernelA.HPP.Z,2942] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2943] ROP_XOR with pen_width>1 is broken.
 
 * [C:/Adam/Gr/GrPrimatives.CPP.Z,823] GrPutChar3() with depth buf?
 
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.CPP.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,115] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3660] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3661] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2942] ROP_XOR?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2943] ROP_XOR?
 
 * [C:/Adam/WinB.CPP.Z,421] WinMgrTask needs to do doc operations on
 [C:/Kernel/SrvCmd.CPP.Z,240] PostMsg() msgs for mouse.  Already 
@@ -298,7 +297,7 @@ works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet()?
 [C:/Kernel/Mem/PageTables.CPP.Z,1] Code for documentation.  I 
 tried a PDF-to-text convertor and it wasn't acceptible.
 
-* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2989] CBGR24's wrong? 
+* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2990] CBGR24's wrong? 
 [C:/Adam/Opt/Utils/FileBMP.CPP.Z,1].
 
 * Switch stmt with sparse cases?  Maybe, ban sparse switch stmts.
@@ -319,7 +318,7 @@ ICCmp() like in [C:/Compiler/BackB.CPP.Z,468] ICCmpAndBranch()?
 R("#define","StrMap");  [C:/Home/HomeWrappers.CPP.Z,13] R("#include",...);
 also?
 
-* Compiler: [C:/Kernel/KernelB.HPP.Z,184] sys_var_init_flag for local vars?
+* Compiler: [C:/Kernel/KernelB.HPP.Z,185] sys_var_init_flag for local vars?
 
 * Implement [C:/Kernel/KernelA.HPP.Z,2539] RS_ATTR_FIXED fixed pos files?
 
@@ -344,8 +343,8 @@ in the same version.
 
 * 12 border chars in screen font codes 0x02-0x0D. 
 [C:/Adam/Gr/GrTextBase.CPP.Z,329] TextBorder() [C:/Kernel/KDbg.CPP.Z,291]
-RawDr()  
-LineFeed shows-up in <CTRL-m> PersonalMenu.
+RawDr() 
+[C:/Demo/Games/CharDemo.CPP.Z,1]. LineFeed shows-up in <CTRL-m> PersonalMenu.
 
 * Super-simple high speed serial needs flow control.  <CTRL-s> and <CTRL-q>?
 
@@ -392,7 +391,7 @@ DirContextNew().
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* More [C:/Kernel/KernelA.HPP.Z,3113] Controls?
+* More [C:/Kernel/KernelA.HPP.Z,3114] Controls?
 
 * Compiler: More use of more floating-point stk?
 
@@ -400,7 +399,7 @@ once.
 with types besides MOV and F64. 
 
 * Playing with [C:/Demo/Lectures/NegDisp.CPP.Z,1] on
-[C:/Kernel/KernelA.HPP.Z,3320] CTask?
+[C:/Kernel/KernelA.HPP.Z,3321] CTask?
      $=-CTASK_NEG_OFFSET
 offset(CTask.addr)==0
 Spawn(): CAlloc()

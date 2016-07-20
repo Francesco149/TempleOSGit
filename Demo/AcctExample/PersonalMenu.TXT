@@ -1,467 +1,418 @@
-Cd;Dir;
-
+Cd      
 `Cd;Dir;
 `
-
-Drv('C');
-
+DrvC    
 `Drv('C');
 `
-
-Drv('D');
-
+DrvD    
 `Drv('D');
 `
-
-BootRAM("C:/Kernel.BIN.C");
-`BootRAM("C:/Kernel.BIN.C");`
-
-TOSBootHDIns('C');
-
-`TOSBootHDIns('C');
-`
-
-[C:/Doc/ChangeLog.TXT.Z,1] Change Log [C:/Doc/HelpIndex.TXT.Z,1] Help & Index [C:/Doc/DemoIndex.TXT.Z,1] Demo Index Key Map
-`KeyMap;View;
-`
- Take Tour
-`Cd("::/Misc/Tour");;AutoFile("Tour");
-`
-
-Cd("/Kernel");Dir;
-
-`Cd("/Kernel");Dir;
-`
-
-Cd("/Kernel/BlkDev");Dir;
-
-`Cd("/Kernel/BlkDev");Dir;
-`
-
-Cd("/Kernel/Mem");Dir;
-
-`Cd("/Kernel/Mem");Dir;
-`
-
-Cd("/Compiler");Dir;
-
-`Cd("/Compiler");Dir;
-`
-
-Cd("/Adam");Dir;
-
-`Cd("/Adam");Dir;
-`
-
-Cd("/Adam/AutoComplete");Dir;
-
-`Cd("/Adam/AutoComplete");Dir;
-`
-
-Cd("/Adam/Ctrls");Dir;
-
-`Cd("/Adam/Ctrls");Dir;
-`
-
-Cd("/Adam/ABlkDev");Dir;
-
-`Cd("/Adam/ABlkDev");Dir;
-`
-
-Cd("/Adam/DolDoc");Dir;
-
-`Cd("/Adam/DolDoc");Dir;
-`
-
-Cd("/Adam/Gr");Dir;
-
-`Cd("/Adam/Gr");Dir;
-`
-
-Cd("/Adam/God");Dir;
-
-`Cd("/Adam/God");Dir;
-`
-
-Cd("/Adam/Snd");Dir;
-
-`Cd("/Adam/Snd");Dir;
-`
-
-Blog
-`Blog;
-`
- WebPartial
-`MakeWebSitePartial;
-`
- TempleOSTheme;
-
-`TempleOSTheme;
-`
- CodeWalkThru;
-
-`CodeWalkThru;
-`
- AfterEgyptInAction;
-
-`AfterEgyptInAction;
-`
-
-Ed("D:/Home/God.TXT");
-
-`Ed("D:/Home/God.TXT");
-`
-
-Cd("/");Dir;
-
+/       
 `Cd("/");Dir;
 `
-
-Cd("/Adam/Opt/Boot");Dir;
-
-`Cd("/Adam/Opt/Boot");Dir;
-`
-
-Cd("/Adam/Opt/Utils");Dir;
-
-`Cd("/Adam/Opt/Utils");Dir;
-`
-
-Cd("/Home");Dir;
-
+Home    
 `Cd("/Home");Dir;
 `
-
-Cd("/Home/Web");Dir;
-
-`Cd("/Home/Web");Dir;
+ChgDskT 
+`ChgDsk('T');
 `
-
-Cd("/Home/Web/TAD");Dir;
-
-`Cd("/Home/Web/TAD");Dir;
-`
-
-Cd("/Home/Sup1");Dir;
-
-`Cd("/Home/Sup1");Dir;
-`
-
-Cd("/Home/Sup1/Blog");Dir;
-
-`Cd("/Home/Sup1/Blog");Dir;
-`
-
-Cd("/Home/Sup1/CodeScraps");Dir;
-
-`Cd("/Home/Sup1/CodeScraps");Dir;
-`
-
-Cd("/Home/Sup1/Psalmody");Dir;
-
-`Cd("/Home/Sup1/Psalmody");Dir;
-`
-
-Cd("/Apps");Dir;
-
-`Cd("/Apps");Dir;
-`
-
-Cd("/Apps/AfterEgypt");Dir;
-
-`Cd("/Apps/AfterEgypt");Dir;
-`
-
-Cd("/Apps/Budget");Dir;
-
-`Cd("/Apps/Budget");Dir;
-`
-
-Cd("/Apps/Psalmody");Dir;
-
-`Cd("/Apps/Psalmody");Dir;
-`
-
-Cd("/Apps/Span");Dir;
-
-`Cd("/Apps/Span");Dir;
-`
-
-Cd("/Apps/ToTheFront");Dir;
-
-`Cd("/Apps/ToTheFront");Dir;
-`
-
-Cd("/Demo");Dir;
-
-`Cd("/Demo");Dir;
-`
-
-Cd("/Demo/Asm");Dir;
-
-`Cd("/Demo/Asm");Dir;
-`
-
-Cd("/Demo/DolDoc");Dir;
-
-`Cd("/Demo/DolDoc");Dir;
-`
-
-Cd("/Demo/Dsk");Dir;
-
-`Cd("/Demo/Dsk");Dir;
-`
-
-Cd("/Demo/Games");Dir;
-
-`Cd("/Demo/Games");Dir;
-`
-
-Cd("/Demo/Graphics");Dir;
-
-`Cd("/Demo/Graphics");Dir;
-`
-
-Cd("/Demo/Lectures");Dir;
-
-`Cd("/Demo/Lectures");Dir;
-`
-
-Cd("/Demo/MultiCore");Dir;
-
-`Cd("/Demo/MultiCore");Dir;
-`
-
-Cd("/Demo/Snd");Dir;
-
-`Cd("/Demo/Snd");Dir;
-`
-
-Cd("/Demo/Templates");Dir;
-
-`Cd("/Demo/Templates");Dir;
-`
-
-Cd("/Demo/ToHtmlToTXTDemo");Dir;
-
-`Cd("/Demo/ToHtmlToTXTDemo");Dir;
-`
-
-Cd("/Doc");Dir;
-
-`Cd("/Doc");Dir;
-`
-
-Cd("/Misc");Dir;
-
-`Cd("/Misc");Dir;
-`
-
-Cd("/Misc/Tour");Dir;
-
-`Cd("/Misc/Tour");Dir;
-`
-
-Cd("/Temp");Dir;
-
-`Cd("/Temp");Dir;
-`
-
-Cd("/0000Boot");Dir;
-
-`Cd("/0000Boot");Dir;
-`
-
-Del("D:/Temp/*.SND");DelTree("D:/Temp/ScreenShots");MkDir("D:/Temp/ScreenShots");Del("C:/Temp/*.SND");DelTree("C:/Temp/ScreenShots");MkDir("C:/Temp/ScreenShots");
-
-`Del("D:/Temp/*.SND");DelTree("D:/Temp/ScreenShots");MkDir("D:/Temp/ScreenShots");Del("C:/Temp/*.SND");DelTree("C:/Temp/ScreenShots");MkDir("C:/Temp/ScreenShots");
-`
-
-TOSPromptAndCopyDrv;
-
-`TOSPromptAndCopyDrv;
-`
-
-MakeDistrosAndBackUp;
-
-`MakeDistrosAndBackUp;
-`
-
-S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","D:/*;!*/LineRep*","+r+d");
-
+MergeD  
 `S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","D:/*;!*/LineRep*","+r+d");
 `
-
-S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","T:/*;!*/LineRep*","+r+d");
-
+MergeT  
 `S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","T:/*;!*/LineRep*","+r+d");
 `
 
-ChgDsk('T');
-
-`ChgDsk('T');
+BootC   
+`BootRAM("C:/Kernel.BIN.C");`
+MakeC   
+`TOSBootHDIns('C');
 `
-
-LinuxDict
-`Adam("GodInit(\"~/Sup1/Words/LinuxDict.TXT**\");");
+BootD   
+`BootRAM("D:/Kernel.BIN.C");`
+MakeD   
+`TOSBootHDIns('D');
 `
- AugustWords
-`Adam("GodInit(\"~/Sup1/Words/AugustWords.TXT**\");");
+MakeBack
+`MakeDistrosAndBackUp;
 `
- HappyWords
-`Adam("GodInit(\"~/Sup1/Words/HappyWords.TXT*\");");
-`
- BibleWords
-`Adam("GodInit(\"~/Sup1/Words/BibleWords.TXT*\");");
-`
- HuckWords
-`Adam("GodInit(\"~/Sup1/Words/HuckWords.TXT*\");");
-`
- Ingredients
-`Adam("GodInit(\"~/Sup1/Words/Ingredients.TXT*\");");
-`
- Chess
-`Adam("GodInit(\"~/Sup1/Words/Chess.TXT*\");");
-`
-
-PreBackUp;
-
+PreBack 
 `PreBackUp;
 `
+CopyDrv 
+`TOSPromptAndCopyDrv;
+`
 
-Make Staff Distro ISO
+Kernel  
+`Cd("/Kernel");Dir;
+`
+Compiler
+`Cd("/Compiler");Dir;
+`
+BlkDev  
+`Cd("/Kernel/BlkDev");Dir;
+`
+Mem     
+`Cd("/Kernel/Mem");Dir;
+`
+Serial  
+`Cd("/Kernel/SerialDev");Dir;
+`
+HDAudio 
+`Cd("/Home/Sup1/Sup1HDAudio");Dir;
+`
+Examples
+`Cd("/Home/Sup1/Sup1HDAudio/Examples");Dir;
+`
+
+Adam    
+`Cd("/Adam");Dir;
+`
+AutoComp
+`Cd("/Adam/AutoComplete");Dir;
+`
+Ctrls   
+`Cd("/Adam/Ctrls");Dir;
+`
+ABlkDev 
+`Cd("/Adam/ABlkDev");Dir;
+`
+DolDoc  
+`Cd("/Adam/DolDoc");Dir;
+`
+Gr      
+`Cd("/Adam/Gr");Dir;
+`
+God     
+`Cd("/Adam/God");Dir;
+`
+Snd     
+`Cd("/Adam/Snd");Dir;
+`
+Boot    
+`Cd("/Adam/Opt/Boot");Dir;
+`
+Utils   
+`Cd("/Adam/Opt/Utils");Dir;
+`
+
+[C:/Doc/ChangeLog.TXT.Z,1] ChangeLgBlog    
+`Blog;
+`
+EdGod   
+`Ed("D:/Home/God.TXT");
+`
+BlogDir 
+`Cd("/Home/Web/TAD/BlogDir");Dir;
+`
+Partial 
+`MakeWebSitePartial;
+`
+CodeWalk
+`CodeWalkThru;
+`
+AfterEgp
+`AfterEgyptInAction;
+`
+TOSTheme
+`TempleOSTheme;
+`
+Sup1Vids
+`Cd("/Home/Sup1/Sup1Videos");Dir;
+`
+
+Web     
+`Cd("/Home/Web");Dir;
+`
+TAD     
+`Cd("/Home/Web/TAD");Dir;
+`
+Sup1    
+`Cd("/Home/Sup1");Dir;
+`
+Sup1Bin 
+`Cd("/Home/Sup1/Sup1Bin");Dir;
+`
+Sup1Blog
+`Cd("/Home/Sup1/Sup1Blog");Dir;
+`
+Sup1Code
+`Cd("/Home/Sup1/Sup1CodeScraps");Dir;
+`
+Sup1Dist
+`Cd("/Home/Sup1/Sup1Distro");Dir;
+`
+Sup1Game
+`Cd("/Home/Sup1/Sup1Games");Dir;
+`
+Sup1Psal
+`Cd("/Home/Sup1/Sup1Psalmody");Dir;
+`
+Sup1Util
+`Cd("/Home/Sup1/Sup1Utils");Dir;
+`
+
+Apps    
+`Cd("/Apps");Dir;
+`
+AfterEgp
+`Cd("/Apps/AfterEgypt");Dir;
+`
+Budget  
+`Cd("/Apps/Budget");Dir;
+`
+GrModels
+`Cd("/Apps/GrModels");Dir;
+`
+KeepAway
+`Cd("/Apps/KeepAway");Dir;
+`
+Logic   
+`Cd("/Apps/Logic");Dir;
+`
+Psalmody
+`Cd("/Apps/Psalmody");Dir;
+`
+Span    
+`Cd("/Apps/Span");Dir;
+`
+Strut   
+`Cd("/Apps/Strut");Dir;
+`
+TimeClk 
+`Cd("/Apps/TimeClock");Dir;
+`
+
+TimeOut 
+`Cd("/Apps/TimeOut");Dir;
+`
+ToTheFrt
+`Cd("/Apps/ToTheFront");Dir;
+`
+Vocab   
+`Cd("/Apps/Vocabulary");Dir;
+`
+XCaliber
+`Cd("/Apps/X-Caliber");Dir;
+`
+ <1> (image)
+Demo    
+`Cd("/Demo");Dir;
+`
+AcctEmpl
+`Cd("/Demo/AcctExample");Dir;
+`
+Asm     
+`Cd("/Demo/Asm");Dir;
+`
+AutoFile
+`Cd("/Demo/AutoFile");Dir;
+`
+DocDoc  
+`Cd("/Demo/DolDoc");Dir;
+`
+Dsk     
+`Cd("/Demo/Dsk");Dir;
+`
+Games   
+`Cd("/Demo/Games");Dir;
+`
+Graphics
+`Cd("/Demo/Graphics");Dir;
+`
+Lectures
+`Cd("/Demo/Lectures");Dir;
+`
+MultCore
+`Cd("/Demo/MultiCore");Dir;
+`
+
+RevFile 
+`Cd("/Demo/RevFileDemo");Dir;
+`
+Snd     
+`Cd("/Demo/Snd");Dir;
+`
+SortFile
+`Cd("/Demo/SortFileDemo");Dir;
+`
+Template
+`Cd("/Demo/Templates");Dir;
+`
+HtmlTXT 
+`Cd("/Demo/ToHtmlToTXTDemo");Dir;
+`
+WebLog  
+`Cd("/Demo/WebLogDemo");Dir;
+`
+Stadium 
+`Cd("/Demo/Games/Stadium");Dir;
+`
+
+Doc     
+`Cd("/Doc");Dir;
+`
+Misc    
+`Cd("/Misc");Dir;
+`
+Tour    
+`Cd("/Misc/Tour");Dir;
+`
+Temp    
+`Cd("/Temp");Dir;
+`
+ScrnShot
+`Cd("/Temp/ScreenShots");Dir;
+`
+DelScrSt
+`Del("D:/Temp/*.SND");DelTree("D:/Temp/ScreenShots");MkDir("D:/Temp/ScreenShots");Del("C:/Temp/*.SND");DelTree("C:/Temp/ScreenShots");MkDir("C:/Temp/ScreenShots");
+`
+0000Boot
+`Cd("/0000Boot");Dir;
+`
+
+LinxDict
+`Adam("GodInit(\"~/Sup1/Sup1Words/LinuxDict.TXT**\");");
+`
+August  
+`Adam("GodInit(\"~/Sup1/Sup1Words/AugustWords.TXT**\");");
+`
+Happy   
+`Adam("GodInit(\"~/Sup1/Sup1Words/HappyWords.TXT*\");");
+`
+Bible   
+`Adam("GodInit(\"~/Sup1/Sup1Words/BibleWords.TXT*\");");
+`
+Huck    
+`Adam("GodInit(\"~/Sup1/Sup1Words/HuckWords.TXT*\");");
+`
+Ingreds 
+`Adam("GodInit(\"~/Sup1/Sup1Words/Ingredients.TXT*\");");
+`
+Chess   
+`Adam("GodInit(\"~/Sup1/Sup1Words/Chess.TXT*\");");
+`
+Sup1Text
+`Cd("/Home/Sup1/Sup1Texts");Dir;
+`
+Sup1Word
+`Cd("/Home/Sup1/Sup1Words");Dir;
+`
+
+MakeStd 
+`MakeStdDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSCD.ISO");
+`
+MakeStRS
+`MakeStdRedSeaDistro; MkDir("D:/Wb"); Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSCDRS.ISO");
+`
+MakeUlt 
+`MakeUltraDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSUltra.ISO");
+`
+MakeUtRS
+`MakeUltraRedSeaDistro; MkDir("D:/Wb"); Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSUltraRS.ISO");
+`
+MakeStaf
 `MakeStaffDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSStaff.ISO");
 `
- Burn Staff Distro DVD
-`MakeAStaffDistro; DVDImageWrite('T',TOS_ISO_NAME);
-`
-
-Make Dbg Distro ISO
+MakeDbg 
 `MakeDbgDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSDbg.ISO");
 `
- Burn Dbg Distro DVD
+
+BurnStd 
+`MakeStdDistro; DVDImageWrite('T',TOS_ISO_NAME);
+`
+BurnStRS
+`MakeStdRedSeaDistro; DVDImageWrite('T',TOS_ISO_C_NAME);
+`
+BurnUlt 
+`MakeUltraDistro;DVDImageWrite('T',TOS_ISO_NAME);
+`
+BurnUtRS
+`MakeUltraRedSeaDistro;DVDImageWrite('T',TOS_ISO_C_NAME);
+`
+BurnStaf
+`MakeAStaffDistro; DVDImageWrite('T',TOS_ISO_NAME);
+`
+BurnDbg 
 `MakeDbgDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
-Make Std Distro ISO
-`MakeStdDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSCD.ISO");
-`
- Burn Std Distro DVD
-`MakeStdDistro; DVDImageWrite('T',TOS_ISO_NAME);
-`
 
-Make Std RedSea Distro ISO
-`MakeStdRedSeaDistro; MkDir("D:/Wb"); Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSCDRS.ISO");
-`
- Burn Std RedSea Distro DVD
-`MakeStdRedSeaDistro; DVDImageWrite('T',TOS_ISO_C_NAME);
-`
 
-Make Lite Distro ISO
-`MakeLiteDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSLite.ISO");
-`
- Burn Lite Distro DVD
-`MakeLiteDistro;DVDImageWrite('T',TOS_ISO_NAME);
-`
 
-Make Ultra Distro ISO
-`MakeUltraDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSUltra.ISO");
-`
- Burn Ultra Distro DVD
-`MakeUltraDistro;DVDImageWrite('T',TOS_ISO_NAME);
-`
 
-Make Ultra RedSea Distro ISO
-`MakeUltraRedSeaDistro; MkDir("D:/Wb"); Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSUltraRS.ISO");
-`
- Burn Ultra RedSea Distro DVD
-`MakeUltraRedSeaDistro;DVDImageWrite('T',TOS_ISO_C_NAME);
-`
 
 
 
 
 
+ Egypt <2> (image) Frankenstein <3> (image) ZoneOut <4> (image)
 
 
 
 
 
- Egypt <1> (image) Frankenstein <2> (image) ZoneOut <3> (image)
 
 
 
+Varoom <5> (image) Diamond <6> (image) Lines <7> (image) TimeOut <8> (image)  Bat <9> (image)
 
 
 
 
 
-Varoom <4> (image) Diamond <5> (image) Lines <6> (image) TimeOut <7> (image)  Bat <8> (image)
 
+FlatTops <10> (image)  Golf  <11> (image) Strut <12> (image) TheDead <13> (image) DunGen <14> (image)  
 
 
 
 
 
-FlatTops <9> (image)  Golf  <10> (image) Strut <11> (image) TheDead <12> (image) DunGen <13> (image)  
 
 
+EagleDive <15> (image)  Span  <16> (image) RawHide <17> (image) KeepAway <18> (image)
 
 
 
 
 
-EagleDive <14> (image)  Span  <15> (image) RawHide <16> (image) KeepAway <17> (image)
 
 
 
 
 
+X-Caliber <19> (image) ToTheFront <20> (image) Wenceslas <21> (image)
 
 
 
 
 
-X-Caliber <18> (image) ToTheFront <19> (image) Wenceslas <20> (image)
 
 
 
 
+JukeBox <22> (image) Psalmody <23> (image) Logic <24> (image) Models <25> (image) Vocab <26> (image) 
 
 
 
 
 
-JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24> (image) Vocab <25> (image) 
 
+BigGuns <27> (image) Budget <28> (image) Digits <29> (image) Checkers <30> (image)
 
-
-
-
-
-BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29> (image)
-
-Psalmody Downloads
-`#include "::/Apps/Psalmody/Load";Psalmody("~/Sup1/Psalmody");`
-
-BootRAM("D:/Kernel.BIN.C");
-`BootRAM("D:/Kernel.BIN.C");`
-
-TOSBootHDIns('D');
-
-`TOSBootHDIns('D');
-`
-
-MemRep
-`MemRep;View;`
-
-List all syms in alpabetic order
-`DocMax;Who;View;`
-
-List all syms in numeric order
-`DocMax;Who("+m");View;`
-
-Test Suite
+TestSuit
 `#include "::/Misc/OSTestSuite";
 `
+TakeTour
+`Cd("::/Misc/Tour");;AutoFile("Tour");
+`
+PsalSup1
+`#include "::/Apps/Psalmody/Load";Psalmody("~/Sup1/Sup1Psalmody");`
+Comics  
+`Cd("/Home/Sup1/Sup1Comics");Dir;
+`
+SymAlpha
+`DocMax;Who;View;`
+SymNum  
+`DocMax;Who("+m");View;`
 

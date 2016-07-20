@@ -78,7 +78,7 @@ to answer the cfg questions.  See my technique
 [C:/Demo/AcctExample/TOSCfg.CPP.Z,1] Cfg Strs,
 [C:/Demo/AcctExample/TOSDistro.CPP.Z,1] Update Funs.
 
-* [C:/Kernel/Mem/MemPhysical.CPP.Z,182]
+* [C:/Kernel/Mem/MemPhysical.CPP.Z,192]
 Scale2Mem(min,max,limit=2*1024*1024*1024) can be used for cfg questions when 
 recompiling.  The [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns() cfg
 prompts accept expressions, not just 
@@ -92,8 +92,8 @@ numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
 are 
 compiled inefficiently.
 
-* You can use [C:/Kernel/KernelB.HPP.Z,205]
-progress1-[C:/Kernel/KernelB.HPP.Z,217] progress4 in your programs for
+* You can use [C:/Kernel/KernelB.HPP.Z,206]
+progress1-[C:/Kernel/KernelB.HPP.Z,218] progress4 in your programs for
 whatever you like.  
 They're just global vars that are shown on the wallpaper.  The original
 intent 
@@ -106,7 +106,7 @@ the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1354] CDoc
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3320] CTask,
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3321] CTask,
 [C:/Kernel/KernelA.HPP.Z,1181] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2552]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
@@ -155,7 +155,7 @@ s.  Use the [C:/Adam/Opt/Utils/ToDolDoc.CPP.Z,3] ToDolDoc() utility to
 convert plain text to DolDoc's by doubling $
 's.
 
-* Use [C:/Kernel/KMisc.CPP.Z,218] Silent() to disable screen text output.
+* Use [C:/Kernel/KMisc.CPP.Z,223] Silent() to disable screen text output.
 
 * Grab-scroll any window at any time with {CTRL-LEFT-MOUSE-DRAG}.  Null 
 grab-scrolling with {CTRL-RIGHT-MOUSE}.
@@ -279,10 +279,10 @@ This is a feature, not a bug -- you can cut-and-paste disjoint text.
 * [C:/Kernel/KernelA.HPP.Z,537] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
 expressions might decrease.  Take a snap-shot, like this:
-timeout=[C:/Kernel/KernelB.HPP.Z,279] GetTSC+
+timeout=[C:/Kernel/KernelB.HPP.Z,280] GetTSC+
 [C:/Kernel/KernelA.HPP.Z,537] cnts.time_stamp_freq x seconds; and compare
-against [C:/Kernel/KernelB.HPP.Z,279] GetTSC().  I recommend 
-just using [C:/Kernel/KMisc.CPP.Z,117] tS or [C:/Kernel/KernelA.HPP.Z,537]
+against [C:/Kernel/KernelB.HPP.Z,280] GetTSC().  I recommend 
+just using [C:/Kernel/KMisc.CPP.Z,122] tS or [C:/Kernel/KernelA.HPP.Z,537]
 cnts.jiffies.
 
 * Use [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog(),
@@ -305,7 +305,7 @@ err.
 
 * You can use <CTRL-SHIFT-L> to do a check for compile errors.
 
-* You can use [C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt() to optimize links.
+* You can use [C:/Adam/DolDoc/DocOpt.CPP.Z,109] DocOpt() to optimize links.
 (Mostly just removes .Z)
 
 * [C:/Adam/Opt/Utils/Diff.CPP.Z,320] ZipRep() can highlight src files with

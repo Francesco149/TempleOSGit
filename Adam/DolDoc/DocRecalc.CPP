@@ -716,41 +716,6 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
 	  x-=doc_e->hex_ed_width*3+k+9;
 	}
 	break;
-      case DOCT_TAB:
-	k=(x+8) & ~7;
-	if (doc_e->de_flags & DOCEF_BORDER_PLOT &&
-	      !Bt(&win_task->display_flags,DISPLAYf_NO_BORDER)) {
-	  while (x<k) {
-	    if (recalc_flags&RECALCG_MASK==RECALCt_TO_SCREEN &&
-		  !(doc_e->de_flags&DOCEF_DONT_DRAW))
-	      TextChar(win_task,TRUE,x-x0,y-y0,temp_u32_attr+CH_SPACE);
-	    if (find_cursor) {
-	      d2=DocCharDist(doc,x,y);
-	      if (d2<D)
-		D=d2;
-	    }
-	    x++;
-	  }
-	} else {
-	  k-=x;
-	  if (recalc_flags&RECALCG_MASK==RECALCt_TO_SCREEN &&
-		!(doc_e->de_flags&DOCEF_DONT_DRAW)) {
-	    if (y_plot_top<=y<=y_plot_bottom)
-	      TextLenStr(win_task,x-x0,y-y0,k,temp_u32_attr,"        ");
-	    x+=k;
-	  } else {
-	    if (find_cursor) {
-	      while (k--) {
-		d2=DocCharDist(doc,x,y);
-		if (d2<D)
-		  D=d2;
-		x++;
-	      }
-	    } else
-	      x+=k;
-	  }
-	}
-	break;
       case DOCT_NEW_LINE:
       case DOCT_SOFT_NEW_LINE:
 	if (recalc_flags&RECALCG_MASK==RECALCt_TO_SCREEN &&
@@ -809,34 +774,68 @@ rc_adjust_xy:
 	  }
 	}
 	break;
-      case DOCT_CURSOR_MOVEMENT:
-	doc->flags|=DOCF_BWD_MOVEMENT;
-	x+=doc_e->cursor_x_offset;
-	if (doc_e->de_flags & DOCEF_PAGE_REL_Y) {
-	  i=doc->page_line_num;
-	  if (doc_e->de_flags & DOCEF_TOP_Y)
-	    doc->page_line_num=0;
-	  else if (doc_e->de_flags & DOCEF_BOTTOM_Y)
-	    doc->page_line_num=s->page_len-1;
-	  else if (doc_e->de_flags & DOCEF_CENTER_Y)
-	    doc->page_line_num=s->page_len>>1;
-	  y+=doc->page_line_num-i;
+      case DOCT_TAB:
+	k=(x+8) & ~7;
+	if (doc_e->de_flags & DOCEF_BORDER_PLOT &&
+	      !Bt(&win_task->display_flags,DISPLAYf_NO_BORDER)) {
+	  while (x<k) {
+	    if (recalc_flags&RECALCG_MASK==RECALCt_TO_SCREEN &&
+		  !(doc_e->de_flags&DOCEF_DONT_DRAW))
+	      TextChar(win_task,TRUE,x-x0,y-y0,temp_u32_attr+CH_SPACE);
+	    if (find_cursor) {
+	      d2=DocCharDist(doc,x,y);
+	      if (d2<D)
+		D=d2;
+	    }
+	    x++;
+	  }
+	} else {
+	  k-=x;
+	  if (recalc_flags&RECALCG_MASK==RECALCt_TO_SCREEN &&
+		!(doc_e->de_flags&DOCEF_DONT_DRAW)) {
+	    if (y_plot_top<=y<=y_plot_bottom)
+	      TextLenStr(win_task,x-x0,y-y0,k,temp_u32_attr,"        ");
+	    x+=k;
+	  } else {
+	    if (find_cursor) {
+	      while (k--) {
+		d2=DocCharDist(doc,x,y);
+		if (d2<D)
+		  D=d2;
+		x++;
+	      }
+	    } else
+	      x+=k;
+	  }
 	}
-	y+=doc_e->cursor_y_offset;
-	doc->page_line_num+=doc_e->cursor_y_offset;
-	goto rc_adjust_xy;
+	break;
       case DOCT_PAGE_BREAK:
 	doc->flags|=DOCF_BWD_MOVEMENT;
 	y+=s->page_len-doc_e->page_line_num;
 	doc->page_line_num=0;
 	goto rc_start_of_line;
-      case DOCT_INDENT:
-	if (doc_e->de_flags & DOCEF_LEFT_X)
-	  i=doc_e->attr;
+      case DOCT_CURSOR:
+	if (!find_cursor && !(doc->flags & DOCF_NO_CURSOR)) {
+	  doc->cur_entry=doc_e->next;
+	  doc->cur_col=doc->cur_entry->min_col;
+	}
+	if (doc_e!=added_cursor)
+	  del_doc_e=TRUE;
+	break;
+      case DOCT_PMT:
+	cur_u8_attr=cur_u8_attr&0xF0|DOC_COLOR_PMT;
+	if (y==cursor_y) {
+	  doc->cur_entry=doc_e->next;
+	  doc->cur_col=doc->cur_entry->min_col;
+	}
+	break;
+      case DOCT_CLEAR:
+	next_clear_found=doc_e;
+	if (doc_e->de_flags&DOCEF_HOLD)
+	  clear_holds=TRUE;
 	else
-	  i=s->indent+doc_e->attr;
-	s->indent=i;
-	goto rc_start_of_line;
+	  clear_holds=FALSE;
+	break;
       case DOCT_PAGE_LEN:
 	s->page_len=doc_e->attr;
 	if (doc_e->de_flags & DOCEF_WIN_REL)
@@ -861,6 +860,13 @@ rc_adjust_xy:
       case DOCT_FOOTER:
 	s->footer=doc_e->attr;
 	goto rc_adjust_xy;
+      case DOCT_INDENT:
+	if (doc_e->de_flags & DOCEF_LEFT_X)
+	  i=doc_e->attr;
+	else
+	  i=s->indent+doc_e->attr;
+	s->indent=i;
+	goto rc_start_of_line;
       case DOCT_FOREGROUND:
 	cur_u8_attr&=0xF0;
 	if (doc_e->attr==DOC_DFT)
@@ -895,13 +901,6 @@ rc_adjust_xy:
 	s->dft_text_attr=s->dft_text_attr&0x0F|cur_u8_attr&0xF0;
 	s->cur_text_attr=cur_u8_attr;
 	break;
-      case DOCT_PMT:
-	cur_u8_attr=cur_u8_attr&0xF0|DOC_COLOR_PMT;
-	if (y==cursor_y) {
-	  doc->cur_entry=doc_e->next;
-	  doc->cur_col=doc->cur_entry->min_col;
-	}
-	break;
       case DOCT_WORD_WRAP:
 	if (doc_e->attr)
 	  doc->flags|=DOCF_WORD_WRAP;
@@ -914,11 +913,11 @@ rc_adjust_xy:
 	else
 	  doc->flags&=~DOCF_HIGHLIGHT;
 	break;
-      case DOCT_UNDERLINE:
+      case DOCT_BLINK:
 	if (doc_e->attr)
-	  doc->flags|=DOCF_UNDERLINE;
+	  doc->flags|=DOCF_BLINK;
 	else
-	  doc->flags&=~DOCF_UNDERLINE;
+	  doc->flags&=~DOCF_BLINK;
 	break;
       case DOCT_INVERT:
 	if (doc_e->attr)
@@ -926,11 +925,11 @@ rc_adjust_xy:
 	else
 	  doc->flags&=~DOCF_INVERT;
 	break;
-      case DOCT_BLINK:
+      case DOCT_UNDERLINE:
 	if (doc_e->attr)
-	  doc->flags|=DOCF_BLINK;
+	  doc->flags|=DOCF_UNDERLINE;
 	else
-	  doc->flags&=~DOCF_BLINK;
+	  doc->flags&=~DOCF_UNDERLINE;
 	break;
       case DOCT_SHIFTED_X:
 	s->shifted_x=doc_e->attr;
@@ -938,14 +937,22 @@ rc_adjust_xy:
       case DOCT_SHIFTED_Y:
 	s->shifted_y=doc_e->attr;
 	break;
-      case DOCT_CURSOR:
-	if (!find_cursor && !(doc->flags & DOCF_NO_CURSOR)) {
-	  doc->cur_entry=doc_e->next;
-	  doc->cur_col=doc->cur_entry->min_col;
+      case DOCT_CURSOR_MOVEMENT:
+	doc->flags|=DOCF_BWD_MOVEMENT;
+	x+=doc_e->cursor_x_offset;
+	if (doc_e->de_flags & DOCEF_PAGE_REL_Y) {
+	  i=doc->page_line_num;
+	  if (doc_e->de_flags & DOCEF_TOP_Y)
+	    doc->page_line_num=0;
+	  else if (doc_e->de_flags & DOCEF_BOTTOM_Y)
+	    doc->page_line_num=s->page_len-1;
+	  else if (doc_e->de_flags & DOCEF_CENTER_Y)
+	    doc->page_line_num=s->page_len>>1;
+	  y+=doc->page_line_num-i;
 	}
-	if (doc_e!=added_cursor)
-	  del_doc_e=TRUE;
-	break;
+	y+=doc_e->cursor_y_offset;
+	doc->page_line_num+=doc_e->cursor_y_offset;
+	goto rc_adjust_xy;
       case DOCT_SPRITE:
 	if (!doc_e->bin_data && doc->flags&DOCEF_HAS_BIN)
 	  doc_e->bin_data=DocBinFindNum(doc,doc_e->bin_num);
@@ -1039,13 +1046,6 @@ rc_adjust_xy:
 	  }
 	}
 	doc->flags|=DOCF_HAS_SONG;
-	break;
-      case DOCT_CLEAR:
-	next_clear_found=doc_e;
-	if (doc_e->de_flags&DOCEF_HOLD)
-	  clear_holds=TRUE;
-	else
-	  clear_holds=FALSE;
 	break;
       case DOCT_HTML_CODE:
 	if (recalc_flags&RECALCF_TO_HTML &&

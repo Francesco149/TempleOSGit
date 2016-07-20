@@ -3,10 +3,14 @@ INT_MP_CRASH_ADDR:: //Forward reference to work around compiler
 	DU32	&IntMPCrash;
 
 INT_WAKE::
+	PUSH	RDX
 	PUSH	RAX
-	MOV	EAX,U32 LAPIC_EOI
-	MOV	U32 [RAX],0
+	MOV	EAX,&dev
+	MOV	EDX,U32 LAPIC_EOI
+	MOV	RAX,U64 CDevGlbls.uncached_alias[RAX]
+	MOV	U32 [RAX+RDX],0
 	POP	RAX
+	POP	RDX
 	IRET
 
 IRQ_TIMER::  //I_TIMER
@@ -42,9 +46,12 @@ IRQ_TIMER::  //I_TIMER
 	TEST	RAX,RAX
 	JZ	@@20
 
-	MOV	EAX,U32 LAPIC_EOI
-	MOV	U32 [RAX],0
+	MOV	EAX,&dev
+	MOV	EDX,U32 LAPIC_EOI
+	MOV	RAX,U64 CDevGlbls.uncached_alias[RAX]
+	MOV	U32 [RAX+RDX],0
 	JMP	@@25
+
 @@20:	CALL	&IntCore0TimerHandler	//Only Core 0 calls this.
 @@25:	XOR	RAX,RAX
 	CMP	RSI,U64 GS:CCPU.idle_task[RAX]
@@ -54,7 +61,7 @@ IRQ_TIMER::  //I_TIMER
 INT_FAULT::
 	PUSH	RBX
 	PUSH	RAX
-	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/KInts.CPP.Z,159] IntFaultHandlersNew().
+	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/KInts.CPP.Z,166] IntFaultHandlersNew().
 	XOR	RAX,RAX
 	MOV	FS:U8 CTask.fault_num[RAX],BL
 	POP	RAX
@@ -137,7 +144,7 @@ interrupt U0 IntNop()
 {//Make unplanned IRQs stop by all means!
   OutU8(0xA0,0x20);
   OutU8(0x20,0x20);
-  *LAPIC_EOI(U32 *)=0;
+  *(dev.uncached_alias+LAPIC_EOI)(U32 *)=0;
 }
 
 interrupt U0 IntDivZero()
@@ -174,7 +181,7 @@ U0 IntInit1()
 {//Interrupt descriptor table part1.
   I64 i;
   CSysLimitBase temp_ptr;
-  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3445] CCPU struct
+  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3446] CCPU struct
     dev.idt=CAlloc(16*256);
     for (i=0;i<256;i++)
       IntEntrySet(i,&IntNop);
@@ -196,7 +203,7 @@ U0 IntInit2()
 /*In theory, we use the PIC mask reg to insure we don't get
 anything but keyboard, mouse and timer IRQs.  In practice, I've
 gotten IRQ 0x27, perhaps because I didn't initialize the APIC.
-I go ahead and ACK PIC in [C:/Kernel/KInts.CPP.Z,136] IntNop().
+I go ahead and ACK PIC in [C:/Kernel/KInts.CPP.Z,143] IntNop().
 I have no idea why I got a IRQ 0x27.
 */
   IntEntrySet(I_NMI,_SYS_HLT);

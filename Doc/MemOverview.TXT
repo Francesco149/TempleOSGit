@@ -1,10 +1,12 @@
                                Memory Overview
 
 Paging is practically not used.  64-bit mode requires paging, however, so it 
-is identity-mapped, virtual ident to physical.  All tasks on all cores use
-the 
-same page table map, just as though all addresses are physical addresses.  2 
-Meg page table entries are used.  Nothing swaps to disk.
+is identity-mapped, virtual identical to physical.  All tasks on all cores
+use 
+the same page table map, just as though all addresses are physical addresses.
+ 
+2 Meg page table entries are used.  Nothing swaps to disk.  You can adjust 
+[C:/Kernel/KernelA.HPP.Z,3467] MEM_MAPPED_SPACE for more RAM.
 
 In TempleOS, the lowest 2 Gig of memory is called the code heap.  TempleOS's 
 compiler always uses 32-bit signed relative JMP & CALL insts because 64-bit 
@@ -28,9 +30,9 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,192] MemRep() and
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x0000035D2F
+ 0x0000007C00- 0x0000035F5F
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3885] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3886] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -47,11 +49,11 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,192] MemRep() and
   VGA graphics mem, marked as write-through cache in
   [C:/Kernel/KGlbls.CPP.Z,29] text.vga_alias.
 
- 0x0000100000- 0x00001837FF
-  [C:/Kernel/KernelA.HPP.Z,3472] CSysFixedArea for page tables and misc.  128
+ 0x0000100000- 0x00002037FF
+  [C:/Kernel/KernelA.HPP.Z,3474] CSysFixedArea for page tables and misc.  256
   Gig of address space mapped.
 
- 0x0000183800- 0x007FFDFFFF
+ 0x0000203800- 0x007FFDFFFF
   Code Heap mem.
 
              - 0x007FFFFFFF
@@ -61,17 +63,20 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,192] MemRep() and
   32-bit devices could alloc memory at 0xF0000000 going up, but this is
   wrong, 
 since some PCs already have devices at 0xF0000000.  No PCI devices are 
-supported, so [C:/Kernel/Mem/MemPhysical.CPP.Z,78] Mem32DevAlloc() flaws are
+supported, so [C:/Kernel/Mem/MemPhysical.CPP.Z,81] Mem32DevAlloc() flaws are
   not an issue.
 
  0x0080000000-~0x00DFFFFFFF
- 0x0100000000-~0x1FFFFFFFFF
+ 0x0100000000-~0x3FFFFFFFFF
   Data Heap mem.  (The physical memory that exists in this range is data 
 heap.)
 
-             - 0x1FFFFFFFFF
-  64-bit devices are alloced with [C:/Kernel/Mem/MemPhysical.CPP.Z,128]
-  Mem64DevAlloc() counting bwd from 128 Gig, 
+ 0x3F00000000- 0x3FFFFFFFFF
+  Uncached alias of first 4 Gig.  (For 32-bit device access.)
+
+             - 0x3FFFFFFFFF
+  64-bit devices are alloced with [C:/Kernel/Mem/MemPhysical.CPP.Z,131]
+  Mem64DevAlloc() counting bwd from 256 Gig, 
 but no PCI devices are actually supported.
   
 

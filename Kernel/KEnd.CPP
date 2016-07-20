@@ -63,11 +63,10 @@ U0 SysGlblsInit()
 
 U0 SysGrInit()
 {
-  U8 *vga_page=MemVGAAlloc;
   text.font=sys_font_std;
   text.aux_font=sys_font_cyrillic;
-  text.vga_alias	=vga_page+VGAM_GRAPHICS;
-  text.vga_text_alias	=vga_page+VGAM_TEXT;
+  text.vga_alias	=dev.uncached_alias+VGAM_GRAPHICS;
+  text.vga_text_alias	=dev.uncached_alias+VGAM_TEXT;
   if (!Bt(&sys_run_level,RLf_VGA)) { //if text mode
     text.cols=80;
     text.rows=25;
@@ -104,12 +103,12 @@ U0 TimersInit()
     *_d=*_d&3|0x80;
   }
 
-  _q=HPET_GCAP_ID;
+  _q=dev.uncached_alias+HPET_GCAP_ID;
   i=*_q; //i.u32[1]= period in femtoS (10e-15)
   if (100000<i.u32[1]<1000000000) {
     cnts.HPET_freq    =1000000000000000/i.u32[1];
     cnts.HPET_kHz_freq=1000000000000/i.u32[1];
-    _q=HPET_GEN_CONF;
+    _q=dev.uncached_alias+HPET_GEN_CONF;
     *_q|=1; //Enable counting
     cnts.HPET_initial=HPET;
   } else {
@@ -133,7 +132,7 @@ U0 Reboot()
 }
 
 U0 KernelMain()
-{//Continued from [C:/Kernel/KStart.CPP.Z,1] Kernel
+{//Continued from [C:/Kernel/KStart64.CPP.Z,1] Kernel
   OutU8(0x61,InU8(0x61)&~3); //Snd(0);
   adam_task=Fs;
   BlkPoolsInit;
@@ -141,6 +140,7 @@ U0 KernelMain()
   SysGlblsInit;
   Mem32DevInit;
   MemPagesNotPresentMark;
+  UncachedAliasAlloc;
   LoadKernel;
   SysGrInit;
   StrCpy(Fs->task_name,"Adam Task CPU#0");
@@ -154,7 +154,7 @@ U0 KernelMain()
   Core0Init;
   IntInit1;
 
-  //Before this point use [C:/Kernel/KMisc.CPP.Z,158] Snd() and [C:/Kernel/KMisc.CPP.Z,131] BusyWait()
+  //Before this point use [C:/Kernel/KMisc.CPP.Z,163] Snd() and [C:/Kernel/KMisc.CPP.Z,136] BusyWait()
   //to debug.  After this point, use [C:/Kernel/KDbg.CPP.Z,217] RawPrint()
   LBts(&sys_run_level,RLf_RAW);
   TimersInit;

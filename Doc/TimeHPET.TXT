@@ -1,5 +1,5 @@
-The HPET, high precision event timer, is read with
-[C:/Kernel/KernelB.HPP.Z,283] HPET() and has a frequency 
+The HPET, high precision event timer, is read with [C:/Kernel/KMisc.CPP.Z,80]
+HPET() and has a frequency 
 of [C:/Kernel/KernelA.HPP.Z,537] cnts.HPET_freq.  A typical freq value is
 14.3 Mhz  It might not be 
 available on all systems.

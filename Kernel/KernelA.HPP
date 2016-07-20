@@ -416,7 +416,7 @@ class CPatchTableAbsAddr
 
 #help_index "Boot"
 class CKernel
-{//Must match [C:/Kernel/KStart.CPP.Z,1] OSStartUp
+{//Must match [C:/Kernel/KStart16.CPP.Z,1] OSStartUp
   CBinFile h;
   U32	jmp,
 	boot_src,
@@ -900,44 +900,44 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCT_TEXT		0
 #define DOCT_NEW_LINE		1
 #define DOCT_SOFT_NEW_LINE	2
-#define DOCT_CURSOR		3
-#define DOCT_MARKER		4
-#define DOCT_TAB		5
-#define DOCT_CLEAR		6
-#define DOCT_PAGE_BREAK		7
-#define DOCT_PAGE_LEN		8
-#define DOCT_LEFT_MARGIN	9
-#define DOCT_RIGHT_MARGIN	10
-#define DOCT_HEADER		11
-#define DOCT_FOOTER		12
-#define DOCT_INDENT		13
-#define DOCT_FOREGROUND		14
-#define DOCT_BACKGROUND		15
-#define DOCT_DFT_FOREGROUND	16
-#define DOCT_DFT_BACKGROUND	17
-#define DOCT_PMT		18
+#define DOCT_TAB		3
+#define DOCT_PAGE_BREAK		4
+#define DOCT_CURSOR		5
+#define DOCT_MARKER		6
+#define DOCT_PMT		7
+#define DOCT_CLEAR		8
+#define DOCT_PAGE_LEN		9
+#define DOCT_LEFT_MARGIN	10
+#define DOCT_RIGHT_MARGIN	11
+#define DOCT_HEADER		12
+#define DOCT_FOOTER		13
+#define DOCT_INDENT		14
+#define DOCT_FOREGROUND		15
+#define DOCT_BACKGROUND		16
+#define DOCT_DFT_FOREGROUND	17
+#define DOCT_DFT_BACKGROUND	18
 #define DOCT_WORD_WRAP		19
-#define DOCT_UNDERLINE		20
-#define DOCT_INVERT		21
-#define DOCT_BLINK		22
-#define DOCT_SHIFTED_X		23
-#define DOCT_SHIFTED_Y		24
-#define DOCT_CURSOR_MOVEMENT	25
-#define DOCT_ANCHOR		26
-#define DOCT_LINK		27
-#define DOCT_BUTTON		28
-#define DOCT_DATA		29
-#define DOCT_CHECK_BOX		30
-#define DOCT_LST		31
-#define DOCT_MACRO		32
-#define DOCT_MENU_VAL		33
-#define DOCT_HEX_ED		34
-#define DOCT_TREE		35
-#define DOCT_SPRITE		36
-#define DOCT_INS_BIN		37
-#define DOCT_INS_BIN_SIZE	38
-#define DOCT_SONG		39
-#define DOCT_HIGHLIGHT		40
+#define DOCT_HIGHLIGHT		20
+#define DOCT_BLINK		21
+#define DOCT_INVERT		22
+#define DOCT_UNDERLINE		23
+#define DOCT_SHIFTED_X		24
+#define DOCT_SHIFTED_Y		25
+#define DOCT_CURSOR_MOVEMENT	26
+#define DOCT_ANCHOR		27
+#define DOCT_LINK		28
+#define DOCT_BUTTON		29
+#define DOCT_DATA		30
+#define DOCT_CHECK_BOX		31
+#define DOCT_LST		32
+#define DOCT_MACRO		33
+#define DOCT_MENU_VAL		34
+#define DOCT_HEX_ED		35
+#define DOCT_TREE		36
+#define DOCT_SPRITE		37
+#define DOCT_INS_BIN		38
+#define DOCT_INS_BIN_SIZE	39
+#define DOCT_SONG		40
 #define DOCT_HTML_CODE		41
 #define DOCT_ERROR		42
 
@@ -1549,7 +1549,7 @@ public class CAutoCompleteDictGlbls
 #define OPTF_ECHO		(1<<OPTf_ECHO)
 
 #help_index "Compiler/Intermediate Code"
-//See [C:/Compiler/CInit.CPP.Z,210] ST_RAW_TYPES
+//See [C:/Compiler/CInit.CPP.Z,209] ST_RAW_TYPES
 #define RT_I0		2
 #define RT_U0		3
 #define RT_I8		4
@@ -2922,6 +2922,7 @@ public class CDevGlbls
 {
   I64	*idt;
   U8	*mem64_ptr;
+  U8	*uncached_alias; //Alias of lowest 4 Gig.
   U8	mp_apic_ids[MP_MAX_PROCESSORS];
   CMemRange mem32_head;
   CPCIDev pci_head;
@@ -2943,7 +2944,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2953] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2954] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3043,7 +3044,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3042] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3043] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3043] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3044] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3223,8 +3224,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3486] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3486] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3487] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3487] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3463,16 +3464,16 @@ public class CCPU //The Gs segment reg points to current CCPU.
 
 #help_index "Memory/Page Tables"
 #define MEM_MIN_MEG		512 //512 Meg minimum.
-#define MEM_MAPPED_SPACE	0x2000000000 //Arbitrarily set to 128 Gig.
-#define MEM_NUM_PML2		(MEM_MAPPED_SPACE>>(9+21))
-#define MEM_NUM_PML3		1
-#define MEM_NUM_PML4		1
+#define MEM_MAPPED_SPACE	0x4000000000 //Arbitrarily set to 256 Gig.
+#define MEM_NUM_2MEG		(MEM_MAPPED_SPACE>>21)
+#define MEM_NUM_USED_1GIG	(MEM_MAPPED_SPACE>>(21+9))
+#define MEM_NUM_1GIG		(0x1000/8)
+#define MEM_NUM_512GIG		(0x1000/8)
 
 #define SYS_FIXED_AREA	0x100000
 public class CSysFixedArea
 {
-  U8	pml2[MEM_NUM_PML2*0x1000],pml3[MEM_NUM_PML3*0x1000],
-	pml4[MEM_NUM_PML4*0x1000];
+  U8	pml2[MEM_NUM_2MEG*8],pml3[MEM_NUM_1GIG*8],pml4[MEM_NUM_512GIG*8];
   $=($+15)&-16;
   CFPU	init_fpu_mmx;
   CCPU	boot_cpu;
@@ -3668,12 +3669,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2943] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2944] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2953] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2954] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3706,7 +3707,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3644] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3645] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
