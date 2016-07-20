@@ -1,6 +1,6 @@
 CHeapCtrl *HeapCtrlInit(CHeapCtrl *hc=NULL,CTask *task=NULL,CBlkPool *bp)
 {//See [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog() for an example.
-//Duplicated for [C:/Kernel/KStart.CPP.Z,1] Adam Task.
+//Duplicated for [C:/Kernel/KStart64.CPP.Z,1] Adam Task.
   if (!hc)
     hc=ACAlloc(sizeof(CHeapCtrl));
   hc->hc_signature=HEAP_CTRL_SIGNATURE_VAL;

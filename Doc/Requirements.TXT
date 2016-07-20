@@ -11,7 +11,8 @@ Supported Hardware
 
 * Most keyboards and mice.
 
-* Minimum 512 Meg RAM; Maximum 128 Gig RAM (easily increased).
+* Minimum 512 Meg RAM; Maximum 256 Gig RAM ([C:/Kernel/KernelA.HPP.Z,3467]
+easily increased).
 
 * Internal PC Speakers.
 

@@ -73,6 +73,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 `Cd("::/Apps/Psalmody/Examples");Dir;View;
 `
 
+  [C:/Demo/MultiCore/RateCores.CPP.Z,1]
   [C:/Demo/MultiCore/MPPrint.CPP.Z,1]
   [C:/Demo/Graphics/PredatorPrey.CPP.Z,1]
   [C:/Demo/Graphics/Cartesian.CPP.Z,1]

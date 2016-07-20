@@ -10,10 +10,10 @@ I64 PrsDocFlagSingle(CCmpCtrl *cc,I64 *_de_flags,U32 *_type,Bool turn_on)
     if (res<64) {
       BEqu(_de_flags,res,turn_on);
       switch (res) {
-	case DOCEf_SEL:
-	case DOCEf_UNDERLINE:
-	case DOCEf_INVERT:
 	case DOCEf_BLINK:
+	case DOCEf_INVERT:
+	case DOCEf_UNDERLINE:
+	case DOCEf_SEL:
 	  BEqu(_type,res,turn_on);
 	  break;
       }
@@ -105,9 +105,9 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
       case DOCT_INDENT:
       case DOCT_WORD_WRAP:
       case DOCT_HIGHLIGHT:
-      case DOCT_UNDERLINE:
-      case DOCT_INVERT:
       case DOCT_BLINK:
+      case DOCT_INVERT:
+      case DOCT_UNDERLINE:
       case DOCT_SHIFTED_X:
       case DOCT_SHIFTED_Y:
 	if (attr!=DOC_DFT) {
@@ -273,9 +273,9 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
 	case DOCT_DFT_BACKGROUND:
 	case DOCT_WORD_WRAP:
 	case DOCT_HIGHLIGHT:
-	case DOCT_UNDERLINE:
-	case DOCT_INVERT:
 	case DOCT_BLINK:
+	case DOCT_INVERT:
+	case DOCT_UNDERLINE:
 	case DOCT_SHIFTED_X:
 	case DOCT_SHIFTED_Y:
 	  while (cc->token==',')

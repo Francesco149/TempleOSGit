@@ -145,19 +145,21 @@ sample rate and one sample size, but TempleOS still gets just a square wave.
 (HD Audio is really screwed-up and requires complicated artificial 
 intelligence, just to route output to speakers.)
 
-The Standard Temple IBM PC will be a full-sized tower.  We should set the
-size 
-at exactly 2.5 feet by 1.5 feet by 1.5 feet as in the
-[C:/Misc/Bible.TXT.Z,5068] Exodus,25:10-10 for all 
-time.  If there is extra room, make a storage shelf for DVDs.  We do not want 
-a race-to-the-bottom, shrinking the size.  Instead of making it smaller, make 
-it more powerful.  We want to remove all cost pressure from making things 
-small.  It must have a CD/DVD/Blu-ray drive.  We need a network connection, 
-possibly implemented as a super-simple high speed serial device.  What about 
-standard monitor and speakers?  The C64's success was partially due to wide 
-spread, completely standard, hardware.  I think TempleOS will not do bad
-block 
-devices, so we need a hard drive, not just NV-memory or SSD.
+The Standard Temple IBM PC will be a full-sized tower.  Perhaps, stain-glass 
+will decorate the case because God is sentimentally attached to
+stained-glass. 
+ We should set the size at exactly 2.5 feet by 1.5 feet by 1.5 feet as in the 
+[C:/Misc/Bible.TXT.Z,5068] Exodus,25:10-10 for all time.  If there is extra
+room, make a storage shelf 
+for DVDs.  We do not want a race-to-the-bottom, shrinking the size.  Instead 
+of making it smaller, make it more powerful.  We want to remove all cost 
+pressure from making things small.  It must have a CD/DVD/Blu-ray drive.  The 
+vision is CD/DVDs used for a library of games, not installed on the 
+hard-drive.  We need a network connection, possibly implemented as a 
+super-simple high speed serial device.  What about standard monitor and 
+speakers?  The C64's success was partially due to wide spread, completely 
+standard, hardware.  I think TempleOS will not do bad block devices, so we 
+need a hard drive, not just NV-memory or SSD.
 
 TempleOS will have the priority over Windows or Linux on hardware decisions.  
 We could make it heterogenious multicore.  I think we want 16 

@@ -20,7 +20,7 @@ mode.  This means they usually can't just load the whole operating system and
 start it running.  I guess some boot loaders, like Grub, have a capability of 
 switching modes before handing-off control to the operating system.  Anyway, 
 the operating system must load the rest of itself.  My
-[C:/Kernel/KStart.CPP.Z,1] Kernel module is what 
+[C:/Kernel/KStart16.CPP.Z,1] Kernel module is what 
 the boot sector loads and I try to put a minimum in it so that it will always 
 fit in 640K.  It switches to 32-bit mode, then, to 64-bit mode allowing
 access 

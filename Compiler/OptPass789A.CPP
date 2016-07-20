@@ -756,9 +756,6 @@ cc->pass==10 is final pass, code is placed into buf.
 	case IC_RDTSC:
 	  ICCopyTemplate(cc,tempi,CMP_TEMPLATE_RDTSC,TRUE,FALSE,FALSE,CN_MAIN);
 	  break;
-	case IC_HPET:
-	  ICCopyTemplate(cc,tempi,CMP_TEMPLATE_HPET,TRUE,FALSE,FALSE,CN_MAIN);
-	  break;
 	case IC_SET_RFLAGS:
 	  ICPush(tempi,tempi->a1.type,tempi->a1.reg,tempi->a1.disp,ip2);
 	  ICU8(tempi,0x9D);

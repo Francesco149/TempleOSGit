@@ -165,7 +165,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	      else {
 		FifoU8Flush(god.fifo);
 		GodBitsIns(GOD_GOOD_BITS,KbdMouseEvtTime>>GOD_BAD_BITS);
-		GodBooksPassage("C:/Home/Sup1/Text/*");
+		GodBooksPassage("C:/Home/Sup1/Sup1Texts/*");
 	      }
 	    } else {
 	      if (sc&SCF_KEY_DESC)
@@ -321,7 +321,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	if (sc&SCF_KEY_DESC)
 	  KeyDescSet("Cmd /JukeBox(Home/Sup1)");
 	else
-	  JukeBox("~/Sup1/Psalmody");
+	  JukeBox("~/Sup1/Sup1Psalmody");
 	return TRUE;
       case 'P':
 	if (sc&SCF_KEY_DESC)

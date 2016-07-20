@@ -1,4 +1,4 @@
-Bool BootDVDProve(CBlkDev *bd)
+Bool BootDVDProbe(CBlkDev *bd)
 {
   U8 *img=CAlloc(DVD_BLK_SIZE);
   I64 i;
@@ -43,10 +43,10 @@ Bool BootDVDProbeAll(CBlkDev *bd)
       if (d1&1 && d2&1) {
 	if (bd->base0=d1&~7) {
 	  bd->unit=0;
-	  if (BootDVDProve(bd))
+	  if (BootDVDProbe(bd))
 	    return TRUE;
 	  bd->unit=1;
-	  if (BootDVDProve(bd))
+	  if (BootDVDProbe(bd))
 	    return TRUE;
 	}
       }
@@ -55,10 +55,10 @@ Bool BootDVDProbeAll(CBlkDev *bd)
       if (d1&1 && d2&1) {
 	if (bd->base0=d1&~7) {
 	  bd->unit=0;
-	  if (BootDVDProve(bd))
+	  if (BootDVDProbe(bd))
 	    return TRUE;
 	  bd->unit=1;
-	  if (BootDVDProve(bd))
+	  if (BootDVDProbe(bd))
 	    return TRUE;
 	}
       }
@@ -69,10 +69,10 @@ Bool BootDVDProbeAll(CBlkDev *bd)
   d2=0x3F6;
   if (bd->base0=d1&~7) {
     bd->unit=0;
-    if (BootDVDProve(bd))
+    if (BootDVDProbe(bd))
       return TRUE;
     bd->unit=1;
-    if (BootDVDProve(bd))
+    if (BootDVDProbe(bd))
       return TRUE;
   }
 
@@ -80,10 +80,10 @@ Bool BootDVDProbeAll(CBlkDev *bd)
   d2=0x376;
   if (bd->base0=d1&~7) {
     bd->unit=0;
-    if (BootDVDProve(bd))
+    if (BootDVDProbe(bd))
       return TRUE;
     bd->unit=1;
-    if (BootDVDProve(bd))
+    if (BootDVDProbe(bd))
       return TRUE;
   }
 }

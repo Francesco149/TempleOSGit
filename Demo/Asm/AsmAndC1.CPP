@@ -19,7 +19,7 @@ _BEEPS::
 	MOV	RCX,U64 SF_ARG1[RBP]  //[C:/Kernel/KernelA.HPP.Z,1] SF_ARG1
 
 @@05:	PUSH	RCX
-//U0 [C:/Kernel/KMisc.CPP.Z,185] Beep(I64 freq=500,Bool busy=FALSE)
+//U0 [C:/Kernel/KMisc.CPP.Z,190] Beep(I64 freq=500,Bool busy=FALSE)
 	PUSH	FALSE	//Do not busy (spin) wait
 	PUSH	500	//Hz
 	CALL	Beep
@@ -53,7 +53,7 @@ I64 AsmAndC1()
 //You better preserve the rest.
 
     @@05:	PUSH	RCX
-//U0 [C:/Kernel/KMisc.CPP.Z,158] Snd(F64 freq);
+//U0 [C:/Kernel/KMisc.CPP.Z,163] Snd(F64 freq);
 
     MOV	RAX,RCX	//freq=loop*100.0+100.0
     IMUL2	RAX,100 //TempleOS uses nonstandard opcodes

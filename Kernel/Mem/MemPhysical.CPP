@@ -67,10 +67,13 @@ U0 MemPagesNotPresentMark()
     m20++;
   }
   if (max_physical>=0x1000000+m01[1]<<16) {
-    a=(max_physical+0x1FFFFF)&~0x1FFFFF;
+    if (sys_gig_pages)
+      a=(max_physical+0x3FFFFFFF)&~0x3FFFFFFF;
+    else
+      a=(max_physical+0x1FFFFF)&~0x1FFFFF;
     while (a<MEM_MAPPED_SPACE) {
       MemPagePresentMark(a,FALSE);
-      a+=0x200000;
+      a+=MemPageSize(a);
     }
   }
 }
@@ -125,40 +128,47 @@ U0 Mem32DevFree(U8 *base)
   LBtr(&sys_semas[SYS_SEMA_DEV_MEM],0);
 }
 
-U8 *Mem64DevAlloc(I64 *_pages2Meg)
+U8 *Mem64DevAlloc(I64 *_pages1Gig)
 {//Alloc 64-bit addr space for device.
-  U8 *res;
-  I64 i=*_pages2Meg,*pte;
+  U8 *a;
+  I64 i=*_pages1Gig,*pte;
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))
     Yield;
   while (i--) {
-    dev.mem64_ptr-=0x200000;
-    pte=MemPageTable(dev.mem64_ptr);
-    *pte=*pte&~0x18 |0x11; //Uncached and present
-    InvlPg(dev.mem64_ptr);
+    a=dev.mem64_ptr-=1<<30;
+    do {
+      pte=MemPageTable(a);
+      *pte=*pte&~0x18 |0x11; //Uncached and present
+      InvlPg(dev.mem64_ptr);
+      a+=MemPageSize(a);
+    } while (a-dev.mem64_ptr<1<<30);
   }
-  res=dev.mem64_ptr;
   LBtr(&sys_semas[SYS_SEMA_DEV_MEM],0);
-  return res;
+  return dev.mem64_ptr;
 }
 
-U0 Mem64DevFree(U8 *base,I64 pages2Meg)
+U0 Mem64DevFree(U8 *base,I64 pages1Gig)
 {//Free 64-bit device address space.
   if (!base) return;
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))
     Yield;
   if (base==dev.mem64_ptr)
-    dev.mem64_ptr+=pages2Meg*0x200000;
+    dev.mem64_ptr+=pages1Gig*1<<30;
 //else not freed
   LBtr(&sys_semas[SYS_SEMA_DEV_MEM],0);
 }
 
-U8 *MemVGAAlloc()
+U0 UncachedAliasAlloc() //Make uncached alias for 4 lowest Gig.
 {
-  I64 i=1,*a=Mem64DevAlloc(&i),*pte=MemPageTable(a);
-  *pte=0x197;
-  InvlPg(a);
-  return a;
+  I64 i=4,*pte;
+  U8 *a;
+  a=dev.uncached_alias=Mem64DevAlloc(&i);
+  do {
+    pte=MemPageTable(a);
+    *pte=0x197+a-dev.uncached_alias;
+    InvlPg(a);
+    a+=MemPageSize(a);
+  } while (a-dev.uncached_alias<1<<32);
 }
 
 I64 BIOSTotalMem()
@@ -191,4 +201,4 @@ I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024)
     return max;
   else
     return min+(max-min)*i/limit;
-}
+  }
