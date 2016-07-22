@@ -2,7 +2,7 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----07/19/16 11:32:01----
+----07/21/16 00:03:20----
 
 ----07/17/16 13:03:12----
 * Improved [C:/Adam/DolDoc/DocOpt.CPP.Z,109] DocOpt().
