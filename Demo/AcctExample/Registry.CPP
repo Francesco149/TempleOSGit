@@ -30,8 +30,6 @@
       I64 best_score=22202;
       +] ZoneOut
       F64 best_score=8.1373;
-      +] FlapBat
-      F64 best_score=16.3077;
       +] DunGen
       F64 best_score=20.5295;
       +] RawHide
@@ -40,6 +38,8 @@
       F64 best_score=43.9944;
       +] EagleDive
       F64 best_score=147.6932;
+      +] FlapBat
+      F64 best_score=16.3077;
       +] DemoCompany
   
   +] Game1
