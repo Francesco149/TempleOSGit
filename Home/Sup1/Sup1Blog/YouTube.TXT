@@ -22,6 +22,8 @@ Aircraft Carriers by Country (2012)
 EEfyLamYdoc
 Ali G: Homosapians
 eB5VXJXxnNU&hl=enUS&start=140
+Alice in CHains: Check My Brain
+SBcADQziQWY
 Alice in Chains: Down in a Hole
 f8hT3oDDf6c
 Alice in Chains: Grind
@@ -44,6 +46,8 @@ Alice in Chains: Voices
 7YDPNl7PeUU
 Alice in Chains: Would
 Nco_kh8xJDs
+Alice in Chains: Your Decision
+2D37POA11KY
 Amega: Annals of Rome
 3Bqu_gOoyX4
 Andre the Rapping Cockatoo
@@ -76,6 +80,10 @@ Bangles: Walk Like an Egyptian
 Cv6tuzHUuuk
 Barlow Girls
 zYeF1fbbY4Q
+Battlezone I
+Ctr54kopo8I
+Battlezone II
+PKCH1NoC3jQ
 Bears: Funny Compilation
 RuV3YMEhAB8
 Beastie Boys: Intergalactic
@@ -172,6 +180,8 @@ Cool Hand Luke: Failure to Communicate
 SnO9Jyz82Ps
 Cover: Flashback Heart Attack
 s-613_P2t3A
+Cows Staring
+J73E2Ah88sk
 Cream: Tales of Brave Ulysses
 J2CCfxiQ5QY
 Cream: White Room
@@ -358,8 +368,10 @@ GodFather 2
 i96VS_z8y7g
 Golden Earring: Radar Love
 Zf53Pg2AkdY
+Gomer Pyle USMC: Boxing
+R2CPmfAAorI
 Gomer Pyle USMC: Cat Overboard
-coVfZ8PXYG4
+6h5E6a4diSc
 Gomer Pyle: Phone Booth
 VEQFFax-5D4
 Gordon Ramsay: Ferreting
@@ -594,6 +606,8 @@ Monty Python: Spanish Inquisition
 7WJXHY2OXGE
 Monty Python: Witch
 k3jt5ibfRzw
+Motley Crue: Helter Skelter
+eMZI_9YvNXE
 Motley Crue: Live Wire
 qiVC89V4RpM
 My Chemical Romance: Welcome ot the Black Parade
@@ -728,6 +742,8 @@ Russian Monks: Virgin Mary Song
 C7vvPXz-Qes
 Russian/English: Virgin Mary Song
 Mw8XE3j_c0U
+SETI 100 million
+n9OAYutoXGc
 Seek Ye First
 9LMQfOp9w8k
 Shenia Twain: Man! I Feel Like a Woman
@@ -766,8 +782,6 @@ Star Trek: 7 of 9
 KAjmtffp_yY
 Star Trek: Seven of Nine
 09CeQIg0fPU
-Stephen Hawking: Cliff Suckers
-tQV3irZWDX8&hl=enUS&start=1300
 Sting: Children's Crusade
 88WOPnJBKiA
 Stray Cats: Stray Cat Strut
@@ -780,6 +794,10 @@ Teddy Bear Porcupine Halloween Feast
 cILZ_cB3_so
 Temple of the Dog: Hunger Strike
 VUb450Alpps
+Temple of the Dog: Say Hello to Heaven
+NmxaFf-lpZY
+TempleOS Benchmark: VMware, VirtualBox and QEMU
+adtj2YwiDhQ
 TempleOS Hymn: To a Waterfowl
 ToT3cOYSQOE
 TempleOS: Beginner #1
@@ -840,10 +858,12 @@ Terry Tao: Collaboration
 elWIDVI6b18
 The Toadies: Possum Kingdom
 EkwD5rQ-_d4
+The Who: Behind Blue Eyes
+Qg_TRaiWj4o
 Thin Lizzy: Whiskey in the Jar
 wyQ-tScuzwM
-Three Kings George Clooney: Trailer
-8NOAd2mldQ8
+Three Kings Clooney: Trailer
+b36mjDR-9WU
 Tokens: Lion Sleeps Tonight
 mwy5uqemp6c
 Tool: AEnema
@@ -864,6 +884,8 @@ Trent Reznor: Immigrant Song
 L0bD4ts8eWY
 Unforgiven Clint Eastwood: Unarmed Man On Shitter
 8wGiJcq95Ug
+Valhalla
+g4M3l7F_tjM
 Van Gogh: Entire Collection
 YBMGVu6GTDw
 Vogues: Five O'Clock World
@@ -886,6 +908,10 @@ White Zombie: Super-Charger Heaven
 SRshPCM9lhk
 White Zombie: Thunder Kiss '65
 yPNFVj-pISU
+Wolfenstein I
+iDVYaxafz4o
+Wolfenstein Movie
+UcuULvGGoD8
 Wolfmother: Joker and the Thief
 8lkPfgzR6Hw
 Write in C
