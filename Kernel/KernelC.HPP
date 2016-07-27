@@ -58,7 +58,6 @@ public extern U8 *StrPrintFlags(U8 *dst,U8 *lst,I64 flags);
 #help_index "Char/Lists"
 public extern I64 LstMatch(U8 *needle, U8 *haystack_lst,I64 flags=0);
 public extern U8 *LstSub(I64 sub, U8 *lst);
-
 #help_index "Char/Operations"
 public extern U8 *MStrPrint(U8 *fmt,...);
 public extern U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0);
@@ -394,6 +393,7 @@ extern U0 (*fp_set_std_palette)();
 public extern U8 *Color2Str(U8 *buf,CColorROPU32 c);
 public extern CColorROPU16 Str2ColorU16(U8 *st);
 public extern CColorROPU32 Str2ColorU32(U8 *st);
+
 #help_index "Hash"
 #help_file "::/Doc/Hash"
 public _extern _HASH_ADD U0 HashAdd(CHash *temph,CHashTable *table);
