@@ -823,8 +823,8 @@ U0 DrawIt(CTask *task,CDC *dc)
 U0 MeshInit(CMeshFrame *e,Bool flip_y)
 {
   MemSet(e,0,sizeof(CMeshFrame));
-  e->vertex_head.next=e->vertex_head.last=&e->vertex_head;
-  e->tri_head.next=e->tri_head.last=&e->tri_head;
+  QueInit(&e->vertex_head);
+  QueInit(&e->tri_head);
   e->ed_mode='v';
   e->grid_on=TRUE;
   e->vertex_on=TRUE;
@@ -849,8 +849,8 @@ U0 MeshLoad(CMeshFrame *e,U8 *src)
   CColorROPU32 color;
   CMeshEdVertex *tempv,*va[3];
 
-  e->vertex_head.next=e->vertex_head.last=&e->vertex_head;
-  e->tri_head.next=e->tri_head.last=&e->tri_head;
+  QueInit(&e->vertex_head);
+  QueInit(&e->tri_head);
 
   e->vertex_cnt  =*src(I32 *)++;
   e->tri_cnt=*src(I32 *)++;
@@ -1416,8 +1416,9 @@ me_clipboard_cut:
 	  }
 	  break;
 	case MSG_IP_R_DOWN:
-	  if (e.ed_mode!='M' && e.ed_mode!='n' && e.ed_mode!='f' &&
-		e.ed_mode!='p' && !adjusting_z) {
+	  if (!adjusting_z && e.ed_mode!='M' &&
+		(e.chain_pred==e.vertex_head.last ||
+		e.ed_mode!='n' && e.ed_mode!='f' && e.ed_mode!='p')) {
 	    if (moving) {
 	      MeshCursorW(&e,Fs,&x,&y,&z);
 	      MeshP0Offset(&e,x-p0a.x,y-p0a.y,z-p0a.z);
@@ -1434,7 +1435,21 @@ me_clipboard_cut:
 	  }
 	  break;
 	case MSG_IP_R_UP:
-	  if (e.ed_mode=='n') {
+	  if (adjusting_z) {
+	    e.ip_z=RoundI64(Sign(p0b.y-ip.presnap.y)
+	    *Sqrt(Sqr(p0b.x-ip.presnap.x)+Sqr(p0b.y-ip.presnap.y))
+	    +p0b.z,e.cur_snap);
+	    Snd(0);
+	    adjusting_z=FALSE;
+	    if (moving) {
+	      MeshCursorW(&e,Fs,&x,&y,&z);
+	      MeshP0Offset(&e,0,0,z-p0a.z);
+	      p0a.x=x;
+	      p0a.y=y;
+	      p0a.z=z;
+	      MeshP0Capture(&e);
+	    }
+	  } else  if (e.ed_mode=='n') {
 	    if (e.chain_pred && e.chain_pred!=e.vertex_head.last)
 	      MeshPolygon(&e,e.chain_pred->next,e.vertex_head.last,FALSE);
 	    a1=e.ed_mode;
@@ -1449,20 +1464,6 @@ me_clipboard_cut:
 	      MeshPrism(&e);
 	    a1=e.ed_mode;
 	    goto me_chain;
-	  } else if (e.ed_mode!='M' && adjusting_z) {
-	    e.ip_z=RoundI64(Sign(p0b.y-ip.presnap.y)
-	    *Sqrt(Sqr(p0b.x-ip.presnap.x)+Sqr(p0b.y-ip.presnap.y))
-	    +p0b.z,e.cur_snap);
-	    Snd(0);
-	    adjusting_z=FALSE;
-	    if (moving) {
-	      MeshCursorW(&e,Fs,&x,&y,&z);
-	      MeshP0Offset(&e,0,0,z-p0a.z);
-	      p0a.x=x;
-	      p0a.y=y;
-	      p0a.z=z;
-	      MeshP0Capture(&e);
-	    }
 	  }
 	  break;
 	case MSG_IP_MOVE:

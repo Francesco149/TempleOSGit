@@ -26,8 +26,8 @@ Help
 }
 
 The first arg is the msg code and it is optional with the default being 
-[C:/Kernel/KernelA.HPP.Z,3242] MSG_KEY_DOWN_UP.  The second arg is the msg a1
-value which is [C:/Kernel/KernelA.HPP.Z,3487] ASCII of the key 
+[C:/Kernel/KernelA.HPP.Z,3239] MSG_KEY_DOWN_UP.  The second arg is the msg a1
+value which is [C:/Kernel/KernelA.HPP.Z,3479] ASCII of the key 
 in the case of [C:/Kernel/KernelA.HPP.Z,3227] MSG_KEY_DOWN.  The third arg is
 the msg a2 value which is the 
 [C:/Doc/CharOverview.TXT.Z,1] scan_code of the key in the case of

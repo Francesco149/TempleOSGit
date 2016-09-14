@@ -68,7 +68,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrPrint(dc,90,FONT_HEIGHT,"Time:%12.2f",SpanTime);
 }
 
-MyMass PlaceMass(I64 x, I64 y)
+MyMass *PlaceMass(I64 x, I64 y)
 {
   MyMass *tempm=CAlloc(sizeof(MyMass));
   tempm->drag_profile_factor=1.0;

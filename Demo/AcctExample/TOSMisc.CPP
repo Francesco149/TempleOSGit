@@ -40,7 +40,7 @@ public U0 Uncollapse(U8 *files_find_mask="*",U8 *fu_flags=NULL)
   DirTreeDel(tempde1);
 }
 
-#define VIDEO_FRAME_RATE	8
+#define VIDEO_FRAME_RATE	30
 
 #define FG_JUST_AUDIO	0
 #define FG_BOOT_DRV	1

@@ -12,21 +12,15 @@ CHashClass *PrsClass(CCmpCtrl *cc,I64 keyword,I64 fsp_flags,Bool is_extern)
     HashSrcFileSet(cc,tempc);
     Lex(cc);
   } else {
-    if (cc->flags&CCF_AOT_COMPILE) {
-      if (tempc=HashFind(cc->cur_str,cc->htc.glbl_hash_table,HTT_CLASS)) {
-	if (!Bt(&tempc->flags,Cf_EXTERN))
-	  tempc=NULL;
-	else if (tempc->use_cnt<3)
-	  UnusedExternWarning(cc,tempc);
-      }
-    } else {
-      if (tempc=HashSingleTableFind(cc->cur_str,
-	    cc->htc.glbl_hash_table,HTT_CLASS)) {
-	if (!Bt(&tempc->flags,Cf_EXTERN))
-	  tempc=NULL;
-	else if (tempc->use_cnt<3)
-	  UnusedExternWarning(cc,tempc);
-      }
+    if (cc->flags&CCF_AOT_COMPILE)
+      tempc=HashFind(cc->cur_str,cc->htc.glbl_hash_table,HTT_CLASS);
+    else
+      tempc=HashSingleTableFind(cc->cur_str,cc->htc.glbl_hash_table,HTT_CLASS);
+    if (tempc) {
+      if (!Bt(&tempc->flags,Cf_EXTERN))
+	tempc=NULL;
+      else if (tempc->use_cnt<3)
+	UnusedExternWarning(cc,tempc);
     }
     if (tempc) {
       Free(tempc->src_link);
@@ -65,29 +59,25 @@ CHashClass *PrsClass(CCmpCtrl *cc,I64 keyword,I64 fsp_flags,Bool is_extern)
   return tempc;
 }
 
-CHashFun *PrsFunJoin(CCmpCtrl *cc,
-	CHashClass *temp_return,U8 *name,I64 fsp_flags)
+CHashFun *PrsFunJoin(CCmpCtrl *cc,CHashClass *temp_return,
+	U8 *name,I64 fsp_flags)
 {
-  CMemberLst *tempm;
+  CMemberLst *tempm,*header_lst;
   CAOTCtrl *aotc=cc->aotc;
+  CHashClass *header_return;
   CHashFun *tempf;
+  I64 header_arg_cnt;
   if (name) {//if not fun_ptr
     if (cc->flags&CCF_AOT_COMPILE) {
-      if (tempf=HashFind(name,cc->htc.glbl_hash_table,HTT_FUN)) {
-	if (tempf->type & HTF_IMPORT)
-	  tempf=NULL;
-	else
-	  if (tempf->use_cnt<3)
-	    UnusedExternWarning(cc,tempf);
-      }
-    } else {
-      if (tempf=HashSingleTableFind(name,cc->htc.glbl_hash_table,HTT_FUN)) {
-	if (!Bt(&tempf->flags,Cf_EXTERN))
-	  tempf=NULL;
-	else if (tempf->use_cnt<3)
-	  UnusedExternWarning(cc,tempf);
-      }
-    }
+      if ((tempf=HashFind(name,cc->htc.glbl_hash_table,HTT_FUN)) &&
+	    tempf->type & HTF_IMPORT)
+	tempf=NULL;
+    } else
+      if ((tempf=HashSingleTableFind(name,cc->htc.glbl_hash_table,HTT_FUN)) &&
+	    !Bt(&tempf->flags,Cf_EXTERN))
+	tempf=NULL;
+    if (tempf && tempf->use_cnt<3)
+      UnusedExternWarning(cc,tempf);
   } else
     tempf=NULL;
   if (tempf) {
@@ -97,9 +87,14 @@ CHashFun *PrsFunJoin(CCmpCtrl *cc,
     Free(tempf->idx);
     tempf->idx=NULL;
     Free(name);
-    MemberLstDel(tempf);
+    header_arg_cnt=tempf->arg_cnt;
+    header_lst=tempf->member_lst_and_root;
+    header_return=tempf->return_class;
+    tempf->member_lst_and_root=NULL;
+    ClassMemberLstDel(tempf);
   } else {
     tempf=PrsFunNew;
+    header_return=NULL;
     tempf->used_reg_mask=REGG_CLOBBERED+REGG_SAVED+REGG_STK_TEMP;
     tempf->clobbered_reg_mask=REGG_CLOBBERED+REGG_STK_TEMP;
     tempf->str=name;
@@ -126,6 +121,19 @@ CHashFun *PrsFunJoin(CCmpCtrl *cc,
     tempm=tempm->next;
   }
   tempf->size=0;
+  if (header_return) {
+    if (GetOption(OPTf_WARN_HEADER_MISMATCH)) {
+      if (tempf->return_class!=header_return) {
+	PrintWarn("Fun Header return mismatch '%s'\n",tempf->str);
+	cc->warning_cnt++;
+      }
+      if (!MemberLstCmp(tempf->member_lst_and_root,header_lst,header_arg_cnt)) {
+	PrintWarn("Fun header args mismatch '%s'\n",tempf->str);
+	cc->warning_cnt++;
+      }
+    }
+    MemberLstDel(header_lst);
+  }
   return tempf;
 }
 
@@ -694,7 +702,7 @@ sw_cont:
 	    temps->val=k_start;
 	    temps->next=header;
 	    header=temps;
-	  } else if (cc->token==TK_DOT_DOT_DOT) {
+	  } else if (cc->token==TK_ELLIPSIS) {
 	    Lex(cc);
 	    k_end=LexExpressionI64(cc);
 	    if (cc->token==':') {

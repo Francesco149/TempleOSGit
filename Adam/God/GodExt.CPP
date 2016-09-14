@@ -5,8 +5,10 @@
 
 public class CGodGlbls
 {
-  U8	**words;
-  I64	num_words;
+  U8	**words,
+	*word_file_mask;
+  I64	word_fuf_flags,
+	num_words;
   CFifoU8 *fifo;
   CDC	*doodle_dc;
   I64	doodle_ch;
@@ -21,4 +23,4 @@ extern U0 GodBitsIns(I64 num_bits,I64 n);
 extern U0 GodDoodle(U8 *hex=NULL);
 extern U0 GodPassage(I64 num_lines=20);
 extern U0 GodSong();
-extern U0 GodWord();
+extern U0 GodWord(Bool show_num=FALSE);

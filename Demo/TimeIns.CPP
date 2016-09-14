@@ -1,9 +1,9 @@
 /*Allows you to time insts.
-Ress vary because the CPU does
+Results vary because the CPU does
 parallel and out-of-order execution.
 */
 
-#define SAMPLE_SIZE	100000000
+#define SAMPLE_SIZE	10000000
 
 U0 TimeIns()
 {
@@ -15,7 +15,7 @@ U0 TimeIns()
   for (i=0;i<SAMPLE_SIZE;i++);
   end=GetTSC;
   overhead_time=end-start;
-  "\nOverhead Cycles:%10.5f\n",ToF64(overhead_time)/SAMPLE_SIZE;
+  "\nOverhead Cycles:%12.6f\n",ToF64(overhead_time)/SAMPLE_SIZE;
 
   start=GetTSC;
   for (i=0;i<SAMPLE_SIZE;i++) {
@@ -27,7 +27,9 @@ U0 TimeIns()
   end=GetTSC;
   test_time=end-start;
 
-  "Measured Cycles:%10.5f\n",ToF64(test_time-overhead_time)/SAMPLE_SIZE;
+  "Measured Cycles:%12.6f\n",ToF64(test_time-overhead_time)/SAMPLE_SIZE;
 }
 
+TimeIns;
+TimeIns;
 TimeIns;

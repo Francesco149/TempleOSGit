@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-81,126 lines of code including the kernel, the 64-bit compiler, the graphics 
+81,208 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a [C:/Doc/HelloWorld.TXT.Z,1] Hello World
@@ -32,8 +32,45 @@ TempleOS.  See the [C:/Doc/Charter.TXT.Z,1] TempleOS Charter.
 Conventional thinking is "failure is not an option" for general purpose 
 operating systems.  Since this OS is used in addition to Windows or Linux, 
 however, failure is an option -- just use Windows or Linux if you can't do 
-something.  I cherry-pick what it will and won't do to make it maximally 
-beautiful.
+something.  I cherry-pick what it will and won't do, to make it maximally 
+beautiful.  The following applications more or less form a basis that spans 
+the range of use that TempleOS is intended for:
+
+[C:/Demo/Games/BattleLines.CPP.Z,1] /Demo/Games/BattleLines.CPP
+[C:/Demo/Games/BigGuns.CPP.Z,1] /Demo/Games/BigGuns.CPP
+[C:/Demo/Games/BlackDiamond.CPP.Z,1] /Demo/Games/BlackDiamond.CPP
+[C:/Demo/Games/BomberGolf.CPP.Z,1] /Demo/Games/BomberGolf.CPP
+[C:/Demo/Games/CastleFrankenstein.CPP.Z,1] /Demo/Games/CastleFrankenstein.CPP
+[C:/Demo/Games/CharDemo.CPP.Z,1] /Demo/Games/CharDemo.CPP
+[C:/Demo/Games/CircleTrace.CPP.Z,1] /Demo/Games/CircleTrace.CPP
+[C:/Demo/Games/Collision.CPP.Z,1] /Demo/Games/Collision.CPP
+[C:/Demo/Games/Digits.CPP.Z,1] /Demo/Games/Digits.CPP
+[C:/Demo/Games/DunGen.CPP.Z,1] /Demo/Games/DunGen.CPP
+[C:/Demo/Games/EagleDive.CPP.Z,1] /Demo/Games/EagleDive.CPP
+[C:/Demo/Games/ElephantWalk.CPP.Z,1] /Demo/Games/ElephantWalk.CPP
+[C:/Demo/Games/FlapBat.CPP.Z,1] /Demo/Games/FlapBat.CPP
+[C:/Demo/Games/FlatTops.CPP.Z,1] /Demo/Games/FlatTops.CPP
+[C:/Demo/Games/Halogen.CPP.Z,1] /Demo/Games/Halogen.CPP
+[C:/Demo/Games/MassSpring.CPP.Z,1] /Demo/Games/MassSpring.CPP
+[C:/Demo/Games/Maze.CPP.Z,1] /Demo/Games/Maze.CPP
+[C:/Demo/Games/RainDrops.CPP.Z,1] /Demo/Games/RainDrops.CPP
+[C:/Demo/Games/RawHide.CPP.Z,1] /Demo/Games/RawHide.CPP
+[C:/Demo/Games/Rocket.CPP.Z,1] /Demo/Games/Rocket.CPP
+[C:/Demo/Games/RocketScience.CPP.Z,1] /Demo/Games/RocketScience.CPP
+[C:/Demo/Games/Squirt.CPP.Z,1] /Demo/Games/Squirt.CPP
+[C:/Demo/Games/TheDead.CPP.Z,1] /Demo/Games/TheDead.CPP
+[C:/Demo/Games/TicTacToe.CPP.Z,1] /Demo/Games/TicTacToe.CPP
+[C:/Demo/Games/TreeCheckers.CPP.Z,1] /Demo/Games/TreeCheckers.CPP
+[C:/Demo/Games/Varoom.CPP.Z,1] /Demo/Games/Varoom.CPP
+[C:/Demo/Games/Wenceslas.CPP.Z,1] /Demo/Games/Wenceslas.CPP
+[C:/Demo/Games/Whap.CPP.Z,1] /Demo/Games/Whap.CPP
+[C:/Demo/Games/Zing.CPP.Z,1] /Demo/Games/Zing.CPP
+[C:/Demo/Games/ZoneOut.CPP.Z,1] /Demo/Games/ZoneOut.CPP
+[C:/Apps/Psalmody/Examples/childish.CPP.Z,1]
+/Apps/Psalmody/Examples/childish.CPP
+[C:/Apps/Psalmody/Examples/night.CPP.Z,1] /Apps/Psalmody/Examples/night.CPP
+[C:/Apps/Psalmody/Examples/prosper.CPP.Z,1]
+/Apps/Psalmody/Examples/prosper.CPP
 
 Two things to know about TempleOS are that _tasks_ have
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387]
@@ -146,9 +183,9 @@ Hardware graphics acceleration is not used, so this is possible.  See
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/KernelA.HPP.Z,3321] CTask, pointed to by the FS
+task record, [C:/Kernel/KernelA.HPP.Z,3318] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
-> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3446] CCPU for the current
+> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3438] CCPU for the current
 CPU core.  Each task can have 
 just one window, but a task can have children with windows.  (The segment
 regs 

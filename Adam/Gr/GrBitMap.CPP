@@ -1,5 +1,6 @@
 #help_index "Graphics"
 
+Option(OPTf_WARN_HEADER_MISMATCH,OFF);
 public Bool GrPlot0(CDC *dc=gr.dc,I64 x,I64 y)
 {//2D. No clipping or transformation or pen width.
   U8 *dst;
@@ -60,6 +61,7 @@ public Bool GrPlot0(CDC *dc=gr.dc,I64 x,I64 y)
   }
   return TRUE;
 }
+Option(OPTf_WARN_HEADER_MISMATCH,ON);
 
 public I64 GrPeek0(CDC *dc=gr.dc,I64 x,I64 y)
 {//2D. No clipping or transformation.
@@ -861,7 +863,7 @@ public I64 GrPutChar(CDC *dc=gr.dc,I64 x,I64 y,U8 ch)
 }
 
 I64 GrPutS(CDC *dc=gr.dc,I64 x,I64 y,U8 *_s)
-{//Use [C:/Adam/Gr/GrBitMap.CPP.Z,906] GrPrint()
+{//Use [C:/Adam/Gr/GrBitMap.CPP.Z,908] GrPrint()
   I64 x0,ch,res;
   if (!_s) return 0;
   x0=x;
@@ -881,7 +883,7 @@ I64 GrPutS(CDC *dc=gr.dc,I64 x,I64 y,U8 *_s)
 }
 
 I64 GrVPutS(CDC *dc=gr.dc,I64 x,I64 y,U8 *_s)
-{//Vertical Text.  Use [C:/Adam/Gr/GrBitMap.CPP.Z,915] GrVPrint()
+{//Vertical Text.  Use [C:/Adam/Gr/GrBitMap.CPP.Z,917] GrVPrint()
   I64 y0,res;
   U8 buf[2];
   if (!_s) return 0;

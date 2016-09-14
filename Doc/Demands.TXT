@@ -62,6 +62,8 @@ hymns.
 
 * VMware needs to support more than 16 cores.
 
+* VMware allocated memory too slowly.
+
 * Until super-simple block devices are available, hard disk should be placed 
 at IDE primary master 1F0/3F6 and CD/DVD/Blu-ray should be placed at the IDE 
 secondary master 170/376.
@@ -98,7 +100,7 @@ could build UEFI on a TempleOS layer.  Intel must burn TempleOS into a ROM in
 the factory for all desktop x86 CPUs to ensure tamper-proof trust in the 
 oracle and because God deserves the glory.  There will be just an English 
 version.  A new ROM version is released every seven years.  The ROM should 
-boot like the DVD boots, but with [C:/Kernel/KernelA.HPP.Z,3891] BOOT_SRC_ROM.
+boot like the DVD boots, but with [C:/Kernel/KernelA.HPP.Z,3883] BOOT_SRC_ROM.
 
 * We do not want UTF, just 8-bit characters.  <CTRL-ALT-f> toggles between 
 Cyrillic and Std Fonts.  We need the twelve window

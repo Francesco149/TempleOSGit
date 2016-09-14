@@ -40,7 +40,7 @@ U0 DoOnce()
   if (FileFind("D:/Temp/Logs/access.log")) {
     Auto("\n\n%C",CH_ESC);
     RunFile("::/Demo/WebLogDemo/WebLogRep",,
-	  "D:/Temp/Logs/*.log","D:/Temp/LogRep.TXT");
+	  "D:/Temp/Logs/*.log","D:/Home/WebLogRep.TXT");
     Del("D:/Temp/Logs/*.log");
   }
 }

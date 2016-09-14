@@ -580,7 +580,7 @@ class CRAXRBCRCXRDX
 #define EXT_NUM_ENTRIES		5
 
 #help_index "Processor"
-#define DFT_CACHE_LINE_WIDTH	64
+#define DFT_CACHE_LINE_WIDTH	128
 #define SEMA_STRUCT_SIZE	DFT_CACHE_LINE_WIDTH
 
 //Semaphores
@@ -1229,7 +1229,7 @@ class CEdFindText
 	"A=\"Replace     :%s\"$\n";
   Bool	replace			fmtstr "$CB,\"Replace\"$\n",
 	scan_fwd		fmtstr "$CB,\"Fwd\"$\n",
-	scan_sel_text	fmtstr "$CB,\"Sellection\"$\n",
+	scan_sel_text		fmtstr "$CB,\"Selection\"$\n",
 	match_case		fmtstr "$CB,\"Match Case\"$\n",
 	whole_labels		fmtstr "$CB,\"Whole Labels\"$\n",
 	local_var		fmtstr "$CB,\"Rename Local Var\"$\n",
@@ -1473,7 +1473,6 @@ public class CWinMgrGlbls
 	last_ode_time,
 	fps,		//You can read but not write this. You have no control.
 	last_refresh_tS;
-  CTask *old_focus_task;
   CWinMgrTimingGlbls *t;
   Bool	show_menu,
 	grab_scroll,
@@ -1538,6 +1537,7 @@ public class CAutoCompleteDictGlbls
 #define OPTf_WARN_UNUSED_VAR	0x10 //Applied to funs, not stmts
 #define OPTf_WARN_PAREN		0x11 //Warn unnecessary parens
 #define OPTf_WARN_DUP_TYPES	0x12 //Warn dup local var type stmts
+#define OPTf_WARN_HEADER_MISMATCH 0x13
 #define OPTf_EXTERNS_TO_IMPORTS	0x20
 #define OPTf_KEEP_PRIVATE	0x21
 #define OPTf_NO_REG_VAR		0x22  //Applied to funs, not stmts
@@ -2106,7 +2106,7 @@ class CAOTCtrl
 #define TK_ELSE		0x121
 #define TK_MOD_EQU	0x122
 #define TK_DOT_DOT	0x123
-#define TK_DOT_DOT_DOT	0x124
+#define TK_ELLIPSIS	0x124
 #define TK_INS_BIN	0x125
 #define TK_INS_BIN_SIZE 0x126
 #define TK_NUM_TK	0x127
@@ -3191,7 +3191,7 @@ class CFPU
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 //MP cmds
 #define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,213] JobQue()	Tell MP to call function
-#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,210] Spawn()	Tell MP to spawn task
+#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,222] Spawn()	Tell MP to spawn task
 
 class CSrvCmd
 {
@@ -3224,8 +3224,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3487] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3487] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3479] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3479] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3235,9 +3235,6 @@ class CSrvCtrl
 #define MSG_IP_R_UP		10 //(x,y)
 #define MSG_IP_R_D_DOWN 	11 //(x,y)
 #define MSG_IP_R_D_UP		12 //(x,y)
-#define MSG_FOCUS		13 //(flag,0) TRUE gaining focus, FALSE losing.
-#define MSG_RESIZE		14 //(new columns,new rows).
-#define MSG_MOVE		15 //(new left,new top).
 
 #define MSG_KEY_DOWN_UP		-2  //Down & UP
 #define MSG_IP_L_DOWN_UP	-5  //Down & Up
@@ -3345,9 +3342,6 @@ U0 pad;#assert $==offset(CTaskDying.wake_jiffy)
   I64	win_width,win_height,
 	pix_left,pix_right,pix_width, //These are in pixs, not characters
 	pix_top,pix_bottom,pix_height,
-	border_pix_left,border_pix_right,
-	border_pix_top,border_pix_bottom,
-
 	scroll_x,scroll_y,scroll_z;
 
   //These must be in this order
@@ -3391,8 +3385,6 @@ U0 pad;#assert $==offset(CTaskDying.wake_jiffy)
   CSrvCtrl srv_ctrl;
   CCmpCtrl *next_cc,*last_cc;
   CHashFun *last_fun;
-
-  I64	win_old_left,win_old_right,win_old_top,win_old_bottom;
 
   U0	(*task_end_cb)();
   CTask *song_task,*animate_task;
@@ -3626,7 +3618,7 @@ public class CTextGlbls
 //Low 8 bits reserved for flags that go into saved bitmaps
 #define DCF_COMPRESSED		1
 #define DCF_PALETTE		2
-#define DCF_NO_TRANSPARENTS	4 //Can be used to optimized [C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBlot().
+#define DCF_NO_TRANSPARENTS	4 //Can be used to optimized [C:/Adam/Gr/GrBitMap.CPP.Z,73] GrBlot().
 
 #define DCF_TRANSFORMATION	0x100
 
@@ -3707,7 +3699,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3645] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3637] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

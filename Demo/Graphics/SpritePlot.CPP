@@ -16,7 +16,7 @@ IB's behave like string consts when compiled.
 That is, they are ptrs to data.
 
 SpritePlot.CPP.Z uses the persistent graphic
-device context [C:/Kernel/KernelA.HPP.Z,3661] CDC, [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.dc, while the other
+device context [C:/Kernel/KernelA.HPP.Z,3653] CDC, [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.dc, while the other
 demo's use [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.dc2 which must be redrawn at
 30fps by the window mgr task.  This demo
 is simpler because you do not need

@@ -6,7 +6,7 @@ use
 the same page table map, just as though all addresses are physical addresses.
  
 2 Meg page table entries are used.  Nothing swaps to disk.  You can adjust 
-[C:/Kernel/KernelA.HPP.Z,3467] MEM_MAPPED_SPACE for more RAM.
+[C:/Kernel/KernelA.HPP.Z,3459] MEM_MAPPED_SPACE for more RAM.
 
 In TempleOS, the lowest 2 Gig of memory is called the code heap.  TempleOS's 
 compiler always uses 32-bit signed relative JMP & CALL insts because 64-bit 
@@ -30,9 +30,9 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,192] MemRep() and
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x0000035F5F
+ 0x0000007C00- 0x000003654F
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3886] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3878] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -49,11 +49,11 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,192] MemRep() and
   VGA graphics mem, marked as write-through cache in
   [C:/Kernel/KGlbls.CPP.Z,29] text.vga_alias.
 
- 0x0000100000- 0x00002037FF
-  [C:/Kernel/KernelA.HPP.Z,3474] CSysFixedArea for page tables and misc.  256
+ 0x0000100000- 0x00002035FF
+  [C:/Kernel/KernelA.HPP.Z,3466] CSysFixedArea for page tables and misc.  256
   Gig of address space mapped.
 
- 0x0000203800- 0x007FFDFFFF
+ 0x0000203600- 0x007FFDFFFF
   Code Heap mem.
 
              - 0x007FFFFFFF

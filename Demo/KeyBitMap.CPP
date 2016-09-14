@@ -27,7 +27,7 @@ U0 KeyDownBitMapDemo()
   //merged scan code.  (left shift and
   //right shift combined for example.)
   //[C:/Kernel/KernelA.HPP.Z,3002] kbd.down_bitmap2 is indexed with the
-  //distinct scan code.  See [Char,1] Char and [C:/Kernel/KernelA.HPP.Z,3577] Scan Codes.
+  //distinct scan code.  See [Char,1] Char and [C:/Kernel/KernelA.HPP.Z,3569] Scan Codes.
 
   while (Bt(kbd.down_bitmap,i_sc)) {
     x++;

@@ -225,7 +225,7 @@ Bool OptFixupUnaryOp(CIntermediateCode *tempi, CIntermediateCode *tempi1,
     return FBO1_NOT_CONST;
 }
 
-extern U0 OptBrNotZero(CCmpCtrl *cc,CIntermediateCode *tempi);
+extern CIntermediateCode *OptBrNotZero(CCmpCtrl *cc,CIntermediateCode *tempi);
 
 CIntermediateCode *OptBrZero(CCmpCtrl *cc,CIntermediateCode *tempi)
 {

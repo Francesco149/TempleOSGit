@@ -62,7 +62,7 @@ public U0 CommInit8n1(I64 port,I64 baud)
     FifoU8Del(comm_fifos[port]);
   comm_fifos[port]=FifoU8New(256);
   OutU8(base+UART_LCR,0);     //Set for IER
-  OutU8(base+UART_IER,0);     //DIsable all IRQ
+  OutU8(base+UART_IER,0);     //Disable all IRQ
   OutU8(base+UART_LCR,0x80);  //Enable baud rate control
   OutU8(base+UART_BRDL,(0x180/(baud/300)) & 0xFF); //LSB
   OutU8(base+UART_BRDH,(0x180/(baud/300)) / 256);  //MSB
@@ -72,7 +72,7 @@ public U0 CommInit8n1(I64 port,I64 baud)
   InU8(base+UART_LSR);
 
   OutU8(base+UART_MCR,4);
-  OutU8(base+UART_IER,0);     //DIsable all IRQ
+  OutU8(base+UART_IER,0);     //Disable all IRQ
   OutU8(base+UART_MCR,0xA);	  //out2 and rts
   OutU8(0x21,InU8(0x21) & (0xFF-0x18)); //Enable 8259 IRQ 3 & 4
   OutU8(base+UART_IER,1);	  //Enable RX IRQ

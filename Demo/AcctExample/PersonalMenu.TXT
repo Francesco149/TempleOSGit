@@ -23,24 +23,27 @@ MergeT
 `S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","T:/*;!*/LineRep*","+r+d");
 `
 
-BootC   
-`BootRAM("C:/Kernel.BIN.C");`
 MakeC   
 `TOSBootHDIns('C');
 `
-BootD   
-`BootRAM("D:/Kernel.BIN.C");`
-MakeD   
-`TOSBootHDIns('D');
-`
+BootC   
+`BootRAM("C:/Kernel.BIN.C");`
 MakeBack
 `MakeDistrosAndBackUp;
 `
 PreBack 
 `PreBackUp;
 `
+MakeD   
+`TOSBootHDIns('D');
+`
+BootD   
+`BootRAM("D:/Kernel.BIN.C");`
 CopyDrv 
 `TOSPromptAndCopyDrv;
+`
+MakeWeb 
+`MakeWebSitePartial;
 `
 
 Kernel  
@@ -57,6 +60,9 @@ Mem
 `
 Serial  
 `Cd("/Kernel/SerialDev");Dir;
+`
+Bin     
+`Cd("/Home/Sup1/Sup1Bin");Dir;
 `
 HDAudio 
 `Cd("/Home/Sup1/Sup1HDAudio");Dir;
@@ -117,7 +123,7 @@ AfterEgp
 TOSTheme
 `TempleOSTheme;
 `
-Sup1Vids
+Videos  
 `Cd("/Home/Sup1/Sup1Videos");Dir;
 `
 
@@ -130,25 +136,25 @@ TAD
 Sup1    
 `Cd("/Home/Sup1");Dir;
 `
-Sup1Bin 
-`Cd("/Home/Sup1/Sup1Bin");Dir;
-`
-Sup1Blog
+Blog    
 `Cd("/Home/Sup1/Sup1Blog");Dir;
 `
-Sup1Code
+Code    
 `Cd("/Home/Sup1/Sup1CodeScraps");Dir;
 `
-Sup1Dist
+Dist    
 `Cd("/Home/Sup1/Sup1Distro");Dir;
 `
-Sup1Game
+Games   
 `Cd("/Home/Sup1/Sup1Games");Dir;
 `
-Sup1Psal
+Graphics
+`Cd("/Home/Sup1/Sup1Graphics");Dir;
+`
+Psalmody
 `Cd("/Home/Sup1/Sup1Psalmody");Dir;
 `
-Sup1Util
+Utils   
 `Cd("/Home/Sup1/Sup1Utils");Dir;
 `
 
@@ -270,6 +276,9 @@ DelScrSt
 0000Boot
 `Cd("/0000Boot");Dir;
 `
+Linux   
+`Cd("/Linux");Dir;
+`
 
 LinxDict
 `Adam("GodInit(\"~/Sup1/Sup1Words/LinuxDict.TXT**\");");
@@ -292,37 +301,37 @@ Ingreds
 Chess   
 `Adam("GodInit(\"~/Sup1/Sup1Words/Chess.TXT*\");");
 `
-Sup1Text
+Texts   
 `Cd("/Home/Sup1/Sup1Texts");Dir;
 `
-Sup1Word
+Words   
 `Cd("/Home/Sup1/Sup1Words");Dir;
 `
 
 MakeStd 
-`MakeStdDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSCD.ISO");
+`MakeStdDistro;MkDir("D:/Wb");Move(TOS_ISO_NAME,"D:/Wb/TempleOSCD.ISO");
 `
 MakeStRS
-`MakeStdRedSeaDistro; MkDir("D:/Wb"); Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSCDRS.ISO");
+`MakeStdRedSeaDistro;MkDir("D:/Wb");Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSCDRS.ISO");
 `
 MakeUlt 
-`MakeUltraDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSUltra.ISO");
+`MakeUltraDistro;MkDir("D:/Wb");Move(TOS_ISO_NAME,"D:/Wb/TempleOSUltra.ISO");
 `
 MakeUtRS
-`MakeUltraRedSeaDistro; MkDir("D:/Wb"); Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSUltraRS.ISO");
+`MakeUltraRedSeaDistro;MkDir("D:/Wb");Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSUltraRS.ISO");
 `
 MakeStaf
-`MakeStaffDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSStaff.ISO");
+`MakeStaffDistro;MkDir("D:/Wb");Move(TOS_ISO_NAME,"D:/Wb/TempleOSStaff.ISO");
 `
 MakeDbg 
-`MakeDbgDistro; MkDir("D:/Wb"); Move(TOS_ISO_NAME,"D:/Wb/TempleOSDbg.ISO");
+`MakeDbgDistro;MkDir("D:/Wb");Move(TOS_ISO_NAME,"D:/Wb/TempleOSDbg.ISO");
 `
 
 BurnStd 
-`MakeStdDistro; DVDImageWrite('T',TOS_ISO_NAME);
+`MakeStdDistro;DVDImageWrite('T',TOS_ISO_NAME);
 `
 BurnStRS
-`MakeStdRedSeaDistro; DVDImageWrite('T',TOS_ISO_C_NAME);
+`MakeStdRedSeaDistro;DVDImageWrite('T',TOS_ISO_C_NAME);
 `
 BurnUlt 
 `MakeUltraDistro;DVDImageWrite('T',TOS_ISO_NAME);
@@ -331,10 +340,10 @@ BurnUtRS
 `MakeUltraRedSeaDistro;DVDImageWrite('T',TOS_ISO_C_NAME);
 `
 BurnStaf
-`MakeAStaffDistro; DVDImageWrite('T',TOS_ISO_NAME);
+`MakeStaffDistro;DVDImageWrite('T',TOS_ISO_NAME);
 `
 BurnDbg 
-`MakeDbgDistro; DVDImageWrite('T',TOS_ISO_NAME);
+`MakeDbgDistro;DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 

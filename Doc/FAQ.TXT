@@ -171,7 +171,7 @@
 +] How do you use the FS and GS segment registers.
   MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP
   relative, so it's tricky to use.  FS is used for the current
-  [C:/Kernel/KernelA.HPP.Z,3321] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3446]
+  [C:/Kernel/KernelA.HPP.Z,3318] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3438]
   CCPU.
 +] How do I set ORG for position of code?
   The compiler creates pos independent code.  Don't create code which is

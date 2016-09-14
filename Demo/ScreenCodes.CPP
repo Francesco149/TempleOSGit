@@ -1,7 +1,7 @@
 /*See [TextBase Layer,1] TextBase Layer for the format
 of the U32 you pass to TextChar()
 
-See [C:/Doc/CharOverview.TXT.Z,1], [C:/Demo/ExtendedChars.CPP.Z,1],
+See [C:/Doc/CharOverview.TXT.Z,1], [C:/Demo/ExtChars.CPP.Z,1],
 and [C:/Demo/Graphics/FontEd.CPP.Z,1].
 
 Hold <ALT> and press a 3 digit decimal number
