@@ -70,8 +70,8 @@ U0 HashDel(CHashSrcSym *temph)
       Free(temph->dbg_info);
     if (temph->type & (HTT_FUN | HTT_CLASS))
 //Assumes code not on heap, so doesn't Free.
-    //[C:/Compiler/LexLib.CPP.Z,157] MemberLstDel() is an import to the Kernel module
-      MemberLstDel(temph);
+    //[C:/Compiler/LexLib.CPP.Z,209] ClassMemberLstDel() is an import to the Kernel module
+      ClassMemberLstDel(temph);
     else if (temph->type&HTT_DEFINE_STR)
       Free(temph(CHashDefineStr *)->data);
     else if (temph->type & HTT_GLBL_VAR) {

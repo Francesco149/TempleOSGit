@@ -357,7 +357,7 @@ public I64 HashDepthRep(CHashTable *table=NULL)
 #help_index "Help System"
 #help_file "::/Doc/HelpSystem"
 
-public U0 DocHelpIndex(CDoc *doc,U8 *idx)
+public U0 DocHelpIdx(CDoc *doc,U8 *idx)
 {//Put to doc report for given help idx.
   Who("+p",,idx,doc);
 }
@@ -365,7 +365,7 @@ public U0 DocHelpIndex(CDoc *doc,U8 *idx)
 public U0 PopUpHelpIndex(U8 *idx,CTask *parent=NULL)
 {//PopUp win report for given help idx.
   U8 *buf;
-  buf=MStrPrint("DocHelpIndex(DocPut,\"%s\");View;",idx);
+  buf=MStrPrint("DocHelpIdx(DocPut,\"%s\");View;",idx);
   PopUp(buf,parent);
   Free(buf);
 }

@@ -84,8 +84,7 @@ TourPut(
 "Press $GREEN$<SHIFT-ESC>$FG$ to abort the application.  "
 "Then, press $GREEN$<CTRL-ALT-x>$FG$ to kill the task.\n");
 WinToTop(task);
-while (TaskValidate(task))
-  Sleep(10);
+DeathWait(&task);
 
 TourPut("Press $GREEN$<SHIFT-ESC>$FG$ to abort the editor.\n");
 

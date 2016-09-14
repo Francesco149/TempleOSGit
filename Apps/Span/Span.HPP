@@ -45,5 +45,5 @@ CColorROPU32 mode_colors[MD_NUM_MODES]=
   F64 elapsed_t,start_wall_t;
 } a;
 
-extern MyMass PlaceMass(I64 x, I64 y);
+extern MyMass *PlaceMass(I64 x, I64 y);
 extern F64 SpanTime();

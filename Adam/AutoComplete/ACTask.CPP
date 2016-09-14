@@ -277,8 +277,7 @@ public Bool AutoComplete(Bool val=OFF)
       if (Bt(&sys_run_level,RLf_AUTO_COMPLETE))
 	old_autocomplete=TRUE;
       Kill(ac.task);
-      while (TaskValidate(ac.task))
-	Yield;
+      DeathWait(&ac.task);
     }
   }
   return old_autocomplete;

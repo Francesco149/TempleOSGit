@@ -970,10 +970,10 @@ Obj *FishFind(I64 x1,I64 y1,I64 *_dd)
 U0 AnimateTask(I64)
 {//Steadily moves the airplane fwd.
   I64 *s2w,x1,y1,z1,dx,dy,dz,dd;
-  F64 t0=tS,mS,theta,d;
+  F64 t0=tS,ms,theta,d;
   Obj *tempo;
   while (TRUE) {
-    mS=1000*(tS-t0);
+    ms=1000*(tS-t0);
     t0=tS;
     if (!game_tf) {
 //Screen to world coordinates
@@ -984,9 +984,9 @@ U0 AnimateTask(I64)
 
       dx=0;dy=0;dz=1<<16;
       Mat4x4MulXYZ(s2w,&dx,&dy,&dz);
-      x-=speed*mS*COORDINATE_SCALE*dx/1<<16;
-      y-=speed*mS*COORDINATE_SCALE*dy/1<<16;
-      z-=speed*mS*COORDINATE_SCALE*dz/1<<16;
+      x-=speed*ms*COORDINATE_SCALE*dx/1<<16;
+      y-=speed*ms*COORDINATE_SCALE*dy/1<<16;
+      z-=speed*ms*COORDINATE_SCALE*dz/1<<16;
       Free(s2w);
       x1=x/COORDINATE_SCALE; y1=y/COORDINATE_SCALE; z1=z/COORDINATE_SCALE;
       if (z1<(WATER_ELEVATION+3)*MAP_SCALE) {
@@ -994,9 +994,9 @@ U0 AnimateTask(I64)
 	  z=WATER_ELEVATION*MAP_SCALE*COORDINATE_SCALE;
 	  if (invert_pitch) {
 	    if (pitch<-pi/8)
-	      phi+=mS/1000.0*Sign(3*pi/8-phi);
+	      phi+=ms/1000.0*Sign(3*pi/8-phi);
 	  } else if (pitch<-pi/8)
-	    phi+=mS/1000.0*Sign(-3*pi/8-phi);
+	    phi+=ms/1000.0*Sign(-3*pi/8-phi);
 	  WrapAngles;
 	}
 	speed=1.0;
@@ -1056,13 +1056,14 @@ U0 TaskEndCB()
 }
 
 U0 SongTask(I64)
-{//Song by Terry A. Davis
+{
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
-  music.stacatto_factor=0.2;
   while (TRUE) {
-    Play("3eBDEDBDEDFEEDFEED");
-    Play("BDEDBDEDFEEDFEED");
+    Play("3eCGFsDAe.C2sG3eGDqCDeGsGG2qG");
+    Play("3eCGFsDAe.C2sG3eGDqCDeGsGG2qG");
+    Play("3eGECGCAFCsCBCBe.GsG2qG3B");
+    Play("eGECGCAFCsCBCBe.GsG2qG3B");
   }
 }
 

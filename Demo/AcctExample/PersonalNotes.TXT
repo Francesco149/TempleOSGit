@@ -33,6 +33,9 @@ edited.
 
 * Compiler Optimization: Local array vars --> reg.  Might exist.
 
+* Make function as a better word processor.  Justify text.  Page numbers.  
+Header and footer templates?
+
 * Compiler Optimization: heap_glbls with added offset.  Might exist.
 
 * AfterEgypt: [C:/Misc/Bible.TXT.Z,12005] Numbers,13:33 scouts?
@@ -65,7 +68,7 @@ Free old task memory?
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
-[C:/Kernel/KernelA.HPP.Z,3321] CTask->task_flags and 
+[C:/Kernel/KernelA.HPP.Z,3318] CTask->task_flags and 
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.CPP.Z,52] KbdLEDsSet().
@@ -79,9 +82,9 @@ others need to be in separate cache lines?
 
 * [C:/Adam/Gr/GrPrimatives.CPP.Z,650] GrLineFat3() needs a little work.
 
-* [C:/Adam/Gr/GrPrimatives.CPP.Z,1397] GrFillTri0() with both
-[C:/Adam/Gr/GrBitMap.CPP.Z,1641] GrHLine() and
-[C:/Adam/Gr/GrBitMap.CPP.Z,1812] GrVLine() don't match in 
+* [C:/Adam/Gr/GrPrimatives.CPP.Z,1399] GrFillTri0() with both
+[C:/Adam/Gr/GrBitMap.CPP.Z,1643] GrHLine() and
+[C:/Adam/Gr/GrBitMap.CPP.Z,1814] GrVLine() don't match in 
 [C:/Demo/Games/CastleFrankenstein.CPP.Z,1] causing wall spot pixels.
 
 
@@ -161,7 +164,7 @@ runs-out of space and hangs instead of reporting errors.
 [C:/Adam/WinA.CPP.Z,279] WinToTop is called on Adam task at start-up,
 sometimes.  Might be user's fault 
 because of bad keys pressed during VMware power-on init.  Might be fixed by 
-[C:/Kernel/KernelA.HPP.Z,1484] ACf_INIT_IN_PROGRESS.
+[C:/Kernel/KernelA.HPP.Z,1483] ACf_INIT_IN_PROGRESS.
 
 * 1/12/16 [C:/Kernel/BlkDev/DskATAId.CPP.Z,91] ATARepEntry shows corrupted
 buttons.  Weird.  Perhaps, my 
@@ -252,6 +255,15 @@ need so many local var names?  I guess
 no choice.
 
 
+                            Once I get Established
+* File extensions?  CPP-->HC  HPP-->HCH
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Kernel","CMD");  It's not really a
+kernel.
+* Since no true preprocessor, [C:/Home/HomeWrappers.CPP.Z,13]
+R("#define","StrMap");  [C:/Home/HomeWrappers.CPP.Z,13] R("#include",...);
+also?
+
+
                                Committee Needed
 * Make binary tree look-up using FUN_SEG symbol addresses, so we can
 eliminate 
@@ -270,7 +282,7 @@ routines.
 Every country make own version?
 * International Date input: [C:/Kernel/StrScan.CPP.Z,138] Str2Date().
 
-* [C:/Kernel/KernelA.HPP.Z,3634] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3626] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
 * [C:/Kernel/KernelA.HPP.Z,2957] TRANSPARENT does not work with
@@ -283,11 +295,11 @@ Every country make own version?
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.CPP.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,115] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3661] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3653] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,2943] ROP_XOR?
 
-* [C:/Adam/WinB.CPP.Z,421] WinMgrTask needs to do doc operations on
+* [C:/Adam/WinB.CPP.Z,400] WinMgrTask needs to do doc operations on
 [C:/Kernel/SrvCmd.CPP.Z,240] PostMsg() msgs for mouse.  Already 
 works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet()?
 
@@ -314,15 +326,9 @@ ICCmp() like in [C:/Compiler/BackB.CPP.Z,468] ICCmpAndBranch()?
 
 * Compiler: &=, |= can overflow with Bts Btr on small data types?
 
-* Since no true preprocessor, [C:/Home/HomeWrappers.CPP.Z,13]
-R("#define","StrMap");  [C:/Home/HomeWrappers.CPP.Z,13] R("#include",...);
-also?
-
 * Compiler: [C:/Kernel/KernelB.HPP.Z,185] sys_var_init_flag for local vars?
 
 * Implement [C:/Kernel/KernelA.HPP.Z,2539] RS_ATTR_FIXED fixed pos files?
-
-* Editor page formatting is FUBAR.
 
 * SIMD in [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ?
 
@@ -399,7 +405,7 @@ once.
 with types besides MOV and F64. 
 
 * Playing with [C:/Demo/Lectures/NegDisp.CPP.Z,1] on
-[C:/Kernel/KernelA.HPP.Z,3321] CTask?
+[C:/Kernel/KernelA.HPP.Z,3318] CTask?
      $=-CTASK_NEG_OFFSET
 offset(CTask.addr)==0
 Spawn(): CAlloc()
@@ -416,11 +422,11 @@ Looks like task_flags,locked_flags cause problems with neg offset.
 * [C:/Kernel/BlkDev/DskDrv.CPP.Z,242] DrvMap() in
 [C:/Adam/ABlkDev/Mount.CPP.Z,137] MountFile().
 
-* Return ress for [C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBlot,
-[C:/Adam/Gr/GrBitMap.CPP.Z,925] GrRect, [C:/Adam/Gr/GrBitMap.CPP.Z,641]
+* Return ress for [C:/Adam/Gr/GrBitMap.CPP.Z,73] GrBlot,
+[C:/Adam/Gr/GrBitMap.CPP.Z,927] GrRect, [C:/Adam/Gr/GrBitMap.CPP.Z,643]
 GrPutChar?
-* Collision cnts for [C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBlot,
-[C:/Adam/Gr/GrBitMap.CPP.Z,925] GrRect, [C:/Adam/Gr/GrBitMap.CPP.Z,641]
+* Collision cnts for [C:/Adam/Gr/GrBitMap.CPP.Z,73] GrBlot,
+[C:/Adam/Gr/GrBitMap.CPP.Z,927] GrRect, [C:/Adam/Gr/GrBitMap.CPP.Z,643]
 GrPutChar?
 
 * [C:/Kernel/SerialDev/Message.CPP.Z,193] GetStr() or
@@ -455,7 +461,7 @@ RS_ATTR_RESIDENT.  [C:/Adam/ABlkDev/ADskA.CPP.Z,232] Touch("","+T");
 
 
                                 Uncategorized
-* DiskCache during FileRead. <CTRL-ALT-c>, [C:/Kernel/KTask.CPP.Z,28] Kill().
+* DiskCache during FileRead. <CTRL-ALT-c>, [C:/Kernel/KTask.CPP.Z,40] Kill().
  
 
 * MOV U8 [RSP+RCX],DL
@@ -503,8 +509,11 @@ Moses gets Aaron			Exodus 4:10-16
 There is no council against the Lord	Proverbs 21:30
 Human help is worthless			Psalm 108:12
 Do not seek your own wealth		1 Corinthians 10:24
+Abundance of Spirits			1 Corinthians 14:12
 The stone rejected is cornerstone	Matthew 21:42
+Egypt rise like flood			Jeremiah 46:7-8
 New wineskins				Mark 2:22
+Thousand songs of Solomon		1 Kings 4:30-32
 
                                   Misc Notes
 Intel CEO's name: Brian Krzanich
@@ -558,7 +567,6 @@ qFeDAsBDeDqCeF2G3sGGeF2sG3C2G3CBCeF
 Cop tying shoe	```
 <center><img src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambridge-county-pd.jpg" width="480" height="376" alt=""></center>
 ```
-Good Time Bad Times Lyrics
 Unikernels
 Handford school
 Look at PCI interrupt routing.
@@ -568,9 +576,11 @@ Lamp shades
 The Original Jewish Temple
 KingJamesBible with LineNums
 Higgs 5-Sigma Proof
+The Number Bleem
 Dwight: Nerd torture
 TOSZ Compression
 ATA/ATAPI spec
+Patton Prayer
 Streaming Terry A. Davis
 
 WWW.OSDEV.ORG

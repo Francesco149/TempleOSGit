@@ -349,7 +349,7 @@ I64 RedSeaAllocClusters(CDrv *dv,I64 cnt)
   return first;
 }
 
-Bool RedSeaDirNew(CDrv *dv,U8 *cur_dir,CDirEntry *de,Bool free_old_chain)
+Bool RedSeaDirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain)
 {
   CDirEntry *buf,*buf2,*ptr,de2;
   CRedSeaBoot *br;
@@ -358,7 +358,7 @@ Bool RedSeaDirNew(CDrv *dv,U8 *cur_dir,CDirEntry *de,Bool free_old_chain)
   U8 *temp,*parent_dir;
   try {
     unlock_break=BreakLock;
-    de->attr|=RS_ATTR_CONTIGUOUS;
+    tempde->attr|=RS_ATTR_CONTIGUOUS;
     unlock=DrvLock(dv);
     cur_dir_cluster=Name2DirCluster(dv,cur_dir);
     buf2=MAlloc(BLK_SIZE);
@@ -374,7 +374,7 @@ Bool RedSeaDirNew(CDrv *dv,U8 *cur_dir,CDirEntry *de,Bool free_old_chain)
     while (TRUE) {
       if (!(ch=*ptr->name)) {
 	if (!written)
-	  MemCpy(&ptr->start,&de->start,CDIR_SIZE);
+	  MemCpy(&ptr->start,&tempde->start,CDIR_SIZE);
 	if ((i+1)*CDIR_SIZE+j<<BLK_SIZE_BITS<dir_size)
 	  WBlks(dv,buf(U8 *)+j<<BLK_SIZE_BITS,cur_dir_cluster+j,1);
 	else {
@@ -418,17 +418,17 @@ Bool RedSeaDirNew(CDrv *dv,U8 *cur_dir,CDirEntry *de,Bool free_old_chain)
 	break;
       } else if (ptr->attr & RS_ATTR_DELETED) {
 	if (!written) {
-	  MemCpy(&ptr->start,&de->start,CDIR_SIZE);
+	  MemCpy(&ptr->start,&tempde->start,CDIR_SIZE);
 	  WBlks(dv,buf(U8 *)+j<<BLK_SIZE_BITS,cur_dir_cluster+j,1);
 	  written=TRUE;
 	}
       } else {
-	if (!StrCmp(de->name,ptr->name)) {
+	if (!StrCmp(tempde->name,ptr->name)) {
 	  if (free_old_chain)
 	    RedSeaFreeClusters(dv,ptr->cluster,
 		  (ptr->size+BLK_SIZE-1)>>BLK_SIZE_BITS);
 	  if (!written)
-	    MemCpy(&ptr->start,&de->start,CDIR_SIZE);
+	    MemCpy(&ptr->start,&tempde->start,CDIR_SIZE);
 	  else
 	    ptr->attr|=RS_ATTR_DELETED;
 	  WBlks(dv,buf(U8 *)+j<<BLK_SIZE_BITS,cur_dir_cluster+j,1);

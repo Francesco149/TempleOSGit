@@ -55,7 +55,7 @@ public U0 GodHexIns(U8 *st)
     buf[1]=0;
     while (*buf=*st++)
       if (Bt(chars_bmp_hex_numeric,*buf))
-	GodBitsIns(4,Str2I64(buf,16));
+	GodBitsIns(4,rev_bits_table[Str2I64(buf,16)]>>4);
   }
 }
 
@@ -82,6 +82,11 @@ public I64 GodInit(U8 *files_find_mask="/Adam/God/Vocab.TXT*",U8 *fu_flags=NULL)
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   if (fuf_flags&~FUG_FILES_FIND)
     throw('FUF');
+
+  Free(god.word_file_mask);
+  god.word_file_mask=StrNew(files_find_mask);
+  god.word_fuf_flags=fuf_flags;
+
   tempde=tempde1=FilesFind(files_find_mask,fuf_flags);
   i=0;
   while (tempde) {
@@ -130,10 +135,17 @@ public I64 GodInit(U8 *files_find_mask="/Adam/God/Vocab.TXT*",U8 *fu_flags=NULL)
   return god.num_words;
 } GodInit;
 
-public U0 GodWord()
+public U0 GodWord(Bool show_num=FALSE)
 {//Make God pick a word. [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit Instructions
-  if (god.num_words)
-    "%s ",god.words[GodBits(17)%god.num_words];
+  I64 i;
+  if (god.num_words) {
+    i=GodBits(17);
+    if (show_num)
+      "%05X Mod %05X = %05X :",i,god.num_words,i%god.num_words;
+    "%s ",god.words[i%god.num_words];
+    if (show_num)
+      '\n';
+  }
 }
 
 public U0 GodPassage(I64 num_lines=20)

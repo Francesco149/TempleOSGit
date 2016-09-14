@@ -99,8 +99,8 @@ displayed.
 stream of code being compiled and 
 must reside in a #exe{} blk.
 
-[C:/Adam/Gr/GrBitMap.CPP.Z,906] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
-[C:/Adam/Gr/GrBitMap.CPP.Z,915] GrVPrint() plots text in graphics 
+[C:/Adam/Gr/GrBitMap.CPP.Z,908] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
+[C:/Adam/Gr/GrBitMap.CPP.Z,917] GrVPrint() plots text in graphics 
 mode.
 
 [C:/Adam/Gr/GrTextBase.CPP.Z,321] TextPrint(CTask *task,I64 x,I64 y,I64
@@ -110,14 +110,14 @@ attr,U8 *fmt,...) plots to [TextBase Layer,1] gr.text_base.
 string.  Note: It returns the res 
 of the last executed expression.
 
-[C:/Adam/AutoFile.CPP.Z,26] AFPrint(I64 mS,U8 *fmt,...)
+[C:/Adam/AutoFile.CPP.Z,26] AFPrint(I64 ms,U8 *fmt,...)
 [C:/Kernel/KeyDev.CPP.Z,20] PutChars()s one at a time with a delay.
 
-[C:/Kernel/KDbg.CPP.Z,217] RawPrint(I64 mS,U8 *fmt,...) sends direct to
+[C:/Kernel/KDbg.CPP.Z,217] RawPrint(I64 ms,U8 *fmt,...) sends direct to
 screen memory, bypassing window 
 manager.
 
-[C:/Kernel/KTask.CPP.Z,394] User(U8 *fmt,...) Spawns a user and execute a
+[C:/Kernel/KTask.CPP.Z,406] User(U8 *fmt,...) Spawns a user and execute a
 string on start-up.
 
 [C:/Kernel/SrvCmd.CPP.Z,398] PopUpPrint(U8 *fmt,...) compiles and execute a

@@ -29,7 +29,7 @@ extern I64 PrsKeyWord(CCmpCtrl *cc);
 extern Bool PrsStmt(CCmpCtrl *cc,I64 try_cnt=0,
 	CCodeMisc *lb_break=NULL,I64 cmp_flags=CMPF_PRS_SEMICOLON);
 extern U0 PrsStreamBlk(CCmpCtrl *cc);
-extern CHashClass *PrsType(CCmpCtrl *cc,CHashClass **tempc1,
+extern CHashClass *PrsType(CCmpCtrl *cc,CHashClass **_tempc1,
 	I64 *_mode,CMemberLst *tempm,U8 **_ident,CHashFun **_fun_ptr,
 	CHashExport **_tempex,CArrayDim *tempad,I64 fsp_flags);
 extern I64 PrsUnaryModifier(CCmpCtrl *cc,CPrsStk *ps,

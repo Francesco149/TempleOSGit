@@ -1,7 +1,7 @@
 U8 *old_font=text.font;
 
 // See [C:/Kernel/FontStd.CPP.Z,1], [C:/Demo/ScreenCodes.CPP.Z,1],
-//[C:/Demo/ExtendedChars.CPP.Z,1], and [C:/Demo/Graphics/FontEd.CPP.Z,1].
+//[C:/Demo/ExtChars.CPP.Z,1], and [C:/Demo/Graphics/FontEd.CPP.Z,1].
 
 U64 waves[4]={
 0x0011AA440011AA44,0x0022558800225588,

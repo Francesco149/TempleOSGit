@@ -140,10 +140,11 @@ revenue.  We will standardize everything, not just the TempleOS related
 items. 
  The display will be 4K (and of course 640x480 16 color) and no others.  
 Everybody gets just one monitor, unless you buy special PCI cards.  Everybody 
-gets two speakers, a headphone, a mic and a webcam.  We make the audio one 
-sample rate and one sample size, but TempleOS still gets just a square wave.  
-(HD Audio is really screwed-up and requires complicated artificial 
-intelligence, just to route output to speakers.)
+gets two speakers, a headphone, a mic, a webcam and touch screen.  We make
+the 
+audio one sample rate and one sample size, but TempleOS still gets just a 
+square wave.  (HD Audio is really screwed-up and requires complicated 
+artificial intelligence, just to route output to speakers.)
 
 The Standard Temple IBM PC will be a full-sized tower.  Perhaps, stain-glass 
 will decorate the case because God is sentimentally attached to
@@ -204,17 +205,17 @@ cognatively small enough to see the light at the end of the tunnel and easily
 master everything.  Therefore, 3rd party ISO files must bring all required 
 software components with them, except what is found in the TempleOS ROM.
 
-The Temple PC will stay unchanged for seven years at a time.  The Bible
-speaks 
-of a seven year release in [C:/Misc/Bible.TXT.Z,15977] Deuteronomy,15:1.  The
-Commodore stayed unchanged 
-for many years and people became intimately familiar with every aspect.
-
 Having all your 3rd party software on separate DVDs or ISO files and TempleOS 
 running from a ROM, keeps it delightfully simple so you have complete 
 understanding of what is going on.  You will have complete confidence and it 
 will be a joy to use.  3rd party applications can store saved data files into 
 your /Home hard drive directory.
+
+The Temple PC will stay unchanged for seven years at a time.  The Bible
+speaks 
+of a seven year release in [C:/Misc/Bible.TXT.Z,15977] Deuteronomy,15:1.  The
+Commodore stayed unchanged 
+for many years and people became intimately familiar with every aspect.
 
 ```
 <object width="640" height="520"><param name="movie"

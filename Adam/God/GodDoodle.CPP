@@ -65,7 +65,7 @@ U0 GodDoodleHexIns(U8 *st)
     buf[1]=0;
     while (*buf=*st++)
       if (Bt(chars_bmp_hex_numeric,*buf))
-	GodDoodleBitsIns(4,Str2I64(buf,16));
+	GodDoodleBitsIns(4,rev_bits_table[Str2I64(buf,16)]>>4);
   }
 }
 

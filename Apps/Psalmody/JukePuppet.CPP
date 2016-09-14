@@ -34,9 +34,7 @@ U0 JukeSongPuppet(CTask *juke_task,I64 passes,I64 song_num,U8 *name)
 
   if (FileExtDot(name))
     FileExtRem(name);
-  while (!TaskValidate(juke_task->popup_task))
-    Sleep(10);
-
+  BirthWait(&juke_task->popup_task);
   TaskWait(juke_task->popup_task);
   PostMsg(juke_task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP+SCF_CTRL);
   TaskWait(juke_task->popup_task);

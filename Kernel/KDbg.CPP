@@ -214,7 +214,7 @@ U0 Da(U8 **addr,I64 cnt=0x10)
   }
 }
 
-U0 RawPrint(I64 mS=100,U8 *fmt,...)
+U0 RawPrint(I64 ms=100,U8 *fmt,...)
 {//Print using [C:/Kernel/KMisc.CPP.Z,243] Raw screen output for a length of time.
 //**Your heap must be good.**
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
@@ -224,14 +224,14 @@ U0 RawPrint(I64 mS=100,U8 *fmt,...)
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
   "%s",buf;
-  BusyWait(mS<<10);
+  BusyWait(ms<<10);
   POPFD
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
   Raw(old_raw);
   Free(buf);
 }
 
-U0 RawD(I64 mS=100,U8 *addr,I64 cnt=0x80)
+U0 RawD(I64 ms=100,U8 *addr,I64 cnt=0x80)
 {//Dumps a block of mem using [C:/Kernel/KMisc.CPP.Z,243] Raw
 //screen output for a fixed length
   //of time.
@@ -241,13 +241,13 @@ U0 RawD(I64 mS=100,U8 *addr,I64 cnt=0x80)
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
   D(addr,cnt);
-  BusyWait(mS<<10);
+  BusyWait(ms<<10);
   POPFD
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
   Raw(old_raw);
 }
 
-U0 RawDm(I64 mS=100,U8 *addr,I64 cnt=0x80)
+U0 RawDm(I64 ms=100,U8 *addr,I64 cnt=0x80)
 {//Dumps a block of mem using [C:/Kernel/KMisc.CPP.Z,243] Raw
 //screen output for a fixed length
   //of time.
@@ -257,7 +257,7 @@ U0 RawDm(I64 mS=100,U8 *addr,I64 cnt=0x80)
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
   Dm(addr,cnt);
-  BusyWait(mS<<10);
+  BusyWait(ms<<10);
   POPFD
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
   Raw(old_raw);

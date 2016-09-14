@@ -23,13 +23,13 @@ public U0 AFGetStr(U8 *st)
   }
 }
 
-public U0 AFPrint(I64 mS=100,U8 *fmt,...)
+public U0 AFPrint(I64 ms=100,U8 *fmt,...)
 {//Print message with delay after each char.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv),*st=buf;
   I64 ch;
   while (ch=*st++) {
     '' ch;
-    Sleep(mS);
+    Sleep(ms);
   }
   Free(buf);
 }
@@ -107,14 +107,14 @@ public I64 AFUntilChar(...)
 
 I64 af_l,af_r;
 
-Bool AFSetIPPlot(I64 mS,I64 x,I64 y,I64 z)
+Bool AFSetIPPlot(I64 ms,I64 x,I64 y,I64 z)
 {
   IPSet(x,y,z,af_l,af_r);
-  Sleep(mS);
+  Sleep(ms);
   return TRUE;
 }
 
-public U0 AFSetIP(I64 mS=7,I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,
+public U0 AFSetIP(I64 ms=7,I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,
 		I64 l=MAX_I64,I64 r=MAX_I64)
 {//Move input pointer (mouse) to spot at certain speed.
   if (!(0<=x<GR_WIDTH))
@@ -128,7 +128,7 @@ public U0 AFSetIP(I64 mS=7,I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,
   if (!(FALSE<=r<=TRUE))
     r=ip.rb;
   af_l=l; af_r=r;
-  Line(mS,ip.pos.x,ip.pos.y,ip.pos.z,x,y,z,&AFSetIPPlot);
+  Line(ms,ip.pos.x,ip.pos.y,ip.pos.z,x,y,z,&AFSetIPPlot);
 }
 
 public Bool AFView()

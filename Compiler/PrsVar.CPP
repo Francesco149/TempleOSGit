@@ -473,7 +473,7 @@ pvl_restart1:
 	goto pvl_restart1;
     }
 
-    if (cc->token==TK_DOT_DOT_DOT && mode.u8[1]==PRS1B_FUN_ARG) {
+    if (cc->token==TK_ELLIPSIS && mode.u8[1]==PRS1B_FUN_ARG) {
       PrsDotDotDot(cc,tempc,_reg);
       goto pvl_done;
     }

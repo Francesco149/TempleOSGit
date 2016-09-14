@@ -16,14 +16,17 @@ global vars in AOT modules is they can't be initialized.
 never need.  They're to allow the same header file for Kernel to act as extern
 s when compiling itself and imports when compiled by AOT modules.
 
-[C:/Kernel/KernelA.HPP.Z,1538] OPTf_WARN_UNUSED_VAR	warning if unused var. 
+[C:/Kernel/KernelA.HPP.Z,1537] OPTf_WARN_UNUSED_VAR	warning if unused var. 
 It is applied to functions.
 
-[C:/Kernel/KernelA.HPP.Z,1539] OPTf_WARN_PAREN		warning if parenthesis are
+[C:/Kernel/KernelA.HPP.Z,1538] OPTf_WARN_PAREN		warning if parenthesis are
 not needed.
 
-[C:/Kernel/KernelA.HPP.Z,1540] OPTf_WARN_DUP_TYPES	warning if dup local var
+[C:/Kernel/KernelA.HPP.Z,1539] OPTf_WARN_DUP_TYPES	warning if dup local var
 type stmts.
+
+[C:/Kernel/KernelA.HPP.Z,1540] OPTf_WARN_HEADER_MISMATCH warning if fun
+header does not match.
 
 [C:/Kernel/KernelA.HPP.Z,1543] OPTf_NO_REG_VAR forces all function local vars
 to the stk not regs.  Applied 

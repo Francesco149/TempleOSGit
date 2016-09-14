@@ -66,14 +66,14 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/Games/Maze.CPP.Z,1]
   [C:/Demo/Games/CharDemo.CPP.Z,1]
   [C:/Demo/Graphics/FontEd.CPP.Z,1]
-  [C:/Demo/ExtendedChars.CPP.Z,1]
+  [C:/Demo/ExtChars.CPP.Z,1]
   [C:/Demo/TimeIns.CPP.Z,1]
   [C:/Demo/Snd/WaterFowl.CPP.Z,1]
   ::/Apps/Psalmody/Examples
 `Cd("::/Apps/Psalmody/Examples");Dir;View;
 `
 
-  [C:/Demo/MultiCore/RateCores.CPP.Z,1]
+  [C:/Adam/DevInfo.CPP.Z,193] CPURep
   [C:/Demo/MultiCore/MPPrint.CPP.Z,1]
   [C:/Demo/Graphics/PredatorPrey.CPP.Z,1]
   [C:/Demo/Graphics/Cartesian.CPP.Z,1]
