@@ -998,6 +998,7 @@ gr_done:
 
 #help_index "Graphics;Graphics/Device Contexts"
 
+Option(OPTf_WARN_HEADER_MISMATCH,OFF);
 public I64 GrBlot3(CDC *dc=gr.dc,I64 x1,I64 y1,I64 z1,CDC *img)
 {//3D. Clipping and transformation.
   CColorROPU32 old_color=dc->color;
@@ -1211,6 +1212,7 @@ gr_done:
   dc->brush=old_brush;
   return res;
 }
+Option(OPTf_WARN_HEADER_MISMATCH,ON);
 
 #help_index "Graphics"
 

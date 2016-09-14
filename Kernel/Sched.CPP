@@ -300,7 +300,7 @@ U0 TaskQueIns(CTask *task,CTask *pred=NULL)
 
 U0 TaskQueRem(CTask *task)
 {//Remove a task from the scheduler running task queue.
-//Use [C:/Kernel/KTask.CPP.Z,45] Suspend().
+//Use [C:/Kernel/KTask.CPP.Z,57] Suspend().
   CTask *next,*last;
   PUSHFD
   CLI

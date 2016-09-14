@@ -154,11 +154,36 @@ CMemberLst *MemberLstNew(I64 _reg)
   return res;
 }
 
-U0 MemberLstDel(CHashClass *tempc)
+Bool  MemberLstCmp(CMemberLst *tempm1,CMemberLst *tempm2,I64 cnt=MAX_I64)
 {
-  CMemberLst *tempm,*tempm1;
+  while (tempm1 && tempm2 && cnt--) {
+    if (StrCmp(tempm1->str,tempm2->str) ||
+	  tempm1->member_class!=tempm2->member_class ||
+	  tempm1->member_class_base!=tempm2->member_class_base)
+      return FALSE;
+    if (tempm1->flags&MLF_DFT_AVAILABLE || tempm2->flags&MLF_DFT_AVAILABLE) {
+      if (tempm1->flags&(MLF_DFT_AVAILABLE|MLF_STR_DFT_AVAILABLE)!=
+	    tempm2->flags&(MLF_DFT_AVAILABLE|MLF_STR_DFT_AVAILABLE))
+	return FALSE;
+      if (tempm1->flags&MLF_STR_DFT_AVAILABLE) {
+	if (StrCmp(tempm1->dft_val,tempm2->dft_val))
+	  return FALSE;
+      } else if (tempm1->dft_val!=tempm2->dft_val)
+	return FALSE;
+    }
+    tempm1=tempm1->next;
+    tempm2=tempm2->next;
+  }
+  if (cnt<0 || !tempm1 && !tempm2)
+    return TRUE;
+  else
+    return FALSE;
+}
+
+U0 MemberLstDel(CMemberLst *tempm)
+{
+  CMemberLst *tempm1;
   CMemberLstMeta *temp_meta,*temp_meta1;
-  tempm=tempc->member_lst_and_root;
   while (tempm) {
     tempm1=tempm->next;
     Free(tempm->str);
@@ -179,6 +204,11 @@ U0 MemberLstDel(CHashClass *tempc)
     Free(tempm);
     tempm=tempm1;
   }
+}
+
+U0 ClassMemberLstDel(CHashClass *tempc)
+{
+  MemberLstDel(tempc->member_lst_and_root);
   tempc->size=0;
   tempc->last_in_member_lst=&tempc->member_lst_and_root;
   tempc->member_lst_and_root=NULL;

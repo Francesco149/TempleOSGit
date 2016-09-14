@@ -34,7 +34,7 @@ CCmpCtrl *CmpCtrlNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
   CLexFile *tempf;
   QueInit(cc);
   cc->flags=flags;
-  cc->opts=1<<OPTf_WARN_UNUSED_VAR;
+  cc->opts=1<<OPTf_WARN_UNUSED_VAR|1<<OPTf_WARN_HEADER_MISMATCH;
   cc->htc.hash_mask=HTG_TYPE_MASK-HTT_IMPORT_SYS_SYM;
   cc->htc.define_hash_table=cc->htc.hash_table_lst=
 	cc->htc.glbl_hash_table=cc->htc.local_hash_table=Fs->hash_table;
@@ -1066,7 +1066,7 @@ lex_ifjit:
 lex_dot_dot:
 	  cc->token=TK_DOT_DOT;
 	  if (LexGetChar(cc)=='.')
-	    cc->token=TK_DOT_DOT_DOT;
+	    cc->token=TK_ELLIPSIS;
 	  else
 	    cc->flags|=CCF_USE_LAST_U16;
 	  goto lex_end;

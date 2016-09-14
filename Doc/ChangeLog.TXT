@@ -2,7 +2,25 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----07/26/16 13:03:11----
+----09/13/16 19:26:58----
+
+----09/06/16 13:01:42----
+* Added [C:/Kernel/KernelA.HPP.Z,1540] OPTf_WARN_HEADER_MISMATCH.
+* Changed [C:/Kernel/Display.CPP.Z,110] WinInside().
+* Got rid of MSG_FOCUS, MSG_MOVE, and MSG_SIZE.  There are no longer messages 
+for moving and sizing windows.
+
+----09/06/16 02:40:43----
+* Improved [C:/Demo/MagicPairs.CPP,1].
+
+----08/27/16 09:45:39----
+* Improved [C:/Adam/DevInfo.CPP.Z,193] CPURep().
+* Improved [C:/Misc/OSTestSuite.CPP,1].
+* Added [C:/Kernel/KTask.CPP.Z,28] BirthWait() and [C:/Kernel/KTask.CPP.Z,34]
+DeathWait().
+
+----08/22/16 04:14:47----
+* [C:/Home/HomeWrappers.CPP.Z,13] R("TK_DOT_DOT_DOT","TK_ELLIPSIS");
 
 ----07/17/16 13:03:12----
 * Improved [C:/Adam/DolDoc/DocOpt.CPP.Z,109] DocOpt().
@@ -19,7 +37,7 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 * Added 1 Gig page table support.
 
 ----07/13/16 17:21:19----
-* Added [C:/Demo/MultiCore/RateCores.CPP,1].
+* Added multicore report to [C:/Adam/DevInfo.CPP.Z,193] CPURep().
 
 ----07/09/16 08:46:36----
 * Changed scoring in [C:/Demo/Games/EagleDive.CPP,1].
@@ -43,7 +61,7 @@ relative filenames work.
 ----07/05/16 06:03:47----
 * **TempleOS version 4.09 Released**
 * Improved [C:/Demo/Games/EagleDive.CPP,1].
-* Improved [C:/Adam/Gr/GrPrimatives.CPP.Z,1397] GrFillTri0().
+* Improved [C:/Adam/Gr/GrPrimatives.CPP.Z,1399] GrFillTri0().
 
 ----07/03/16 04:30:05----
 * Added [C:/Adam/ABlkDev/Mount.CPP.Z,132] Unmount().
@@ -78,7 +96,7 @@ RunFile(), [C:/Compiler/CMain.CPP.Z,667] RunFile2() and
 
 ----06/23/16 01:03:36----
 * Added [C:/Adam/Gr/GrPrimatives.CPP.Z,390] GrFillCircle().
-* Added [C:/Adam/Gr/GrBitMap.CPP.Z,1812] GrVLine() and
+* Added [C:/Adam/Gr/GrBitMap.CPP.Z,1814] GrVLine() and
 [C:/Adam/Gr/GrPrimatives.CPP.Z,650] GrLineFat3().
 
 ----06/18/16 16:16:22----
@@ -259,7 +277,7 @@ automatically from the compiler's class information.
 * Added tag edit to main sprite edit menu.
 
 ----02/01/16 21:01:15----
-* Cleaned-up [C:/Kernel/KTask.CPP.Z,498] TaskKillDying().
+* Cleaned-up [C:/Kernel/KTask.CPP.Z,510] TaskKillDying().
 * Made multicore more professional.
 
 ----02/01/16 06:02:41----
@@ -301,7 +319,7 @@ automatically from the compiler's class information.
 * Added [C:/Demo/ToHtmlToTXTDemo/HtmlGen.CPP,1] and 
 [C:/Demo/ToHtmlToTXTDemo/TXTGen.CPP,1].
 * Now, [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() doesn't save with
-[C:/Kernel/KernelA.HPP.Z,3513] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3505] CH_CURSOR.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
 * Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to

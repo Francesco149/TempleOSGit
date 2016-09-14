@@ -94,7 +94,7 @@ tall.CPP.Z or Install.AUT.Z to create the /Home subdirectory.
 * Virtual mem/Paging is not used -- it is identity mapped in x86_64 mode. 
 The 
 stk does not grow, so alloc enough when the task (process) is
-[C:/Kernel/KTask.CPP.Z,210] Spawned and use 
+[C:/Kernel/KTask.CPP.Z,222] Spawned and use 
 the heap for most things.  (The heap refers to
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() and
 [C:/Kernel/Mem/MAllocFree.CPP.Z,383] Free().)
@@ -149,7 +149,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HPP.Z,3518] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HPP.Z,3510] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Opt/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
 
@@ -189,9 +189,9 @@ case you wish to make hash table sizes bigger.
 
 See [C:/Doc/Asm.TXT.Z,1].
 
-* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3321] CTask.
+* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3318] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3446] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3438] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/KUtils.CPP.Z,445] SET_FS_BASE and

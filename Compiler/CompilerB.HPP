@@ -24,6 +24,7 @@ public extern Bool Trace(Bool val=ON);
 
 #help_index "Compiler/Lex"
 #help_file "::/Doc/Lex"
+extern U0 ClassMemberLstDel(CHashClass *c);
 public extern U0 CmpCtrlDel(CCmpCtrl *cc);
 public extern CCmpCtrl *CmpCtrlNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL);
 public extern I64 CmpCtrlSize(CCmpCtrl *cc);
@@ -55,12 +56,11 @@ public extern U0 LexWarn(CCmpCtrl *cc,U8 *str=NULL);
 extern CMemberLst *MemberClassBaseFind(
 	CHashClass *needle_class,CHashClass *haystack_class);
 public extern CMemberLst *MemberFind(U8 *needle_str,CHashClass *haystack_class);
-extern U0 MemberLstDel(CHashClass *c);
+extern U0 MemberLstDel(CMemberLst *tempm);
 public extern I64 MemberMetaData(U8 *st,CMemberLst *ml);
 public extern CMemberLstMeta *MemberMetaFind(U8 *st,CMemberLst *ml);
 public extern CHashClass *OptClassFwd(CHashClass *tempc);
 public extern I64 PrsKeyWord(CCmpCtrl *cc);
-
 #help_index "Compiler;Cmd Line (Typically)"
 extern I64 Cmp(U8 *filename,
 	U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv_let=0);

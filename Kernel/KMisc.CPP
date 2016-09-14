@@ -152,12 +152,12 @@ U0 SleepUntil(I64 wake_jiffy)
   LBEqu(&Fs->task_flags,TASKf_IDLE,old_idle);
 }
 
-U0 Sleep(I64 mS)
+U0 Sleep(I64 ms)
 {//Not for power-saving.  It is to make a program pause without hogging the CPU.
-  if (!mS)
+  if (!ms)
     Yield;
   else
-    SleepUntil(cnts.jiffies+mS*JIFFY_FREQ/1000);
+    SleepUntil(cnts.jiffies+ms*JIFFY_FREQ/1000);
 }
 
 U0 Snd(F64 freq)

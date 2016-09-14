@@ -58,6 +58,7 @@ public extern U8 *StrPrintFlags(U8 *dst,U8 *lst,I64 flags);
 #help_index "Char/Lists"
 public extern I64 LstMatch(U8 *needle, U8 *haystack_lst,I64 flags=0);
 public extern U8 *LstSub(I64 sub, U8 *lst);
+
 #help_index "Char/Operations"
 public extern U8 *MStrPrint(U8 *fmt,...);
 public extern U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0);
@@ -217,10 +218,10 @@ public extern CHash *FunSegFind(U8 *addr,I64 *_offset);
 #help_index "Debugging/Raw Output"
 public extern Bool IsRaw();
 public extern Bool Raw(Bool val);
-public extern U0 RawD(I64 mS=100,U8 *addr,I64 cnt=0x80);
-public extern U0 RawDm(I64 mS=100,U8 *addr,I64 cnt=0x80);
+public extern U0 RawD(I64 ms=100,U8 *addr,I64 cnt=0x80);
+public extern U0 RawDm(I64 ms=100,U8 *addr,I64 cnt=0x80);
 extern U0 RawDr(CTask *task=NULL);
-public extern U0 RawPrint(I64 mS=100,U8 *fmt,...);
+public extern U0 RawPrint(I64 ms=100,U8 *fmt,...);
 public extern U0 RawPutChar(I64 ch);
 public extern U0 VGAFlush();
 
@@ -347,7 +348,7 @@ public extern Bool DrvUnlock(CDrv *dv,Bool rst=FALSE);
 public extern U0 DrvsRelease();
 extern U0 FAT32FreeClusters(CDrv *dv,I64 c);
 public extern CBlkDev *Let2BlkDev(U8 drv_let=0,Bool except=TRUE);
-public extern I64 Let2BlkDevType(U8 drv_let=0);
+public extern I64 Let2BlkDevType(U8 drv_let);
 public extern CDrv *Let2Drv(U8 drv_let=0,Bool except=TRUE);
 extern I64 Name2DirCluster(CDrv *dv,U8 *dirname);
 extern I64 Name2ParentDirCluster(CDrv *dv,U8 *dirname);
@@ -482,7 +483,7 @@ extern CSrvCmd sys_macro_head;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3788] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3780] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -576,7 +577,6 @@ public extern U0 QSortI64(I64 *base,I64 num,
 
 #help_index "Misc/Progress Bars"
 public extern U0 ProgressBarsRst();
-
 #help_index "MultiCore"
 extern U0 Core0StartMP();
 extern U0 CoreAPSethTask();
@@ -632,6 +632,8 @@ public extern CSndGlbls snd;
 #help_file "::/Doc/Streams"
 
 #help_index "Task"
+public extern U0 BirthWait(CTask **_task,I64 task_num=-1);
+public extern U0 DeathWait(CTask **_task);
 public extern U0 Exit();
 public extern Bool IsSuspended(CTask *task=NULL);
 public extern Bool Kill(CTask *task,Bool wait=TRUE);
@@ -656,14 +658,14 @@ public extern U0 PortNop(); //On the order of 1uS
 extern I64 TimeStampFreqCal();
 
 #help_index "Task/Delay;Time/Jiffies"
-public extern U0 Sleep(I64 mS);
+public extern U0 Sleep(I64 ms);
 public extern U0 SleepUntil(I64 wake_jiffy);
 
 #help_index "Task/Misc"
 extern U0 (*fp_update_ctrls)(CTask *task);
 public extern U0 TSSBusy(I64 tr,Bool val=OFF);
 public extern U0 TaskDerivedValsUpdate(CTask *task=NULL,Bool update_z_buf=TRUE);
-public extern U0 WinDerivedValsUpdate(CTask *task=NULL);
+public extern U0 WinDerivedValsUpdate(CTask *task);
 
 #help_index "Task/Srv"
 #help_file "::/Doc/TaskSrv"
@@ -752,6 +754,6 @@ public extern Bool Blink(F64 Hz=2.5);
 public extern F64 tS(); //From SysTimerFreq.
 
 #help_index "Windows"
-public extern Bool WinInside(I64 x,I64 y,CTask *task=NULL,Bool border=FALSE);
+public extern Bool WinInside(I64 x,I64 y,CTask *task=NULL,I64 border=0);
 
 #help_index ""

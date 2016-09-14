@@ -117,7 +117,7 @@ public Bool BootMHDIns(U8 drv_let,U8 *drv_lst=NULL)
 	  _q++;
 	}
       }
-      CatPrint(menu_ptr,"\n\rSellection:");
+      CatPrint(menu_ptr,"\n\rSelection:");
 
       size=BMHD2_END-BMHD2_START;
       FileWrite(BOOT_DIR_BOOTMHD2_BIN_C,BMHD2_START,size);

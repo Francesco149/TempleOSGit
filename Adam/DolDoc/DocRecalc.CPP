@@ -278,7 +278,7 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
 
   //WinMgr updates all wins 30, 33.33333mS
   if (recalc_flags&RECALCG_MASK==RECALCt_TO_SCREEN && doc->owning_task!=Fs) {
-    i_jif=cnts.jiffies+JIFFY_FREQ/250; //4 mS
+    i_jif=cnts.jiffies+JIFFY_FREQ/250; //4 ms
     while (Bt(&doc->locked_flags,DOClf_LOCKED)) {
       if (cnts.jiffies>=i_jif)
 	return FALSE; //Bail-out if doc locked.
