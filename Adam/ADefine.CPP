@@ -11,8 +11,8 @@ U0 LoadDocDefines()
   //This is cut and replaced when I generate a distro.
   //See [C:/Demo/AcctExample/TOSDistro.CPP,1] DD_TEMPLEOS_LOC.
   -] LineRep
-      DefinePrint("DD_TEMPLEOS_LOC","120,540");
-    DefinePrint("DD_TEMPLEOS_LOC_OFFICIAL","81,208");
+      DefinePrint("DD_TEMPLEOS_LOC","120,541");
+    DefinePrint("DD_TEMPLEOS_LOC_OFFICIAL","81,209");
     
   DefinePrint("DD_KERNEL","%08X",bfh);
   bfh(I64)+=bfh->file_size-1;

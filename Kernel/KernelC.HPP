@@ -577,6 +577,7 @@ public extern U0 QSortI64(I64 *base,I64 num,
 
 #help_index "Misc/Progress Bars"
 public extern U0 ProgressBarsRst();
+
 #help_index "MultiCore"
 extern U0 Core0StartMP();
 extern U0 CoreAPSethTask();
@@ -729,7 +730,6 @@ extern U8 *MPrintTime(CDate cdt);
 public extern CDate Now();
 public extern CDate Struct2Date(CDateStruct *_ds);
 public extern CDate local_time_offset;
-
 #help_index "Time/Date;Date"
 #help_file "::/Doc/Date"
 public extern I64 DayOfWeek(I64 i);

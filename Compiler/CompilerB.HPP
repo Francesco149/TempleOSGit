@@ -61,6 +61,7 @@ public extern I64 MemberMetaData(U8 *st,CMemberLst *ml);
 public extern CMemberLstMeta *MemberMetaFind(U8 *st,CMemberLst *ml);
 public extern CHashClass *OptClassFwd(CHashClass *tempc);
 public extern I64 PrsKeyWord(CCmpCtrl *cc);
+
 #help_index "Compiler;Cmd Line (Typically)"
 extern I64 Cmp(U8 *filename,
 	U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv_let=0);
@@ -71,7 +72,6 @@ public extern U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,
 	I64 *_jmp_dst=NULL,Bool just_ins=FALSE);
 public extern I64 Un(U8 *ip,I64 cnt=0x80,I64 seg_size=64);
 extern CUAsmGlbls uasm;
-
 #help_index "Hash/System"
 public extern I64 HashEntrySize(CHashSrcSym *temph);
 public extern I64 HashEntrySize2(CHashSrcSym *temph);
