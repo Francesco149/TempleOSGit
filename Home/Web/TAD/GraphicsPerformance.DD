@@ -1,0 +1,27 @@
+                             Graphics Performance
+
+God said 640x480 16 color is a covenant like circumcision.  Our goal is code 
+that is simple and transparent.  GPU is banned.  We want algorithms in the 
+open and available for study.
+
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/geYBLxYEITo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/geYBLxYEITo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+If you wish to improve the most critical code, study this:
+
+[C:/Demo/Games/Talons.HC.Z,1]
+
+[C:/Demo/Games/CastleFrankenstein.HC.Z,1]
+
+[C:/Adam/Gr/GrPrimatives.HC.Z,1397] GrFillTri0()
+
+[C:/Adam/Gr/GrBitMap.HC.Z,1664] GrHLine() [C:/Adam/Gr/GrBitMap.HC.Z,1833]
+GrVLine()
+
+

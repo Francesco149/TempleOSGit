@@ -1,0 +1,65 @@
+                              TempleOS App Store
+
+Software is distributed as [C:/Doc/RedSea.DD.Z,1] RedSea ISO files.  Burn a
+CD/DVD, or set your 
+CD/DVD in QEMU, VMware or VirtualBox to the ISO file.  Then, access the 'T' 
+drive.  Or, [C:/Adam/ABlkDev/Mount.HC.Z,138] Mount() the ISO.C file and
+access the 'M' drive in TempleOS.  It 
+must be a contiguous ISO.C file, so rename it under TempleOS to ISO.C.
+
+Ideally, do not install applications such as games onto your hard drive 
+because we wish to keep hard drive usage low, so the whole 'C' drive can be 
+copied quickly to 'D'.  Also, the [C:/Adam/ABlkDev/FileMgr.HC.Z,594]
+FileMgr() <CTRL-d> starts too slowly when 
+there are lots of hard drive files, but that is how we want it.
+
+
+* Free	[C:/Home/Web/AppStore/Frotz.DD,1] Frotz (Text Adventure) by Jack
+Whitham.
+
+* Free	Julia Fractel by pcorey.
+
+* Free	MegaMan by Trampler Sheikhs.
+
+* Free	SimpleCalc by Shawn Anastasio.
+
+* Free	TempleTetris by Plotr Olszewski.
+
+* Free	[C:/Home/Web/AppStore/TerryQEMU.DD,1] Terry Distro QEMU by Terry A.
+Davis.
+
+* Free	[C:/Home/Web/AppStore/TerryVMware.DD,1] Terry Distro VMware by Terry
+A. Davis.
+
+* Free	Unix-like Shell by Shawn Anastasio.
+
+
+                         Submitting Apps to the Store
+
+3rd party libraries are banned, since they circumvent the 100,000 line of
+code 
+limit in the [C:/Doc/Charter.DD.Z,1] TempleOS Charter.  All applications must
+only depend on the core 
+TempleOS files and whatever they bring along in the ISO.  This is similar to 
+how Commodore 64 applications only depended on the ROM.
+
+Create a [C:/Doc/RedSea.DD.Z,1] RedSea ISO file with
+[C:/Adam/Opt/Boot/DskISORedSea.HC.Z,136] RedSeaISO().  Send an email to 
+tdavis@templeos.org if you want me to post a link to your TempleOS code in
+the 
+App Store.
+
+* "Commodore 64" is a trademark owned by Polabe Holding NV.
+* "QEMU" is a trademark owned by Fabrice Bellard.
+* "VMware" is a trademark owned by VMware, Inc.
+* "VirtualBox" is a trademark owned by Oracle.
+
+
+                           T-Shirts, Hats and Mugs
+
+```
+<img src="http://www.templeos.org/Wb/Home/Web/Imgs/Gear2387x2849.jpg"
+width="477" height="569" alt="">
+```
+
+Supposedly, there is a guy on E-Bay selling TempleOS merchandise.  It's okay.

@@ -1,0 +1,24 @@
+=========================== Perfect Coin Toss ==================================
+Our goal is to pick a random bible passage with a certified random number that
+can be verified just like checking lottery numbers.
+ 
+To a white scientist, the National Institute of Standards random numbers are
+obviously trustworthy.	A stupid person doesn't know the difference between the
+National Institute of Standards and a tabloid.
+ 
+Security at NIST.
+ 
+Here's how I explain to a stupid person:
+Lottery every week:		Arizona Lottery
+Lottery once every 60 seconds:	NIST Randomness Beacon
+ 
+To check a random Bible passage that I quote:
+1) Enter the time of the lottery into Unix Timestamp Tool.
+2) Form a URL by adding "https://beacon.nist.gov/rest/record/"+timestamp number.
+For example: https://beacon.nist.gov/rest/record/1415440980
+3) Take the first 5 hex digits from "Output".
+4) Convert to decimal.
+5) Divide by 100091 and take remainder.
+6) Add one.
+7) Go to that line in the KingJamesBible.
+================================================================================

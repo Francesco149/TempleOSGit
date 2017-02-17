@@ -1,0 +1,23 @@
+                              TempleOS App Store
+
+
+* Free	Frotz (Text Adventure) by Jack Whitham.
+	Download demo.iso
+
+	!!! Warning !!!  This package must be copied to hard disk and moded.
+	>[C:/Home/HomeWrappers.HC.Z,13] R("FRBlks","FBlkRead");
+	>[C:/Home/HomeWrappers.HC.Z,13] R("FWBlks","FBlkWrite");
+
+	VMware: Set CDROM to /home/tad/Downloads/demo.iso
+	>DskChg('T');
+	>#include "Frotz.CPP"
+	>Advent;
+
+	QEMU: Change to monitor using <CTRL-ALT-2>
+	#info block
+	#eject ide1-cd0
+	#change ide1-cd0 /home/tad/Downloads/demo.iso
+	Change back <CTRL-ALT-1>
+	>DskChg('T');
+	>#include "Frotz.CPP"
+	>Advent;

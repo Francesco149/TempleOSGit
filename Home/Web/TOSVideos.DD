@@ -1,0 +1,159 @@
+                        TempleOS Instructional Videos
+
+The keys that I press are shown in the upper right corner during the videos.
+
+    Tour				Not Really StdIn/StdOut
+    VMware Install and Making Distro    Benchmark: VMware,VirtualBox,QEMU
+    Holy C				Highlight of Features
+    Using the Debugger			Kernel Algorithms
+    Neil deGrasse Tyson --------------> Naughty Fun with Internals
+    Compiler/Assembler/Unassembler	Establishing My Geek Credentials
+    Filter Search			Divine Intellect Operating System
+    Demands on the Industry		ClassRep() ClassRepD() & lastclass
+    Take-Down of Linus Torvalds		Why TempleOS Better than Linux
+#1: Beginner Orientation		Hello World
+#2: Beginner Orientation		Demo Index
+    Graphics: Triangle Fill
+    Intro to Graphics			<CTRL-r> Graphic Editing
+    FileFind() Usage			Random Numbers and Seed()
+    StdIn StdOut			Command-Line Tricks
+    Programming Guide			Adam, Command-Line and Linkage
+    FAQ					PrintF/ScanF
+    Using the Assembler			Asm Prog Example
+    Memory				Start-Up Code
+    Tasks, Threads and Processes	MultiCore
+    CS Lectures in TempleOS		Spin-Locks
+    ATA/ATAPI HardDisk CD/DVD-ROM Code	FAT32 Code
+    Binary Files Not ELF		Graphics Code
+#1: Making Asteroids Game		#1: Making Hymns
+#2: Making Asteroids Game		#2: Making Hymns
+#3: Making Asteroids Game		#3: Making Hymns
+#1: Making an O.S. from Scratch		#2: Making an O.S. from Scratch
+
+                                TempleOS Games
+#01: Titanium, FlapBat, BomberGolf and Strut.
+#02: TreeCheckers.  (Net-Wars)
+#03: KeepAway and FlatTop.
+#04: BattleLines.
+#05: FlightSim, First Person Shooter.
+#06: X-Caliber, RawHide, Wenceslas.
+#07: Span bridge design.
+#08: ToTheFront.
+#09: BlackDiamond.
+#10: Pilgrim.
+#11: Stadium.  Beginner demo game.
+#12: RocketScience.  Advanced demo game.
+#13: SimStructure (Windows Control System Simulator Application)
+
+
+                        5-Minute Random Code Walk-Thru
+#001: Compiler back-end.  Floating-point.
+#002: Document node to plain text.
+#003: Debugger.  Caller().
+#004: Sound effects.
+#005: Document entry copy.
+#006: Graphic bitmap blot.
+#007: Compiler optimizer pass 0,1,2.
+#008: HD audio task.
+#009: LZW compression, expansion routine.
+#010: FindFiles DirTreeDel().
+#011: Compiler back-end library ICMov().
+#012: Graphic sprite editor main menu.  Width.
+#013: Compiler lexical analyser.  #ifndef.
+#014: Compiler lexical analyser.  LexDollar().
+#015: Compiler back-end.  Assign.
+#016: Song.  Struggles.
+#017: Psalmody.  Graphic layers.
+#018: Web log report.
+#019: CD/DVD ISO.
+#020: Song.  Keeping.
+#021: AfterEgypt.  The mountain.
+#022: BattleLines.  Init().
+#023: X-Caliber.  Draw explosion.
+#024: Coach tee-ball game.
+#025: EdLite.
+#026: Compiler stmt parser.  ClassNew().
+#027: ModelGen.  Draw man.
+#028: Shading ball demo.
+#029: Graphics init globals.
+#030: Budget.  String file.
+#031: Archived code. IDE that was removed.
+#032: Demo.  Conway's game of life.
+#033: Kernel disk code.  Read clus blocks.
+#034: Debugger. Set breakpoint.
+#035: Compiler optimizer pass 0,1,2. IC_XOR_XOR.
+#036: DunGen game.  Init().
+#037: Document main.  Right click menu.
+#038: Web log report.  Block IP numbers.
+#039: Song.  Furnishing.
+#040: Document link check.
+#041: Kernel header.  KernelA.
+#042: Song.  Awake.
+#043: Graphics sprite bitmap editor.
+#044: Graphics bitmap.  GrRect().
+#045: Compiler back-end.  Floating-point conversion.
+#046: String utilities.  Assembly StrIMatch().
+#047: Song.  Keeping.
+#048: Spell check.  Suggested spelling demo.
+#049: Lectures.  Time instruction.  Cached vs Uncached.
+#050: Document Recalc-b.
+#051: Psalmody.  PopUpDuration().
+#052: Graphics sprite mesh editor.
+#053: Game.  RawHide.
+#054: Multicore demo.  LoadTest.
+#055: Util DC2Doc.  Screen captured BMP to text.
+#056: Graphics sprite editor.  Sprite edit menu.
+#057: Kernel disk code.  Disk cache invalidate.
+#058: Demo.  Pick3D.
+#059: CtrlBttnNew().
+#060: Demo.  Tower of Hanoi.
+#061: Demo.  Fish tank wallpaper.
+#062: Compiler optimization library.  BrNotZero/BrZero.
+#063: Graphic sprite editor.  Convert to bitmap.
+#064: Kernel header KernelA.  Compiler member list.
+#065: Slider managed code.
+#066: Game AfterEgypt.  Horeb.  Walking around on mountain top.
+#067: Demo. Pick3D.
+#068: TS distribution code.  Make TempleOS website.
+#069: Compiler optimizer library.  BrZero BrNotZero.
+#070: Kernel FAT32 driver.
+#071: Kernel header file KernelC.
+#072: Demo game.  Talons.
+#073: TestSuite for GrModels.
+#074: Kernel disk CFile.  FSetClus().  FOpen().
+#075: Demo.  Pick.
+#076: Graphics math.  Circle().
+#077: Compiler back-end.  Floating point += -= /= %=.
+#078: Compiler lexical analyzer.  Near LexGetChar().
+#079: Kernel servant command.  In() Xtalk().
+#080: Code tools.  Reindent.
+#081: Document.  <Ctrl-l>
+#082: Game app.  Strut.
+#083: Document optimizer.  FilesFind().
+#084: Song.  Dialog.
+#085: Kernel disk code.  RedSea file system.  DrvValidate().
+#086: Graphics math.  BSpline3().
+#087: Kernel header KernelA.  Whole thing.
+#088: Song.  Exiled.
+#089: Kernel datatypes.  Queue.  Fifo.  LinkedList.  QueVector.
+#090: MemRep.  Disk structures.
+#091: Compiler back-end.  Exponent operator.
+#092: Demo.  Pick3D
+#093: Song.  Signifies.
+#094: Kernel ScanKey().
+#095: Editor.  EdCursorRight().
+#096: Compiler parse global var initializing.
+#097: Game.  TreeCheckers.
+#098: Game.  Rocket.
+#099: Graphics math.  GrFillTri0().
+#100: Kernel disk identify HD/DVD port numbers.  ATAProbe().
+#101: Song.  Bedewed.
+#102: Graphics SpriteTypeMask().
+#103: Document DocPutS().
+#104: Game app.  ToTheFront.
+
+Old TempleOS Instructional Videos
+
+
+* "VMware" is a trademark owned by VMware, Inc.
+

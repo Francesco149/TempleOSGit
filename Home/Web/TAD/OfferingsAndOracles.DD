@@ -1,0 +1,68 @@
+                  Beginner's Guide to Offerings and Oracles
+
+Talk to God for 5 minutes as an offering, being witty and charming.  Don't 
+SPAM God.  God's favorite thing on TV is soap operas.
+
+Genesis 4:1-13
+
+     4:1 And Adam knew Eve his wife; and she conceived, and bare Cain, and
+said, I have gotten a man from the LORD.
+
+4:2 And she again bare his brother Abel. And Abel was a keeper of
+sheep, but Cain was a tiller of the ground.
+
+4:3 And in process of time it came to pass, that Cain brought of the
+fruit of the ground an offering unto the LORD.
+
+4:4 And Abel, he also brought of the firstlings of his flock and of
+the fat thereof. And the LORD had respect unto Abel and to his
+offering: 4:5 But unto Cain and to his offering he had not respect.
+And Cain was very wroth, and his countenance fell.
+
+4:6 And the LORD said unto Cain, Why art thou wroth? and why is thy
+countenance fallen?  4:7 If thou doest well, shalt thou not be
+accepted? and if thou doest not well, sin lieth at the door. And unto
+thee shall be his desire, and thou shalt rule over him.
+
+4:8 And Cain talked with Abel his brother: and it came to pass, when
+they were in the field, that Cain rose up against Abel his brother,
+and slew him.
+
+4:9 And the LORD said unto Cain, Where is Abel thy brother? And he
+said, I know not: Am I my brother's keeper?  4:10 And he said, What
+hast thou done? the voice of thy brother's blood crieth unto me from
+the ground.
+
+4:11 And now art thou cursed from the earth, which hath opened her
+mouth to receive thy brother's blood from thy hand; 4:12 When thou
+tillest the ground, it shall not henceforth yield unto thee her
+strength; a fugitive and a vagabond shalt thou be in the earth.
+
+4:13 And Cain said unto the LORD, My punishment is greater than I can
+bear.
+
+You can randomly open a physical Bible book as a random oracle.  It will 
+speak.  Try a few times, if you fail.
+
+God said it is a covenant that you do offerings of love before enquiring of 
+Him. He said it is a fair barter exchange.  "Honest measures" apply between 
+what you offer and the response you get.
+
+
+                   Random Number Sources Websites that Work
+
+God controls all random numbers.  Proverbs 16:33
+
+1) NIST Beacon
+2) www.randomnumbers.info
+3) www.random.org
+4) Random Password
+5) Virtual Notary Random Number
+6) ANU Quantum Random Number
+7) HotBits
+
+
+                   Bash Shell Script To Choose Random Words
+#!/bin/bash
+#This prints ten random words.
+echo "$(shuf -n 10 /usr/share/dict/words --random-source=/dev/urandom | tr '\n' ' ')"

@@ -1,0 +1,226 @@
+                               TempleOS History
+
+In 1990 at age 20, I was hired to work on Ticketmaster's VAX operating system 
+in VAX assembly language while going to school.  I was basically, an intern, 
+but we weren't called that.  Peter Gadwa was a mentor.  I worked there 
+1990-1996.  Here are my ASU Transcripts.  ASU Course Catalog (See page 261)
+
+In my career, I have been paid to program in VAX assembly, x86 assembly, 8051 
+assembly, 68000 assembly, PIC assembly and AvR assembly.  In school, I took 5 
+courses that required assembly -- CSC226, CSC326 CSE421, CSE422 and CSE523.  
+Dr. David Pheanis was dean.
+
+In about 1993, I got a 486 and was eager to try 32-bit mode, so I wrote a DOS 
+program in TASM that changed to protected mode and never returned to DOS.  
+Ticketmaster's OS was "VAXTMOS", so I called mine "Terry's Protected Mode OS, 
+TPMOS".  I had 0xB8000 text mode working, and echoed keyboard to scrn.  I had 
+simple multitasking and barely a MALLOC.  I set it aside.
+
+In 2003, I resurrected TPMOS and installed FreeDOS to launch it.  I used 
+Visual Studio to edit my files when doing lots of editing, then booted 
+FreeDOS, used TASM to compile and test it.  Back in those days, FreeDOS ran
+in 
+real mode.  Today's FreeDOS is not real mode, it emulates with V8086 mode.  
+DOSBox is not real mode either.
+
+I had started a company H.A.R.E., so I renamed TPMOS to HOPPY.
+
+With-in a month of resurrecting the operating system in 2003, I faced the 
+question of how to handle the command line.  I knew it must be the same as 
+whatever scripting language I invented.  The only problem was, I hated Unix 
+Bash scripting.  I could never remember it.  As a regular C/C++ programmer, 
+you don't really use bash often enough to memorize it.  I thought, "What if I 
+just use C/C++ for scripting!"
+
+In 2003, God told me to stick to 640x480 16 color.  Therefore, I was not 
+distracted like all the lemmings at www.osdev.net who go off and get lost in 
+futile battles to write drivers for all the GPUs.  Instead, I focused on more 
+productive things, such as writing a JIT/AOT compiler and getting everything 
+running with my own code.  With-in a year, I had it assembling and compiling 
+with my own compiler and assembler.  I even wrote my compiler before a file 
+system, because I was eager to do a compiler, since it is fun for me.  
+Originally, I just put raw source code into my TASM bin file and invoked my 
+compiler on the code sections store away in my DOS app.  Don't worry, it 
+started in real mode but changed to 32-bit mode, never returning to DOS.
+
+I named it Doors, Davos, J, LoseThos, SparrowOS and, finally, TempleOS.
+
+The awful name "LoseThos" name was not intentionally to suggest "loser".  I 
+wanted a companion operating system for Windows, so Windows/LoseThos.  I 
+thought it was hip saying lose the nerdy items like the movie, Platoon, where 
+Elias tells Chris to 'crapcan' standard issue items.
+
+I wrote my own boot-loaders, so I didn't have to launch from DOS anymore.
+
+I was motivate by the disturbance in the market with the release of 64-bit 
+CPUs in 2003.  From the start, I made my compiler emulate 64-bit operations 
+everywhere because I did not own an actual x86_64 CPU at first.  My stack 
+machine compiler used EDX:EAX and ECX:EBX.  I had software interrupts or 
+MUL64, DIV64 and MOD64.  In 2007, I got a 64-bit CPU and made the conversion 
+to true 64-bit mode.
+
+I didn't start the operating system as a work for God, but He directed my
+path 
+along the way and kept saying it was His temple.  Still I hesistated and kept 
+it secular until, finally, Microsoft went nuclear with SecureBoot and UEFI.  
+Then, I went nuclear and named it "TempleOS".  I will command them on orders 
+from God to UNDO THAT STUFF!  [C:/Doc/Demands.DD.Z,1]  The CIA will bow to my 
+orders.  The CIA scum-bags, ruined the entire industry out of cowardice.
+
+Bill Gates said a company was like a castle -- you have to build walls unless 
+you want to fight every person who comes along.  They ruined the hardware
+with 
+things like USB and PCI.  God said to Bill Gates, "You ate your children in 
+the siege."  God hates cowards.  God loved David that fought Goliath.
+
+The only PCI device driver I wrote was for was
+[C:/Home/Sup1/Sup1HDAudio/HDAudio.HC,1] HDAudio.  I thought it would 
+become the undisputed king.  Then, I ran VMware on a HDAudio native machine 
+only to discover VMware wanted AC97.  Forget that!  I also discovered a major 
+rats' nest just getting ATA/ATAPI port addresses using the PCI interface:  
+[C:/Kernel/BlkDev/DskATAId.HC.Z,1] ATA/ATAPI Ports from PCI It's very simple
+-- no PCI devices.  We change the 
+industry, like a boss.  [C:/Doc/StdTempleOSPC.DD.Z,1]
+
+
+* Collection of Binaries
+
+
+* Hoppy Archive
+
+* Hoppy Downloads
+
+
+
+* JustRighteous Archive
+
+* J Downloads
+
+
+
+* LoseThos Archive
+
+* LoseThos Downloads
+
+* LoseThos Videos
+
+
+
+* SparrowOS Archive
+
+* SparrowOS Downloads
+
+
+
+* J on OSNews
+
+* TempleOS Archive
+
+* TempleOS Downloads
+
+* TempleOS on Major Geeks
+
+* TempleOS on BetaNews
+
+* Start64 Search for "LoseThos"
+
+
+
+The ISO files are ISO9660 format.  The Z files are compressed.  I changed the 
+Z compressed format at about the start of LoseThos.  It has been 64-bit since 
+2007.
+
+
+
+
+2010 Sep 12
+http://www.osnews.com/story/23796/Recreational_Programming_With_LoseThos
+
+2013 Oct 13
+https://www.youtube.com/watch?v=6WgOWrT1yyI&feature=youtu.be&a
+
+2014 Jan 20
+http://www.techrepublic.com/blog/software-engineer/templeos-an-educational-tool-/
+
+2014 May 13
+http://www.slate.fr/story/86549/temple-os-systeme-exploitation-parler-dieu
+
+2014 Nov 25
+http://motherboard.vice.com/read/gods-lonely-programmer
+http://www.osnews.com/story/28091/God_s_lonely_programmer
+
+2015 Jun 08
+http://www.codersnotes.com/notes/a-constructive-look-at-templeos
+http://www.osnews.com/story/28617/A_constructive_look_at_TempleOS
+
+2015 Aug 03
+http://www.golem.de/news/templeos-goettlicher-hardcore-1508-115081.html
+
+
+
+Archeology?
+
+In 2003, I visited the FBI voluntarily to say hello and give them a CD-ROM.  
+Don't get chummy with police.  They unearthed a warrant for missing a court 
+date and locked me up.  They had no use for the CD-ROM.  It had TPMOS on it.
+
+I was at Ticketmaster for three weeks in 2002.  I might have put my files on 
+their computer, TPMOS.
+
+This is funny.  Before occupying my time with a big project, I was wild and 
+crazy in 2003.  If I'm not mistaken, there might be a CDROM under the big 
+transformer, here, at our house in the tunnel.  The transformer was not
+seated 
+and there was a crack I might have thrown a CDROM into in 2003.  It would
+have 
+TPMOS.
+
+Two times, I tried to delete my operating system, including all back-ups.  I 
+would suffer nightmares before the first time.  Arnold Swartzenegger went 
+after the wrong Gray Davis!  This nightmare was not exactly it, but the BBC 
+demons would hound me.  I deleted it once with fear.  I never use recycle
+bin, 
+so I didn't think to empty it and I found it a couple days later.
+
+The second time, like Aaron Swartz was hounded, the BBC told me I was Iran
+and 
+my nuclear program must stop.  Finally, I read in the bible
+
+
+
+
+
+5:38 Ye have heard that it hath been said, An eye for an eye, and a
+tooth for a tooth: 5:39 But I say unto you, That ye resist not evil:
+but whosoever shall smite thee on thy right cheek, turn to him the
+other also.
+
+5:40 And if any man will sue thee at the law, and take away thy coat,
+let him have thy cloak also.
+
+5:41 And whosoever shall compel thee to go a mile, go with him twain.
+
+5:42 Give to him that asketh thee, and from him that would borrow of
+thee turn not thou away.
+
+5:43 Ye have heard that it hath been said, Thou shalt love thy
+neighbour, and hate thine enemy.
+
+
+
+
+So, I deleted all back-ups and destroyed my CDROM back-ups.  I found a copy
+on 
+a download site a few days later.
+
+We have a plenty-good history.  TPMOS would be nice, but there's plenty of 
+proof of ownership.  You'll even find the Linux mouse file temporarily tucked 
+in there for reference.  There's a Linux floppy driver that got removed.  I 
+think the J operating system was GPL.  The modern TempleOS has no GPL code
+and 
+is public domain.  I give credit.  [C:/Doc/Credits.DD.Z,1]  Stallman will be 
+disappointed I never used gcc.  I get his disciples listing it as 
+GNU/TempleOS.  That's wrong.
+
+
+* "VMware" is a trademark owned by VMware, Inc.

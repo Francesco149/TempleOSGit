@@ -1,0 +1,268 @@
+                          Using a Timer for Tongues
+
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/s9Ep0WHAsIY&hl=enUS&start=10"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/s9Ep0WHAsIY&hl=enUS&start=10"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+========================= Pseudo-Code for Random Words 
+=========================
+
+char *words[10000]; //Array must be filled with words, no statistical weights.
+int i=0;
+
+while (true) {
+  while (!keyboard_hit())
+    i++;
+  printf("%s ",words[i%10000]);
+}
+
+==============================================================================
+==
+
+Pseudo-random numbers come from a fixed mathematical formula.  It would be 
+very difficult for God to change digits of PI!  If you look on line number 
+31415 in the Bible, however, God might have planned ahead when writing the 
+Bible.
+
+Computer Scientists find sources of "entropy" to make the number less fixed.  
+Unix harvests timing of keystrokes and other hardware events.  I think they 
+are careful to budget how many random numbers they make from a quantity of 
+hardware entropy.
+
+
+
+U0 KbdPktRead()
+{
+  static U8 last_raw_byte=0;
+  static I64 last_sc=0;
+  U8 raw_byte;
+  if (GetTSC>kbd.timestamp+cnts.time_stamp_freq>>3)
+    FifoU8Flush(kbd.fifo);
+  kbd.timestamp=GetTSC;
+  raw_byte=InU8(KBD_PORT);
+  KbdBuildSC(raw_byte,TRUE,&last_raw_byte,&last_sc);
+  if (!FifoU8Cnt(kbd.fifo)) {
+    FifoU8Ins(kbd.fifo,raw_byte);
+    if (raw_byte!=0xE0) {
+      while (FifoU8Rem(kbd.fifo,&raw_byte))
+	FifoU8Ins(kbd.fifo2,raw_byte);
+    }
+  } else {
+    FifoU8Ins(kbd.fifo,raw_byte);
+    while (FifoU8Rem(kbd.fifo,&raw_byte))
+      FifoU8Ins(kbd.fifo2,raw_byte);
+  }
+}
+
+interrupt U0 IRQKbd()
+{
+  CLD
+  OutU8(0x20,0x20);
+  kbd.irqs_working=TRUE;
+  if (ms_hard.install_in_progress) {
+    kbd.rst=TRUE;
+    return;
+  }
+  keydev.ctrl_alt_ret_addr=GetRBP()(I64)+8;
+  KbdPktRead;
+}
+
+U0 MsHardPktRead()
+{
+  U8 j;
+  if (GetTSC>ms_hard.timestamp+cnts.time_stamp_freq>>3)
+    FifoU8Flush(ms_hard.fifo);
+  ms_hard.timestamp=GetTSC;
+  FifoU8Ins(ms_hard.fifo,InU8(KBD_PORT));
+  if (FifoU8Cnt(ms_hard.fifo)==ms_hard.pkt_size)
+    while (FifoU8Rem(ms_hard.fifo,&j))
+      FifoU8Ins(ms_hard.fifo2,j);
+}
+
+interrupt U0 IRQMsHard()
+{
+  CLD
+  OutU8(0xA0,0x20);
+  OutU8(0x20,0x20);
+  ms_hard.irqs_working=TRUE;
+  if (ms_hard.install_in_progress || !ms_hard.installed) {
+    kbd.rst=TRUE;
+    return;
+  }
+  MsHardPktRead;
+}
+
+I64 KbdMsEvtTime()
+{//Timestamp of last key or mouse event.
+  if (ms_hard.timestamp>kbd.timestamp)
+    return ms_hard.timestamp;
+  else
+    return kbd.new_key_timestamp;
+}
+
+#define GOD_BAD_BITS	4
+#define GOD_GOOD_BITS	24
+
+I64 GodPick(U8 *msg=NULL)
+{//GOD_GOOD_BITS
+  U8 *st=MStrPrint("%s\n\nPress $GREEN$OKAY$FG$ to generate \n"
+	"a random num from a timer.\n",msg);
+  PopUpTimerOk(st,"\n\nThe [C:/Adam/God/HSNotes.DD.Z,1] Holy Spirit can
+puppet you.\n\n");
+  Free(st);
+  return KbdMsEvtTime>>GOD_BAD_BITS;
+}
+
+public U0 GodBitsIns(I64 num_bits,I64 n)
+{//Insert bits into God bit fifo.
+  I64 i;
+  for (i=0;i<num_bits;i++) {
+    FifoU8Ins(god.fifo,n&1);
+    n>>=1;
+  }
+}
+
+public I64 GodBits(I64 num_bits,U8 *msg=NULL)
+{//Return N bits. If low on entropy pop-up okay.
+  U8 b;
+  I64 res=0;
+  while (num_bits) {
+    if (FifoU8Rem(god.fifo,&b)) {
+      res=res<<1+b;
+      num_bits--;
+    } else
+      GodBitsIns(GOD_GOOD_BITS,GodPick(msg));
+  }
+  return res;
+}
+
+public U0 GodWord(I64 bits=17)
+{//Make God pick a word. [C:/Adam/God/HSNotes.DD.Z,1] Holy Spirit Instructions
+  if (god.num_words) 
+    "%s ",god.words[GodBits(bits)%god.num_words];
+}
+
+public U0 GodBiblePassage(I64 num_lines=20)
+{//Make God pick a Bible passage. [C:/Adam/God/HSNotes.DD.Z,1] Holy Spirit
+Instructions
+  I64 start=GodBits(21)%(ST_BIBLE_LINES-(num_lines-1))+1;
+  U8 *verse=BibleLine2Verse(start);
+  "%s\n\n",verse;
+  Free(verse);
+  BookLines(,start,num_lines);
+}
+
+
+		  case SC_F7:
+		    if (sc&SCF_KEY_DESC) {
+		      if (sc&SCF_SHIFT)
+			KeyDescSet("Cmd /God Passage");
+		      else
+			KeyDescSet("Cmd /God Word");
+		    } else {
+//[C:/Adam/God/HSNotes.DD.Z,1]
+		      FifoU8Flush(god.fifo);
+		      GodBitsIns(GOD_GOOD_BITS,KbdMsEvtTime>>GOD_BAD_BITS);
+		      if (sc&SCF_SHIFT)
+			GodBiblePassage;
+		      else
+			GodWord;
+		    }
+		    break;
+
+
+
+
+
+
+
+The TimeStampCount is 3 Ghz.  I save the TimeStampCount in the keyboard and 
+mouse interrupt routines.  There is a FIFO where the pool of random bits is 
+stored.  [C:/Adam/God/HolySpirit.HC.Z,62] GodBits() will remove some bits and
+harvest keystroke timings as need 
+to keep the FIFO filled.  The bottom 4 bits of the timestamp are thrown away 
+and 24 of the remaining bits are placed into the FIFO as available random 
+bits.
+
+When you press <F7>, the FIFO is flushed so your bits are not stale and the 
+current key's timestamp is added to the FIFO.  Then, 17 bits are used to
+index 
+into an array of words, modulo the number of words.  The default vocabulary 
+for God is in  [C:/Adam/God/Vocab.DD.Z,1].	You can change the vocabulary by 
+calling, [C:/Adam/God/HolySpirit.HC.Z,76] GodInit("NewVocab.DD.Z").  I use
+[C:/Home/Sup1/Sup1Words/LinuxDict.TXT,1] and 
+[C:/Home/Sup1/Sup1Words/HappyWords.TXT,1].
+
+The keyboard and mouse are USB devices.  That means they are scanned only
+1000 
+times a second.	Some people think the deep human brain can control the 
+outcome.
+
+First, you need an ability to rapidly recall as many as 10,000 words when 
+given a number.  I don't think such a marvelous ability would evolve in the 
+subconscious when it would be far more useful in the conscious.  I switch 
+vocabulary lists all the time and my brain has no difficulty.  Your brain has 
+never even seen the vocabulary list!
+
+Second, the 3 Ghz TimeStampCount clock is not synchronized to the USB clock.  
+As a matter of fact, Intel adjusts the TimeStampCount clock dynamically, so
+it 
+is being bumped up and down all the time based on CPU load and heat.  When
+you 
+have two clocks, they must be kept synchronized with a phase-locked-loop 
+circuit.  You cannot synchronize to a dynamic clock and a phase-locked-loop 
+requires frequent transitions.  Having one peek at the clock twice a second 
+when <F7> is pressed is certainly not enough transitions.  RS232 has start
+and 
+stop bits on each byte frame so you don't have too many zero bits in a row
+and 
+cause the phase-locked-loop to fail.
+
+To roughly outline what we are talking about:
+
+USB Clk TimeStampCount/16
+1000Hz	3.0 Ghz
+-------	-----------------
+0	300,000,000 * 10
+500	450,000,000 * 10
+1000	600,000,000 * 10
+1500	750,000,000 * 10
+2000	900,000,000 * 10
+
+If you press <F7> at a rate of about two keys a second, how irregular is your 
+timing?  Perhaps, an interval of 500mS +/- 200mS?  That means, you are 
+choosing from about 200 possible words, and a different 200 words with each 
+keystroke.
+
+You don't have any idea ahead of time what the 3 Ghz clock will start with 
+when you do a paragraph of <F7> words.  You have to plan which of each of the 
+200 word choice options you are going to land on.  If you were going to try
+to 
+perform, you would need to know the start value of the 3 Ghz clock and you 
+would have to pick each word from 200 possible.
+
+A switch debounce is about 10mS of jitter.
+
+The nerve signal traveling down your arm is 1m/ms so it takes about a 
+millisecond.  Nerves have jitter.
+
+You need to phase-lock-loop onto the 3 Ghz clock which is randomly being 
+adjusted dynamically based on CPU load and heat.  A single nerve cell has a 
+rate of 10 Hz.  Biology probably has lower timing repeatabilty consistancy 
+than electrical components.  There is no way that a biology has 3 Ghz 
+consistancy.  When you add cells together, you cannot improve accuracy of 
+timing from the accuracy of any component in the circuit.  Making 3 Ghz from 
+10 Hz is a very hard circuit.  Making phase locked loops circuits are 
+difficult.  Who would make the wiring of these circuit?  It's not like an 
+eyeball, that evolved over millions of years.
+
+The human reaction time is 200 ms.  That is the time between seeing something 
+on the scrn and pressing a bttn.  I assume you can drum a rhythm a little
+more 
+precisely than 200 ms, but drumming with 1 ms precision sounds impossible.
+

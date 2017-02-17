@@ -1,0 +1,48 @@
+                              TempleOS App Store
+
+
+If you want to be like Terry A. Davis, this video shows how to make your 
+VMware set-up pretty close.  Otherwise, use the standard /Home files.
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/CYWTXCiuLUI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/CYWTXCiuLUI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+
+In TempleOS, run the following command after you have downloaded all these
+ISO 
+files and it will automate the process.
+
+>TOSStdIns;
+
+
+* Free	Supplemental ISO #1 by Terry A. Davis
+	Contents of Supplemental ISO #1.
+
+	VMware: Set CDROM to /home/tad/Downloads/TempleOSSup1.ISO.C
+	>DskChg('T');
+	>CopyTree("T:/","C:/Home/Sup1");
+
+* Free	www.templeos.org ISO by Terry A. Davis
+
+	VMware: Set CDROM to /home/tad/Downloads/TempleOSWeb.ISO.C
+	>DskChg('T');
+	>CopyTree("T:/","C:/Home/Web");
+
+* Free	Books ISO #1 (16.4 MB) by Terry A. Davis
+	Contents of Books ISO #1.
+
+	VMware: Set CDROM to /home/tad/Downloads/TempleOSBooks1.ISO.C
+	>DskChg('T');
+	>CopyTree("T:/","C:/Home/Books1");
+
+* Free	Books ISO #2 (18.7 MB) by Terry A. Davis
+	Contents of Books ISO #2.
+
+	VMware: Set CDROM to /home/tad/Downloads/TempleOSBooks2.ISO.C
+	>DskChg('T');
+	>CopyTree("T:/","C:/Home/Books2");
