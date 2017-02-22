@@ -1,0 +1,343 @@
+//Uses [C:/Demo/Lectures/FixedPoint.HC.Z,1] fixed-point.
+
+#define CO_PERSON	1
+#define CO_TENT	2
+
+class Obj
+{
+  I64 x,y,z;
+  I64 dx,dy,dz;
+  I64 type;
+};
+
+#define PEOPLE_NUM	1024
+#define TENT_RATIO	40
+#define TENTS_NUM	(PEOPLE_NUM/TENT_RATIO+1)
+
+
+
+
+
+
+	/* <1> <1> (image) */
+
+
+
+
+
+	/* <2> <2> (image) */
+
+
+
+
+
+	/* <3> <3> (image) */
+
+
+
+
+
+	/* <4> <4> (image) */
+
+
+
+
+
+	/* <5> <5> (image) */
+
+
+
+
+
+	/* <6> <6> (image) */
+
+U8	*right_imgs[4]={__BIN_2,__BIN_1,__BIN_3,__BIN_1},
+	*left_imgs[4]={__BIN_5,__BIN_4,__BIN_6,__BIN_4};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/* <7> <7> (image) */
+
+U8 *tent_img=__BIN_7;
+
+
+	/* <8> <8> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* <9> <9> (image) */ //Pointer to sprite in [D:/Git/Mountain.HC,1] Mountain.HC file
+
+I64 num_objs;
+Obj objs[PEOPLE_NUM+TENTS_NUM];
+Obj camp_view_pt;
+
+#define CAMP_WIDTH	600
+#define CAMP_SCALE	300
+#define CAMP_Z_CLIP	10
+
+U0 CTransform(CDC *dc,I64 *_x,I64 *_y,I64 *_z)
+{
+  I64 x=*_x-camp_view_pt.x,y=*_y-camp_view_pt.y,z=*_z-camp_view_pt.z;
+  Mat4x4MulXYZ(dc->r,&x,&y,&z);
+  if (z<0) {
+    x=x*-CAMP_SCALE/z;
+    y=y*-CAMP_SCALE/z;
+  }
+  *_x=dc->x+x;
+  *_y=dc->y-y;
+  *_z=dc->z-z;
+}
+
+I64 mp_not_done_flags;
+I64 cx,cy,*r1; //could put these in a record and pass in
+F64 frame;
+I32 *depth_buf;
+U0 MPDrawMeeting(CTask *task)
+{
+  CDC *dc=DCAlias(gr.dc2,task);
+  F64 s;
+  U8 *img,*img1,*img2;
+  I64 i,x,y,z,*r2,*old_r=dc->r,
+	lo= Gs->num   *num_objs/mp_cnt,
+	hi=(Gs->num+1)*num_objs/mp_cnt;
+  dc->flags|=DCF_TRANSFORMATION;
+  dc->depth_buf=depth_buf;
+  dc->x=cx;
+  dc->y=cy;
+  dc->z=0;
+  dc->transform=&DCTransform;
+  for (i=lo;i<hi;i++) {
+    DCMat4x4Set(dc,r1);
+    dc->x=cx;
+    dc->y=cy;
+    dc->z=0;
+    x=objs[i].x.i32[1];
+    y=objs[i].y.i32[1];
+    z=objs[i].z.i32[1];
+    CTransform(dc,&x,&y,&z);
+    if (z>CAMP_Z_CLIP) {
+      s=0.5*ToF64(CAMP_SCALE)/z;
+      if (objs[i].type==CO_PERSON) {
+	if (objs[i].dx>=0) {
+	  img1=right_imgs[(i+ToI64(frame))&3];
+	  img2=right_imgs[(i+ToI64(frame)+1)&3];
+	} else {
+	  img1=left_imgs[(i+ToI64(frame))&3];
+	  img2=left_imgs[(i+ToI64(frame)+1)&3];
+	}
+	img=SpriteInterpolate(frame%1.0,img1,img2);
+      } else
+	img=tent_img;
+
+      r2=Mat4x4New(old_r);
+      Mat4x4Scale(r2,s);
+      DCMat4x4Set(dc,r2);
+      Sprite3B(dc,x,y,z,img);
+      Free(r2);
+      if (objs[i].type==CO_PERSON)
+	Free(img);
+    }
+  }
+  dc->r=old_r;
+  dc->depth_buf=NULL;
+  DCDel(dc);
+  LBtr(&mp_not_done_flags,Gs->num);
+}
+
+U0 DrawMeeting(CTask *task,CDC *dc)
+{
+  static Bool calf=FALSE,determined=FALSE;
+
+  I64 i,x,y,z,*r2,*old_r;
+  F64 s;
+
+  frame=4.0*Saw(tS,0.5);
+  cx=task->pix_width/2;
+  cy=task->pix_height/2;
+
+  camp_view_pt.x=0;
+  camp_view_pt.y=200-100*Sin(tS);
+  camp_view_pt.z=225+100*Cos(tS);
+
+  DCDepthBufAlloc(dc);
+  depth_buf=dc->depth_buf;
+  r1=Mat4x4IdentNew(task);
+  Mat4x4RotX(r1,23.0*pi/180.0);
+  old_r=dc->r;
+
+  dc->transform=&CTransform;
+  dc->x=cx;
+  dc->y=cy;
+  dc->z=0;
+  DCMat4x4Set(dc,r1);
+
+  x=0;y=0;z=-16*CAMP_WIDTH;
+  dc->transform(dc,&x,&y,&z);
+  Sprite3(dc,0,y,0,__BIN_9);
+  dc->flags|=DCF_TRANSFORMATION;
+
+  dc->color=LTGRAY;
+  GrLine3(dc,-CAMP_WIDTH/2,0,0,CAMP_WIDTH/2,0,0,6);
+  GrLine3(dc,-CAMP_WIDTH/2,0,-CAMP_WIDTH,CAMP_WIDTH/2,0,-CAMP_WIDTH,6);
+  GrLine3(dc,-CAMP_WIDTH/2,0,0,-CAMP_WIDTH/2,0,-CAMP_WIDTH,6);
+  GrLine3(dc,CAMP_WIDTH/2,0,0,CAMP_WIDTH/2,0,-CAMP_WIDTH,6);
+
+  dc->transform=&DCTransform;
+
+  if (tS%10<5) {
+    calf=FALSE;
+    determined=FALSE;
+  } else {
+    if (!determined) {
+      determined=TRUE;
+      if (RandU16<U16_MAX/2)
+	calf=TRUE;
+    }
+  }
+
+  if (calf) {
+    x=0;
+    y=0;
+    z=-CAMP_WIDTH/2;
+    CTransform(dc,&x,&y,&z);
+    s=0.5*ToF64(CAMP_SCALE)/z;
+    r2=Mat4x4New(old_r,task);
+    Mat4x4Scale(r2,s);
+    DCMat4x4Set(dc,r2);
+    Sprite3B(dc,x,y,z,__BIN_8);
+    Free(r2);
+  }
+
+  mp_not_done_flags=1<<mp_cnt-1;
+  for (i=0;i<mp_cnt;i++)
+    JobQue(&MPDrawMeeting,task,i);
+
+  DCMat4x4Set(dc,old_r);
+  while (mp_not_done_flags)
+    Yield;
+  Free(r1);
+
+  if (calf && Blink(4.0)) {
+    dc->color=LTRED;
+    GrPrint(dc,cx-(15*FONT_WIDTH)/2,cy-3*FONT_HEIGHT,"!!Golden Calf!!");
+  }
+}
+
+#define SPEED_MAX	2<<32
+
+U0 AnimateTask(I64)
+{
+  I64 i,x,z,dx,dz;
+  F64 d;
+  while (TRUE) {
+    Refresh;
+    for (i=0;i<num_objs;i++)
+      if (objs[i].type==CO_PERSON) {
+	if (tS%10<5) {
+	  objs[i].dx+=RandI32;
+	  objs[i].dz+=RandI32;
+	} else {//Form circle
+	  x=CAMP_WIDTH/4*Cos((1.0+1.0/TENT_RATIO)*i*pi*2/num_objs);
+	  z=CAMP_WIDTH/4*Sin((1.0+1.0/TENT_RATIO)*i*pi*2/num_objs)-CAMP_WIDTH/2;
+	  dx=x-objs[i].x.i32[1];
+	  dz=z-objs[i].z.i32[1];
+	  d=Sqrt(SqrI64(dx)+SqrI64(dz));
+	  objs[i].dx=SPEED_MAX*(dx/d);
+	  objs[i].dz=SPEED_MAX*(dz/d);
+	}
+	objs[i].dx=ClampI64(objs[i].dx,-SPEED_MAX,SPEED_MAX);
+	objs[i].dy=ClampI64(objs[i].dy,-SPEED_MAX,SPEED_MAX);
+	objs[i].dz=ClampI64(objs[i].dz,-SPEED_MAX,SPEED_MAX);
+	objs[i].x+=objs[i].dx;
+	objs[i].y+=objs[i].dy;
+	objs[i].z+=objs[i].dz;
+	if (objs[i].x.i32[1]<-CAMP_WIDTH>>1) {
+	  objs[i].x=-CAMP_WIDTH>>1<<32;
+	  objs[i].dx=-objs[i].dx;
+	}
+	if (objs[i].x.i32[1]>CAMP_WIDTH>>1) {
+	  objs[i].x=CAMP_WIDTH>>1<<32;
+	  objs[i].dx=-objs[i].dx;
+	}
+	if (objs[i].z.i32[1]<-CAMP_WIDTH) {
+	  objs[i].z=-CAMP_WIDTH<<32;
+	  objs[i].dz=-objs[i].dz;
+	}
+	if (objs[i].z.i32[1]>0) {
+	  objs[i].z=0;
+	  objs[i].dz=-objs[i].dz;
+	}
+      }
+    Sleep(20);
+  }
+}
+
+U0 Camp(I64 num_people=100)
+{
+  I64 i,j=0,num_tents;
+
+  if (num_people>PEOPLE_NUM)
+    num_people=PEOPLE_NUM;
+
+  MemSet(objs,0,sizeof(objs));
+  for (i=0;i<num_people;i++) {
+    objs[j].x=(RandU32%CAMP_WIDTH-CAMP_WIDTH>>1)<<32;
+    objs[j].y=0;
+    objs[j].z=-(RandU32%CAMP_WIDTH)<<32;
+    objs[j].type=CO_PERSON;
+    j++;
+  }
+  num_tents=(num_people+TENT_RATIO-1)/TENT_RATIO;
+  for (i=0;i<num_tents;i++) {
+    objs[j].x=(RandU32%CAMP_WIDTH-CAMP_WIDTH>>1)<<32;
+    objs[j].y=0;
+    objs[j].z=-(RandU32%CAMP_WIDTH)<<32;
+    objs[j].type=CO_TENT;
+    j++;
+  }
+  num_objs=j;
+
+  SettingsPush(Fs,TSF_SAME_SONG); //See [C:/Adam/TaskSettings.HC.Z,3] SettingsPush
+  Fs->text_attr=YELLOW<<4+WHITE; //bk/fg
+  AutoComplete;
+  DocCursor;
+  DocClear;
+  try {
+    Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
+    Fs->draw_it=&DrawMeeting;
+
+    GetChar;
+  } catch
+    PutExcept;
+  SettingsPop(Fs,TSF_SAME_SONG);
+}
+
+#if __CMD_LINE__
+WinBorder;
+WinMax;
+Camp;
+#endif

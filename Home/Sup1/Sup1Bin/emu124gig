@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#Start QEMU for 124 Gig use.
+
+qemu-system-x86_64 -hda ~/qemu_disk.qcow2 -machine kernel_irqchip=off -smp cores=24 -enable-kvm -cpu host -m 126976 -rtc base=localtime -soundhw pcspk
+

@@ -4,6 +4,6 @@
 
 echo Mix Wav
 cd ~/Tmp/Mov
-ffmpeg -i ./ScreenShots/Video.flv -i Audio.wav Movie.flv
+ffmpeg -i ./ScrnShots/Video.flv -i Audio.wav Movie.flv
 
 

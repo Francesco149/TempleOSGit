@@ -6,8 +6,8 @@ cd ~/Downloads
 rm access.log
 wget "http://www.templeos.org/Tmp/access.log"
 ~/TAD/Bin/vb_mnt
-mkdir /mnt/vb_disk/Temp
-mkdir /mnt/vb_disk/Temp/Logs
-mv ~/Downloads/a*.log /mnt/vb_disk/Temp/Logs
+mkdir /mnt/vb_disk/Tmp
+mkdir /mnt/vb_disk/Tmp/Logs
+mv ~/Downloads/a*.log /mnt/vb_disk/Tmp/Logs
 ~/TAD/Bin/vb_umnt
 

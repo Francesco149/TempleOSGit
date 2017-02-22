@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#Transfer my /Home song files into QEMU.
+
+~/TAD/Bin/emu_mnt
+rm -R /mnt/qemu_disk/Home/Sup1/Sup1Hymns
+rm -R /mnt/qemu_disk/Home/Sup1/Sup1Songs
+cp -R --preserve=timestamps ~/TAD/Home/Sup1/Sup1Hymns /mnt/qemu_disk/Home/Sup1
+cp -R --preserve=timestamps ~/TAD/Home/Sup1/Sup1Songs /mnt/qemu_disk/Home/Sup1
+~/TAD/Bin/emu_umnt
+

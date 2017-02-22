@@ -1,0 +1,31 @@
+//5 has graphics
+   /*  <1> (image) */
+
+
+
+
+
+
+
+U0 Song()
+{
+  Fs->task_end_cb=&SndTaskEndCB;
+  MusicSettingsRst;
+  music.tempo=2.5;
+  try {
+    while (!ScanKey) {
+      Play("5etCFC4qG5DsGDGD4qG5C4sG5D4G5D4G5D4G5D");
+      Play("5etCFC4qG5DsGDGD4qG5C4sG5D4G5D4G5D4G5D");
+      Sprite(__BIN_1);
+      "$CM,0,8$";
+      Play("4qG5E4A5E4A5DFC",
+	    " \0Off \0 \0to \0 \0yon\0der \0star.\n\0");
+      Play("4G5E4A5E4A5DFC",
+	    " \0Damn! \0 \0It's \0 \0ver\0y \0far.\n\0");
+    }
+  } catch
+    PutExcept;
+  Snd;
+}
+
+Song;
