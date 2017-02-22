@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#Make TOSZ
+
+echo Make TOSZ
+cp ~/TAD/Site1/Wb/Linux/TOSZ.CPP ~/TAD/Bin
+cd ~/TAD/Bin
+cc TOSZ.CPP -o TOSZ
+chmod 777 TOSZ
+
+
+

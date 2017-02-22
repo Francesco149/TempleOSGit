@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#Transfer my /Home song files into VMware.
+
+~/TAD/Bin/vm_mnt
+rm -R /mnt/vm_disk/Home/Sup1/Sup1Hymns
+rm -R /mnt/vm_disk/Home/Sup1/Sup1Songs
+cp -R --preserve=timestamps ~/TAD/Home/Sup1/Sup1Hymns /mnt/vm_disk/Home/Sup1
+cp -R --preserve=timestamps ~/TAD/Home/Sup1/Sup1Songs /mnt/vm_disk/Home/Sup1
+~/TAD/Bin/vm_umnt
+

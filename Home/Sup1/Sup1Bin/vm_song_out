@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer my /Home song files out of VMware.
+
+echo VMware Song Out
+sudo ~/TAD/Bin/vm_song_out2
+

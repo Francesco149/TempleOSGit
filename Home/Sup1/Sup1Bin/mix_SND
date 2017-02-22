@@ -5,6 +5,6 @@
 echo Mix SND
 cd ~/Tmp/Mov
 ffmpeg -i Audio000.SND -ar 44100 Audio000.mp3
-ffmpeg -i ./ScreenShots/Video.flv -i Audio000.mp3 Movie.flv
+ffmpeg -i ./ScrnShots/Video.flv -i Audio000.mp3 Movie.flv
 
 

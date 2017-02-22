@@ -4,5 +4,4 @@
 
 echo EMU Log
 sudo ~/TAD/Bin/emu_log2
-~/TAD/Bin/emu
 

@@ -1,0 +1,47 @@
+//5 has graphics
+
+
+/* <1> <1> (image) */
+
+
+F64 t0=Beat;
+
+U0 DrawIt(CTask *,CDC *dc)
+{
+  F64 dt=Beat-t0;
+  if (dt>26) {
+    dc->flags|=DCF_TRANSFORMATION;
+    Mat4x4RotZ(dc->r,0.2);
+    Mat4x4Scale(dc->r,(15+Sin(pi*(dt-26)))/15);
+    dc->x=330;
+    dc->y=35;
+    Sprite3(dc,0,0,0,__BIN_1);
+  }
+}
+
+U0 Song()
+{
+  SettingsPush; //See [C:/Adam/TaskSettings.HC.Z,3] SettingsPush
+  Fs->draw_it=&DrawIt;
+  Fs->task_end_cb=&SndTaskEndCB;
+  MusicSettingsRst;
+  music.tempo= 2.151;
+  music.stacatto_factor= 0.780;
+  try {
+    while (!ScanKey) {
+      t0=Beat;
+      Play("5eC4sBBeA#B5CDC4B5C4sBBeA#B5CDC4B");
+      Play("5etDC4B5eC4B5C4BAB5etDC4B5eC4B5C4BAB");
+      Play("4AGsB5G4B5GFCFC4B5F4B5FetFG4A5sFGFGqGD",
+	    "I \0have \0kept \0 \0the \0 \0Lord's \0 \0"
+	    "day, \0 \0 \0 \0 \0 \0 \0 \0 \0all \0 \0 \0 \0day!\n\0 \0");
+      Play("4eAGsB5G4B5GFCFC4B5F4B5FetFG4A5sFGFGqGD",
+	    "O\0kay, \0 \0God... \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0"
+	    "where's \0 \0 \0is \0 \0my \0 \0pay?\n\0 \0");
+    }
+  } catch
+    PutExcept;
+  SettingsPop;
+}
+
+Song;
