@@ -1,28 +1,28 @@
-//Compile this by calling [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,18] BootHDIns().
-//Don't do it directly.  See [C:/Adam/Opt/Boot/BootHDIns.CPP.Z,1] Cmp("/Kernel/Kernel").
+//Compile this by calling [C:/Adam/Opt/Boot/BootHDIns.HC.Z,18] BootHDIns().
+//Don't do it directly.  See [C:/Adam/Opt/Boot/BootHDIns.HC.Z,1] Cmp("/Kernel/Kernel").
 
 #exe {
   Cd(__DIR__);;
   Option(OPTf_WARN_PAREN,ON);
   Option(OPTf_WARN_DUP_TYPES,ON);
   #include "KCfg"
-  CKernelCfg *kernel_cfg;
-  kernel_cfg=KernelCfgNew;
+  CKCfg *kernel_cfg;
+  kernel_cfg=KCfgNew;
 };
 
-#include "KernelA.HPP"
+#include "KernelA.HH"
 #include "KStart16"
 #include "KStart32"
 #include "KStart64"
 #include "KMathA"
 #include "KUtils"
 #exe {Option(OPTf_KEEP_PRIVATE,ON);};
-#include "/Compiler/CompilerA.HPP"
+#include "/Compiler/CompilerA.HH"
 #exe {Option(OPTf_EXTERNS_TO_IMPORTS,ON);};
-#include "/Compiler/CompilerB.HPP"
+#include "/Compiler/CompilerB.HH"
 #exe {Option(OPTf_EXTERNS_TO_IMPORTS,OFF);};
 #exe {Option(OPTf_KEEP_PRIVATE,OFF);};
-#include "KernelB.HPP"
+#include "KernelB.HH"
 #include "KExts"
 #include "StrA"
 #include "KGlbls"
@@ -50,7 +50,7 @@
 #include "SerialDev/MakeSerialDev"
 #include "QSort"
 #include "KTask"
-#include "SrvCmd"
+#include "Job"
 #include "PCIBIOS"
 #include "MultiProc"
 #include "EdLite"
@@ -58,4 +58,4 @@
 #include "FunSeg"
 #include "KEnd"
 
-#exe {KernelCfgDel(kernel_cfg);};
+#exe {KCfgDel(kernel_cfg);};

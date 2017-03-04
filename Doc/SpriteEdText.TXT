@@ -1,3 +1,0 @@
-                           Sprite Edit as Text Help
-
-See the format for [C:/Adam/Gr/Gr.HPP.Z,153] CSprites.

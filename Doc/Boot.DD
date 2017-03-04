@@ -1,0 +1,130 @@
+                                 Booting A PC
+
+TempleOS only supports traditional BIOS booting, not the newer technique, UEFI
+.  This document describes BIOS booting.
+
+When you turn-on (power-up) a computer or you do a hardware reset, the 
+computer starts executing the BIOS.  Sometimes, you must change the BIOS boot 
+order to boot the device you want.
+
+The BIOS loads a boot sector from CD/DVD, hard disk or whatever.  The boot 
+sector runs in 16-bit real mode and often loads-in a second file that's
+bigger 
+if it can't be done by just one sector.  It's a safe bet that boot sectors
+are 
+hand-coded assembly language.  Most boot sectors use the BIOS to load-in the 
+next stage.
+
+Not only do boot sectors have a size limit, 512 bytes or 2048 bytes for 
+CD/DVD, the files they load have to fit within 640K because they run in
+16-bit 
+mode.  This means they usually can't just load the whole operating system and 
+start it running.  Some boot loaders, like Grub, have a capability of 
+switching modes before handing-off control to the operating system.  The 
+operating system must load the rest of itself.  With TempleOS, the 
+[C:/Kernel/Kernel.PRJ.Z,1] ::/Kernel.BIN.C file is loaded by the boot sector.
+ I try to put a minimum in 
+the [C:/Kernel/Kernel.PRJ.Z,1] Kernel Module, so that it will always fit in
+640K.  When Kernel.BIN runs, 
+it switches to 32-bit mode, then, to 64-bit mode allowing access to more 
+memory.  Then, it loads in the rest of TempleOS by executing
+[C:/StartOS.HC.Z,1].
+
+All the boot related code for TempleOS is in the /Adam/Opt/Boot directory.
+
+[C:/Adam/Opt/Boot/BootDVD.HC.Z,1] BootDVD.HC	CD/DVD boot sector.
+[C:/Adam/Opt/Boot/BootDVDIns.HC.Z,1] BootDVDIns.HC	Prep for CD/DVD install by
+creating /0000Boot/0000Kernel.BIN.C
+.
+If you are curious about ISO9660 CD/DVDs, see
+[C:/Adam/Opt/Boot/DskISO9660.HC.Z,1] DskISO9660.HC.  To make a custom 
+bootable CD/DVD, look here [C:/Misc/DoDistro.HC.Z,1] Bootable CD.
+
+[C:/Adam/Opt/Boot/BootMHD.HC.Z,1] BootMHD.HC	Stage 1 Master HD boot loader.
+[C:/Adam/Opt/Boot/BootMHD2.HC.Z,1] BootMHD2.HC	Stage 2 Master HD boot loader.
+[C:/Adam/Opt/Boot/BootMHDIns.HC.Z,1] BootMHDIns.HC	Installs Master HD boot
+loader.
+BootMHD goes on block zero.  /0000Boot/BootMHD2.BIN.C is stored as a file in
+a 
+partition, risky and unusual, since most master boot loaders place stage 2 in 
+a gap that's not in any partition.  BootMHD2 displays a menu and boots a 
+partition.
+
+[C:/Adam/Opt/Boot/BootHD.HC.Z,1] BootHD.HC	HD partition boot record.
+[C:/Adam/Opt/Boot/BootHDIns.HC.Z,1] BootHDIns.HC	Installs HD partition boot
+record.
+BootHD is the boot record for a TempleOS partition.  Each partition has its 
+own partition boot record, the first block of the partition.
+
+My boot records don't access directories because that would make them too big 
+for one block and would make them depend on a file system layout.  Instead, 
+they get patched with the LBA, logical block addresses, to load files.  To 
+update with a new TempleOS kernel, you must create a
+[C:/Kernel/Kernel.PRJ.Z,1] ::/Kernel.BIN.C binary 
+file and patch the boot loader so it knows the LBA blocks to load. 
+Therefore, 
+you usually recompile the kernel and update the boot sector at the same time 
+with  [C:/Adam/Opt/Boot/BootHDIns.HC.Z,18] BootHDIns(). 
+[C:/Adam/Opt/Boot/BootMHDIns.HC.Z,69] BootMHDIns() will install a master boot
+loader.
+
+With TempleOS, [C:/Kernel/Kernel.PRJ.Z,1] ::/Kernel.BIN.C loads
+[C:/Compiler/Compiler.PRJ.Z,1] ::/Compiler/Compiler.BIN so it can work 
+with source code from then on.  It compiles start-up scripts beginning with 
+[C:/StartOS.HC.Z,1] into the [C:/Doc/Glossary.DD.Z,1] Adam Task's memory
+including the code in the /Adam and 
+/Home directories.
+
+It is possible to do a fast reboot without doing a hardware reset.  You might 
+do this when working on [C:/Kernel/Kernel.PRJ.Z,1] ::/Kernel.BIN.C or your
+start-up scripts when you want 
+to compile them effect.  See [C:/Adam/Opt/Boot/BootRAM.HC.Z,33] BootRAM().
+
+
+ <1> (image)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

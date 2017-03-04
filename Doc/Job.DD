@@ -1,0 +1,46 @@
+ <1> (image)
+[C:/Kernel/Job.HC.Z,397] PopUpPrint[C:/Kernel/KTask.HC.Z,424] User[C:/Compiler/CMain.HC.Z,605] ExePrint
+
+
+
+[C:/Kernel/Job.HC.Z,376] PopUp[C:/Compiler/CMain.HC.Z,571] ExePutS
+
+
+
+ [C:/Kernel/KEnd.HC.Z,134] Core0 AdamTask[C:/Kernel/KTask.HC.Z,406] SrvCmdLine[C:/Kernel/MultiProc.HC.Z,194] AP SethTask[C:/Kernel/KTask.HC.Z,414] UserCmdLine
+
+
+
+
+
+
+[C:/Kernel/KTask.HC.Z,368] SrvTaskCont[C:/Kernel/KTask.HC.Z,384] UserTaskCont
+
+
+
+[C:/Kernel/Job.HC.Z,349] JobsHndlr
+
+
+
+[C:/Kernel/Job.HC.Z,269] JobRunOne[C:/Kernel/Job.HC.Z,269] JobRunOne[C:/Kernel/KTask.HC.Z,302] ExeCmdLine[C:/Kernel/KTask.HC.Z,302] ExeCmdLine
+
+
+
+
+[C:/Kernel/KernelA.HH.Z,3189] CJob nodes are one of
+[C:/Kernel/KernelA.HH.Z,3182] five types.  User applications deal with text
+or msgs.  
+[C:/Kernel/Job.HC.Z,269] JobRunOne() will call a function, spawn a task or
+execute some text src code.
+
+#define JOBT_TEXT_INPUT		0 //[C:/Kernel/Job.HC.Z,75] TaskText()	Feed StdIn 
+#define JOBT_MSG		1 //[C:/Kernel/Job.HC.Z,119] TaskMsg()	Post msg 
+#define JOBT_EXE_STR		2 //[C:/Kernel/Job.HC.Z,39] TaskExe()	Compile & execute src code text
+#define JOBT_CALL		3 //[C:/Kernel/MultiProc.HC.Z,213] JobQue()	Tell MP to call function
+#define JOBT_SPAWN_TASK		4 //[C:/Kernel/KTask.HC.Z,242] Spawn()	Tell MP to spawn task
+
+Several other routines
+`Find("JobsHndlr","::/*");View;`
+ include a call to [C:/Kernel/Job.HC.Z,349] JobsHndlr() that gives them
+powerful 
+ability to execute servant cmds.

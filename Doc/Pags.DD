@@ -1,0 +1,7 @@
+The word Pag refers to an arbitrilly created [C:/Kernel/KernelA.HH.Z,2875]
+MEM_PAG_SIZE unit of heap 
+allocation.  TempleOS does not alter the CPU page tables after setting them
+up 
+at boot in [C:/Kernel/Mem/PageTables.HC.Z,6] SYS_INIT_PAGE_TABLES, so the CPU
+hardware page size is rarely 
+important.

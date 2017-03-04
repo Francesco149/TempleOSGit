@@ -1,0 +1,29 @@
+TempleOS does master-slave multicore instead of SMP.  Core0 is the master.  
+The master core's applications explicitly assign computational jobs to other 
+cores and the TempleOS scheduler does not move tasks between cores.
+
+There are multicore safe locks for file access and heap allocations, however, 
+so TempleOS is symmetrical in some sense.  See
+[C:/Demo/MultiCore/LoadTest.HC,1].
+
+Only tasks on Core0 can have windows, but other cores can help render them.
+
+Each core has an executive [C:/Doc/Glossary.DD.Z,1] Seth Task which is the
+father of all tasks on that 
+core.  [C:/Doc/Glossary.DD.Z,1] Adam is the [C:/Doc/Glossary.DD.Z,1] Seth
+Task on Core0.
+
+You give a job to a [C:/Doc/Glossary.DD.Z,1] Seth Task with
+[C:/Kernel/MultiProc.HC.Z,213] JobQue() and get the result with
+[C:/Kernel/Job.HC.Z,199] JobResGet(
+).  You spawn a task on any core with [C:/Kernel/KTask.HC.Z,242] Spawn().
+
+Note: You must use the LOCK asm prefix when changing shared structures in a 
+multicore environment.  The [C:/Kernel/KernelB.HH.Z,26] LBts(),
+[C:/Kernel/KernelB.HH.Z,24] LBtr() and [C:/Kernel/KernelB.HH.Z,22] LBtc()
+insts have LOCK 
+prefixes.  The compiler has a lock{} feature but it doesn't work well.  See 
+[C:/Demo/MultiCore/Lock.HC,1].
+
+See [C:/Demo/Graphics/Transform.HC,1].
+See [C:/Kernel/MultiProc.HC.Z,1].

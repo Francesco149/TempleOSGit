@@ -1,6 +1,0 @@
-                                TempleOS V4.10
-
-                        Public Domain Operating System
-
-[C:/Doc/HelpIndex.TXT.Z,1] Help & Index, [C:/Doc/CmdLineOverview.TXT.Z,1]
-Quick Start: Cmd line

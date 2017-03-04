@@ -1,0 +1,225 @@
+                          Frequently Asked Questions
+
++] How come it is public domain, not GPL?
+  I, Terry A. Davis, wrote all 118,851 lines of TempleOS over the past 12.5
+  years (full-time).  It can run on some bare metal 64-bit PC's from about
+  2005-2010 with no layering, libraries, tools, modules or anything from other
+  sources.  Otherwise, you run it in a virtual machine, like VMware, QEMU or
+  VirtualBox.  It is independent and stands alone.  It has no networking, so it
+  certainly doesn't call home.  100% of the src code is including on all
+  distro's, from the kernel to the compiler to the boot loaders!  See
+  [C:/Doc/Credits.DD.Z,1].
++] Shouldn't it be GNU/TempleOS?
+  TempleOS executes no code not written by me at any time except for a few
+  BIOS calls for configuration.  I even wrote boot-loaders, so I do not need
+  Grub.  See [C:/Doc/Credits.DD.Z,1].
++] Don't you use GNU's gcc?
+  TempleOS was written from scratch, starting with TASM long ago, launching
+  from real-mode DOS.  Now, there is no Linux or GNU or any other code in
+  TempleOS.  Yes, I wrote the compiler from scratch.  See
+  [C:/Doc/Credits.DD.Z,1].
++] Why do you dual boot?
+  TempleOS is 100% independent -- it does not access the files of your
+  primary operating system and TempleOS will work as the only operating system
+  on your computer, but it has no networking.  In your off hours, you will use
+  your other operating system.
++] It has links, so is it a browser?
+  TempleOS is an operating system, not a browser. 
+  [C:/Adam/DolDoc/DocLink.HC.Z,29] TempleOS links are a special format and only
+  link too local files and symbol source addresses.
++] Where are the animated 3D icon GIFs?
+  3D [C:/Doc/Sprite.DD.Z,1] Sprites are stored as a mesh of triangles.  There
+  are no GIF files.  It [C:/Adam/Gr/GrDC.HC.Z,6] rotates 3D sprite objects on
+  the fly.
++] If the compiler is JIT, isn't it an interpretor?
+  TempleOS compiles, doesn't interpret, and uses no byte code anywhere.  I
+  loosely use the word script sometimes, but it's actually compiled.  The
+  compiler's [C:/Compiler/OptPass012.HC.Z,23] optimization code is actually
+  where the compiler evaluates constants to simplify them, like every
+  optimizing compiler.
++] Are you a Creationist?
+  I am an evolutionist.  Adam is a better term for the first father of all
+  tasks than root was!
++] Is 'Bt()' in the code Bit Torrent?
+  [C:/Kernel/KernelB.HH.Z,14] Bt() is bit test, like the x86 inst, not bit
+  torrent.
++] Is 'Fs->' in the code file system?
+  [C:/Kernel/KernelB.HH.Z,288] Fs is a segment reg, not file system. 
+  ([C:/Kernel/KernelB.HH.Z,288] Fs is kept pointing to the current task's
+  record.)  There is no memory segmentation.  It is 64-bit and flat. FS and GS
+  are used as general purpose regs, more or less.
++] Is it Pascal?
+  TempleOS uses a dialect of C/C++ called [C:/Doc/HolyC.DD.Z,1] HolyC.  It is
+  not Pascal.  I altered the syntax making parenthesis optional on function
+  calls with no paramaters.
++] Why doesn't Sleep() make my laptop hibernate?
+  [C:/Kernel/KMisc.HC.Z,155] Sleep() makes a program pause.  It is not
+  hibernation for a laptop.
++] What is Yield() for in loops?
+  [C:/Kernel/Sched.HC.Z,284] Yield() saves the current task's regs (context)
+  and loads in the next task.  In a loop waiting for disk IO, it executes
+  [C:/Kernel/Sched.HC.Z,284] Yield() which pegs the CPU load, yet the system is
+  responsive.
++] What is JIT Compiled Mode?
+  The term [C:/Doc/Glossary.DD.Z,1] JIT Compile Mode means it compiles and
+  executes code placed into mem, not stored on disk.
++] Why do files end in .Z?  Are they encrypted?
+  Files with names ending in .Z are individually compressed using
+  [C:/Kernel/Compress.HC.Z,1] TempleOS Compression.  They are not encrypted. 
+  [C:/Adam/ABlkDev/ADskA.HC.Z,61] Copy() or rename them with
+  [C:/Adam/ABlkDev/ADskA.HC.Z,94] Move() to a name without .Z and they will be
+  stored in an uncompressed form.  See [C:/Doc/TOSZ.DD.Z,1] TOSZ for Linux or
+  Windows uncompress C/C++ code.
++] Is it open source?  How do I build it?
+  TempleOS is 100% open src.  All the src code is included in the distro. 
+  Use [C:/Adam/Opt/Boot/BootHDIns.HC.Z,18] BootHDIns() to compile the kernel
+  and compiler.  The rest is [C:/Doc/Glossary.DD.Z,1] JIT Compiled during boot.
+   See [C:/StartOS.HC.Z,1]. 
++] Where are object files?  How do I link?
+  TempleOS does not use object files or a linker.  [C:/Doc/Glossary.DD.Z,1]
+  AOT Compile Mode is used to directly create flat binary files,
+  [C:/Kernel/Kernel.PRJ.Z,1] ::/Kernel.BIN.C and [C:/Compiler/Compiler.PRJ.Z,1]
+  ::/Compiler/Compiler.BIN with no object files and linking. 
+  [C:/Doc/Glossary.DD.Z,1] JIT Compile Mode place code in memory, ready to run,
+  with no object files or linking.  Linking is done when BIN modules are
+  [C:/Kernel/KLoad.HC.Z,181] Load()ed.
++] What is the FPS refresh rate?
+  The refresh rate is 30 frames-per-second.  That is how often TempleOS
+  updates scrn mem.  It is not syncronized to the hardware.
++] How does a task own the speaker?
+  No task or application has a lock on the speaker so apps will interfere
+  with each other.
++] Why does it leak memory?
+  TempleOS allocs mem as more items are displayed in the window.  Also,
+  TempleOS allocs mem for code as it is compiled at the cmd line.  If you
+  #include a file twice, it allocs more mem for it.  If you have a 50,000 line
+  program with each line taking twenty bytes on a machine with 1 Gig, you could
+  #include it a thousand times if it had no data or graphics and no other use
+  of mem.  If it bothers you, hit <CTRL-ALT-x> and <CTRL-ALT-t>, periodically,
+  to kill and recreate the task.  Use the pop-up flag on macros in your
+  [C:/Home/PersonalMenu.DD,1] PersonalMenu to spawn new tasks, run applications
+  and free the applications when they are finished.  Small mem chunks stick to
+  the task when they are freed until it is killed.  The only way to get in
+  trouble is allocating multiple Meg chunks and freeing them.  These can only
+  be reused if the same size gets alloced again.  Use
+  [C:/Adam/Opt/Utils/HeapLog.HC.Z,73] HeapLog(),
+  [C:/Adam/Opt/Utils/HeapLog.HC.Z,115] HeapLogAddrRep() and
+  [C:/Adam/Opt/Utils/HeapLog.HC.Z,146] HeapLogSizeRep() to see who alloced mem
+  and didn't free it.  See [C:/Doc/MemOverview.DD.Z,1] MemOverview.
++] Why do I get a memory leak when editing big files?
+  The editor periodically takes a snap-shot of the document for UNDO and this
+  looks like a memory leak.
++] Why is it in text mode?
+  TempleOS runs in VGA 640x480 16 color graphics mode, not text mode.  It
+  changes to this mode with a [C:/Kernel/KStart16.HC.Z,1] BIOS call while in
+  real-mode before it switches to 64-bit mode.  The text is
+  [C:/Adam/Gr/GrScrn.HC.Z,255] drawn by hand.  See [C:/Kernel/FontStd.HC.Z,1]. 
+  If graphics mode fails, it falls-back on text mode.  You can force text mode
+  with an [C:/Kernel/KCfg.HC.Z,1] Kernel config option.
++] Where is the kernel memory?
+  TempleOS identity-maps all memory, all the time.  It is like paging is not
+  used.  There is no special kernel high half memory space.  TempleOS is
+  ring-0-only, so everything is kernel, even user programs.  There is a special
+  task called Adam and he doesn't die, so his heap never gets freed.  That's as
+  close to kernel memory as it gets.  All code goes in the lowest 2Gig of
+  addresses, known as the [C:/Doc/Glossary.DD.Z,1] Code Heap, so that the REL32
+  addressing mode can be used.  See [C:/Doc/MemOverview.DD.Z,1] MemOverview.
++] Why does it run code from stack addresses?
+  TempleOS puts all code in the lowest 2Gig, known as the
+  [C:/Doc/Glossary.DD.Z,1] Code Heap, so that the REL32 addressing mode can be
+  used.  TempleOS is 64-bit, but 2Gig is enough for code.  It actually puts
+  global variables there, too, but you can turn that off with
+  [C:/Kernel/KernelA.HH.Z,1553] OPTf_GLBLS_ON_DATA_HEAP. 
+  [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc() allocs higher memory.
++] How does it SYSCALL?
+  TempleOS doesn't use software interrupts or SYSCALL insts because it never
+  needs to change out of ring-0, even running user programs.  Calls are always
+  CALL REL32 insts.
++] How do you fault-in stack?
+  The stack does not grow, so do not do deep recursion.  In theory, memory
+  gets fragmented, too.
++] How do I set the PATH?
+  There is no PATH.  You do not enter filenames at the command-line and
+  expect them to run.  You enter C-like code.  [C:/Doc/CmdLineOverview.DD.Z,1]
+  Get Started Here.
++] How do I boot it with Grub?
+  If you use Grub, you chain-load like Windows.  See [C:/Doc/Boot.DD.Z,1]
+  Boot.  You can use the TempleOS boot-loader. 
+  [C:/Adam/Opt/Boot/BootMHD.HC.Z,1] Master-Boot-Loader-Stage1,
+  [C:/Adam/Opt/Boot/BootMHD2.HC.Z,1] Master-Boot-Loader-Stage2,
+  [C:/Adam/Opt/Boot/BootHD.HC.Z,1] Partition-Boot-Loader,
+  [C:/Adam/Opt/Boot/BootDVD.HC.Z,1] CD-DVD-Boot-Loader.
++] How do I get Kernel.BIN to boot?
+  The boot-loaders must be patched by you running
+  [C:/Adam/Opt/Boot/BootHDIns.HC.Z,18] BootHDIns() or
+  [C:/Adam/Opt/Boot/BootMHDIns.HC.Z,69] BootMHDIns().  Those will write the
+  block address into the boot-loader because the boot-loaders do not navigate
+  file systems to find the [C:/Kernel/KStart16.HC.Z,1] Stage2 if you relocate
+  it.
++] Why is there some 16-Bit code?
+  TempleOS is 64-bit.  Like all PC operating systems, the boot-loader starts
+  in 16-bit real-mode.  TempleOS calls a few BIOS info routines, switches to
+  VGA-640x480x4bit, switches to 32-bit, then, 64-bit mode.  There is an odd
+  thing called a PCI BIOS which is 32-bit used for PCI config space access. 
+  TempleOS calls [C:/Kernel/PCIBIOS.HC.Z,1] that a couple times.  It must
+  temporarily drop-out-of 64-bit mode for that and stop multi-tasking.
++] Why are you pushing 32-bit values on the stack?
+  PUSH EAX : All stack operations in 64-bit mode are 64-bits.
++] Why are you using 32-bit insts and not setting high 32-bits?
+  XOR EAX,EAX : Operations on 32-bit regs clear the high 32-bits.
++] How do you use the FS and GS segment registers.
+  MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP
+  relative, so it's tricky to use.  FS is used for the current
+  [C:/Kernel/KernelA.HH.Z,3313] CTask, GS for [C:/Kernel/KernelA.HH.Z,3433]
+  CCPU.
++] How do I set ORG for position of code?
+  The compiler creates pos independent code.  Don't create code which is
+  loaded at a fixed, specified location.  Code in a BIN file is pos independent
+  by virtue of a table in the BIN file for patching absolute addresses.
++] How are symbols loaded?
+  Binary executable files have export syms which are loaded into the sym
+  tables.  The operating system Kernel has such an export table.  In addition,
+  some map files are processed to provide more information on syms -- src file
+  links.  This is how the [C:/Kernel/FunSeg.HC.Z,324] Man()/AutoComplete
+  feature can find src lines.
++] Why doesn't assert work?
+  #assert might print a message at COMPILE time, not run time.
++] Why doesn't C++ public work?
+  The word public in [C:/Doc/HolyC.DD.Z,1] HolyC does very little except
+  allow the [C:/Doc/HelpIndex.DD.Z,1] Help & Index and [C:/Adam/AHash.HC.Z,149]
+  Who() to exclude meaningless syms.  If you wish a full report of public and
+  nonpublic syms Click Here
+`DocMax(1000000);Who;View;
+`
+.
++] How does the debugger do source debugging?
+  When compilation takes place, the structures used by the compiler stick
+  around.  Data on classes can be accessed.  See [C:/Adam/ADbg.HC.Z,161]
+  ClassRep().
++] What are the ASCII 5 and ASCII 31 chars doing in my text files?
+  The cursor location is stored as an ASCII 5 in files.  ASCII 31 is
+  SHIFT-SPACE, a character which does not get converted to tabs by
+  space-to-tabs, [C:/Adam/Opt/Utils/StrUtils.HC.Z,201] S2T().  The ASCII 28 is
+  SHIFT-ESC. 
++] Why is there garbage at the end of my text files?
+  Binary sprite data is stored beyond the terminating NULL in text files. 
+  Map files store debug src line addresses.
++] Why are sprites so small?
+  Sprites can be stored as vector graphics so they might take shockingly
+  little room.  They can be converted to bitmaps.
++] Why don't I need to recompile /Adam and /Home files?
+  If you change code in the /Adam or your /Home directory, you don't need to
+  recompile, you just need to reboot because those directories get recompiled
+  when you boot.  It uses [C:/Doc/Glossary.DD.Z,1] JIT Compile Mode.  There is
+  no .BIN file for JIT compilation.  See [C:/StartOS.HC.Z,1].
++] Why does it finds files that aren't there?
+  If not found, .Z is added or removed from filename and a search is done
+  again.  If a file is still not found, the parent directories are searched for
+  a file of the same name.
+
+
+* "Windows" is a trademark owned by MicroSoft Corp.
+* "Linux" is a trademark owned by Linus Torvalds.
+* "QEMU" is a trademark owned by Fabrice Bellard.
+* "VMware" is a trademark owned by VMware, Inc.
+* "VirtualBox" is a trademark owned by Oracle.
