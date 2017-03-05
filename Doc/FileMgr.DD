@@ -1,0 +1,90 @@
+                                 File Manager
+
+<SHIFT CURSOR>
+  Select files.
+
+<CTRL-y> or <DEL>
+  Delete file or tree.
+
+<CTRL-c> or <CTRL-INS>
+  Copy select files to clip.
+
+<CTRL-v> or <SHIFT-INS>
+  Paste clip.
+
+LEFT-CLICK,drag-drop
+  Move a file or tree to a dir.
+
+LEFT-CLICK,same file or <SPACE>
+  Edit file.
+
+<SHIFT-SPACE>
+  Edit Plain Text File.
+
+RIGHT-CLICK or <ENTER>
+  Bring-up menu.
+
+<F5>
+  #include file.
+
+<SHIFT-F5>
+  Adam #include file.
+
+'r'
+  Rename file.
+
+'d'
+  Make Dir.
+
+'c'
+  DskChg (Remount removable media).  Do not do this on blank disks.
+
+'f'
+  Format drive.
+
+'i'
+  Mount ISO.C file.
+
+'u'
+  Unmount drive(s).
+
+'m'
+  Make CD/DVD ISO.C file.  This creates a [C:/Doc/RedSea.DD.Z,1] RedSea ISO
+  file image of the dir the 
+cursor is on.  The name of the ISO file is "::/Tmp/CDDVD.ISO.C" 
+[C:/Kernel/KernelA.HH.Z,2772] blkdev.dft_iso_c_filename and can be redefined
+  in your start-up scripts.  
+You may wish to place it on a different drive.
+
+'M'
+  Make CD/DVD ISO file.  This creates a ISO9660 file image of the dir the 
+cursor is on.  The name of the ISO file is "::/Tmp/CDDVD.ISO" 
+[C:/Kernel/KernelA.HH.Z,2772] blkdev.dft_iso_filename and can be redefined in
+  your start-up scripts.  You 
+may wish to place it on a different drive.
+
+'B'
+  Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
+"::/Tmp/CDDVD.ISO" [C:/Kernel/KernelA.HH.Z,2772] blkdev.dft_iso_filename to
+  the drive the cursor is on.
+
+
+Instructions on Using CD/DVD's
+  If you have not recompiled Kernel and defined your CD/DVD drive, exit the 
+FileMgr and use [C:/Adam/ABlkDev/Mount.HC.Z,138] Mount to define your CD/DVD
+  drive.  Place a CD/DVD in the 
+drive and press 'c' when on top of the CD/DVD drive letter to mount the 
+drive.  It will call [C:/Kernel/BlkDev/DskDrv.HC.Z,237] DskChg(), the
+  TempleOS cmd to mount removable media.
+
+
+Instructions on Burning CD/DVD's
+  Create a temporary dir to hold files and copy files into the holding dir.  
+Make an ISO image of the dir by pressing 'M' when on top of the dir.  Press 
+'B' when on top of the CD/DVD ROM drive to burn the ISO, "::/Tmp/CDDVD.ISO" 
+[C:/Kernel/KernelA.HH.Z,2772] blkdev.dft_iso_filename, to disk.  If you have
+  not recompiled Kernel and 
+defined your CD/DVD drive, exit the FileMgr and use
+  [C:/Adam/ABlkDev/Mount.HC.Z,138] Mount.
+
+[C:/Misc/DoDistro.HC.Z,1] Making Your Own Distro

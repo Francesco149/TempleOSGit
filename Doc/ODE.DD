@@ -1,0 +1,12 @@
+TempleOS has an advanced algorithm for integrating ordinary differential 
+equations suitable for use in video games.  (Not scientific work.)  It also 
+has some support for systems of masses and springs, to save you some work.
+
+See [C:/Kernel/KernelA.HH.Z,251] CMathODE and [C:/Adam/AMathODE.HC.Z,567]
+ODEsUpdate for an overview.
+See [C:/Adam/AMathODE.HC.Z,380] ODECallDerivative to see what support there
+is for masses and springs.
+
+See [C:/Demo/Games/Whap.HC.Z,1], [C:/Demo/Games/Rocket.HC.Z,1], 
+[C:/Demo/Games/MassSpring.HC.Z,1], [C:/Apps/Span/SpanMain.HC.Z,1] or 
+[C:/Apps/X-Caliber/X-Caliber.HC.Z,1].

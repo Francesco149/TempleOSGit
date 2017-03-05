@@ -1,0 +1,79 @@
+                                       TempleOS' Features
+
+* Oracle in with <F7> for words or <SHIFT-F7> for passages.  See
+[C:/Adam/God/HSNotes.DD.Z,1] tongues.
+
+* x86_64, ring-0-only, single-address-map (identity), multitasking kernel
+with 
+multicore support.
+
+* Master/Slave MultiCore 
+
+* Free, public domain, 100% open source.
+
+* 64-bit compiler/assembler for [C:/Doc/HolyC.DD.Z,1] HolyC.  Truly compiles,
+doesn't interpret.  Ju
+st-in-Time and Ahead-of-Time compilation.  With JIT, no need for object or
+exe 
+files.
+
+* No 32-bit krufty code.
+
+* 640x480 16 color VGA graphics.
+
+* Keyboard & Mouse support.
+
+* ATA PIO Hard drives, support for FAT32 and [C:/Doc/RedSea.DD.Z,1] RedSea
+file systems with file 
+compression.
+
+* ATAPI PIO CD/DVD support with ISO9660 file system.  Can make bootable ISO966
+0 ISO files so you can roll-your-own distro's.
+
+* [C:/Adam/ABlkDev/DskPrt.HC.Z,13] Partitioning tool, installer, boot loaders
+for CD/DVD and hard disk.
+
+* Editor/Browser for a new [C:/Doc/DolDocOverview.DD.Z,1] Document Format. 
+Source files and the command line 
+window can have graphics, links, icons, trees, colors, super/sub scripts, 
+margins.  Everything is seamless through-out the tool chain.  No need for 
+separate resource files.
+
+* 8-bit ASCII, not just 7-bit.  Supported in entire tool chain.  <CTRL-ALT-a>
+
+* Graphics in source code, no resource files, graphic sprite editor. <CTRL-r>
+
+* 64-bit pointers.  All memory, even more than 4Gig, can be directly accessed 
+by all tasks on all cores at all times.
+
+* Ring-0-only.  Highest CPU privileged mode at all times.  No off-limits 
+insts.  No time lost changing modes or address maps.  Switches tasks in half
+a 
+microsecond.
+
+* 2D/3D graphics library
+
+* Real-time fancy differential-equation solver for physics engines, to use in 
+games.  (Adaptive step-size Runge-Kutta, interpolated for real-time.)
+
+* Auto-completion, jump-to-source tool called AutoComplete with Dictionary.
+
+* Window Manager.  Pan scrn with <CTRL-LeftDrag>.  Zoom scrn on mouse cursor 
+with <CTRL-ALT-z>/<CTRL-ALT-SHIFT-Z>.
+
+* File Manager, <CTRL-d>.
+
+* Code [C:/Adam/Opt/Utils/Profiler.HC.Z,27] profiler,
+[C:/Adam/Opt/Utils/Merge.HC.Z,37] merge, [C:/Adam/Opt/Utils/Diff.HC.Z,237]
+diff utils.
+
+* PC Speaker support with many hymns.
+
+* Music composing tool.
+
+* Many games, [C:/Doc/DemoIndex.DD.Z,1] demos and [C:/Doc/HelpIndex.DD.Z,1]
+documentation.
+
+* All source code included.  Only compiles with the included TempleOS
+compiler 
+and assembler.
