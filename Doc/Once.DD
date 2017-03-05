@@ -1,0 +1,19 @@
+[C:/Kernel/KEnd.HC.Z,134] KMain()
+  includes [C:/StartOS.HC.Z,1]
+    includes [C:/Home/MakeHome.HC.Z,1]
+      includes [C:/Home/HomeSys.HC,1]
+        calls [C:/Home/HomeSys.HC,1] StartUpTasks()
+          includes [C:/Home/Once.HC,1]
+            calls [C:/Adam/ARegistry.HC.Z,179] OnceExe().
+
+[C:/Adam/ARegistry.HC.Z,135] AOnce()	appends src code to
+[C:/Home/Registry.HC.Z,1] Once/Adam tree, executed at next 
+boot by Adam.
+
+[C:/Adam/ARegistry.HC.Z,144] Once()	appends src code to
+[C:/Home/Registry.HC.Z,1] Once/User tree, executed at next 
+boot by first User term.
+
+At boot, [C:/Adam/ARegistry.HC.Z,179] OnceExe(), executes Once/Adam tree,
+[C:/Adam/ARegistry.HC.Z,125] AOnceFlush()s it,
+executes Once/User tree and [C:/Adam/ARegistry.HC.Z,130] OnceFlush()s.

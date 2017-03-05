@@ -1,3 +1,0 @@
-There are a maximum of 63 message types, so a bitmask can be passed. 
-Messages 
-have two args.  See [C:/Kernel/KernelA.HPP.Z,3225] Message Codes.

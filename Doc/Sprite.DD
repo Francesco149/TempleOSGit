@@ -1,0 +1,18 @@
+A [C:/Adam/Gr/Gr.HH.Z,157] CSprite is an ordered list of
+[C:/Adam/Gr/Gr.HH.Z,120] these elements, created with <CTRL-r>.  
+Normally, they are packed together in a list and the address of the first is 
+passed to routines.
+
+See [C:/Demo/Graphics/SpritePlot.HC.Z,1],
+[C:/Demo/Graphics/SpritePlot3D.HC.Z,1], 
+[C:/Demo/Graphics/SpritePut.HC.Z,1], [C:/Demo/Graphics/SpriteRaw.HC.Z,1] and
+[C:/Adam/Gr/SpriteMesh.HC.Z,957] SpriteMeshEd(
+).
+
+Be aware that copying SP, IB, or IS entries with the clip results in
+duplicate 
+entries with different nums.  You can manually remove dups by editing with <CT
+RL-t> and setting to the original num.
+
+See [C:/Adam/Gr/GrSpritePlot.HC.Z,1] ::/Adam/Gr/GrSpritePlot.HC for how
+CSprite are stored.

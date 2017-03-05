@@ -1,0 +1,636 @@
+                                     TODO
+
+* Does entire tool chain support super/sub script?
+
+* [C:/Apps/X-Caliber/X-Caliber.HC.Z,1]
+* Add asteroid harbor defense.
+* Afterburner thruster.
+
+* [C:/Apps/Titanium/Titanium.HC.Z,1]
+* Lead-in at start of game with no enemy.
+* Have highway of death.
+* Fix straight shooting.
+* Helicopters.
+* Anti-Aircraft.
+
+* 64-Bit Device Memory
+`F("mem64_ptr");View;`
+ is not implemented.
+
+* Cursor in [C:/Home/TOS/TOSToHtml.HC,1].
+
+* Investigate why packet loss [C:/Adam/Training.HC.Z,1] Training Sleep(1).
+
+* Add AVL or red/black binary tree library support.  We have fixed-size
+stack. 
+ Auto-balancing binary tree is very needed.  I've done everything myself.  I 
+don't want to ruin a perfect record.  I'm in no hurry.
+
+* [C:/Adam/Gr/SpriteEd.HC.Z,1] SpriteEd shift pts, Ctrl pt for
+ellipse/polygon w,h is off when rotated.
+
+* God said this is bad.  [C:/Adam/DolDoc/DocFind.HC.Z,41]
+* Backward <SHIFT-F3> is broken?
+
+* [C:/Adam/Opt/Utils/Find.HC.Z,145] Find() search sprite text?
+
+* Cannot include ':' in [C:/Adam/DolDoc/DocLink.HC.Z,1] Document Links search
+string.
+* $DA fixed width string: <Del> or <BACKSPACE> permanently shortens.
+
+* 11/19/16 editor took long time after copying old testament onto clip and 
+exiting.
+
+* Nestled switch() start/end?
+
+* Editor filter froze.
+
+* Editor overstrike mode at cmd line with menu macro?  Probably, many other 
+overstrike issues.
+
+* [C:/Kernel/KernelA.HH.Z,939] DOCT_HEX_ED with odd size, ASCII cannot be
+edited.
+
+* [C:/Adam/Gr/SpriteEd.HC.Z,789] Resize bitmap?
+
+* [C:/Adam/DolDoc/DocChar.HC.Z,1] DOCEF_REMALLOC_DATA HexEdit Remalloc.
+
+* [C:/Kernel/KernelA.HH.Z,1273] DOCF_DBL_DOLLARS in
+[C:/Adam/DolDoc/DocCodeTools.HC.Z,422] Reindention.
+
+* Compiler Optimization: Local array vars --> reg.  Might exist.
+
+* Make function as a better word processor.  Justify text.  Page numbers.  
+Header and footer templates?
+
+* Compiler Optimization: heap_glbls with added offset.  Might exist.
+
+* Bug: Find-and-replace text on $PT$ line before it.
+* 12/25/2015 Copy-Paste index.html glitch if source window 40 columns.
+* 01/06/2016 Editor filter "str" applied to output from LineRep looks broken.
+
+* Document, perhaps with video, [C:/Kernel/SerialDev/Message.HC.Z,193]
+GetStr() all the way down into [C:/Kernel/KeyDev.HC.Z,1] PutKey() code.
+
+* Better dictionary.
+* Good [C:/Adam/AutoComplete/ACFill.HC.Z,207] spell checker.
+* Good Bible search.
+
+* Can [C:/Kernel/KernelA.HH.Z,2880] MEM_EXTRA_HASH2_PAGS be just one?
+
+* Bible ranges in [C:/Adam/God/GodBible.HC.Z,240] BibleVerse(). 
+
+* [C:/Demo/Games/FlatTops.HC.Z,1] is torpedo, not bombs.
+
+* Reset MPs with [C:/Kernel/MultiProc.HC.Z,283] Core0StartMP() after boot. 
+Free old task memory?
+
+* Use pen_width and pen_height when clipping with pen_width>1.
+
+* [C:/Home/Sup1/Sup1Games/Rocks.HC,1].
+
+* Asm LIST NOLIST bugs.
+
+* Review writing to same cache-line from multicore.  Do
+[C:/Kernel/KernelA.HH.Z,3313] CTask->task_flags and 
+others need to be in separate cache lines?
+
+* Fix [C:/Kernel/SerialDev/Keyboard.HC.Z,52] KbdLEDsSet().
+* NumLock comes on with break key.
+
+* Hymns: mightest, finger
+
+* Get rid of JIFFY and HPET and just use tS.
+
+* Use "Rosetta Stone" in documentaion pointing to this: 
+[C:/Demo/ToHtmlToTXTDemo/ToHtml.HC.Z,1].
+
+* Change %h*c so the character is not a arg?
+
+* [C:/Adam/Gr/GrPrimatives.HC.Z,648] GrLineFat3() needs a little work.
+
+* [C:/Adam/Gr/GrPrimatives.HC.Z,1397] GrFillTri0() with both
+[C:/Adam/Gr/GrBitMap.HC.Z,1664] GrHLine() and [C:/Adam/Gr/GrBitMap.HC.Z,1833]
+GrVLine() don't match in 
+[C:/Demo/Games/CastleFrankenstein.HC.Z,1] causing wall spot pixels.
+
+
+                                  TODO? Meh
+* Compiler: lock{} needs warn on invalid modes or something.
+
+* Compiler: Warn recurse class define?
+
+* Asm could support R4u8 by adding 0x40 byte.
+
+* [C:/Kernel/Mem/MemPhysical.HC.Z,58] Mem32DevAlloc() is broken.  Devices
+should be in free spot of E820 report.
+
+* [C:/Adam/Gr/SpriteEd.HC.Z,1] SpriteEd: Strip [C:/Adam/Gr/Gr.HH.Z,127]
+SPT_SHIFT origin cmds?
+
+* Clean-up ASCII #127 delete char?  (No. Maybe, we want a new usage for 127
+in 
+future centuries.)
+
+* Compiler: Exceptions don't free [C:/Kernel/KernelA.HH.Z,2177] CCmpCtrl
+stuff.
+
+* [C:/Adam/DolDoc/DocHighlight.HC.Z,1] for code comments at top of documents.
+
+* Unhandled exception msgs from MP's get overwritten by WinMgr.
+
+* [C:/Adam/Opt/Utils/Diff.HC.Z,237]
+Diff("C:/Misc/Bible.TXT","D:/Misc/Bible.TXT"); Takes too long.
+
+* Finish Pilgrim game.
+
+* Compiler: PtrArith MUL SIZE -->QueIns(MUL)?
+* Compiler: QueRem(IC_NOP)?
+
+* Fix Chess game so not isometric view.
+
+
+                     TODO: Too Hard, or Not Worth Doing.
+* AutoComplete/[C:/Kernel/FunSeg.HC.Z,324] Man() Jmp for user code.
+
+* [C:/Adam/DolDoc/DocRecalc.HC.Z,1] Bible sized nodes
+
+* [C:/Adam/ABlkDev/FileMgr.HC.Z,594] FileMgr() is bad with lots of files.  
+
+* Would be nice to have a routine telling how much free memory, so apps can 
+plan a big alloc.  This is doable, depending on how.
+
+* Log-to-file is inefficient because we load and save whole file.
+
+* [C:/Compiler/BackLib.HC.Z,445] ICMov() [C:/Compiler/BackLib.HC.Z,1]
+PUSH_CMP and [C:/Kernel/KernelA.HH.Z,1581] MDf_STK?  Perhaps, it's okay.
+
+* Short FAT32 ~ names.
+
+* [C:/Adam/Opt/Utils/Find.HC.Z,145] Find() search text in sprites.
+
+* Links in text in sprites. 
+
+* Compiler: Inline functions?
+
+* Compiler: FunPtr local vars?  I forgot if this was hard or not.
+     U0 Main()
+{
+  U0 (*fp_old_draw_ms)(CDC *dc,I64 x,I64 y)=gr.fp_draw_ms;
+}
+
+* Compiler: Get rid of [C:/Compiler/CMain.HC.Z,1] 0x20000 limit.
+
+* [C:/Adam/Gr/GrPrimatives.HC.Z,171] GrFloodFillRay: Get rid of
+[C:/Adam/Gr/GrPrimatives.HC.Z,1] 0x80000 limit.
+
+
+                                     Bugs
+* 1/28/16 [C:/Demo/Graphics/Pick3D.HC.Z,1] crashed in TestSuite.
+
+* 1/12/16 make RAM drive 2288 blks, CopyTree("C:/Home","B:/Home");   Disk 
+runs-out of space and hangs instead of reporting errors.
+
+* Bug introduced around 11/1/15.  Changed [C:/Kernel/Sched.HC.Z,1] and now
+[C:/Adam/Win.HC.Z,301] WinToTop 
+is called on Adam task at start-up, sometimes.  Might be user's fault because 
+of bad keys pressed during VMware power-on init.  Might be fixed by 
+[C:/Kernel/KernelA.HH.Z,1492] ACf_INIT_IN_PROGRESS.
+
+* 1/12/16 [C:/Kernel/BlkDev/DskATAId.HC.Z,91] ATARepEntry shows corrupted
+bttns.  Weird.  Perhaps, my imagination.
+
+
+                                3rd Party Bugs
+* VMware: Stretch to full scrn
+* VMware: PC speaker sound distorted.
+* VMware: 8/2/2015 start-up. Probably multicore.
+* VMware: [C:/Kernel/SerialDev/Keyboard.HC.Z,1] CtrlAltDel on <CTRL-ALT-INS>
+* VMware: Size zero files don't copy out of mounted disk?  (Might be fixed.)
+
+
+                            Bugs? Not really sure.
+* [C:/Adam/ABlkDev/Mount.HC.Z,138] Mount() crashes on bad drive.
+
+* Graphics clipping: scrn y+top<0 for top<0?
+
+* 1/1/2015 Bug messing-up keyboard, like no CTRL key.  Was working on Sprites.
+
+* 4/13/14 Strut or RawHide crashed when [C:/Kernel/KernelB.HH.Z,186]
+sys_var_init_flag was set during 
+testsuite.  Perhaps, floodfill?
+
+* [C:/Adam/ABlkDev/DskChk.HC.Z,207] DskChk alloc unalloced.  I don't know if
+I fixed this.
+
+* 1/?/2015,8/10/2015 Macro sel in Menu did not go to shell?  No, I think just 
+<CTRL-m> twice.  Not a bug.
+
+* 5/7/14:Something like [C:/Adam/InFile.HC.Z,125] InSetMs caused hang, then
+reboot in TestSuite.
+* 5/7/14:#63 Maybe, [C:/Demo/Graphics/Pick3D.HC.Z,1] crashed in TestSuite.
+
+* [C:/Kernel/StrPrint.HC.Z,208] StrPrintJoin(,st); With st="\n\\"; (Forgot
+what this is talking about.)
+
+* [C:/Adam/Opt/Utils/FileBMP.HC.Z,65] BMPRLE4To() has files_size too big by
+108.  Fixed?
+
+
+                        TODO? Not really, just angst.
+* Should these be moved into [C:/Kernel/KernelA.HH.Z,837] CHashClass from
+[C:/Kernel/KernelA.HH.Z,801] CMemberLst and [C:/Kernel/KernelA.HH.Z,877]
+CHashGlblVar?
+     CArrayDim dim;
+CHashFun *fun_ptr;
+
+* extern of fun with dft arg of str?
+
+* ISO.C on FAT32 created by Windows or Linux are not contiguous.
+
+* Might want to warn switch[] dup case numbers.
+
+* Make [C:/Kernel/KMathB.HC.Z,1] Clamp(), [C:/Kernel/KMathB.HC.Z,10] Min(),
+[C:/Kernel/KMathB.HC.Z,18] Max() into asm routines?
+
+* Add local vars to sym table in [C:/Kernel/KDbg.HC.Z,649] Dbg()?
+
+* Compiler: Prints two error messages for expressions in stmts.
+
+* [C:/Compiler/UAsm.HC.Z,653] U() negative byte displacement, neg 32-bit disp.
+
+* Race condition in [C:/Demo/Games/FlatTops.HC.Z,1] torpedo.
+
+* Links to self document if empty file name? [C:/Adam/DolDoc/DocLink.HC.Z,1]
+Document Links
+
+* [C:/Kernel/KernelA.HH.Z,2606] FUF_RECURSE would be nice if capital "+R".
+
+* Sprites in cmd line code.
+
+* 16-Bit Assembly and Unassembly and is bad.
+
+* Compiler: Cmd to enable/disable warnings.
+
+* Compiler: Type for either F64 or I64, like Print -- no conversion.
+* Compiler: Arg type ... that did do conversion, if we have one that doesn't.
+
+* [C:/Home/HomeWrappers.HC.Z,13] R("char_bmp_","set_");
+
+* Clean-up code [C:/Kernel/BlkDev/DskStrA.HC.Z,171] FileNameAbs(), does it
+need so many local var names?  I guess 
+no choice.
+
+
+                               Committee Needed
+* Make binary tree look-up using FUN_SEG symbol addresses, so we can
+eliminate 
+fun_seg cache and wall-paper kludge?  All HolyC functions and glbl vars would 
+have left-right for address search.
+
+* Can we get rid of [C:/Kernel/KernelA.HH.Z,3217] MSG_CMD?
+
+* Make so just CdRom; command to copy entire disk to ::/CdRom directory? 
+
+* [C:/Adam/Gr/SpriteMesh.HC.Z,1] MP DepthBuf is a kludge because of
+dc->depth_buf=NULL in various graphics 
+routines.
+
+* Improve editor undo, add redo.
+
+* Compiler: F32?
+
+* International Date output: [C:/Kernel/StrPrint.HC.Z,49] MPrintDate(). 
+Every country make own version?
+* International Date input: [C:/Kernel/StrScan.HC.Z,138] Str2Date().
+
+* [C:/Kernel/KernelA.HH.Z,3614] DCF_SYMMETRY before transformation?
+(Currently, it's after.) 
+
+* [C:/Kernel/KernelA.HH.Z,2955] TRANSPARENT does not work with
+[C:/Kernel/KernelA.HH.Z,2951] ROPF_DITHER.
+
+* [C:/Kernel/KernelA.HH.Z,2941] ROP_XOR with pen_width>1 is broken.
+
+* [C:/Adam/Gr/GrPrimatives.HC.Z,821] GrPutChar3() with depth buf?
+
+* Eliminate?  [C:/Adam/Ctrls/CtrlsA.HC.Z,1]?
+* Eliminate?  [C:/Adam/AMathODE.HC.Z,1]?
+* Eliminate?  [C:/Kernel/KernelA.HH.Z,116] Complex?
+* Eliminate?  [C:/Kernel/KernelA.HH.Z,3641] CDC.brush?
+* Eliminate?  [C:/Adam/Gr/GrDC.HC.Z,6] Mat4x4MulXYZ() change to 3x3?
+* Eliminate?  [C:/Kernel/KernelA.HH.Z,2941] ROP_XOR?
+
+* [C:/Adam/WinMgr.HC.Z,390] WinMgrTask needs to do doc operations on
+[C:/Kernel/Job.HC.Z,242] PostMsg() msgs for ms_hard.  
+Already works for [C:/Kernel/SerialDev/Mouse.HC.Z,42] MsSet()?
+
+* Should Msgs in PopUp queue get fwded to parent when task dies?
+
+* Import Intel datasheets so we can use links in
+[C:/Kernel/Mem/PageTables.HC.Z,1] Code for documentation.  I 
+tried a PDF-to-text convertor and it wasn't acceptible.
+
+* Why are BMP file [C:/Kernel/KernelA.HH.Z,2988] CBGR24's wrong? 
+[C:/Adam/Opt/Utils/FileBMP.HC.Z,1].
+
+* Switch stmt with sparse cases?  Maybe, ban sparse switch stmts.
+
+* Compiler Optimization: Postpone LocalVar init until last possible moment in 
+case of return.
+
+* Compiler: Local var array/struct initialization.
+
+* Compiler Optimization: Bools use r,rm in [C:/Compiler/BackB.HC.Z,102]
+ICCmp() like in [C:/Compiler/BackB.HC.Z,468] ICCmpAndBranch()?
+
+* Compiler: !F64 ~F64
+
+* Compiler: &=, |= can overflow with Bts Btr on small data types?
+
+* Implement [C:/Kernel/KernelA.HH.Z,2549] RS_ATTR_FIXED fixed pos files?
+
+* SIMD in [C:/Adam/Gr/GrDC.HC.Z,6] Mat4x4MulXYZ?
+
+* I use fixed-point in [C:/Adam/Gr/GrMath.HC.Z,282] Circle(),
+[C:/Adam/Gr/GrMath.HC.Z,321] Ellipse(), [C:/Adam/Gr/GrDC.HC.Z,6]
+Mat4x4MulXYZ(), 
+[C:/Adam/Gr/GrMath.HC.Z,96] Mat4x4MulMat4x4New() and others.  God says I
+might want to change to float.  
+[C:/Demo/Lectures/FixedPoint.HC.Z,1]
+[C:/Demo/Lectures/FixedPointAdvanced.HC.Z,1].
+
+* Note: We will never put multiple [C:/Kernel/SerialDev/Keyboard.HC.Z,1]
+Keyboard Tables.  Each country must make 
+their own version of TempleOS.  The [C:/Doc/Demands.DD.Z,1] Intel Factory ROM
+will have just English.  
+Our [C:/Doc/Charter.DD.Z,1] Charter bans multiple country or architectures in
+the same version.
+
+* 12 border chars in scrn font codes 0x02-0x0D. 
+[C:/Adam/Gr/GrTextBase.HC.Z,329] TextBorder() [C:/Kernel/KDbg.HC.Z,291]
+RawDr() 
+[C:/Demo/Games/CharDemo.HC.Z,1]. LineFeed shows-up in <CTRL-m> PersonalMenu.
+
+* Super-simple high speed serial needs flow control.  <CTRL-s> and <CTRL-q>?
+
+
+                             Inspirational Ideas
+* Redo videos, make more professional.
+
+* Use standard terminology from "the literature".
+
+* Striped and other dither patterns.  Brushes?
+
+* Get rid of BYTE, WORD, DWORD in opcode and replace with U8, U16, U32.
+
+* Get rid of "Char".
+
+* Get rid of having two terms and pick one, "Disk" and "BlkDev"?  (Probably, 
+not that one.)
+
+* Could switch to having just C and D drives and RAMDrive and CD/DVD? 
+
+* New editor widgets.
+
+* Make use of flag potential in [C:/Kernel/BlkDev/DskFind.HC.Z,30]
+FilesFind() and possibly [C:/Kernel/BlkDev/DskDirContext.HC.Z,23]
+DirContextNew().
+* Sort options for [C:/Kernel/BlkDev/DskFind.HC.Z,30] FilesFind()?
+
+* New [C:/Doc/HolyC.DD.Z,1] HolyC language features?
+
+* Better [Debugging,1] Debugging?
+
+* Look for mem leaks?
+
+* Std local var names.
+
+* Ticketmaster format stmts? Overflow "t='*'" and padding character?
+
+* Move stuff out of [C:/Kernel/Kernel.PRJ.Z,1] Kernel module.
+
+* $LK,L="FL:D:/Kernel/File.HC"$ instead of A=
+* $SP,B=1$ instead of $SP,BI=1$
+* $CM+LE+RE is nasty
+
+* DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
+once.
+
+* More [C:/Kernel/KernelA.HH.Z,3107] Controls?
+
+* Compiler: More use of more floating-point stk?
+
+* Compiler: More aggressive in [C:/Compiler/OptLib.HC.Z,542] CmpF2PushPop()
+with types besides MOV and F64. 
+
+* Playing with [C:/Demo/Lectures/NegDisp.HC.Z,1] on
+[C:/Kernel/KernelA.HH.Z,3313] CTask?
+     $=-CTASK_NEG_OFFSET
+offset(CTask.addr)==0
+Spawn(): CAlloc()
+TaskDel(): Free()
+CSysFixedArea.adam
+Looks like task_flags,locked_flags cause problems with neg offset.
+
+* Make a game, S.E.T.I., with radio telescope array.  Put God on air.
+
+
+                                     Test
+* [C:/Adam/Gr/SpriteBitMap.HC.Z,1] SpriteBitMap: Grabscroll? 
+
+* [C:/Kernel/BlkDev/DskDrv.HC.Z,252] DrvMap() in
+[C:/Adam/ABlkDev/Mount.HC.Z,148] MountFile().
+
+* Return ress for [C:/Adam/Gr/GrBitMap.HC.Z,71] GrBlot,
+[C:/Adam/Gr/GrBitMap.HC.Z,954] GrRect, [C:/Adam/Gr/GrBitMap.HC.Z,639]
+GrPutChar?
+* Collision cnts for [C:/Adam/Gr/GrBitMap.HC.Z,71] GrBlot,
+[C:/Adam/Gr/GrBitMap.HC.Z,954] GrRect, [C:/Adam/Gr/GrBitMap.HC.Z,639]
+GrPutChar?
+
+* [C:/Kernel/SerialDev/Message.HC.Z,193] GetStr() or
+[C:/Kernel/SerialDev/Message.HC.Z,182] GetChar() in
+[C:/Misc/OSInstall.HC.Z,1] OSInstall didn't like focus change.
+
+* Test on Dad's computer or other people's?
+
+* [C:/Compiler/BackA.HC.Z,372] ICDivEqu() assumes RBX.  Is it okay?
+
+* InFile PopUp of PopUp?
+
+* [C:/Adam/ABlkDev/FileMgr.HC.Z,594] FileMgr() help link scrolls out of
+window.
+
+* [C:/Kernel/SerialDev/Mouse.HC.Z,294] MsHardDrvrInstall() throws exceptions?
+ Doesn't work?  Why mouse [C:/Kernel/SerialDev/Mouse.HC.Z,1] 0x9FC30?
+
+* VirtualBox MP reboot?
+
+* Compiler: Err/Warn line nums?
+* Asm branch-out-of-range warn by one line?
+
+* Make sure queue links safe in one direction.  Task
+[C:/Kernel/KernelB.HH.Z,68] QueIns and [C:/Kernel/KernelB.HH.Z,72] QueRem for 
+multicore cycling fwd through tasks.
+
+* Test removable media id and [C:/Kernel/KernelA.HH.Z,2546] RS_ATTR_RESIDENT.
+ [C:/Adam/ABlkDev/ADskA.HC.Z,232] Touch("","+T");
+
+
+                                Uncategorized
+* DiskCache during FileRead. <CTRL-ALT-c>, [C:/Kernel/KTask.HC.Z,48] Kill().  
+
+* MOV U8 [RSP+RCX],DL
+
+* [C:/Adam/Gr/GrGlbls.HC.Z,3] gr.scrn_image
+  >Might want to do ZOOM in U8 graphics and convert scrn capture to U8
+  >Might want to rev bit order
+
+* This [C:/Kernel/Job.HC.Z,1] Fs->catch_except=TRUE causes problems because it
+catches divide and out-of-mem.  Not sure what to do, yet.
+
+* Release semaphores or break lock sema,usb_td
+
+* Might make CSprite flood fill operate on a separate bitmap
+and blotted at the end.
+* <CTRL-r> delete subsprite in menu near others
+* make better heapwalk, do something with [C:/Kernel/KernelA.HH.Z,1]
+_CFG_HEAP_DBG.
+
+* static var off of data heap.
+* could add "const" to not set CCF_NOT_CONST flag for trig, etc.
+* could make glblvar imports use MDF_RIP_DISP32.
+* PUSH_CMP allocs reg R9 or whatever
+* Might be problem with NOP in OPT pass1 for NO_PUSH in expressions besides
+assignments.  Is ShiftNoPush fully implemented?
+
+
+                                Bible Passages
+It is love I desire			Hosea 6:6
+Males appear three times, not empty	Deuteronomy 16:16
+Offer a sacrifice of praise		Hebrews 13:15
+Do I drink blood of goats? Offer praise	Psalms 50:14
+When a servant becomes king...		Proverb 30:22
+Runner's stride				Psalms 147:10
+Buckling armor				1 Kings 20:11
+Lot cast in the lap			Proverbs 16:33
+Lord does not repeat			Job 33:14
+Offer only in approved place		Deuteronomy 12:13-18
+Jesus' zeal for the Temple		John 2:14-19
+Famine not for bread			Amos 8:11-12
+To the honest, you are honest		Psalm 18:26
+Meek and humble of heart		Matthew 11:29
+Moses gets Aaron			Exodus 4:10-16
+There is no council against the Lord	Proverbs 21:30
+Human help is worthless			Psalm 108:12
+Do not seek your own wealth		1 Corinthians 10:24
+Abundance of Spirits			1 Corinthians 14:12
+The stone rejected is cornerstone	Matthew 21:42
+Egypt rise like flood			Jeremiah 46:7-8
+New wineskins				Mark 2:22
+Thousand songs of Solomon		1 Kings 4:32
+Not rich, nor poor, but my portion	Proverbs 30:8
+Be hot or cold. Lukewarm I spit you out	Revelation 3:16
+
+                                  Misc Notes
+Erik van der Karbargenbok: [C:/Home/Sup1/Sup1Bin/TempleBot,1] TempleBot.
+Intel CEO's name: Brian Krzanich
+>lspci -v
+Size:
+
+                               My Web Bookmarks
+My FireFox Bookmarks
+Machine		```
+<center><img src="http://www.templeos.org/images/Machine.jpg" width="600" height="400" alt=""></center>
+```
+Frosting	```
+<center><img src="http://www.templeos.org/images/Frosting.jpg" width="600" height="400" alt=""></center>
+```
+Soap Carvings	```
+<center><img src="http://www.templeos.org/images/SoapCarvings.jpg" width="640" height="480" alt=""></center>
+```
+CottonTail	```
+<center><img src="http://www.templeos.org/images/CttnTail.jpg" width="644" height="1113" alt=""></center>
+```
+TempleOS Logo	```
+<center><img src="http://www.templeos.org/images/Logo128x152.jpg" width="640" height="760" alt=""></center>
+```
+T-Shirts & Mug	```
+<img src="http://www.templeos.org/Wb/Home/Web/Imgs/Gear2387x2849.jpg" width="477" height="569" alt="">
+```
+Pew Pew Pew	```
+<center><img src="http://i.imgur.com/sMpJ0ch.jpg" width="640" height="480" alt=""></center>
+```
+Iceberg		```
+<center><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Blue_ice_in_South_Greenland_-_Visit_Greenland.jpg" width="640" height="480" alt=""></center>
+```
+I made dis	```
+<center><img src="http://i.imgur.com/cZKkxTX.jpg" width="640" height="800" alt=""></center>
+```
+NIST Beacon	```
+<center><img src="http://www.nist.gov/itl/csd/ct/images/beacon_architecture_2013.jpg" width="550" height="278" alt=""></center>
+```
+Purple Frog	```
+<center><img src="https://s-media-cache-ak0.pinimg.com/736x/fb/08/2a/fb082a53bd798f5957a474ff9095e6d4.jpg" width="640" height="420" alt=""></center>
+```
+Casino (Dog)	```
+<center><img src="http://www.templeos.org/images/Dog1855x1056.jpg" width="640" height="364" alt=""></center>
+```
+Sombrero	```
+<center><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/M104_ngc4594_sombrero_galaxy_hi-res.jpg" width="640" height="359" alt=""></center>
+```
+
+SimStructure
+ASU_Transcripts      ASU Course Catalog (See page 261)
+Dr. David Pheanis	Dr. Konstantinos S. Tsakalis	Dr. Walter Higgins
+Peter Gadwa	Ticketmaster
+Tom Foley
+Graphic Technologies	Lexmark vs Static Control
+
+Stephen Davis
+
+3qEeEGCAsBABAqFDBeE2G33qEeEGCAsBABAqFDBeE2G33qCsBDBDq2G3s2G3F2G3FqAet2G32G3AEDAqF3qCsBDBDq2G3s2G3F2G3FqAet2G32G3AEDAqF
+qFeDAsBDeDqCeF2G3sGGeF2sG3C2G3CBCeF
+
+                                Web Bookmarks
+Cop tying shoe	```
+<center><img src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambridge-county-pd.jpg" width="480" height="376" alt=""></center>
+```
+Unikernels
+Handford school
+Look at PCI interrupt routing.
+The sins of Newton
+Stalin's Tanks
+Wisdom for the Way
+Lamp shades
+The Original Jewish Temple
+Top 1000 Movies
+KingJamesBible with LineNums
+Higgs 5-Sigma Proof
+The Number Bleem
+Dwight: Nerd torture
+TOSZ Compression
+ATA/ATAPI spec
+Patton Prayer
+Streaming Terry A. Davis
+Bleem
+
+WWW.OSDEV.ORG
+NIST Beacon
+The Perfect Coin Toss
+BBC
+KNPR
+BBC_News_24
+BBC_Five_Live
+CBS News
+
+C64 Users Guide
+Mapping the Commodore 64
+C64 Programmers Reference Guide
+
+8-Bit Pixel Art
+8-Bit Japanese Pixel Art
+
+
+sha256sum

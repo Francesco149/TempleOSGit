@@ -1,0 +1,243 @@
+                             TempleOS Demo Index
+
+These are arranged in increasing order of difficulty, more or less.  This can 
+be used as a tutorial if you start at the beginning and work your way fwd.
+
+<SPACE> to edit a file and <F5> to run it.
+
+[C:/Doc/HelloWorld.DD.Z,1]
+
++] Games: Beginner
+  [C:/Demo/Graphics/NetOfDots.HC.Z,1]
+  [C:/Demo/Graphics/MouseDemo.HC.Z,1]
+  [C:/Demo/Graphics/Lines.HC.Z,1]
+  [C:/Demo/Graphics/SunMoon.HC.Z,1]
+  [C:/Demo/Graphics/LowPassFilter.HC.Z,1]
+  [C:/Demo/Graphics/MathAudioDemo.HC.Z,1]
+  [C:/Demo/Games/TicTacToe.HC.Z,1]
+  [C:/Demo/Graphics/SpritePlot.HC.Z,1]
+  [C:/Demo/Games/ElephantWalk.HC.Z,1]
+  [C:/Demo/Graphics/SpritePut.HC.Z,1]
+  [C:/Demo/Graphics/SpritePutExt.HC.Z,1]
+  [C:/Demo/Snd/ASCIIOrgan.HC.Z,1]
+  [C:/Demo/MsgLoop.HC.Z,1]
+  [C:/Demo/Graphics/Doodle.HC.Z,1]
+  [C:/Demo/Graphics/Speedline.HC.Z,1]
+  [C:/Demo/Graphics/Bounce.HC.Z,1]
+  [C:/Demo/RandDemo.HC.Z,1]
+  [C:/Demo/KeyBitMap.HC.Z,1]
+  [C:/Demo/Graphics/WinZBuf.HC.Z,1]
+  [C:/Demo/Graphics/Elephant.HC.Z,1]
+  [C:/Demo/Graphics/WallPaperFish.HC.Z,1] //Press SHIFT-F5 to Adam Include
+  [C:/Demo/Games/Digits.HC.Z,1]
+  [C:/Demo/Progress.HC.Z,1] //has some ASM, just ignore
+  [C:/Demo/Graphics/Symmetry.HC.Z,1]
+  [C:/Demo/Graphics/Blot.HC.Z,1]
+  [C:/Demo/Graphics/ScrnCapture.HC.Z,1]
+  [C:/Demo/Graphics/EdSprite.HC.Z,1]
+  [C:/Demo/PullDownMenu.HC.Z,1]
+  [C:/Demo/Graphics/Palette.HC.Z,1]
+  [C:/Demo/Games/CircleTrace.HC.Z,1]
+  [C:/Demo/Games/Halogen.HC.Z,1]
+  [C:/Demo/Games/TheDead.HC.Z,1]
+  [C:/Demo/Games/RainDrops.HC.Z,1]
+  [C:/Demo/Snd/MorseCode.HC.Z,1]
+  ::/Demo/Games/Stadium
+`Cd("::/Demo/Games/Stadium");Dir;View;
+`
+
+  [C:/Demo/Graphics/Lattice.HC.Z,1]
+  [C:/Demo/Graphics/Collision.HC.Z,1]
+  [C:/Demo/Games/BlackDiamond.HC.Z,1]
+  +] Games: Intermediate
+  [C:/Demo/Graphics/Box.HC.Z,1]
+  [C:/Demo/Graphics/Pick.HC.Z,1]
+  [C:/Demo/Graphics/3DPoly.HC.Z,1]
+  [C:/Demo/Graphics/BSpline.HC.Z,1]
+  [C:/Demo/Graphics/Extents.HC.Z,1]
+  [C:/Demo/Graphics/SpritePlot3D.HC.Z,1]
+  [C:/Demo/Graphics/Balloon.HC.Z,1]
+  [C:/Demo/Graphics/RotateTank.HC.Z,1]
+  [C:/Demo/Games/Wenceslas.HC.Z,1]
+  [C:/Demo/ScrnCodes.HC.Z,1]
+  [C:/Demo/Graphics/PanText.HC.Z,1]
+  [C:/Demo/Graphics/CharAnimation.HC.Z,1]
+  [C:/Demo/Games/Maze.HC.Z,1]
+  [C:/Demo/Games/CharDemo.HC.Z,1]
+  [C:/Demo/Graphics/FontEd.HC.Z,1]
+  [C:/Demo/ExtChars.HC.Z,1]
+  [C:/Demo/TimeIns.HC.Z,1]
+  [C:/Demo/Snd/WaterFowl.HC.Z,1]
+  ::/Apps/Psalmody/Examples
+`Cd("::/Apps/Psalmody/Examples");Dir;View;
+`
+
+  [C:/Adam/CPURep.HC.Z,26] CPURep
+  [C:/Demo/MultiCore/MPPrint.HC.Z,1]
+  [C:/Demo/Graphics/PredatorPrey.HC.Z,1]
+  [C:/Demo/Graphics/Cartesian.HC.Z,1]
+  [C:/Demo/Graphics/Hanoi.HC.Z,1]
+  [C:/Demo/Graphics/Life.HC.Z,1]
+  [C:/Demo/Games/Zing.HC.Z,1]
+  [C:/Demo/Graphics/Grid.HC.Z,1]
+  [C:/Demo/Games/TreeCheckers.HC.Z,1]
+  [C:/Demo/MultiCore/Palindrome.HC.Z,1]
+  [C:/Demo/MultiCore/MPAdd.HC.Z,1]
+  [C:/Demo/MultiCore/Lock.HC.Z,1]
+  [C:/Demo/Graphics/Slider.HC.Z,1]
+  [C:/Demo/Graphics/WallPaperCtrl.HC.Z,1] //Press SHIFT-F5 to Adam Include
+  [C:/Demo/Graphics/ScrollBars.HC.Z,1]
+  [C:/Demo/RegistryDemo.HC.Z,1]
+  [C:/Demo/Games/FlapBat.HC.Z,1]
+  [C:/Demo/Games/BattleLines.HC.Z,1]
+  [C:/Demo/Games/BigGuns.HC.Z,1]
+  [C:/Demo/Games/FlatTops.HC.Z,1]
+  [C:/Demo/Games/RawHide.HC.Z,1]
+  [C:/Demo/Games/DunGen.HC.Z,1]
+  ::/Apps/Titanium
+`Cd("::/Apps/Titanium");Dir;View;
+`
+
+  [C:/Demo/Games/Collision.HC.Z,1]
+  +] Games: Advanced
+  [C:/Demo/MultiCore/LoadTest.HC.Z,1]
+  [C:/Demo/MultiCore/Primes.HC.Z,1]
+  [C:/Demo/MultiCore/MPRadix.HC.Z,1]
+  [C:/Demo/MultiCore/Interrupts.HC.Z,1]
+  [C:/Demo/Games/Varoom.HC.Z,1]
+  [C:/Demo/Graphics/Shading.HC.Z,1]
+  [C:/Demo/Graphics/Transform.HC.Z,1]
+  [C:/Demo/Games/BomberGolf.HC.Z,1]
+  [C:/Demo/Graphics/Shadow.HC.Z,1]
+  [C:/Demo/Graphics/Pick3D.HC.Z,1]
+  ::/Apps/ToTheFront
+`Cd("::/Apps/ToTheFront");Dir;View;
+`
+
+  [C:/Demo/Graphics/SpriteText.HC.Z,1]
+  [C:/Demo/Graphics/SpriteRaw.HC.Z,1]
+  ::/Apps/GrModels
+`Cd("::/Apps/GrModels");Dir;View;
+`
+
+  ::/Apps/KeepAway
+`Cd("::/Apps/KeepAway");Dir;View;
+`
+
+  [C:/Demo/Games/Rocket.HC.Z,1]
+  [C:/Demo/Games/RocketScience.HC.Z,1]
+  [C:/Demo/Games/MassSpring.HC.Z,1]
+  [C:/Demo/Graphics/LightTable.HC.Z,1]
+  [C:/Demo/Games/Whap.HC.Z,1]
+  [C:/Demo/Games/Squirt.HC.Z,1]
+  ::/Apps/X-Caliber
+`Cd("::/Apps/X-Caliber");Dir;View;
+`
+
+  [C:/Demo/Games/ZoneOut.HC.Z,1]
+  [C:/Demo/Games/CastleFrankenstein.HC.Z,1]
+  [C:/Demo/Games/Talons.HC.Z,1]
+  ::/Apps/Strut
+`Cd("::/Apps/Strut");Dir;View;
+`
+
+  ::/Apps/Span
+`Cd("::/Apps/Span");Dir;View;
+`
+
+  ::/Apps/Psalmody
+`Cd("::/Apps/Psalmody");Dir;View;
+`
+
+  +] Non-Game
+  [C:/Misc/DoDistro.HC.Z,1]
+  [C:/Demo/DbgDemo.HC.Z,1]
+  [C:/Demo/SubSwitch.HC.Z,1]
+  [C:/Demo/DateTime.HC.Z,1]
+  [C:/Demo/RevFileDemo/Rev.HC.Z,1]
+  [C:/Demo/ToHtmlToTXTDemo/HtmlGen.HC.Z,1]
+  [C:/Demo/ToHtmlToTXTDemo/TXTGen.HC.Z,1]
+  [C:/Demo/SortFileDemo/F64FileGen.HC.Z,1]
+  [C:/Demo/SortFileDemo/F64FileSort.HC.Z,1]
+  [C:/Demo/PhoneNumWords.HC.Z,1]
+  [C:/Demo/SuggestSpelling.HC.Z,1]
+  [C:/Demo/WordSearch.HC.Z,1]
+  [C:/Demo/Graphics/CommonAncestor.HC.Z,1]
+  [C:/Demo/Directives.HC.Z,1]
+  [C:/Demo/Carry.HC.Z,1]
+  [C:/Demo/Dsk/DataBase.HC.Z,1]
+  [C:/Demo/Dsk/FPrintF.HC.Z,1]
+  [C:/Demo/Dsk/DskRaw.HC.Z,1]
+  [C:/Demo/Dsk/UnusedSpaceRep.HC.Z,1]
+  [C:/Demo/Lectures/MiniGrLib.HC.Z,1]
+  [C:/Demo/Lectures/MiniCompiler.HC.Z,1]
+  [C:/Demo/MagicPairs.HC.Z,1]
+  [C:/Demo/Graphics/PoleZeros.HC.Z,1]
+  [C:/Demo/WebLogDemo/WebLogRep.HC.Z,1]
+  [C:/Demo/WebLogDemo/WebLogScramble.HC.Z,1]
+  ::/Apps/TimeClock
+`Cd("::/Apps/TimeClock");Dir;View;
+`
+
+  ::/Apps/Logic
+`Cd("::/Apps/Logic");Dir;View;
+`
+
+  ::/Demo/Lectures
+`Cd("::/Demo/Lectures");Dir;View;
+`
+
+  ::/Apps/Budget
+`Cd("::/Apps/Budget");Dir;View;
+`
+
+  +] TempleOS Specific
+  ::/Demo/InFile
+`Cd("::/Demo/InFile");Dir;View;
+`
+
+  [C:/Demo/Print.HC.Z,1]
+  [C:/Demo/SubIntAccess.HC.Z,1]
+  [C:/Demo/ParenWarn.HC.Z,1]
+  [C:/Demo/NullCase.HC.Z,1]
+  [C:/Demo/OnceDemo.HC.Z,1]
+  [C:/Demo/CompileDemo.HC.Z,1]
+  [C:/Demo/Prompt.HC.Z,1]
+  [C:/Demo/ClassMeta.HC.Z,1]
+  [C:/Demo/LastClass.HC.Z,1]
+  [C:/Demo/DolDoc/NumBible.HC.Z,1]
+  [C:/Demo/DolDoc/Form.HC.Z,1]
+  [C:/Demo/DolDoc/MenuBttn.HC.Z,1]
+  [C:/Demo/DolDoc/MenuSprite.HC.Z,1]
+  [C:/Demo/DolDoc/ClickCallBack.HC.Z,1]
+  [C:/Demo/DolDoc/TreeDemo.HC.Z,1]
+  [C:/Demo/Exceptions.HC.Z,1]
+  [C:/Demo/Dsk/SerializeTree.HC.Z,1]
+  [C:/Demo/MemDemo.HC.Z,1]
+  [C:/Demo/StkGrow.HC.Z,1]
+  [C:/Demo/DolDoc/TextDemo.HC.Z,1]
+  [C:/Demo/DolDoc/CursorMove.HC.Z,1]
+  [C:/Demo/DolDoc/DemoDoc.DD.Z,1]
+  [C:/Demo/Spy.HC.Z,1]
+  [C:/Demo/DolDoc/FileRead.HC.Z,1]
+  [C:/Demo/DolDoc/Data.HC.Z,1]
+  [C:/Demo/DolDoc/DefineStr.HC.Z,1]
+  [C:/Demo/DolDoc/CallBack.HC.Z,1]
+  [C:/Demo/Define.HC.Z,1]
+  [C:/Adam/DolDoc/DocCodeTools.HC.Z,387] EdRenumAsm
+  [C:/Demo/DolDoc/UnusedDefine.HC.Z,1]
+  [C:/Demo/Asm/AsmHelloWorld.HC.Z,1]
+  [C:/Demo/Asm/BuzzFizz.HC.Z,1]
+  [C:/Demo/Asm/PutDec.HC.Z,1]
+  [C:/Demo/Asm/MulByHand.HC.Z,1]
+  [C:/Demo/Asm/DivByHand.HC.Z,1]
+  [C:/Demo/Asm/AsmAndC1.HC.Z,1]
+  [C:/Demo/Asm/AsmAndC2.HC.Z,1]
+  [C:/Demo/Asm/AsmAndC3.HC.Z,1]
+  [C:/Demo/GlblVars.HC.Z,1]
+  [C:/Misc/OSTestSuite.HC.Z,1]
+  ::/Adam
+`Cd("::/Adam");Dir;View;
+`
+
+  

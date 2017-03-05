@@ -1,0 +1,8 @@
+A [C:/Doc/DolDocOverview.DD.Z,1] DolDoc in memory is a [Data Types/Circular
+Queue,1] Circular Queue of cmds and graphics.  See
+[C:/Kernel/KernelA.HH.Z,1191] CDocEntry 
+for the entry structure.  See [C:/Adam/Training.HC.Z,161] TipOfDay() for a
+nice example.
+
+[C:/Doc/DolDocOverview.DD.Z,1] DolDoc's are used for the editor, viewer,
+browser, and cmd line.

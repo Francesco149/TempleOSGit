@@ -1,0 +1,26 @@
+InFiles are used to generate user input to automate operations.  The TempleOS 
+tour is done with an InFile.  It reminds me of a Unix pipe because StdOut of 
+one gets chained into StdIn of another.
+
+When an InFile runs, a child task is [C:/Kernel/KTask.HC.Z,242] Spawn()ed
+which intercepts real user 
+input and generates fake input.  InFiles are [C:/Doc/HolyC.DD.Z,1] HolyC
+programs run by the child 
+whose stdout goes to the parent's input buffer.  [C:/Kernel/Job.HC.Z,259]
+Msg() can be included in an I
+nFile to send special keys or mouse cmds to the parent.  While an InFile is 
+running, the normal input gets diverted to the InFile task and can be
+filtered 
+and sent back to the parent task.  Unless you are driving functions which 
+prompt for data, you can probably use an #include file in place of an InFile.
+
+See [C:/Demo/InFile/InDir.IN.Z,1].
+
+Note: [C:/Kernel/Job.HC.Z,482] In("") can be used if all you need is to send
+ASCII characters.  It 
+differs from [C:/Kernel/Job.HC.Z,464] InStr().  You'll probably use
+[C:/Kernel/Job.HC.Z,482] In() a lot and not [C:/Kernel/Job.HC.Z,464] InStr().
+ With 
+[C:/Kernel/Job.HC.Z,482] In(), for example, you can place answers to the
+prompts for recompiling the Ke
+rnel module during [C:/Adam/Opt/Boot/BootHDIns.HC.Z,18] BootHDIns().
