@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer my /Home files into VMware.
-
-echo VMware In
-sudo ~/TAD/Bin/vm_in2
-

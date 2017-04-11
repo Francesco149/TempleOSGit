@@ -29,10 +29,10 @@ U0 DrawIt(CTask *,CDC *dc)
   x2=x1-RAD/2*Cos(dtheta);
   y2=y1+RAD*Sin(dtheta);
   dc->color=BLACK;
-  dc->pen_width=14;
+  dc->thick=14;
   GrLine3(dc,x1,y1,z,x2,y2,z);
   dc->color=YELLOW;
-  dc->pen_width=12;
+  dc->thick=12;
   GrLine3(dc,x1,y1,z,x2,y2,z);
 
 
@@ -42,10 +42,10 @@ U0 DrawIt(CTask *,CDC *dc)
       x2=x1-RAD*Cos(dtheta*i);
       y2=y1+RAD*Sin(dtheta*i);
       dc->color=BLACK;
-      dc->pen_width=10;
+      dc->thick=10;
       GrLine3(dc,x1,y1,z,x2,y2,z);
       dc->color=YELLOW;
-      dc->pen_width=8;
+      dc->thick=8;
       GrLine3(dc,x1,y1,z,x2,y2,z);
       x1=x2; y1=y2;
     }

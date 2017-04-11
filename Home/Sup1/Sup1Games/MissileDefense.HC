@@ -60,7 +60,7 @@ U0 DrawIt(CTask *,CDC *dc)
     } else if (s[i].cnt>-EXPLOSION_CNT) {
       dc->color=winmgr.updates&15;
       radius=(EXPLOSION_CNT/2-AbsI64(-EXPLOSION_CNT/2-s[i].cnt))*2;
-      dc->pen_width=radius;
+      dc->thick=radius;
       GrPlot3(dc,s[i].x.i32[1],s[i].y.i32[1],0);
     }
   for (i=0;i<MISSILES_NUM;i++)
@@ -70,7 +70,7 @@ U0 DrawIt(CTask *,CDC *dc)
       else
 	dc2->color=LTGRAY;
       GrPlot(dc2,m[i].x.i32[1],m[i].y.i32[1]);
-      dc->pen_width=3;
+      dc->thick=3;
       dc->color=WHITE;
       GrPlot3(dc,m[i].x.i32[1],m[i].y.i32[1],0);
     }

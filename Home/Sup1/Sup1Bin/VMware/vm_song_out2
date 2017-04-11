@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#Transfer my /Home song files out of VMware.
+
+~/TAD/Bin/VMware/vm_mnt
+rm -R ~/TAD/Home/Sup1/Sup1Hymns
+rm -R ~/TAD/Home/Sup1/Sup1Songs
+cp -R --preserve=timestamps /mnt/vm_disk/Home/Sup1/Sup1Hymns ~/TAD/Home/Sup1
+chmod -R 777 ~/TAD
+~/TAD/Bin/VMware/vm_umnt
+

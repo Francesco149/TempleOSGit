@@ -72,7 +72,7 @@ U0 DrawHoreb(CTask *task,CDC *dc)
       dc->y=s*tmpo->y1+h;
       dc->z=0;
 
-      dc->pen_width=1;
+      dc->thick=1;
       dc->color=winmgr.updates&15;
       for (j=0;j<45;j++) {
 	m=Sqr(Rand); a=2*pi*Rand;

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#Transfer my website log files into VMware.
+
+cd ~/Downloads
+rm access.log
+wget "http://www.templeos.org/Tmp/access.log"
+~/TAD/Bin/VMware/vm_mnt
+mkdir /mnt/vm_disk/Tmp
+mkdir /mnt/vm_disk/Tmp/Logs
+mv ~/Downloads/a*.log /mnt/vm_disk/Tmp/Logs
+~/TAD/Bin/VMware/vm_umnt
+

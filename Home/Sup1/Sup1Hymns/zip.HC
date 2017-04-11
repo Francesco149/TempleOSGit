@@ -40,7 +40,7 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,53793]\n"
 	  );
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
 
     while (!ScanKey) {

@@ -884,9 +884,9 @@ U0 DotDraw(CDC *dc,Dot *head)
       if ((tmpd1=tmpd->bottom) && !Bt(tmpd1->flags,Df_PROCESSED))
 	GrLine(dc,tmpd->x,tmpd->y,tmpd1->x,tmpd1->y);
       if (Bt(tmpd->flags,Df_JUNCTION)) {
-	dc->pen_width=3;
+	dc->thick=3;
 	GrPlot3(dc,tmpd->x,tmpd->y,0);
-	dc->pen_width=1;
+	dc->thick=1;
       }
       tmpd=tmpd->next;
     }

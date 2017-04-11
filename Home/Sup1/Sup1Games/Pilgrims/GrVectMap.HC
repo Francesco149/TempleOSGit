@@ -52,7 +52,7 @@ U0 VectMapBlotRect(CDC *dc,CGrVectMap *vm,I64 bit,F64 scale)
   I64 k,cnt,i0,j0,i,j,rect_dft,not_rect_dft;
   U8 *body=vm->body;
   F64 d=scale/2;
-  dc->pen_width=scale+0.5;
+  dc->thick=scale+0.5;
   dc->color=rect_dft=Bt(body,bit++);
   not_rect_dft=1-rect_dft;
 

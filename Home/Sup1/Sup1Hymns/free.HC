@@ -32,7 +32,7 @@ U0 DrawIt(CTask *,CDC *dc)
   dc->color=BLUE;
   dc->x=x;
   dc->y=y;
-  dc->pen_width=2;
+  dc->thick=2;
   GrCircle3(dc,0,0,0,10);
   GrLine3(dc,-10,0,0,-30,0,0);
 
@@ -143,7 +143,7 @@ U0 Song()
   try {
     task=PopUpViewPrint("[C:/Misc/Bible.TXT.Z,90914] Romans,8:28\n");
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       Play("5qEE4BeB5D4sBBBB5qD4sB5F4B5FD4G5D4G",

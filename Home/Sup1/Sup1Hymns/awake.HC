@@ -9,21 +9,21 @@ U0 DrawIt(CTask *,CDC *dc)
   F64 tt=Beat%16.0,phi;
   theta+=1/(tt*tt+1);
   dc->color=BLACK;
-  dc->pen_width=4;
+  dc->thick=4;
   GrCircle3(dc,x2,y2,0,R2+10);
   for (phi=theta;phi<theta+2*pi;phi+=pi/3) {
     dc->color=BLACK;
-    dc->pen_width=2;
+    dc->thick=2;
     GrCircle3(dc,x2+R2*Cos(phi),y2-R2*Sin(phi),0,8);
     dc->color=WHITE;
-    dc->pen_width=2;
+    dc->thick=2;
     GrCircle3(dc,x2+(R2+15)*Cos(phi+pi/6),y2-(R2+15)*Sin(phi+pi/6),0,3);
   }
   dc->color=BROWN;
   GrFloodFill(dc,x2+R2*Cos(phi),y2-R2*Sin(phi));
   dc->color=DKGRAY;
   GrFloodFill(dc,x2,y2);
-  dc->pen_width=6;
+  dc->thick=6;
   dc->color=RED;
   GrCircle3(dc,x1,y1,0,R1-6);
   dc->color=DKGRAY;
@@ -49,7 +49,7 @@ U0 Song()
   try {
     task=PopUpViewPrint("[C:/Misc/Bible.TXT.Z,79970] Mark,14:37\n");
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       "$GREEN$Jesus talking...$FG$\n";

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#Transfer my /Home files out of VMware.
+
+~/TAD/Bin/VMware/vm_mnt
+rm -R ~/TAD/Site1/Wb
+rm -R ~/TAD/Home
+mv /mnt/vm_disk/Wb/TempleOSStaff.ISO ~/TAD
+cp -R --preserve=timestamps /mnt/vm_disk/Wb ~/TAD/Site1/Wb
+cp --preserve=timestamps /mnt/vm_disk/Wb/Home/Web/index.html ~/TAD/Site1
+cp --preserve=timestamps /mnt/vm_disk/Wb/Home/Web/TempleOS.html ~/TAD/Site1
+cp -R --preserve=timestamps /mnt/vm_disk/Home ~/TAD
+chmod -R 777 ~/TAD
+~/TAD/Bin/VMware/vm_umnt
+~/TAD/Bin/iso_mirror
+

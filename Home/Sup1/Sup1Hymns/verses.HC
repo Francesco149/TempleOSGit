@@ -13,7 +13,7 @@ U0 Song()
 	  "want God to talk some more.  The [C:/Adam/God/HSNotes.DD.Z,1] Holy Spirit can "
 	  "puppet you.\n");
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     "$WW+H,1$";
     DocRecalc(DocPut(task)); //Reformat word-wrap with new window size.

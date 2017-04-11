@@ -162,6 +162,7 @@ U0 Trailer()
   CDC *dc=DCAlias;
   WinBorder;
   WinMax;
+  Drv(Drv2Let(Fs->parent_task->cur_dv));
   Cd(Fs->parent_task->cur_dir);
   Type("AESplash.DD");
   Sleep(500);

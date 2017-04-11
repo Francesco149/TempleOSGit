@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer BMP screenshot movie files out of QEMU.
+
+echo EMU Mov
+sudo ~/TAD/Bin/QEMU/emu_mov2
+

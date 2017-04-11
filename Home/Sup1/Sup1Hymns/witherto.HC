@@ -12,7 +12,7 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,76908] Matthew,25:18\n"
 	  );
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       Play("4qG5sFEFEqD4B5EetC4BG5qF4sB5D4B5D",

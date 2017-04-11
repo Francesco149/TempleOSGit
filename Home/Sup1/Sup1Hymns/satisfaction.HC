@@ -65,7 +65,7 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,56267] Ecclesiastes,3:13\n"
 	  );
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     Fs->draw_it=&DrawIt;
     Fs->task_end_cb=&SndTaskEndCB;

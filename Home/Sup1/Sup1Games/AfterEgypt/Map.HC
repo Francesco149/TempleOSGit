@@ -8,7 +8,7 @@ U0 DrawMap(CTask *,CDC *dc)
     last_left=TRUE;
   else if (x>last_x)
     last_left=FALSE;
-  dc->pen_width=1;
+  dc->thick=1;
   if (last_left)
     Sprite3(dc,x,y,0,left_imgs [ToI64(6.0*tS)&3]);
   else

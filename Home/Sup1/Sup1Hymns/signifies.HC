@@ -9,7 +9,7 @@ U0 Song()
   try {
     task=PopUpViewPrint("[C:/Misc/Bible.TXT.Z,81941] Luke,12:12\n");
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       Play("5hDeD4AqG5hDeD4GqF",

@@ -18,7 +18,7 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,93323] 2 Corinthians,6:7\n"
 	  );
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       Play("5qDCDeEG4B5D4etBB5FqDeD4B",
