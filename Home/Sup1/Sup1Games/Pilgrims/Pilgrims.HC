@@ -261,11 +261,11 @@ U0 DrawIt(CTask *task,CDC *dc)
   Mat4x4MulXYZ(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
   dc->color=BLACK;
-  dc->pen_width=2;
+  dc->thick=2;
   GrLine3(dc,x-scrn_x,y-scrn_y,0,
 	x-8*Cos(ship.theta-2.5*ship.d_theta)-scrn_x,
 	y-8*Sin(ship.theta-2.5*ship.d_theta)-scrn_y,0);
-  dc->pen_width=1;
+  dc->thick=1;
 
   //Wake
   x=(-(AFT_LEN+2)+RandU16%13-6)/view_scale; y=(RandU16%13-6)/view_scale; z=0;
@@ -309,11 +309,11 @@ U0 DrawIt(CTask *task,CDC *dc)
     Mat4x4MulXYZ(ship_r,&x,&y,&z);
     x+=ship.x*view_scale; y+=ship.y*view_scale;
     dc->color=DKGRAY;
-    dc->pen_width=4;
+    dc->thick=4;
     GrLine3(dc,x-scrn_x,y-scrn_y,0,xx,yy,0);
   }
 
-  dc->pen_width=2;
+  dc->thick=2;
   for (d=0;d<MAST_HEIGHT;d+=0.5) {
     x=-AFT_MAST; y=0; z=d;
     Mat4x4MulXYZ(ship_r,&x,&y,&z);
@@ -322,7 +322,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=WHITE;
     GrLine3(dc,x-dx-scrn_x,y-dy-scrn_y,0,x+dx-scrn_x,y+dy-scrn_y,0);
   }
-  dc->pen_width=1;
+  dc->thick=1;
 
   x=-AFT_MAST; y=0; z=MAST_HEIGHT;
   Mat4x4MulXYZ(ship_r,&x,&y,&z);
@@ -335,12 +335,12 @@ U0 DrawIt(CTask *task,CDC *dc)
     Mat4x4MulXYZ(ship_r,&x,&y,&z);
     x+=ship.x*view_scale; y+=ship.y*view_scale;
     dc->color=DKGRAY;
-    dc->pen_width=4;
+    dc->thick=4;
     GrLine3(dc,x-scrn_x,y-scrn_y,0,xx,yy,0);
   }
 
   dc->color=BLACK;
-  dc->pen_width=1;
+  dc->thick=1;
   GrCircle3(dc,x-scrn_x,y-scrn_y,0,2);
 
   //Bow Sail
@@ -357,11 +357,11 @@ U0 DrawIt(CTask *task,CDC *dc)
     Mat4x4MulXYZ(ship_r,&x,&y,&z);
     x+=ship.x*view_scale; y+=ship.y*view_scale;
     dc->color=DKGRAY;
-    dc->pen_width=4;
+    dc->thick=4;
     GrLine3(dc,x-scrn_x,y-scrn_y,0,xx,yy,0);
   }
 
-  dc->pen_width=2;
+  dc->thick=2;
   for (d=0;d<MAST_HEIGHT;d+=0.5) {
     x=BOW_MAST; y=0; z=d;
     Mat4x4MulXYZ(ship_r,&x,&y,&z);
@@ -370,7 +370,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=WHITE;
     GrLine3(dc,x-dx-scrn_x,y-dy-scrn_y,0,x+dx-scrn_x,y+dy-scrn_y,0);
   }
-  dc->pen_width=1;
+  dc->thick=1;
 
   x=BOW_MAST; y=0; z=MAST_HEIGHT;
   Mat4x4MulXYZ(ship_r,&x,&y,&z);
@@ -383,12 +383,12 @@ U0 DrawIt(CTask *task,CDC *dc)
     Mat4x4MulXYZ(ship_r,&x,&y,&z);
     x+=ship.x*view_scale; y+=ship.y*view_scale;
     dc->color=DKGRAY;
-    dc->pen_width=4;
+    dc->thick=4;
     GrLine3(dc,x-scrn_x,y-scrn_y,0,xx,yy,0);
   }
 
   dc->color=BLACK;
-  dc->pen_width=1;
+  dc->thick=1;
   GrCircle3(dc,x-scrn_x,y-scrn_y,0,2);
 
   dc->color=BLACK;

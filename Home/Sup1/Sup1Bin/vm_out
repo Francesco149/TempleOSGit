@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer my /Home files out of VMware.
-
-echo VMware Out
-sudo ~/TAD/Bin/vm_out2
-

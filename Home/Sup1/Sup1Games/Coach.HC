@@ -40,7 +40,7 @@ U0 DrawIt(CTask *,CDC *dc)
   U8 *tmps;
 
   dc->color=WHITE;
-  dc->pen_width=3;
+  dc->thick=3;
   GrLine3(dc,BASE_X,BASE_Y,0,BASE_X-200,BASE_Y-200,0);
   GrLine3(dc,BASE_X,BASE_Y,0,BASE_X+200,BASE_Y-200,0);
 

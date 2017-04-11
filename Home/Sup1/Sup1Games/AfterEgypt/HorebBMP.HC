@@ -48,7 +48,7 @@ U0 MPDrawHoreb(CDC *dc2)
 	dc->x=s*tmpo->x1+cx;
 	dc->y=s*tmpo->y1+h;
 	dc->z=tmpo->z1;
-	dc->pen_width=1;
+	dc->thick=1;
 	dc->color=winmgr.updates&15;
 	for (j=0;j<45;j++) {
 	  m=Sqr(Rand); a=2*pi*Rand;

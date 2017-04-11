@@ -158,7 +158,7 @@ public U0 DSLighting(CDC *dc,CD3I32 *p1,CD3I32 *p2,CD3I32 *p3,
   //TempleOS will generate a random U16
   //and compare to dither_probability_u16 and
   //will pick from two colors.
-  //Probability dithering does not work with pen_width>1 at this time.
+  //Probability dithering does not work with thick>1 at this time.
   if (color.c0.rop&ROPBF_TWO_SIDED) {
     color.c0.rop&=~ROPBF_TWO_SIDED;
     i=AbsI64(i)<<1;
@@ -301,7 +301,7 @@ U0 MPDrawWalls(CDC *_dc)
 	xx1=xx2; yy1=yy2;
       }
       dc->color=BLACK;
-      dc->pen_width=1;
+      dc->thick=1;
       GrLine3(dc,x1,y1,0,x1,y1,WALL_HEIGHT*SCRN_SCALE);
       GrLine3(dc,x2,y2,0,x2,y2,WALL_HEIGHT*SCRN_SCALE);
     }
@@ -406,7 +406,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->y=task->pix_height-2*blueprint_height;
   dc->z=0;
   dc->transform=&DCTransform;
-  dc->pen_width=2;
+  dc->thick=2;
   for (i=0;i<blueprint_height;i++)
     for (j=0;j<blueprint_width;j++) {
       dc->color=blueprint[(blueprint_height-1-i)*blueprint_width+j];

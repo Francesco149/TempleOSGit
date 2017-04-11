@@ -64,7 +64,7 @@ U0 Bird(CDC *dc,F64 wing_theta)
   GrFillPoly3(dc,3,p);
 
   dc->color=ROPF_DITHER+WHITE<<16+LTGRAY;
-  dc->pen_width=3;
+  dc->thick=3;
   GrLine3(dc,0,0,-BODY,0,0,BODY);
 }
 

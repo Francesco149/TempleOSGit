@@ -11,7 +11,7 @@ U0 DrawIt(CTask *,CDC *dc)
   I64 i,j;
 
   dc->color=BLACK;
-  dc->pen_width=7;
+  dc->thick=7;
   for (i=0;i<4;i++) {
     y=0;
     d=dt%4;
@@ -40,7 +40,7 @@ U0 DrawIt(CTask *,CDC *dc)
     x1=X+(i-2.5)*WIDTH;
     y1=50-20*y;
     dc->color=YELLOW;
-    dc->pen_width=5;
+    dc->thick=5;
     GrLine3(dc,x1,y1,0,(X*3+x1)/4,Y,0);
 
     dc->color=BLACK;
@@ -55,7 +55,7 @@ U0 DrawIt(CTask *,CDC *dc)
   x1=X+1.3*WIDTH;
   y1=37;
   dc->color=YELLOW;
-  dc->pen_width=5;
+  dc->thick=5;
   GrLine3(dc,x1,y1,0,(X*3+x1)/4,Y,0);
   dc->color=BLACK;
   x2=0.6*x1+0.4*(X*3+x1)/4;
@@ -82,7 +82,7 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,81941]\n"
 	  );
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       t0=Beat;

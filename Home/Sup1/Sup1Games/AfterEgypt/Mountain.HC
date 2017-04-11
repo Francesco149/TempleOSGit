@@ -37,7 +37,7 @@ U0 DrawMountain(CTask *task,CDC *dc)
   static Bool last_left;
   I64 cx=task->pix_width/2,cy=task->pix_height/2;
   dc->color=BROWN;
-  dc->pen_width=2;
+  dc->thick=2;
 
   Sprite3(dc,0,117,0,__BIN_1);
   GrLine3(dc,cx,cy,0,cx+100,cy-20,0);
@@ -63,7 +63,7 @@ U0 DrawMountain(CTask *task,CDC *dc)
     last_left=TRUE;
   else if (x>last_x)
     last_left=FALSE;
-  dc->pen_width=1;
+  dc->thick=1;
   if (last_left)
     Sprite3(dc,x+cx,y+cy,0,left_imgs [ToI64(6.0*tS)&3]);
   else

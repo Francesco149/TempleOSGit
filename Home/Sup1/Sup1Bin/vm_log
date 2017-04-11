@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer my website log files into VMware.
-
-echo VMware Log
-sudo ~/TAD/Bin/vm_log2
-

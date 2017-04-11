@@ -49,7 +49,7 @@ U0 Song()
 	  "barrier.  ([C:/Misc/Bible.TXT.Z,15977] Deuteronomy,4:22)\n"
 	  );
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       t0=Beat;

@@ -1,4 +1,5 @@
 //5 has graphics
+
 #define X	330
 #define Y	15
 
@@ -50,7 +51,7 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,71804] Daniel,9:17\n"
 	  );
     TaskWait(task);
-    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     "$BG+H,LTCYAN$$FD+H,BLACK$";
     while (!ScanKey) {

@@ -50,8 +50,8 @@ public Bool BinRep(U8 *filename)
   else
     "NO MODULE NAME\n";
 
-  if (bfh->module_org!=INVALID_PTR)
-    "      MODULE_ORG:%X\n",bfh->module_org;
+  if (bfh->org!=INVALID_PTR)
+    "      ORG:%X\n",bfh->org;
   "    MODULE_ALIGN:%X\n",1<<bfh->module_align_bits;
 
   ptr=bfh(U8 *)+bfh->patch_table_offset;

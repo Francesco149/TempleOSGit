@@ -71,7 +71,7 @@ U0 DrawGodTalking(CTask *,CDC *dc)
     t=FullTri(tS,2.0);
   else
     t=0;
-  dc->pen_width=3;
+  dc->thick=3;
   dc->color=BROWN;
   for (i=0+10*Abs(t);i<120-10*Abs(t);i++)
     GrPlot3(dc,i+10,110+4*t*Sin(i/6.0),0);

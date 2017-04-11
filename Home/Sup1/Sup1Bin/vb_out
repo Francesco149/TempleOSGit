@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer my /Home files out of VirtualBox.
-
-echo VB Out
-sudo ~/TAD/Bin/vb_out2
-

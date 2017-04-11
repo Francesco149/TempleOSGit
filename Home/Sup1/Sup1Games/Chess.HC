@@ -614,7 +614,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     GrRect3(dc,(cur_mvs[i].x-4)*g+g/4,(cur_mvs[i].y-4)*g+g/4,0,g/2,g/2);
 
   dc->color=LTRED;
-  dc->pen_width=2;
+  dc->thick=2;
   GrBorder(dc,(cursor_x-4)*g+2,(cursor_y-4)*g+2,
 	(cursor_x-3)*g-1,(cursor_y-3)*g-1);
 
@@ -698,7 +698,7 @@ CDC *BrdNew()
     GrPrint3(dc,i*g+g/2-2,4*g+9,0,"%C",i+4+'1');
   }
 
-  dc->pen_width=1;
+  dc->thick=1;
   dc->color=BLACK;
   for (i=-4;i<=4;i++) {
     GrLine3(dc,-4*g,i*g,0,4*g,i*g,0);

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer my /Home song files out of QEMU.
+
+echo EMU Song Out
+sudo ~/TAD/Bin/QEMU/emu_song_out2
+

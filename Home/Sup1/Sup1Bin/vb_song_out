@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer my /Home song files out of VirtualBox.
-
-echo VB Song Out
-sudo ~/TAD/Bin/vb_song_out2
-
