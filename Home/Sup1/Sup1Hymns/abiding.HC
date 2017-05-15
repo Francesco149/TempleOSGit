@@ -48,8 +48,7 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,46190] Psalms,80:3\n"
 	  "[C:/Misc/Bible.TXT.Z,46190] Psalms,80:19\n"
 	  "[C:/Misc/Bible.TXT.Z,46190] Psalms,119:135\n"
-	  "[C:/Misc/Bible.TXT.Z,71804] Daniel,9:17\n"
-	  );
+	  "[C:/Misc/Bible.TXT.Z,71804] Daniel,9:17\n");
     TaskWait(task);
     WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);

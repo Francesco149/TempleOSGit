@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer my /Home files into QEMU.
-
-echo EMU In
-sudo ~/TAD/Bin/QEMU/emu_in2
-

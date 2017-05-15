@@ -3,5 +3,5 @@
 #Transfer my /Home files out of VirtualBox.
 
 echo VB Out
-sudo ~/TAD/Bin/VirtualBox/vb_out2
+sudo ~/TOS/Bin/VirtualBox/vb_out2
 

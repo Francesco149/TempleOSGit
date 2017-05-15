@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer /Home/TAD files out of QEMU.
+
+echo TAD EMU Out
+sudo ~/TOS/Bin/QEMU/emu_TAD_out2
+

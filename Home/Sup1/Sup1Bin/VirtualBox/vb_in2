@@ -2,22 +2,20 @@
 
 #Transfer my /Home files into VirtualBox.
 
-rm ~/TAD/Bin/*~
-rm ~/TAD/Home/*~
-rm ~/TAD/Home/Sup1/Sup1Bin/*~
+rm ~/TOS/Bin/*~
+rm ~/TOS/Home/*~
+rm ~/TOS/Home/Sup1/Sup1Bin/*~
 
-cp -R --preserve=timestamps ~/TAD/Bin/God* ~/TAD/Home/Sup1/Sup1Bin
-cp -R --preserve=timestamps ~/TAD/IRCBots/TempleBot ~/TAD/Home/Sup1/Sup1Bin
-cp -R --preserve=timestamps ~/TAD/Bin/iso* ~/TAD/Home/Sup1/Sup1Bin
-cp -R --preserve=timestamps ~/TAD/Bin/make_* ~/TAD/Home/Sup1/Sup1Bin
-cp -R --preserve=timestamps ~/TAD/Bin/mix* ~/TAD/Home/Sup1/Sup1Bin
-cp -R --preserve=timestamps ~/TAD/Bin/QEMU ~/TAD/Home/Sup1/Sup1Bin
-cp -R --preserve=timestamps ~/TAD/Bin/VirtualBox ~/TAD/Home/Sup1/Sup1Bin
-cp -R --preserve=timestamps ~/TAD/Bin/VMware ~/TAD/Home/Sup1/Sup1Bin
-cp -R --preserve=timestamps ~/TAD/Bin/TOSSocket* ~/TAD/Home/Sup1/Sup1CodeScraps/Comm
+cp -R --preserve=all ~/TOS/Bin/God* ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/iso* ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/make_* ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/mix* ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/QEMU ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/VMware ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/TOSSocket* ~/TOS/Home/Sup1/Sup1CodeScraps/Comm
 
-~/TAD/Bin/VirtualBox/vb_mnt
+~/TOS/Bin/VirtualBox/vb_mnt
 rm -R /mnt/vb_disk/Home
 cp -R --preserve=timestamps ~/TAD/Home /mnt/vb_disk
-~/TAD/Bin/VirtualBox/vb_umnt
+~/TOS/Bin/VirtualBox/vb_umnt
 

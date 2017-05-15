@@ -3,5 +3,5 @@
 #Transfer my /Home song files into VMware.
 
 echo VMware Song In
-sudo ~/TAD/Bin/VMware/vm_song_in2
+sudo ~/TOS/Bin/VMware/vm_song_in2
 

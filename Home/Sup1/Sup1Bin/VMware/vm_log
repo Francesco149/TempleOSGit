@@ -3,5 +3,5 @@
 #Transfer my website log files into VMware.
 
 echo VMware Log
-sudo ~/TAD/Bin/VMware/vm_log2
+sudo ~/TOS/Bin/VMware/vm_log2
 

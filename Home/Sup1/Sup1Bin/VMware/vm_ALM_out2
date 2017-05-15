@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#Transfer /Home/ALM files out of VMware.
+
+~/TOS/Bin/VMware/vm_mnt
+rm -R ~/TOS/Site1ALM/Wb/Home/Web/ALM
+rm -R ~/TOS/Home/ALM
+cp -R --preserve=all /mnt/vm_disk/Wb/Home/Web/ALM ~/TOS/Site1ALM/Wb/Home/Web/ALM
+cp -R --preserve=all /mnt/vm_disk/Home/ALM ~/TOS/Home/ALM
+chmod -R 777 ~/TOS
+~/TOS/Bin/VMware/vm_umnt
+

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#Transfer /Home/TAD files out of VMware.
+
+~/TOS/Bin/VMware/vm_mnt
+rm -R ~/TOS/Site1/Wb
+rm -R ~/TOS/Home/Sup1
+rm -R ~/TOS/Home/TAD
+rm -R ~/TOS/Home/TOS
+rm -R ~/TOS/Home/Web
+rm ~/TOS/Home/*
+mv /mnt/vm_disk/Wb/TempleOSStaff.ISO ~/TOS
+cp -R --preserve=all /mnt/vm_disk/Wb ~/TOS/Site1/Wb
+cp --preserve=all /mnt/vm_disk/Wb/Home/Web/index.html ~/TOS/Site1
+cp --preserve=all /mnt/vm_disk/Wb/Home/Web/TempleOS.html ~/TOS/Site1
+cp --preserve=all /mnt/vm_disk/Home/* ~/TOS/Home
+cp -R --preserve=all /mnt/vm_disk/Home/Sup1 ~/TOS/Home/Sup1
+cp -R --preserve=all /mnt/vm_disk/Home/TAD ~/TOS/Home/TAD
+cp -R --preserve=all /mnt/vm_disk/Home/TOS ~/TOS/Home/TOS
+cp -R --preserve=all /mnt/vm_disk/Home/Web ~/TOS/Home/Web
+chmod -R 777 ~/TOS
+~/TOS/Bin/VMware/vm_umnt
+

@@ -21,8 +21,7 @@ U0 Song()
   music.stacatto_factor= 0.902;
   try {
     task=PopUpViewPrint(
-	  "[C:/Misc/Bible.TXT.Z,5068] Exodus,34:29-36\n"
-	  );
+	  "[C:/Misc/Bible.TXT.Z,5068] Exodus,34:29-36\n");
     TaskWait(task);
     WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);

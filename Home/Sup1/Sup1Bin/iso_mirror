@@ -1,8 +1,0 @@
-#!/bin/bash
-
-#Copy *.ISO* files to ~
-
-cp --preserve=timestamps ~/TAD/*.ISO* ~
-cp --preserve=timestamps ~/TAD/Site1/Wb/*.ISO* ~
-cp --preserve=timestamps ~/TAD/Site1Stale/files/*.ISO* ~
-

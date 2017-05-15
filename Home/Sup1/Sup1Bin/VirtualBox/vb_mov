@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer BMP screenshot movie files out of VirtualBox.
-
-echo VB Mov
-sudo ~/TAD/Bin/VirtualBox/vb_mov2
-

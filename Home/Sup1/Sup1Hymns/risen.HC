@@ -1,5 +1,18 @@
 //5 has graphics
 
++] Reward1
+  CallExtStr("JukeReward",""
+  +] Reward2
+      
+    "vanguards landlubber's Jeffry's comics "
+    "Burroughs augers potties turmoils "
+    "Diderot discouraged lamenting Golden "
+    "magnify schoolchild's shortwaves notices "
+    "cleavages compunction's Paypal's electroplating "
+      
+  );
+  
+
 /*
 This is one of the oldest songs.  I picked
 the random name "risen" and said to God

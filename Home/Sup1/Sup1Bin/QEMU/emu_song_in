@@ -3,5 +3,5 @@
 #Transfer my /Home song files into QEMU.
 
 echo EMU Song In
-sudo ~/TAD/Bin/QEMU/emu_song_in2
+sudo ~/TOS/Bin/QEMU/emu_song_in2
 
