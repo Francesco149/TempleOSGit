@@ -53,10 +53,8 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL)
     }
     DirContextDel(dirc);
   }
-  if (!res) {
-    "%s ",filename;
-    PrintErr("FileRead: File not found.\n");
-  }
+  if (!res)
+    PrintErr("File not found: \"%s\".\n",filename);
   if (res && attr & RS_ATTR_COMPRESSED) {
     arc=res;
     size=arc->expanded_size;
@@ -172,9 +170,9 @@ Bool CopySingleZ(U8 *f1,U8 *f2) //Just one file
       Free(file_buf);
       return ToBool(c);
     } else
-      PrintErr("File not found.\n");
+      PrintErr("File not found: \"%s\".\n",f1);
   } else
-    PrintErr("File not found.\n");
+    PrintErr("File not found: \"%s\".\n",f1);
   return FALSE;
 }
 

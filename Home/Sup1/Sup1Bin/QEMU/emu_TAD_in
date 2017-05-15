@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer /Home/TAD files into QEMU.
+
+echo TAD EMU In
+sudo ~/TOS/Bin/QEMU/emu_TAD_in2
+

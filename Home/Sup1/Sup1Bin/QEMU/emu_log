@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer my website log files into QEMU.
-
-echo EMU Log
-sudo ~/TAD/Bin/QEMU/emu_log2
-

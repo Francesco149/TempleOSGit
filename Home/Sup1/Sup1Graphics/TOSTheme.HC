@@ -185,7 +185,7 @@ U0 TOSTheme()
   try {
     "$BG+H,LTCYAN$";
     Sleep(250);
-    for (i=0;i<1;i++) {
+    for (i=0;i<2;i++) {
       t0=Beat;
       Play("5eDEqFFetEEFqDeCDDEetCGF");
       Play("5eDEqFFetEEFqDeCDDEetCGF");

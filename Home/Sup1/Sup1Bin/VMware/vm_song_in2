@@ -2,9 +2,9 @@
 
 #Transfer my /Home song files into VMware.
 
-~/TAD/Bin/VMware/vm_mnt
+~/TOS/Bin/VMware/vm_mnt
 rm -R /mnt/vm_disk/Home/Sup1/Sup1Hymns
 rm -R /mnt/vm_disk/Home/Sup1/Sup1Songs
-cp -R --preserve=timestamps ~/TAD/Home/Sup1/Sup1Hymns /mnt/vm_disk/Home/Sup1
-~/TAD/Bin/VMware/vm_umnt
+cp -R --preserve=timestamps ~/TOS/Home/Sup1/Sup1Hymns /mnt/vm_disk/Home/Sup1
+~/TOS/Bin/VMware/vm_umnt
 

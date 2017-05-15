@@ -10,8 +10,7 @@ U0 Song()
     task=PopUpViewPrint(
 	  "[C:/Misc/Bible.TXT.Z,76908] Matthew,20:28\n"
 	  "[C:/Misc/Bible.TXT.Z,79970] Mark,10:45\n"
-	  "[C:/Misc/Bible.TXT.Z,85266] John,13:14\n"
-	  );
+	  "[C:/Misc/Bible.TXT.Z,85266] John,13:14\n");
     TaskWait(task);
     WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);

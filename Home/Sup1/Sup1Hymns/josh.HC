@@ -29,8 +29,7 @@ U0 Song()
     task=PopUpViewPrint(
 	  "[C:/Misc/Bible.TXT.Z,46190] Psalms,18:26 Try other translations.\n"
 	  "[C:/Misc/Bible.TXT.Z,12005] Numbers,11:1 Read the whole chapter.\n"
-	  "[C:/Misc/Bible.TXT.Z,29345] 1 Kings,22:1 Read the whole chapter.\n"
-	  );
+	  "[C:/Misc/Bible.TXT.Z,29345] 1 Kings,22:1 Read the whole chapter.\n");
     TaskWait(task);
     WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);

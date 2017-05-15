@@ -1,4 +1,17 @@
-//5 no nothing
+//5 has words
+
++] Reward1
+  CallExtStr("JukeReward",""
+  +] Reward2
+      
+    "Yokohama Dumbledore's misbehaves syncs "
+    "confederated reimpose sheet Brandie "
+    "Bloomfield Bowen percentages semimonthlies "
+    "surrender's complainant advancing pirouette's "
+    "Boulez's Talley's Lombard wire "
+      
+  );
+  
 U0 Song()
 {
   Fs->task_end_cb=&SndTaskEndCB;
@@ -7,10 +20,18 @@ U0 Song()
   music.stacatto_factor= 0.902;
   try {
     while (!ScanKey) {
-      Play("5e.C4sG5qEe.F4sB5eCCsFG4eBAAetA5REeEsC4B");
-      Play("5e.C4sG5qEe.F4sB5eCCsFG4eBAAetA5REeEsC4B");
-      Play("5eGE4qG5sCDCDe.EsGqCsDCDC4e.A5sReGE");
-      Play("5GE4qG5sCDCDe.EsGqCsDCDC4e.A5sReGE");
+      Play("5e.C4sG5qEe.F4sB5eCCsFG4eBAAetAR5EeEsC4B",
+	    "c\0 \0out << \0\"Tribe \0of \0Is\0rael\" << endl;\n\0"
+	    " \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+      Play("5e.C4sG5qEe.F4sB5eCCsFG4eBAAetAR5EeEsC4B",
+	    "Don't \0 \0pout!  \0Imbibe \0 \0 \0oatmeal.\n\0"
+	    " \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+      Play("5eGE4qG5sCDCDe.EsGqCsDCDC4e.AsR5eGE",
+	    " \0 \0 \0 \0 \0 \0 \0 \0 \0Flush \0buf\0 \0fer!\n\0"
+	    " \0 \0 \0 \0 \0");
+      Play("GE4qG5sCDCDe.EsGqCsDCDC4e.AsR5eGE",
+	    " \0 \0 \0 \0 \0 \0 \0 \0 \0Won't \0surf\0 \0er.\n\0"
+	    " \0 \0 \0 \0 \0");
     }
   } catch
     PutExcept;

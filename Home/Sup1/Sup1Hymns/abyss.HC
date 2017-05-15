@@ -46,8 +46,7 @@ U0 Song()
 	  "about the land of living separate from\n"
 	  "land of dead.  ([C:/Misc/Bible.TXT.Z,81941] Luke,16:22)  In the Old\n"
 	  "Testament, the River Jordan was a special\n"
-	  "barrier.  ([C:/Misc/Bible.TXT.Z,15977] Deuteronomy,4:22)\n"
-	  );
+	  "barrier.  ([C:/Misc/Bible.TXT.Z,15977] Deuteronomy,4:22)\n");
     TaskWait(task);
     WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);

@@ -10,8 +10,7 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,81941]\n"
 	  "\n"
 	  "Prodigal Son\n"
-	  "[C:/Misc/Bible.TXT.Z,81941]\n"
-	  );
+	  "[C:/Misc/Bible.TXT.Z,81941]\n");
     TaskWait(task);
     WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);

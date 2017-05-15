@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer /Home/TAD files into VMware.
+
+echo TAD VMware In
+sudo ~/TOS/Bin/VMware/vm_TAD_in2
+

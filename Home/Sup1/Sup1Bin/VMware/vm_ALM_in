@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer /Home/ALM files into VMware.
+
+echo ALM VMware In
+sudo ~/TOS/Bin/VMware/vm_ALM_in2
+

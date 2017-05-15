@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#Transfer /Home/TAD files into VMware.
+
+rm ~/TOS/Bin/*~
+rm ~/TOS/Home/*~
+rm ~/TOS/Home/Sup1/Sup1Bin/*~
+
+cp -R --preserve=all ~/TOS/Bin/God* ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/iso* ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/make_* ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/mix* ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/QEMU ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/VMware ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/TOSSocket* ~/TOS/Home/Sup1/Sup1CodeScraps/Comm
+
+~/TOS/Bin/VMware/vm_mnt
+rm -R /mnt/vm_disk/Home
+cp -R --preserve=timestamps ~/TOS/Home /mnt/vm_disk
+~/TOS/Bin/VMware/vm_umnt
+

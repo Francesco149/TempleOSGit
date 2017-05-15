@@ -1,9 +1,0 @@
-#!/bin/bash
-
-#This mixes a .WAV and .FLV to make a .FLV.
-
-echo Mix Wav
-cd ~/Tmp/Mov
-ffmpeg -i ./ScrnShots/Video.flv -i Audio.wav Movie.flv
-
-

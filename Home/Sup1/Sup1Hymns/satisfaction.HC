@@ -62,8 +62,7 @@ U0 Song()
   try {
     task=PopUpViewPrint(
 	  "[C:/Misc/Bible.TXT.Z,56267] Ecclesiastes,2:24\n"
-	  "[C:/Misc/Bible.TXT.Z,56267] Ecclesiastes,3:13\n"
-	  );
+	  "[C:/Misc/Bible.TXT.Z,56267] Ecclesiastes,3:13\n");
     TaskWait(task);
     WinHorz(Fs->win_left,TEXT_COLS-10,task);
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
