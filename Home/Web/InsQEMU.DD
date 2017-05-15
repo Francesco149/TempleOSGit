@@ -1,0 +1,48 @@
+                                 QEMU Install
+QEMU works on Linux or Windows.
+You can look at my QEMU Linux Bash Scripts.  You need 512+ Meg of RAM.
+
+Use QEMU to run the ISO in a virtual machine.  Install QEMU-KVM.  Then,
+create 
+a virtual hard drive.
+
+If you want to be like Terry A. Davis, this video shows how to make your QEMU 
+set-up pretty close.  Otherwise, use the standard /Home files.
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/biz44PBL76w"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/biz44PBL76w"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+Wiki on QEMU Images
+
+You make a file for your guest hard disk image. 
+>qemu-img create -f qcow2 my_disk.img 3G
+
+Then, boot the CD/DVD ISO and install TempleOS.  Type this command on one 
+line, with the number of cores you have:
+>qemu-system-x86_64 -hda my_disk.img -machine kernel_irqchip=off -smp cores=1 
+-enable-kvm -cpu host -m 2048 -rtc base=localtime -soundhw pcspk -cdrom 
+TempleOSCD.ISO -boot d
+
+After installing, boot the hard disk normally.  Type this with the number of 
+cores you have:
+>qemu-system-x86_64 -hda my_disk.img -machine kernel_irqchip=off -smp cores=1 
+-enable-kvm -cpu host -m 2048 -rtc base=localtime -soundhw pcspk
+
+To access the guest hard drivbe, use this to connect the guest image to 
+/dev/nbd0.  It acts like any other block device.  This will mount it to mount 
+point, /mnt/my_disk.
+>sudo modprobe nbd max_part=16
+>sudo qemu-nbd -c /dev/nbd0 my_disk.img
+>sudo partprobe /dev/nbd0
+>sudo mkdir /mnt/my_disk
+>sudo mount /dev/nbd0p1 /mnt/my_disk
+
+
+* "Linux" is a trademark owned by Linus Torvalds.
+* "QEMU" is a trademark owned by Fabrice Bellard.
+* "Windows" is a trademarks owned by MicroSoft Corp.

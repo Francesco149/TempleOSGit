@@ -374,7 +374,8 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
   if (StrMatchAny(out_path,"/Windows/","/Linux/","/Sup1Bin/","/Sup1Texts/",
 	"AugustWords.TXT","BibleWords.TXT","ChessWords.TXT","Countries.TXT",
 	"HappyWords.TXT","Ingredients.TXT","Letters.TXT","LinuxDict.TXT",
-	"HuckWords.TXT","PCIDevices.TXT","Bible.TXT")) {
+	"HuckWords.TXT","PCIDevices.TXT","Bible.TXT","Words1000.TXT",
+	"Words10k.TXT","GodDict.TXT","NumBible.TXT")) {
     FilePassThrough(in_path,out_path);
     return;
   }
