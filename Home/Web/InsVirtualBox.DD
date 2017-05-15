@@ -1,0 +1,18 @@
+                              VirtualBox Install
+VirtualBox works on Linux or Windows.
+You can look at my VirtualBox Linux Bash Scripts.  You need 512+ Meg of RAM.
+
+Use VirtualBox to run the ISO in a virtual machine by aiming the CD/DVD at 
+TempleOSCD.ISO.
+
+I don't think this works, anymore.
+Install virtualbox-fuse package if you are running debian/ubuntu.
+>sudo vdfuse -f image.vdi /mnt/TempleOS
+>sudo mount -o loop /mnt/TempleOS/Partition2 /mnt/TempleOSD
+
+See Virtual Box Documentation.
+
+
+* "Linux" is a trademark owned by Linus Torvalds.
+* "VirtualBox" is a trademark owned by Oracle.
+* "Windows" is a trademarks owned by MicroSoft Corp.

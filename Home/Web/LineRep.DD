@@ -1,17 +1,17 @@
- 120,792 +] /*
+ 120,902 +] /*
          0 +] 0000Boot
-        37,503 +] Adam
-       2,037 +] ABlkDev
+        37,493 +] Adam
+       2,040 +] ABlkDev
            253 [C:/Adam/ABlkDev/ADskA.HC.Z,1] ADskA.HC
      192 [C:/Adam/ABlkDev/ADskB.HC.Z,1] ADskB.HC
      445 [C:/Adam/ABlkDev/DskChk.HC.Z,1] DskChk.HC
      168 [C:/Adam/ABlkDev/DskPrt.HC.Z,1] DskPrt.HC
-     810 [C:/Adam/ABlkDev/FileMgr.HC.Z,1] FileMgr.HC
+     813 [C:/Adam/ABlkDev/FileMgr.HC.Z,1] FileMgr.HC
        9 [C:/Adam/ABlkDev/MakeABlkDev.HC.Z,1] MakeABlkDev.HC
      160 [C:/Adam/ABlkDev/Mount.HC.Z,1] Mount.HC
-         987 +] AutoComplete
+         952 +] AutoComplete
            264 [C:/Adam/AutoComplete/ACDictGen.HC.Z,1] ACDictGen.HC
-     262 [C:/Adam/AutoComplete/ACFill.HC.Z,1] ACFill.HC
+     227 [C:/Adam/AutoComplete/ACFill.HC.Z,1] ACFill.HC
      170 [C:/Adam/AutoComplete/ACInit.HC.Z,1] ACInit.HC
      284 [C:/Adam/AutoComplete/ACTask.HC.Z,1] ACTask.HC
        7 [C:/Adam/AutoComplete/MakeAC.HC.Z,1] MakeAC.HC
@@ -20,15 +20,15 @@
       92 [C:/Adam/Ctrls/CtrlsBttn.HC.Z,1] CtrlsBttn.HC
      215 [C:/Adam/Ctrls/CtrlsSlider.HC.Z,1] CtrlsSlider.HC
        9 [C:/Adam/Ctrls/MakeCtrls.HC.Z,1] MakeCtrls.HC
-      10,222 +] DolDoc
+      10,239 +] DolDoc
            143 [C:/Adam/DolDoc/DocBin.HC.Z,1] DocBin.HC
      653 [C:/Adam/DolDoc/DocChar.HC.Z,1] DocChar.HC
      126 [C:/Adam/DolDoc/DocClipBoard.HC.Z,1] DocClipBoard.HC
      659 [C:/Adam/DolDoc/DocCodeTools.HC.Z,1] DocCodeTools.HC
      111 [C:/Adam/DolDoc/DocDblBuf.HC.Z,1] DocDblBuf.HC
-     251 [C:/Adam/DolDoc/DocEd.HC.Z,1] DocEd.HC
+     266 [C:/Adam/DolDoc/DocEd.HC.Z,1] DocEd.HC
       15 [C:/Adam/DolDoc/DocExt.HC.Z,1] DocExt.HC
-     363 [C:/Adam/DolDoc/DocFile.HC.Z,1] DocFile.HC
+     365 [C:/Adam/DolDoc/DocFile.HC.Z,1] DocFile.HC
      585 [C:/Adam/DolDoc/DocFind.HC.Z,1] DocFind.HC
      345 [C:/Adam/DolDoc/DocForm.HC.Z,1] DocForm.HC
      244 [C:/Adam/DolDoc/DocGet.HC.Z,1] DocGet.HC
@@ -110,18 +110,18 @@
       81 [C:/Adam/Opt/Utils/TOS.HC.Z,1] TOS.HC
       20 [C:/Adam/Opt/Utils/ToDolDoc.HC.Z,1] ToDolDoc.HC
      133 [C:/Adam/Opt/Utils/ToTXT.HC.Z,1] ToTXT.HC
-               707 +] Snd
+               712 +] Snd
             22 [C:/Adam/Snd/MakeSnd.HC.Z,1] MakeSnd.HC
       81 [C:/Adam/Snd/SndEffects.HC.Z,1] SndEffects.HC
      135 [C:/Adam/Snd/SndFile.HC.Z,1] SndFile.HC
      249 [C:/Adam/Snd/SndMath.HC.Z,1] SndMath.HC
-     220 [C:/Adam/Snd/SndMusic.HC.Z,1] SndMusic.HC
+     225 [C:/Adam/Snd/SndMusic.HC.Z,1] SndMusic.HC
          271 [C:/Adam/ADbg.HC.Z,1] ADbg.HC
       43 [C:/Adam/ADefine.HC.Z,1] ADefine.HC
-     102 [C:/Adam/AExts.HC.Z,1] AExts.HC
+     101 [C:/Adam/AExts.HC.Z,1] AExts.HC
      432 [C:/Adam/AHash.HC.Z,1] AHash.HC
      136 [C:/Adam/AMath.HC.Z,1] AMath.HC
-     688 [C:/Adam/AMathODE.HC.Z,1] AMathODE.HC
+     689 [C:/Adam/AMathODE.HC.Z,1] AMathODE.HC
      180 [C:/Adam/AMem.HC.Z,1] AMem.HC
       21 [C:/Adam/AMouse.HC.Z,1] AMouse.HC
      204 [C:/Adam/ARegistry.HC.Z,1] ARegistry.HC
@@ -224,7 +224,7 @@
        4 [C:/Apps/X-Caliber/Run.HC.Z,1] Run.HC
    1,517 [C:/Apps/X-Caliber/X-Caliber.HC.Z,1] X-Caliber.HC
      155 [C:/Apps/X-Caliber/XCCtrls.HC.Z,1] XCCtrls.HC
-        18,702 +] Compiler
+        18,707 +] Compiler
        1,115 [C:/Compiler/Asm.HC.Z,1] Asm.HC
      210 [C:/Compiler/AsmInit.HC.Z,1] AsmInit.HC
      176 [C:/Compiler/AsmLib.HC.Z,1] AsmLib.HC
@@ -240,7 +240,7 @@
      142 [C:/Compiler/CHash.HC.Z,1] CHash.HC
      331 [C:/Compiler/CInit.HC.Z,1] CInit.HC
      703 [C:/Compiler/CMain.HC.Z,1] CMain.HC
-     165 [C:/Compiler/CMisc.HC.Z,1] CMisc.HC
+     170 [C:/Compiler/CMisc.HC.Z,1] CMisc.HC
    1,182 [C:/Compiler/Lex.HC.Z,1] Lex.HC
      276 [C:/Compiler/LexLib.HC.Z,1] LexLib.HC
      566 [C:/Compiler/OptLib.HC.Z,1] OptLib.HC
@@ -259,20 +259,20 @@
      407 [C:/Compiler/CompilerA.HH.Z,1] CompilerA.HH
       79 [C:/Compiler/CompilerB.HH.Z,1] CompilerB.HH
       47 [C:/Compiler/Compiler.PRJ.Z,1] Compiler.PRJ
-    25,740 +] Demo
-       3,412 +] AcctExample
-         2,921 +] TOS
+    25,844 +] Demo
+       3,516 +] AcctExample
+         3,031 +] TOS
               14 [C:/Demo/AcctExample/TOS/MakeTOS.HC.Z,1] MakeTOS.HC
-     127 [C:/Demo/AcctExample/TOS/TOSBlog.HC.Z,1] TOSBlog.HC
-      70 [C:/Demo/AcctExample/TOS/TOSCfg.HC.Z,1] TOSCfg.HC
-     617 [C:/Demo/AcctExample/TOS/TOSDistro.HC.Z,1] TOSDistro.HC
-     266 [C:/Demo/AcctExample/TOS/TOSExt.HC.Z,1] TOSExt.HC
-     689 [C:/Demo/AcctExample/TOS/TOSHolySpirit.HC.Z,1] TOSHolySpirit.HC
-     227 [C:/Demo/AcctExample/TOS/TOSIns.HC.Z,1] TOSIns.HC
+     159 [C:/Demo/AcctExample/TOS/TOSBlog.HC.Z,1] TOSBlog.HC
+      74 [C:/Demo/AcctExample/TOS/TOSCfg.HC.Z,1] TOSCfg.HC
+     615 [C:/Demo/AcctExample/TOS/TOSDistro.HC.Z,1] TOSDistro.HC
+     298 [C:/Demo/AcctExample/TOS/TOSExt.HC.Z,1] TOSExt.HC
+     702 [C:/Demo/AcctExample/TOS/TOSHolySpirit.HC.Z,1] TOSHolySpirit.HC
+     244 [C:/Demo/AcctExample/TOS/TOSIns.HC.Z,1] TOSIns.HC
      240 [C:/Demo/AcctExample/TOS/TOSMisc.HC.Z,1] TOSMisc.HC
-     173 [C:/Demo/AcctExample/TOS/TOSNIST.HC.Z,1] TOSNIST.HC
-     498 [C:/Demo/AcctExample/TOS/TOSToHtml.HC.Z,1] TOSToHtml.HC
-           322 [C:/Demo/AcctExample/HomeKeyPlugIns.HC.Z,1] HomeKeyPlugIns.HC
+     182 [C:/Demo/AcctExample/TOS/TOSNIST.HC.Z,1] TOSNIST.HC
+     503 [C:/Demo/AcctExample/TOS/TOSToHtml.HC.Z,1] TOSToHtml.HC
+           316 [C:/Demo/AcctExample/HomeKeyPlugIns.HC.Z,1] HomeKeyPlugIns.HC
       22 [C:/Demo/AcctExample/HomeLocalize.HC.Z,1] HomeLocalize.HC
       48 [C:/Demo/AcctExample/HomeSys.HC.Z,1] HomeSys.HC
       36 [C:/Demo/AcctExample/HomeWrappers.HC.Z,1] HomeWrappers.HC
@@ -485,8 +485,8 @@
      154 [C:/Demo/WordSearch.HC.Z,1] WordSearch.HC
        133 +] Doc
          133 [C:/Doc/Comm.HC.Z,1] Comm.HC
-    24,242 +] Kernel
-       5,925 +] BlkDev
+    24,253 +] Kernel
+       5,915 +] BlkDev
            612 [C:/Kernel/BlkDev/DskATA.HC.Z,1] DskATA.HC
      294 [C:/Kernel/BlkDev/DskATAId.HC.Z,1] DskATAId.HC
      241 [C:/Kernel/BlkDev/DskAddDev.HC.Z,1] DskAddDev.HC
@@ -501,14 +501,14 @@
      201 [C:/Kernel/BlkDev/DskDirB.HC.Z,1] DskDirB.HC
       88 [C:/Kernel/BlkDev/DskDirContext.HC.Z,1] DskDirContext.HC
      368 [C:/Kernel/BlkDev/DskDrv.HC.Z,1] DskDrv.HC
-     130 [C:/Kernel/BlkDev/DskFile.HC.Z,1] DskFile.HC
+     128 [C:/Kernel/BlkDev/DskFile.HC.Z,1] DskFile.HC
      163 [C:/Kernel/BlkDev/DskFind.HC.Z,1] DskFind.HC
       96 [C:/Kernel/BlkDev/DskFmt.HC.Z,1] DskFmt.HC
      344 [C:/Kernel/BlkDev/DskStrA.HC.Z,1] DskStrA.HC
-      98 [C:/Kernel/BlkDev/DskStrB.HC.Z,1] DskStrB.HC
-     962 [C:/Kernel/BlkDev/FileSysFAT.HC.Z,1] FileSysFAT.HC
-     233 [C:/Kernel/BlkDev/FileSysISO.HC.Z,1] FileSysISO.HC
-     638 [C:/Kernel/BlkDev/FileSysRedSea.HC.Z,1] FileSysRedSea.HC
+      96 [C:/Kernel/BlkDev/DskStrB.HC.Z,1] DskStrB.HC
+     960 [C:/Kernel/BlkDev/FileSysFAT.HC.Z,1] FileSysFAT.HC
+     231 [C:/Kernel/BlkDev/FileSysISO.HC.Z,1] FileSysISO.HC
+     636 [C:/Kernel/BlkDev/FileSysRedSea.HC.Z,1] FileSysRedSea.HC
       25 [C:/Kernel/BlkDev/MakeBlkDev.HC.Z,1] MakeBlkDev.HC
        1,138 +] Mem
             74 [C:/Kernel/Mem/BlkPool.HC.Z,1] BlkPool.HC
@@ -528,14 +528,13 @@
      356 [C:/Kernel/EdLite.HC.Z,1] EdLite.HC
      133 [C:/Kernel/FontCyrillic.HC.Z,1] FontCyrillic.HC
      133 [C:/Kernel/FontStd.HC.Z,1] FontStd.HC
-     339 [C:/Kernel/FunSeg.HC.Z,1] FunSeg.HC
+     361 [C:/Kernel/FunSeg.HC.Z,1] FunSeg.HC
      503 [C:/Kernel/Job.HC.Z,1] Job.HC
      174 [C:/Kernel/KCfg.HC.Z,1] KCfg.HC
      324 [C:/Kernel/KDataTypes.HC.Z,1] KDataTypes.HC
      197 [C:/Kernel/KDate.HC.Z,1] KDate.HC
      653 [C:/Kernel/KDbg.HC.Z,1] KDbg.HC
      219 [C:/Kernel/KDefine.HC.Z,1] KDefine.HC
-     238 [C:/Kernel/KEnd.HC.Z,1] KEnd.HC
      150 [C:/Kernel/KExcept.HC.Z,1] KExcept.HC
      110 [C:/Kernel/KExts.HC.Z,1] KExts.HC
       36 [C:/Kernel/KGlbls.HC.Z,1] KGlbls.HC
@@ -543,6 +542,7 @@
      251 [C:/Kernel/KHashB.HC.Z,1] KHashB.HC
      216 [C:/Kernel/KInts.HC.Z,1] KInts.HC
      251 [C:/Kernel/KLoad.HC.Z,1] KLoad.HC
+     238 [C:/Kernel/KMain.HC,1] KMain.HC
      649 [C:/Kernel/KMathA.HC.Z,1] KMathA.HC
      158 [C:/Kernel/KMathB.HC.Z,1] KMathB.HC
      308 [C:/Kernel/KMisc.HC.Z,1] KMisc.HC
@@ -560,7 +560,7 @@
      188 [C:/Kernel/StrB.HC.Z,1] StrB.HC
      921 [C:/Kernel/StrPrint.HC.Z,1] StrPrint.HC
      340 [C:/Kernel/StrScan.HC.Z,1] StrScan.HC
-   3,938 [C:/Kernel/KernelA.HH.Z,1] KernelA.HH
+   3,937 [C:/Kernel/KernelA.HH.Z,1] KernelA.HH
      295 [C:/Kernel/KernelB.HH.Z,1] KernelB.HH
      766 [C:/Kernel/KernelC.HH.Z,1] KernelC.HH
       62 [C:/Kernel/Kernel.PRJ.Z,1] Kernel.PRJ

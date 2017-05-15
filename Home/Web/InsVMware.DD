@@ -1,0 +1,36 @@
+                                VMware Install
+VMware works on Linux or Windows.
+You can look at my VMware Linux Bash Scripts.  You need 512+ Meg of RAM.
+
+Use VMware to run the ISO in a virtual machine.  Aim the CD/DVD at 
+TempleOSCD.ISO.
+
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/KupeCyy2ws4"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/KupeCyy2ws4"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+Buy VMware Workstation for, like $250, and you can mount a drive to move
+files 
+in and out.  Multicore works in VMware.  I use VMware Workstation in Ubuntu.
+
+If you want to be like Terry A. Davis, this video shows how to make your 
+VMware set-up pretty close.  Otherwise, use the standard /Home files.
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/CYWTXCiuLUI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/CYWTXCiuLUI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+
+* "Linux" is a trademark owned by Linus Torvalds.
+* "VMware Player" and "VMware WorkStation" are trademarks owned by VMware, 
+Inc.
+* "Windows" is a trademarks owned by MicroSoft Corp.
