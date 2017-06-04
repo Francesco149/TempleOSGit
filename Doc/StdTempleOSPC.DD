@@ -165,8 +165,7 @@ non-hyperthreaded cores.  Core#0 is the only full-featured core needed.  The
 other cores will have long mode, but not some of these: real mode, protected 
 mode, ring-3, paging, interrupts, in/out port instructions, SSE instructions,
  
-MMX instructions.  This [C:/Home/Web/TAD/GraphicsPerformance.DD,1] Graphics
-Job is what to optimize for.
+MMX instructions.
 
 God said Intel should do a simulation of heat produced by gates and try 
 spreading-out the heat producing gate circuits on the chip.

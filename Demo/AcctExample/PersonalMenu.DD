@@ -25,9 +25,6 @@ MergeD
 MergeT  
 `S2T("C:/*","+r+S");Merge("C:/*;!*/LineRep*","T:/*;!*/LineRep*","+r+d");
 `
-D:/Wb   
-`Cd("D:/Wb");Dir;
-`
 
 MakeC   
 `TOSBootHDIns('C');
@@ -47,9 +44,6 @@ BootD
 `BootRAM("D:/Kernel.BIN.C");`
 CopyDrv 
 `TOSPmtAndCopyDrv;
-`
-Private 
-`Cd("/Home/Private");Dir;
 `
 
 Kernel  
@@ -111,79 +105,6 @@ Utils
 `Cd("/Adam/Opt/Utils");Dir;
 `
 
-[C:/Doc/ChgLog.DD.Z,1] ChgLog  Blog    
-`Blog;
-`
-EdGod   
-`Ed("D:/Home/God.DD");
-`
-EdNotes 
-`Ed("::/Home/Private/TOSNotes.DD");
-`
-BlogDir 
-`Cd("/Home/Web/TAD/BlogDir");Dir;
-`
-Partial 
-`FreshenBlog;
-`
-CodeWalk
-`CodeWalkThru;
-`
-TOSTheme
-`TOSTheme;
-`
-Videos  
-`Cd("/Home/Sup1/Sup1Videos");Dir;
-`
-
-EdHymns 
-`#include "::/Apps/Psalmody/Load";Psalmody("~/Sup1/Sup1Hymns");`
-EdSongs 
-`#include "::/Apps/Psalmody/Load";Psalmody("~/Sup1/Sup1Songs");`
-SongsIn 
-`TOSSongsIn;
-`
-SongsOut
-`TOSSongsOut;
-`
-HomeIn  
-`TOSHomeIn;
-`
-HomeOut 
-`TOSHomeOut;
-`
-MakeWeb 
-`FreshenBlog;
-`
-
-Web     
-`Cd("/Home/Web");Dir;
-`
-TAD     
-`Cd("/Home/Web/TAD");Dir;
-`
-AppStore
-`Cd("/Home/Web/AppStore");Dir;
-`
-Sup1    
-`Cd("/Home/Sup1");Dir;
-`
-Blog    
-`Cd("/Home/Sup1/Sup1Blog");Dir;
-`
-Code    
-`Cd("/Home/Sup1/Sup1CodeScraps");Dir;
-`
-Games   
-`Cd("/Home/Sup1/Sup1Games");Dir;
-`
-Graphics
-`Cd("/Home/Sup1/Sup1Graphics");Dir;
-`
-Utils   
-`Cd("/Home/Sup1/Sup1Utils");Dir;
-`
-
 Apps    
 `Cd("/Apps");Dir;
 `
@@ -224,17 +145,8 @@ Vocab
 XCaliber
 `Cd("/Apps/X-Caliber");Dir;
 `
-Books1  
-`Cd("/Home/Books1");Dir;
-`
-Books2  
-`Cd("/Home/Books2");Dir;
-`
 Hymns   
 `Cd("/Home/Sup1/Sup1Hymns");Dir;
-`
-Songs   
-`Cd("/Home/Sup1/Sup1Songs");Dir;
 `
 
 Demo    
@@ -334,44 +246,6 @@ Words
 `Cd("/Home/Sup1/Sup1Words");Dir;
 `
 
-MakeStd 
-`MakeStdDistro;DirMk("D:/Wb");Move(TOS_ISO_NAME,"D:/Wb/TempleOSCD.ISO");
-`
-MakeStRS
-`MakeStdRedSeaDistro;DirMk("D:/Wb");Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSCDRS.ISO");
-`
-MakeUlt 
-`MakeUltraDistro;DirMk("D:/Wb");Move(TOS_ISO_NAME,"D:/Wb/TempleOSUltra.ISO");
-`
-MakeUtRS
-`MakeUltraRedSeaDistro;DirMk("D:/Wb");Move(TOS_ISO_C_NAME,"D:/Wb/TempleOSUltraRS.ISO");
-`
-MakeStaf
-`MakeStaffDistro;DirMk("D:/Wb");Move(TOS_ISO_NAME,"D:/Wb/TempleOSStaff.ISO");
-`
-MakeDbg 
-`MakeDbgDistro;DirMk("D:/Wb");Move(TOS_ISO_NAME,"D:/Wb/TempleOSDbg.ISO");
-`
-
-BurnStd 
-`MakeStdDistro;DVDImageWrite('T',TOS_ISO_NAME);
-`
-BurnStRS
-`MakeStdRedSeaDistro;DVDImageWrite('T',TOS_ISO_C_NAME);
-`
-BurnUlt 
-`MakeUltraDistro;DVDImageWrite('T',TOS_ISO_NAME);
-`
-BurnUtRS
-`MakeUltraRedSeaDistro;DVDImageWrite('T',TOS_ISO_C_NAME);
-`
-BurnStaf
-`MakeStaffDistro;DVDImageWrite('T',TOS_ISO_NAME);
-`
-BurnDbg 
-`MakeDbgDistro;DVDImageWrite('T',TOS_ISO_NAME);
-`
-
 
 
 	  Fun Games
@@ -465,7 +339,7 @@ TakeTour
 PsalSup1
 `#include "::/Apps/Psalmody/Load";Psalmody("~/Sup1/Sup1Hymns");`
 Budget  
-`#include "::/Apps/Budget/Load";Budget("~/Private/Budget");`
+`#include "::/Apps/Budget/Load";Budget("~/TAD/Budget");`
 SymAlpha
 `DocMax;Who;View;`
 SymNum  

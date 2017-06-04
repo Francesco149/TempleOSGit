@@ -141,6 +141,9 @@ CDirEntry *FMRebuildDocDrv(U8 drv_let,CDoc *doc,CDirEntry **_head,Bool init)
   return tmpde;
 }
 
+#define DEF2_PROCESSED		1
+#define DEF2_NOT_INITIALIZED	2
+
 U0 FMRebuildDoc(CDoc **_doc,CDirEntry **_head,I64 mode)
 {
   CDrv *dv;
@@ -222,7 +225,7 @@ U0 FMRebuildDoc(CDoc **_doc,CDirEntry **_head,I64 mode)
 	tmpde=FMRebuildDocDrv(Drv2Let(dv),doc,_head,TRUE);
       else {
 	tmpde=FMRebuildDocDrv(Drv2Let(dv),doc,_head,FALSE);
-	tmpde->flags|=DEF_NOT_INITIALIZED;
+	tmpde->user_data2|=DEF2_NOT_INITIALIZED;
       }
     } else if (dv->fs_type==FSt_REDSEA || dv->fs_type==FSt_FAT32)
       FMRebuildDocDrv(Drv2Let(dv),doc,_head,TRUE);
@@ -455,18 +458,18 @@ U0 FMCopy(CDoc *doc)
     while (doc_e!=doc2) {
       if (doc_e->type_u8==DOCT_MENU_VAL) {
 	tmpde=doc_e->user_data;
-	tmpde->flags|=DEF_PROCESSED;
+	tmpde->user_data2|=DEF2_PROCESSED;
 	tmpde2=tmpde->parent;
-	if (!tmpde2 || !(tmpde2->flags&DEF_PROCESSED)) {
+	if (!tmpde2 || !(tmpde2->user_data2&DEF2_PROCESSED)) {
 	  Silent;
 	  Copy(tmpde->full_name,tmpde1->full_name);
 	  Silent(OFF);
 	}
       } else if (doc_e->type_u8==DOCT_TREE) {
 	tmpde=doc_e->user_data;
-	tmpde->flags|=DEF_PROCESSED;
+	tmpde->user_data2|=DEF2_PROCESSED;
 	tmpde2=tmpde->parent;
-	if (!tmpde2 || !(tmpde2->flags&DEF_PROCESSED)) {
+	if (!tmpde2 || !(tmpde2->user_data2&DEF2_PROCESSED)) {
 	  Silent;
 	  if (*tmpde1->name)
 	    st=MStrPrint("%s/%s",tmpde1->full_name,tmpde->name);

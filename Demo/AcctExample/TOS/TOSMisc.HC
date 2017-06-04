@@ -78,11 +78,11 @@ public U0 FrameGrabberToggle()
   }
 }
 
-public U0 JukeSong(I64 num)
+public U0 JukeSong(I64 num,I64 passes=2)
 {//Make movie of one song.
   if (!fg_on)
     FrameGrabberToggle;
-  JukeSongsPuppet("~/Sup1/Sup1Hymns",,num,num+1);
+  JukeSongsPuppet("~/Sup1/Sup1Hymns",passes,num,num+1);
   if (fg_on)
     FrameGrabberToggle;
 }
@@ -201,39 +201,4 @@ U0 MemTest()
     "Code:%X\n",sys_code_bp->alloced_u8s-sys_code_bp->used_u8s;
     Yield;
   }
-}
-
-public I64 Profanity(
-	U8 *needle_filename="~/Sup1/Sup1Blog/Profanity.DD.Z",
-	U8 *files_find_mask="/*",U8 *fu_flags=NULL)
-{//Scan for profanity.
-  CCmpCtrl *cc;
-  I64 res=0;
-  if (FileFind(needle_filename)) {
-    cc=CmpCtrlNew(MStrPrint("#include \"%s\"",needle_filename));
-    while (Lex(cc))
-      if (cc->token==TK_IDENT)
-	res+=Find(cc->cur_str,files_find_mask,fu_flags);
-    CmpCtrlDel(cc);
-  }
-  return res;
-}
-
-U0 TOSChgLog2()
-{
-  InStr("\"Ed(\\\"::/Doc/ChgLog.DD.Z\\\");\n\";
-  Msg(MSG_KEY_DOWN_UP,0,SC_CURSOR_UP|SCF_CTRL);
-  Msg(MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-  Msg(MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-  Msg(MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-  Msg(MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-  Msg(MSG_KEY_DOWN_UP,CH_CTRLY,0);
-  Msg(MSG_KEY_DOWN_UP,0,SC_F6|SCF_ALT);
-  Msg(MSG_KEY_DOWN_UP,CH_ESC,0);"
-  "\"Exit;\n\";");
-}
-
-public U0 TOSChgLog()
-{//Opdate ChgLog file.
-  User("TOSChgLog2;\n");
 }

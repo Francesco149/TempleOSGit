@@ -38,8 +38,7 @@ Ctrl-Right	Null scrolling
 [C:/Doc/FAQ.DD.Z,1] F.A.Q.		[C:/Doc/Glossary.DD.Z,1] Glossary
 [C:/Doc/HolyC.DD.Z,1] HolyC  		[C:/Doc/CompilerOverview.DD.Z,1] Compiler Index
 [C:/Doc/WhyNotMore.DD.Z,1] Why Not More?	[C:/Doc/Demands.DD.Z,1] Demands
-[C:/Doc/ChgLog.DD.Z,1] Change Log	[C:/Doc/StdTempleOSPC.DD.Z,1] The Std
-TempleOS PC
+[C:/Doc/StdTempleOSPC.DD.Z,1] The Std TempleOS PC
 	
 +] User Help
   
@@ -79,7 +78,7 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootHDIns.HC.Z,18]
 [C:/Doc/Install.DD.Z,1] Installing
 
 [C:/StartOS.HC.Z,1] the TempleOS equivalent of the AUTOEXEC.BAT.  It is run
-  at start-up by the [C:/Kernel/KEnd.HC.Z,1] Adam Task.
+  at start-up by the [C:/Kernel/KMain.HC.Z,1] Adam Task.
 +] Programmer help
   [C:/Doc/GuideLines.DD.Z,1] Guidelines
 [C:/Doc/HolyC.DD.Z,1] HolyC

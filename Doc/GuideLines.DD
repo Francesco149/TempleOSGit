@@ -147,7 +147,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HH.Z,3498] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HH.Z,3497] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Opt/Utils/StrUtils.HC.Z,1] Spaces-to-Tabs on source code.
 
@@ -188,9 +188,9 @@ case you wish to make hash table sizes bigger.
 
 See [C:/Doc/Asm.DD.Z,1].
 
-* FS must always point to the cur [C:/Kernel/KernelA.HH.Z,3313] CTask.
+* FS must always point to the cur [C:/Kernel/KernelA.HH.Z,3312] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HH.Z,3433] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HH.Z,3432] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/KUtils.HC.Z,445] SET_FS_BASE and
@@ -199,9 +199,9 @@ anyway.  [C:/Kernel/KUtils.HC.Z,445] SET_FS_BASE and
 * When interacting with [C:/Doc/HolyC.DD.Z,1] HolyC compiled code, preserve
 RBP, RSI, RDI, R10-R15 
 because the compiler uses these for reg vars.  You are free to clobber RAX, 
-RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HH.Z,1802] Compiler Reg
-Masks, [C:/Kernel/KernelA.HH.Z,1774] PUSH_C_REGS and
-[C:/Kernel/KernelA.HH.Z,1775] POP_C_REGS
+RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HH.Z,1804] Compiler Reg
+Masks, [C:/Kernel/KernelA.HH.Z,1776] PUSH_C_REGS and
+[C:/Kernel/KernelA.HH.Z,1777] POP_C_REGS
 
 * I recommend using the standard stk frame for functions because
 [C:/Kernel/KDbg.HC.Z,60] Caller() is 

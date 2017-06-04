@@ -11,7 +11,7 @@ U0 SunMoon()
   WinBorder;	//No Border
   WinMax;	//Maximize window
   DocClear;	//Clear command-line text
-  Fs->text_attr=BLACK<<4+WHITE;	//Current [C:/Kernel/KernelA.HH.Z,3313] CTask is Fs segment register.
+  Fs->text_attr=BLACK<<4+WHITE;	//Current [C:/Kernel/KernelA.HH.Z,3312] CTask is Fs segment register.
 
   for (i=0;i<0x8000;i+=0x200) {
 //Sun

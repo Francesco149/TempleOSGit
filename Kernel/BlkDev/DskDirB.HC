@@ -173,7 +173,7 @@ Bool DirMk(U8 *filename,I64 entry_cnt=0)
   if (dirc=DirContextNew(filename)) {
     if (*dirc->mask) {
       if (!FileNameChk(dirc->mask))
-	PrintErr("Invalid FileName.\n");
+	PrintErr("Invalid FileName: \"%s\".\n",dirc->mask);
       else {
 	"Make Directory:%s\n",filename;
 	name=MStrUtil(dirc->mask,

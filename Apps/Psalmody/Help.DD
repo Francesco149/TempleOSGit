@@ -38,7 +38,7 @@ FqE4BeG5FetC4A5GqFC after pressing <CTRL-t>, now.
 play your songs.
 
 * To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/Kernel/KernelA.HH.Z,3822] snd.record to TRUE, play music, and
+the Bool [C:/Kernel/KernelA.HH.Z,3821] snd.record to TRUE, play music, and
 set it to FALSE.  Then, call 
 [C:/Adam/Snd/SndFile.HC.Z,19] SndFileCreate().  You might wish to make a
 <CTRL-ALT-key> to toggle this 

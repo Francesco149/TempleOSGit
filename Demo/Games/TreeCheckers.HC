@@ -79,7 +79,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       GrLine(dc,u[i].x,u[i].y,u[u[i].link].x,u[u[i].link].y);
       if (Blink) {
 	dc->color=BLUE;
-	dc->pen_width=6;
+	dc->thick=6;
 	GrPlot3(dc,(u[i].x+u[u[i].link].x)>>1,(u[i].y+u[u[i].link].y)>>1,0);
       }
     }
@@ -262,7 +262,7 @@ ti_restart:
       for (j=0;j<UNITS_NUM/2;j++) {
 	if (i!=j) {
 	  dd=SqrI64(u[i].x-u[j].x)+SqrI64(u[i].y-u[j].y);
-	  if (u[j].x<=u[i].x && dd<best_dd) {
+	  if ((u[j].x<u[i].x || u[j].king) && dd<best_dd ) {
 	    best_dd=dd;
 	    best=j;
 	  }

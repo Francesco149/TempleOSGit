@@ -69,7 +69,7 @@ Bool ISO1CDirFill(CDirEntry *tmpde,CISO1DirEntry *de)
 
 Bool ISO1FileFind(CDrv *dv,I64 cur_dir_clus,U8 *name,
 	CDirEntry *_res,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HH.Z,2617] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2618] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HH.Z,2616] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2617] FUF_JUST_FILES
   CISO1DirEntry *isoptr,*buf;
   U8 dname[CDIR_FILENAME_LEN];
   Bool res=FALSE,unlock;
@@ -163,10 +163,8 @@ Bool ISO1Cd(U8 *name,I64 cur_dir_clus)
     PrintErr("Not ISO9660 Drv\n");
   else if (ISO1FileFind(Fs->cur_dv,cur_dir_clus,name,&de,FUF_JUST_DIRS))
     return TRUE;
-  else {
-    "%s ",name;
-    PrintErr("File not found.\n");
-  }
+  else
+    PrintErr("File not found: \"%s\".\n",name);
   return FALSE;
 }
 

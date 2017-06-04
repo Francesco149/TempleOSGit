@@ -18,7 +18,7 @@ U32 char_bmp_filename[8]=
 
 public class CDirEntry //64-byte fixed-size
 {
-  U16 attr;	//See [C:/Kernel/KernelA.HH.Z,2540] RS_ATTR_DIR.  I would like to
+  U16 attr;	//See [C:/Kernel/KernelA.HH.Z,2542] RS_ATTR_DIR.  I would like to
 change these.
   U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/StrA.HC.Z,345]
 char_bmp_filename, [C:/Kernel/BlkDev/DskStrA.HC.Z,249] FileNameChk
@@ -55,5 +55,7 @@ will be four blocks per CD/DVD sector.
 
 RedSea file system has no bad block table and no redundant allocation table.
 
-Read [C:/Doc/BlkChain.DD.Z,1] Block Chain for a philosophical explaination of
-RedSea reasoning.
+See [C:/Doc/BlkChain.DD.Z,1] Block Chain for RedSea allocation bitmap
+discussion.
+
+See [C:/Doc/Reliability.DD.Z,1] Reliability for RedSea reliability discussion.

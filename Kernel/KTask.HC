@@ -228,7 +228,7 @@ I64 TaskInit(CTask *task,I64 stk_size)
   task->win_top		=13;
   task->win_bottom	=text.rows-2;
 
-  if (blkdev.home_dir) {//Beware Adam [C:/Kernel/KStart64.HC.Z,1] TaskInit. I guess ok until [C:/Kernel/KEnd.HC.Z,1] DskChg().
+  if (blkdev.home_dir) {//Beware Adam [C:/Kernel/KStart64.HC.Z,1] TaskInit. I guess ok until [C:/Kernel/KMain.HC.Z,1] DskChg().
     task->cur_dv=blkdev.let_to_drv[*blkdev.home_dir-'A'];
     task->cur_dir=StrNew(blkdev.home_dir+2,task);
   } else
@@ -245,7 +245,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<JOBf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HH.Z,3313] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HH.Z,3312] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)

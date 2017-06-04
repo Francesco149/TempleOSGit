@@ -17,7 +17,7 @@ IB's behave like string consts in [C:/Doc/HolyC.DD.Z,1] HolyC when
 compiled.  That is, they are ptrs to data.
 
 This file uses the persistent graphic
-device context [C:/Kernel/KernelA.HH.Z,3641] CDC, [C:/Adam/Gr/GrGlbls.HC.Z,3] gr.dc, while the other
+device context [C:/Kernel/KernelA.HH.Z,3640] CDC, [C:/Adam/Gr/GrGlbls.HC.Z,3] gr.dc, while the other
 demo's use [C:/Adam/Gr/GrGlbls.HC.Z,3] gr.dc2 which must be redrawn at
 30 fps by the window mgr task.	This demo
 is simpler because you do not need
