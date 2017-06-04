@@ -18,7 +18,7 @@ boot the CD/DVD-ROM.
 
 See [C:/Doc/Boot.DD.Z,1] Boot.DD for an overview of booting.  See
 [C:/Doc/Requirements.DD.Z,1] Requirements for supported 
-hardware.  See [C:/Doc/Upgrade.DD.Z,1] Upgrading if you are upgrading.
+hardware.
 
 Two TempleOS partitions are highly recommended, so you can boot to a back-up 
 and fix the primary when you work on it.  Odds are, you only need a couple 

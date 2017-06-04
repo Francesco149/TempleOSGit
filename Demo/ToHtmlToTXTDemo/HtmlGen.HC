@@ -12,11 +12,6 @@ http://www.templeos.org if you want file that come on the
 TempleOS distribution.
 
 You can pass html meta data as args to [C:/Demo/ToHtmlToTXTDemo/ToHtml.HC.Z,1] ToHtml().
-
-If you want to blog like I do, see these files...
-[C:/Demo/AcctExample/TOS/TOSToHtml.HC.Z,1]
-[C:/Demo/AcctExample/HomeKeyPlugIns.HC.Z,1]
-[C:/Demo/AcctExample/TOS/TOSHolySpirit.HC.Z,1]
 */
 
 Cd(__DIR__);;

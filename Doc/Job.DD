@@ -7,7 +7,7 @@
 
 
 
- [C:/Kernel/KEnd.HC.Z,134] Core0 AdamTask[C:/Kernel/KTask.HC.Z,406] SrvCmdLine[C:/Kernel/MultiProc.HC.Z,194] AP SethTask[C:/Kernel/KTask.HC.Z,414] UserCmdLine
+ [C:/Kernel/KMain.HC.Z,134] Core0 AdamTask[C:/Kernel/KTask.HC.Z,406] SrvCmdLine[C:/Kernel/MultiProc.HC.Z,194] AP SethTask[C:/Kernel/KTask.HC.Z,414] UserCmdLine
 
 
 
@@ -27,8 +27,8 @@
 
 
 
-[C:/Kernel/KernelA.HH.Z,3189] CJob nodes are one of
-[C:/Kernel/KernelA.HH.Z,3182] five types.  User applications deal with text
+[C:/Kernel/KernelA.HH.Z,3188] CJob nodes are one of
+[C:/Kernel/KernelA.HH.Z,3181] five types.  User applications deal with text
 or msgs.  
 [C:/Kernel/Job.HC.Z,269] JobRunOne() will call a function, spawn a task or
 execute some text src code.

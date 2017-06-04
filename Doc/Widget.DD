@@ -39,7 +39,7 @@ Define Str will substitute a #define or [C:/Kernel/KDefine.HC.Z,1]
 DefineLoad() string for the tag.
 
 Quote Make the res suitable for including in a program, in quotes, especially 
-fmtstr entries in class definitions.
+format entries in class definitions.
 
 X Expression For cursor movements, the horizontal value.
 Y Expression For cursor movements, the vertical value.

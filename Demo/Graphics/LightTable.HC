@@ -491,7 +491,7 @@ U0 LightTable()
   SettingsPush; //See [C:/Adam/TaskSettings.HC.Z,3] SettingsPush
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-
 	WIF_SELF_BORDER-WIF_FOCUS_TASK_MENU;
-  Fs->text_attr=BLACK<<4+WHITE;	//Current [C:/Kernel/KernelA.HH.Z,3313] CTask is Fs segment register.
+  Fs->text_attr=BLACK<<4+WHITE;	//Current [C:/Kernel/KernelA.HH.Z,3312] CTask is Fs segment register.
   AutoComplete;
   WinBorder;
   WinMax;

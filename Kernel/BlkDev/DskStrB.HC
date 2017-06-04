@@ -37,8 +37,7 @@ I64 Name2DirClus(CDrv *dv,U8 *dirname)
       }
     }
     if (!cont) {
-      "%s ",dirname;
-      PrintErr("File not found.\n");
+      PrintErr("File not found: \"%s\".\n",dirname);
       cur_dir_clus=0;
     }
     if (unlock)
@@ -82,8 +81,7 @@ I64 Name2ParentDirClus(CDrv *dv,U8 *dirname)
       }
     }
     if (!cont) {
-      "%s ",dirname;
-      PrintErr("File not found.\n");
+      PrintErr("File not found: \"%s\".\n",dirname);
       cur_dir_clus2=0;
     }
     if (unlock)

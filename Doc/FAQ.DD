@@ -1,14 +1,13 @@
                           Frequently Asked Questions
 
 +] How come it is public domain, not GPL?
-  I, Terry A. Davis, wrote all 118,851 lines of TempleOS over the past 12.5
-  years (full-time).  It can run on some bare metal 64-bit PC's from about
-  2005-2010 with no layering, libraries, tools, modules or anything from other
-  sources.  Otherwise, you run it in a virtual machine, like VMware, QEMU or
-  VirtualBox.  It is independent and stands alone.  It has no networking, so it
-  certainly doesn't call home.  100% of the src code is including on all
-  distro's, from the kernel to the compiler to the boot loaders!  See
-  [C:/Doc/Credits.DD.Z,1].
+  I, Terry A. Davis, wrote all of TempleOS over the past 13.8 years
+  (full-time).  It can run on some bare metal 64-bit PC's from about 2005-2010
+  with no layering, libraries, tools, modules or anything from other sources. 
+  Otherwise, you run it in a virtual machine, like VMware, QEMU or VirtualBox. 
+  It is independent and stands alone.  It has no networking, so it certainly
+  doesn't call home.  100% of the src code is including on all distro's, from
+  the kernel to the compiler to the boot loaders!  See [C:/Doc/Credits.DD.Z,1].
 +] Shouldn't it be GNU/TempleOS?
   TempleOS executes no code not written by me at any time except for a few
   BIOS calls for configuration.  I even wrote boot-loaders, so I do not need
@@ -129,7 +128,7 @@
   [C:/Doc/Glossary.DD.Z,1] Code Heap, so that the REL32 addressing mode can be
   used.  TempleOS is 64-bit, but 2Gig is enough for code.  It actually puts
   global variables there, too, but you can turn that off with
-  [C:/Kernel/KernelA.HH.Z,1553] OPTf_GLBLS_ON_DATA_HEAP. 
+  [C:/Kernel/KernelA.HH.Z,1555] OPTf_GLBLS_ON_DATA_HEAP. 
   [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc() allocs higher memory.
 +] How does it SYSCALL?
   TempleOS doesn't use software interrupts or SYSCALL insts because it never
@@ -170,7 +169,7 @@
 +] How do you use the FS and GS segment registers.
   MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP
   relative, so it's tricky to use.  FS is used for the current
-  [C:/Kernel/KernelA.HH.Z,3313] CTask, GS for [C:/Kernel/KernelA.HH.Z,3433]
+  [C:/Kernel/KernelA.HH.Z,3312] CTask, GS for [C:/Kernel/KernelA.HH.Z,3432]
   CCPU.
 +] How do I set ORG for position of code?
   The compiler creates pos independent code.  Don't create code which is
@@ -180,7 +179,7 @@
   Binary executable files have export syms which are loaded into the sym
   tables.  The operating system Kernel has such an export table.  In addition,
   some map files are processed to provide more information on syms -- src file
-  links.  This is how the [C:/Kernel/FunSeg.HC.Z,324] Man()/AutoComplete
+  links.  This is how the [C:/Kernel/FunSeg.HC.Z,346] Man()/AutoComplete
   feature can find src lines.
 +] Why doesn't assert work?
   #assert might print a message at COMPILE time, not run time.

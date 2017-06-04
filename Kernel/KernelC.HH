@@ -204,7 +204,6 @@ public extern U0 Dm(U8 *addr,I64 cnt=0x80);
 public extern U0 Dr(CTask *task=NULL);
 public extern U0 StkRep(CTask *task=NULL);
 extern I64 *TaskRegAddr(CTask *task,I64 reg_num);
-
 #help_index "Debugging/FunSeg"
 #help_file "::/Doc/DbgFunSeg"
 public extern Bool PutSrcLink(U8 *addr,I64 cnt=1,U8 *buf=NULL);
@@ -275,6 +274,7 @@ public extern Bool FBlkWrite(CFile *f,U8 *buf,I64 blk=FFB_NEXT_BLK,I64 cnt=1);
 public extern U0 FClose(CFile *f);
 public extern CFile *FOpen(U8 *filename,U8 *flags,I64 cnt=0);
 public extern I64 FSize(CFile *f);
+
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 public extern Bool Cd(U8 *dirname=NULL,Bool make_dirs=FALSE);
 public extern I64 Del(U8 *files_find_mask,Bool make_mask=FALSE,
@@ -513,7 +513,7 @@ extern CJob sys_macro_head;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HH.Z,3765] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HH.Z,3764] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);

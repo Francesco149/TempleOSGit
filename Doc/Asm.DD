@@ -45,7 +45,7 @@ LIST, NOLIST
 ALIGN num, fill_byte
   Align to num boundary and fill with fill_byte.
 
-MODULE_ORG num
+ORG num
   Set code addr for JIT or set module [C:/Kernel/KLoad.HC.Z,181] Load() addr
 -- has 16-byte [C:/Kernel/KernelA.HH.Z,384] CBinFile 
 header and patch table trailing.

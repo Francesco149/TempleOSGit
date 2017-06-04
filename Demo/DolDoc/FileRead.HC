@@ -4,7 +4,7 @@ public U0 DocProfile(U8 *filename,I64 flags)
 	*flags_stats=CAlloc(sizeof(I64)*64),
 	*type_flags_stats=CAlloc(sizeof(I64)*64);
 //Note: word wrap is determined by
-  //doc->win_task when a [C:/Kernel/KernelA.HH.Z,1365] CDoc is recalculated
+  //doc->win_task when a [C:/Kernel/KernelA.HH.Z,1367] CDoc is recalculated
   //use [C:/Adam/DolDoc/DocRecalc.HC.Z,256] DocRecalc().
   CDoc *doc=DocRead(filename,flags);
 
@@ -76,5 +76,5 @@ The flag arrays [C:/Adam/DolDoc/MakeDoc.HC.Z,21] doldoc.type_flags_form, etc
 are useful.
 */
 
-DocProfile("::/Doc/ChgLog.DD",0);
-DocProfile("::/Doc/ChgLog.DD",DOCF_PLAIN_TEXT);
+DocProfile("::/Doc/Welcome.DD",0);
+DocProfile("::/Doc/Welcome.DD",DOCF_PLAIN_TEXT);

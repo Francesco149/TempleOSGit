@@ -226,7 +226,7 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=I64_MIN)
       DirNew(dv,cur_dir,&de,FALSE);
     }
   } else
-    PrintErr("File not found.\n");
+    PrintErr("File not found: \"%s\".\n",filename);
   Free(cur_dir);
 }
 public U0 Touch(U8 *files_find_mask="*",U8 *attr="+?",
@@ -235,7 +235,7 @@ public U0 Touch(U8 *files_find_mask="*",U8 *attr="+?",
 Default lists attributes.
 attr: "+?" =show current
 "+T" =resident
-[C:/Kernel/KernelA.HH.Z,2536] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.HC.Z,109] ST_FILE_ATTRS
+[C:/Kernel/KernelA.HH.Z,2538] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.HC.Z,109] ST_FILE_ATTRS
 To Set DateL:
 Touch(filename,"",,datetime);
 */

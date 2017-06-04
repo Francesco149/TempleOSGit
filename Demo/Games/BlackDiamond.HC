@@ -197,7 +197,7 @@ U0 DrawUpperChairLift(CDC *dc)
 {
   I64 i=chair_lift_num,x,x1,y=obj_y[i]-scrn_top_y-WIRE_HEIGHT,y1;
   Sprite3(dc,obj_x[i],y+13,0,__BIN_8);
-  dc->pen_width=2;
+  dc->thick=2;
   for (x=-WIRE_WIDTH/2;x<GR_WIDTH+WIRE_WIDTH/2;x+=2) { //Pen width is 2, step 2.
     x1=x-obj_x[i];
     y1=y-WIRE_DIP/2+Cosh(Ln(WIRE_DIP)+(Abs(x1)-PULLY_WIDTH)/10000.0)+0.1*x1;
@@ -206,7 +206,7 @@ U0 DrawUpperChairLift(CDC *dc)
       GrPlot3(dc,x+WIRE_WIDTH/2,y1,0);
     }
   }
-  dc->pen_width=1;
+  dc->thick=1;
 }
 
 U0 DrawIt(CTask *,CDC *dc)
