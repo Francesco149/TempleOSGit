@@ -14,7 +14,7 @@ it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-82,152 lines of code including the kernel, the 64-bit compiler, the graphics 
+82,150 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a [C:/Doc/HelloWorld.DD.Z,1] Hello World
@@ -182,9 +182,9 @@ Hardware graphics acceleration is not used, so this is possible.  See
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/KernelA.HH.Z,3313] CTask, pointed to by the FS
+task record, [C:/Kernel/KernelA.HH.Z,3312] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
-> while Gs-> points to a [C:/Kernel/KernelA.HH.Z,3433] CCPU for the current
+> while Gs-> points to a [C:/Kernel/KernelA.HH.Z,3432] CCPU for the current
 CPU core.  Each task can have 
 just one window, but a task can have children with windows.  (The segment
 regs 
@@ -219,7 +219,7 @@ right
 clicking on filenames in a cmd line [C:/Kernel/BlkDev/DskDirB.HC.Z,105] Dir()
 listing.  You left-click files to 
 edit them and right-click to #include them.  To begin a project, type
-[C:/Adam/DolDoc/DocEd.HC.Z,189] Ed("file
+[C:/Adam/DolDoc/DocEd.HC.Z,204] Ed("file
 name");, supplying a filename.  You can also run programs with <F5> when in 
 the editor. <ESC> to save and exit the file.  You'll need to do a new
 [C:/Kernel/BlkDev/DskDirB.HC.Z,105] Dir() 
@@ -276,7 +276,7 @@ must be a contiguous ISO.C file, so rename it under TempleOS to ISO.C.
 
 Ideally, do not install applications such as games onto your hard drive 
 because we wish to keep hard drive usage low, so the whole 'C' drive can be 
-copied quickly to 'D'.  Also, the [C:/Adam/ABlkDev/FileMgr.HC.Z,594]
+copied quickly to 'D'.  Also, the [C:/Adam/ABlkDev/FileMgr.HC.Z,597]
 FileMgr() <CTRL-d> starts too slowly when 
 there are lots of hard drive files, but that is how we want it.
 

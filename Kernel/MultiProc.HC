@@ -281,7 +281,7 @@ U0 CoreAPSethInit()
 }
 
 U0 Core0StartMP()
-{//Called by adam during [C:/Kernel/KEnd.HC.Z,1] start-up.
+{//Called by adam during [C:/Kernel/KMain.HC.Z,1] start-up.
   CTask *task;
   U8 buf[STR_LEN];
   CAP16BitInit *mp=MP_VECT_ADDR;
@@ -337,7 +337,7 @@ U0 Core0StartMP()
     StrPrint(buf,"Seth Task CPU%02X",i);
     task=Spawn(&CoreAPSethInit,NULL,buf,,,MEM_SETH_STK,0);
     task->rflags=RFLAGG_START;
-//[C:/Kernel/KernelA.HH.Z,3313] CTask alloced off this core's seth_task's heap (Which is Adam)
+//[C:/Kernel/KernelA.HH.Z,3312] CTask alloced off this core's seth_task's heap (Which is Adam)
     CPUStructInit(i,&cpu_structs[i],task);
     WBINVD //Not sure why this is needed.  Might just need delay.
   }

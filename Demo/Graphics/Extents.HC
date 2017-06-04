@@ -21,11 +21,11 @@ U0 Extents()
   //scrn coordinates.
   DCExtentsInit(dc);
 
-  dc->pen_width=3;
+  dc->thick=3;
   Sprite3(dc,40,GR_HEIGHT>>1,0,__BIN_1);
 
   dc->color=LTRED;
-  dc->pen_width=1;
+  dc->thick=1;
 
   //This box is the extents.
   GrLine(dc,dc->min_x-h,dc->min_y-v,dc->max_x-h,dc->min_y-v);

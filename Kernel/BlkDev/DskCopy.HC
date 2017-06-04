@@ -13,9 +13,9 @@ Bool CopySingleZ(U8 *f1,U8 *f2) //Just one file
       Free(file_buf);
       return ToBool(c);
     } else
-      PrintErr("File not found.\n");
+      PrintErr("File not found: \"%s\".\n",f1);
   } else
-    PrintErr("File not found.\n");
+    PrintErr("File not found: \"%s\".\n",f1);
   return FALSE;
 }
 
@@ -71,10 +71,10 @@ Bool CopySingle(U8 *f1,U8 *f2) //Just one file
       Free(buf);
       return TRUE;
     } else
-      PrintErr("File not found.\n");
+      PrintErr("File not found: \"%s\".\n",f2);
     FClose(in_file);
   } else
-    PrintErr("File not found.\n");
+    PrintErr("File not found: \"%s\".\n",f1);
   Free(buf);
   return FALSE;
 }

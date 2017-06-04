@@ -1,5 +1,5 @@
 //This is executed by the Adam task at boot.
-//See [C:/Kernel/KEnd.HC.Z,1] Adam Start-up.
+//See [C:/Kernel/KMain.HC.Z,1] Adam Start-up.
 
 #help_index "Compiler/Directive"
 public extern I8i Option(I64i num,I8i val);

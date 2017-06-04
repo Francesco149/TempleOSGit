@@ -66,7 +66,7 @@ See [C:/Doc/Widget.DD.Z,1], [C:/Demo/DolDoc/DemoDoc.DD.Z,1], and
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HH.Z,2956] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HH.Z,2955] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -154,7 +154,7 @@ Examples: <CTRL-t> to see
 +] DA Data
   Used for forms that prompt for data or just displaying a value.  Use
   <CTRL-l> to help you generate the DolDoc command text you need in your
-  [C:/Doc/HolyC.DD.Z,1] HolyC class member's fmtstr meta-data for
+  [C:/Doc/HolyC.DD.Z,1] HolyC class member's format meta-data for
   [C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm().  See
   [C:/Demo/DolDoc/Form.HC.Z,1], [C:/Demo/Dsk/DataBase.HC.Z,1], and
   [C:/Adam/DolDoc/DocWidgetWiz.HC.Z,1].
@@ -185,7 +185,7 @@ The space after the first ':' in the format string marks the first valid
   cursor pos.  See [C:/Adam/DolDoc/DocPlain.HC.Z,1] Data Tag Width.
 +] CB Check Box
   Used for forms.  Use <CTRL-l> to help you generate the DolDoc command text
-  you need in your [C:/Doc/HolyC.DD.Z,1] HolyC class member's fmtstr meta-data
+  you need in your [C:/Doc/HolyC.DD.Z,1] HolyC class member's format meta-data
   for [C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm().  See
   [C:/Demo/DolDoc/Form.HC.Z,1] and [C:/Kernel/KernelA.HH.Z,1234] CEdFindText.
 
@@ -204,7 +204,7 @@ The default raw data type for the $CB...$ command is RT=I8 which is Bool.
 +] LS List Widget
   Used for forms that prompt for data.  You must specify a define list, D="".
    Use <CTRL-l> to help you generate the DolDoc command text you need in your
-  [C:/Doc/HolyC.DD.Z,1] HolyC class member's fmtstr meta-data for
+  [C:/Doc/HolyC.DD.Z,1] HolyC class member's format meta-data for
   [C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm().  See
   [C:/Demo/DolDoc/Form.HC.Z,1].
 

@@ -1,4 +1,4 @@
-#define DOWNLOAD_FILE1		"TempleOSCD.ISO"
+#define DOWNLOAD_FILE1		"TOS_Distro.ISO"
 #define DOWNLOAD_FILE1_SIZE	17000000
 #define DOWNLOAD_FILE2		"TempleOSUltra.ISO"
 #define DOWNLOAD_FILE2_SIZE	 1900000
@@ -376,7 +376,7 @@ U0 DownLoadRep(LogStruct *head,CDate start,CDate end)
     tmplg=tmplg->next;
   }
 
-  "\n\nDownloads of /TempleOSCD.ISO\n";
+  "\n\nDownloads of /TOS_Distro.ISO\n";
   for (i=start;i<=end;i+=1<<32)
     "%D  Dups:%5d  Total:%5d  Uniques:%5d\n",i,
 	  day_dup_cnts[(i+local_time_offset)>>32-days_start],
@@ -384,7 +384,7 @@ U0 DownLoadRep(LogStruct *head,CDate start,CDate end)
 	  day_cnts[(i+local_time_offset)>>32-days_start]-
 	  day_dup_cnts[(i+local_time_offset)>>32-days_start];
 
-  "\n\nDownloads of /TempleOSCD.ISO\n"
+  "\n\nDownloads of /TOS_Distro.ISO\n"
 	"'-' is a dup.  '+' is not a dup.\n";
   if (hours_end-hours_start>=HOURS_MAX)
     i=hours_end-HOURS_MAX+1;
@@ -401,7 +401,7 @@ U0 DownLoadRep(LogStruct *head,CDate start,CDate end)
   }
   "Total:%d  Dups:%d  Uniques:%d\n",cnt,dups,cnt-dups;
 
-  "\n\nDownloads of /TempleOSCD.ISO\n";
+  "\n\nDownloads of /TOS_Distro.ISO\n";
   LinkTreeTraverse(link_root);
   '\n';
 

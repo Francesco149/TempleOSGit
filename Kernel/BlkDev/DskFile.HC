@@ -64,10 +64,8 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL)
 	DirContextDel(dirc);
       }
     }
-    if (!res) {
-      "%s ",filename;
-      PrintErr("File not found.\n");
-    }
+    if (!res)
+      PrintErr("File not found: \"%s\".\n",filename);
     if (res && attr & RS_ATTR_RESIDENT)
       HashGenericAdd(curname,HTT_FILE,AMAllocIdent(res),size,0,adam_task);
   }

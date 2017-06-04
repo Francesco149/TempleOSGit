@@ -125,7 +125,7 @@ U0 SysDefinesLoad()
 }
 
 U8 *Color2Str(U8 *buf,CColorROPU32 c)
-{//[C:/Kernel/KernelA.HH.Z,2981] CColorROPU32 with flags to [C:/Adam/Gr/GrDC.HC.Z,57] DCLighting str.
+{//[C:/Kernel/KernelA.HH.Z,2980] CColorROPU32 with flags to [C:/Adam/Gr/GrDC.HC.Z,57] DCLighting str.
   *buf=0;
   if (c.c0.rop&ROPBF_TWO_SIDED)
     CatPrint(buf,"TWO|");
@@ -156,7 +156,7 @@ U8 *Color2Str(U8 *buf,CColorROPU32 c)
 U8 *str2color_lst="/,)}>";
 
 CColorROPU16 Str2ColorU16(U8 *st)
-{//[C:/Adam/Gr/GrDC.HC.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HH.Z,2977] CColorROPU16.
+{//[C:/Adam/Gr/GrDC.HC.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HH.Z,2976] CColorROPU16.
   CColorROPU16 res=COLOR_INVALID;
   I64 i;
   U8 *ptr,*ptr2,*st2;
@@ -200,7 +200,7 @@ CColorROPU16 Str2ColorU16(U8 *st)
 }
 
 CColorROPU32 Str2ColorU32(U8 *st)
-{//[C:/Adam/Gr/GrDC.HC.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HH.Z,2981] CColorROPU32.
+{//[C:/Adam/Gr/GrDC.HC.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HH.Z,2980] CColorROPU32.
   U8 *st2;
   CColorROPU32 res=0;
   if (!st) return COLOR_INVALID;

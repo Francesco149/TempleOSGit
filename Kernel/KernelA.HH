@@ -41,7 +41,7 @@ extern class CTask;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HH.Z,1555] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HH.Z,1557] OPTf_NO_BUILTIN_CONST.
 #define U64_F64_MAX (0x43F0000000000000(F64))
 #define F64_MAX (0x7FEFFFFFFFFFFFFF(F64))
 #define F64_MIN (0xFFEFFFFFFFFFFFFF(F64))
@@ -387,7 +387,7 @@ class CBinFile
   U8	module_align_bits,
 	reserved;
   U32	bin_signature;
-  I64	module_org,
+  I64	org,
 	patch_table_offset, //[C:/Compiler/CMain.HC.Z,1] Patch Table Generation
 	file_size;
 };
@@ -400,7 +400,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HH.Z,1967] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HH.Z,1969] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -1221,7 +1221,7 @@ public class CDocEntry:CDocEntryBase
 #assert !($&7)
 };
 
-//[C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm() [C:/Adam/DolDoc/DocForm.HC.Z,295] DocMenu() [C:/Adam/DolDoc/DocEd.HC.Z,72] DocEd() [C:/Adam/DolDoc/DocForm.HC.Z,333] PopUpMenu()
+//[C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm() [C:/Adam/DolDoc/DocForm.HC.Z,295] DocMenu() [C:/Adam/DolDoc/DocEd.HC.Z,84] DocEd() [C:/Adam/DolDoc/DocForm.HC.Z,333] PopUpMenu()
 #define	DOF_SIZE_MIN		0x01
 #define	DOF_INTERCEPT_TASK_END	0x02
 #define DOF_DONT_HOME		0x04
@@ -1233,27 +1233,27 @@ public class CDocEntry:CDocEntryBase
 
 class CEdFindText
 {
-  U8	find_text[STR_LEN] fmtstr "$DA-P,"
+  U8	find_text[STR_LEN] format "$DA-P,"
 	"A=\"Find        :%s\"$\n",
-	replace_text[STR_LEN] fmtstr "$DA-P,"
+	replace_text[STR_LEN] format "$DA-P,"
 	"A=\"Replace     :%s\"$\n";
-  Bool	replace			fmtstr "$CB,\"Replace\"$\n",
-	scan_fwd		fmtstr "$CB,\"Fwd\"$\n",
-	scan_sel_text		fmtstr "$CB,\"Selection\"$\n",
-	match_case		fmtstr "$CB,\"Match Case\"$\n",
-	whole_labels		fmtstr "$CB,\"Whole Labels\"$\n",
-	local_var		fmtstr "$CB,\"Rename Local Var\"$\n",
+  Bool	replace			format "$CB,\"Replace\"$\n",
+	scan_fwd		format "$CB,\"Fwd\"$\n",
+	scan_sel_text		format "$CB,\"Selection\"$\n",
+	match_case		format "$CB,\"Match Case\"$\n",
+	whole_labels		format "$CB,\"Whole Labels\"$\n",
+	local_var		format "$CB,\"Rename Local Var\"$\n",
 	pmt,pad;
-  I64	filter_lines		fmtstr "$DA,A=\"Filter Lines:%d\"$\n";
+  I64	filter_lines		format "$DA,A=\"Filter Lines:%d\"$\n";
 };
 
 class CEdFileName
 {
   CDirContext *dirc;
-  U8	name[256] fmtstr "$DA-P,LEN=255,A=\"FileName:%s\"$";
+  U8	name[256] format "$DA-P,LEN=255,A=\"FileName:%s\"$";
 };
 
-//[C:/Adam/DolDoc/DocEd.HC.Z,189] Ed()
+//[C:/Adam/DolDoc/DocEd.HC.Z,204] Ed()
 #define EDF_BAIL		0x100
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
@@ -1268,11 +1268,12 @@ class CEdFileName
 // DOC header flags
 #define DOCF_PLAIN_TEXT 	0x1
 #define DOCF_PLAIN_TEXT_TABS	0x2 //has '\t', not DOCT_TAB
-#define DOCF_NO_CURSOR		0x4
-#define DOCF_CARRIAGE_RETURN	0x8
-#define DOCF_DBL_DOLLARS	0x10
-#define DOCF_COLOR_NAMES	0x20
-//Reserved x2
+#define DOCF_AUTO_SAVE		0x4
+#define DOCF_NO_CURSOR		0x8
+#define DOCF_CARRIAGE_RETURN	0x10
+#define DOCF_DBL_DOLLARS	0x20
+#define DOCF_COLOR_NAMES	0x40
+//Reserved x1
 #define DOCF_BORDER_DOC		0x100
 #define DOCF_FORM		0x200
 #define DOCF_SIZE_MIN		0x400
@@ -1304,11 +1305,12 @@ class CEdFileName
 
 #define DOCf_PLAIN_TEXT 	0
 #define DOCf_PLAIN_TEXT_TABS	1 //has '\t', not DOCT_TAB
-#define DOCf_NO_CURSOR		2
-#define DOCf_CARRIAGE_RETURN	3
-#define DOCf_DBL_DOLLARS	4
-#define DOCf_COLOR_NAMES	5
-//Reserved x2
+#define DOCf_AUTO_SAVE		2
+#define DOCf_NO_CURSOR		3
+#define DOCf_CARRIAGE_RETURN	4
+#define DOCf_DBL_DOLLARS	5
+#define DOCf_COLOR_NAMES	6
+//Reserved x1
 #define DOCf_BORDER_DOC		8
 #define DOCf_FORM		9
 #define DOCf_SIZE_MIN		10
@@ -1568,7 +1570,7 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HH.Z,1352] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HH.Z,1354] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -2009,7 +2011,7 @@ class CAOT
   U8	*buf;
   I64	rip,rip2,
 	aot_U8s,
-	max_align_bits,module_org;
+	max_align_bits,org;
   CAOT	*parent_aot;
   CAOTImportExport *next_ie,*last_ie;
   CAOTAbsAddr *abss;
@@ -2062,7 +2064,7 @@ class CAOTCtrl
   CAsmArg arg1,arg2;
   CAOTBinBlk *bin;
   I64	num_bin_U8s,
-	max_align_bits,module_org;
+	max_align_bits,org;
   CAsmUnresolvedRef *local_unresolved,*glbl_unresolved;
   CAOTAbsAddr *abss;
   CAOTHeapGlbl *heap_glbls;
@@ -2554,16 +2556,13 @@ class CISO1PriDesc
 #define MT_DVD		2
 
 #help_index "File/Low Level;File/Program Routines"
-//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.HC.Z,594] FileMgr())
-#define DEF_PROCESSED		1
-#define DEF_NOT_INITIALIZED	2
-
+//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.HC.Z,597] FileMgr())
 #define CDIR_FILENAME_LEN	38 //Must include terminator zero
 public class CDirEntry
 {
   CDirEntry *next,*parent,*sub;
   U8	*full_name;
-  I64	flags,user_data;
+  I64	user_data,user_data2;
 
   U0	start;
   U16	attr;
@@ -2942,7 +2941,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HH.Z,2952] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HH.Z,2951] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.HC.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3061,19 +3060,19 @@ public class CMsStateGlbls
 
 public class CGridGlbls
 {
-  Bool	snap	fmtstr "$CB,\"Snap Grid\"$\n",
-	show	fmtstr "$CB,\"Show Grid\"$\n",
-	coord	fmtstr "$CB,\"Show Coordinates\"$\n";
+  Bool	snap	format "$CB,\"Snap Grid\"$\n",
+	show	format "$CB,\"Show Grid\"$\n",
+	coord	format "$CB,\"Show Coordinates\"$\n";
   U8	pad[5];
-  F64	x	fmtstr "$DA-TRM,A=\"X Spacing:%6.3f\"$\n",
-	y	fmtstr "$DA-TRM,A=\"Y Spacing:%6.3f\"$\n",
-	z	fmtstr "$DA-TRM,A=\"Z Spacing:%6.3f\"$\n",
-	x_offset fmtstr "$DA-TRM,A=\"X Offset :%6.3f\"$\n",
-	y_offset fmtstr "$DA-TRM,A=\"Y Offset :%6.3f\"$\n",
-	z_offset fmtstr "$DA-TRM,A=\"Z Offset :%6.3f\"$\n",
-	x_speed	fmtstr "$DA-TRM,A=\"X Speed  :%6.3f\"$\n",
-	y_speed	fmtstr "$DA-TRM,A=\"Y Speed  :%6.3f\"$\n",
-	z_speed	fmtstr "$DA-TRM,A=\"Z Speed  :%6.3f\"$\n";
+  F64	x	format "$DA-TRM,A=\"X Spacing:%6.3f\"$\n",
+	y	format "$DA-TRM,A=\"Y Spacing:%6.3f\"$\n",
+	z	format "$DA-TRM,A=\"Z Spacing:%6.3f\"$\n",
+	x_offset format "$DA-TRM,A=\"X Offset :%6.3f\"$\n",
+	y_offset format "$DA-TRM,A=\"Y Offset :%6.3f\"$\n",
+	z_offset format "$DA-TRM,A=\"Z Offset :%6.3f\"$\n",
+	x_speed	format "$DA-TRM,A=\"X Speed  :%6.3f\"$\n",
+	y_speed	format "$DA-TRM,A=\"Y Speed  :%6.3f\"$\n",
+	z_speed	format "$DA-TRM,A=\"Z Speed  :%6.3f\"$\n";
 };
 
 #help_index "Ctrls"
@@ -3215,8 +3214,8 @@ class CJobCtrl
 //See [C:/Demo/MsgLoop.HC.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HH.Z,3468] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HH.Z,3468] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HH.Z,3467] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HH.Z,3467] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_MS_MOVE		4  //(x,y)
 #define MSG_MS_L_DOWN		5  //(x,y)
 #define MSG_MS_L_UP		6  //(x,y)
@@ -3649,12 +3648,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HH.Z,2942] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HH.Z,2941] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.HC.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HH.Z,2952] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HH.Z,2951] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3665,11 +3664,11 @@ public class CDC
 
   //Set with [C:/Adam/Gr/GrDC.HC.Z,47] DCMat4x4Set().  [C:/Kernel/Mem/MAllocFree.HC.Z,383] Free() before setting.
   I64	*r, //rotation matrix of quads decimal in lo
-	r_norm; //shifted 32 bits.  Used for scaling pen width
+	r_norm; //shifted 32 bits.  Used for scaling thick
 
   //public (Change directly)
   I32	x,y,z,
-	pen_width;
+	thick;
 
   //Can be changed from the default [C:/Adam/Gr/GrDC.HC.Z,15] DCTransform()
   U0	(*transform)(CDC *dc,I64 *x,I64 *y,I64 *z);
@@ -3685,7 +3684,7 @@ public class CDC
   I64	collision_cnt;
 
   I64	nearest_dist,
-	min_x,max_x,min_y,max_y; //Set by [C:/Kernel/KernelA.HH.Z,3625] DCF_RECORD_EXTENTS (scrn coordinates)
+	min_x,max_x,min_y,max_y; //Set by [C:/Kernel/KernelA.HH.Z,3624] DCF_RECORD_EXTENTS (scrn coordinates)
 
   U32	dc_signature,pad;
   CTask	*mem_task,*win_task;
@@ -3926,11 +3925,11 @@ class CProgress
 public class CInsReg
 {
   Bool	registered;
-  I64	host_os		fmtstr "$PURPLE$Install Registration$FG$\n\n"
+  I64	host_os		format "$PURPLE$Install Registration$FG$\n\n"
 			"Host OS:$LS,D=\"ST_HOST_OSES\"$\n";
-  I64	host_vm		fmtstr "Host VM:$LS,D=\"ST_HOST_VMS\"$\n";
-  U8	initials[8]	fmtstr "$DA-P,A=\"Your Initials:%s\"$\n";
-  I64	machine_num	fmtstr
+  I64	host_vm		format "Host VM:$LS,D=\"ST_HOST_VMS\"$\n";
+  U8	initials[8]	format "$DA-P,A=\"Your Initials:%s\"$\n";
+  I64	machine_num	format
 			"$DA-TRM,A=\"This Machine Num (Choose Any):%d\"$\n";
 };
 

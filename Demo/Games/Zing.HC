@@ -61,9 +61,9 @@ U0 DrawIt(CTask *task,CDC *dc)
   ctrl[4].y=y+str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta);
 
   dc->color=BROWN;
-  dc->pen_width=2;
+  dc->thick=2;
   Gr2BSpline3(dc,ctrl,5);
-  dc->pen_width=1;
+  dc->thick=1;
 
   if (bow_drawn)
     Sprite3ZB(dc,x,y,0,__BIN_1,bow_theta);

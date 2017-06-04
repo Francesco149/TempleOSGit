@@ -117,7 +117,7 @@ public I64 Size(U8 *files_find_mask="/*",U8 *fu_flags=NULL,I64 round_to=0)
 }
 
 public I64 FileCnt(CDirEntry *tmpde)
-{//Cnt of files in [C:/Kernel/KernelA.HH.Z,2562] CDirEntry tree.
+{//Cnt of files in [C:/Kernel/KernelA.HH.Z,2561] CDirEntry tree.
   I64 cnt=0;
   while (tmpde) {
     if (tmpde->attr&RS_ATTR_DIR)

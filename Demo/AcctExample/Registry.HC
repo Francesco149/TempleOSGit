@@ -2,7 +2,7 @@
   +] SysMsgFlags
       sys_msg_flags[0]=0xFF;
       +] SysRegVer
-      registry_version=5.020;
+      registry_version=5.030;
       +] InsReg
       #help_index "Registry/Install Registration"
     MemSet(&ins_reg,0,sizeof(CInsReg));
@@ -28,10 +28,8 @@
       F64 best_score=9999.0000;
       +] CircleTrace
       F64 best_score=4.9425;
-      +] TOSNIST
-      I64 tos_nist_offset=-8049;
       +] BlackDiamond
-      I64 best_score=23;
+      I64 best_score=2;
       +] DunGen
       F64 best_score=20.5295;
       +] CastleFrankenstein
@@ -50,7 +48,7 @@
       F64 best_score=43.9944;
       +] OSTestSuite
       progress1_tf=0.000;progress2_tf=0.000;
-    progress3_tf=0.000;progress4_tf=229.844;
+    progress3_tf=0.000;progress4_tf=231.681;
       +] XCaliber
       I64 best_score=90;
     I64 msg_flags=2;
@@ -62,13 +60,13 @@
       I64 best_score=16469;
       +] TOSRegen
       progress1_tf=0.000;progress2_tf=0.000;
-    progress3_tf=0.000;progress4_tf=191.675;
+    progress3_tf=0.000;progress4_tf=69.028;
       +] Once
   +] Adam
         +] User
         +] DemoCompany
   +] Game1
-      F64 best_score=224.65542;
+      F64 best_score=191.11932;
     +] SimpleVal
-          1238;
+          1241;
             
