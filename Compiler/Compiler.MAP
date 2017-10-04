@@ -49,7 +49,7 @@
 [C:/Compiler/LexLib.HC.Z,38] LexPopNoRestore
 [C:/Compiler/CMain.HC.Z,605] ExePrint
 [C:/Compiler/BackLib.HC.Z,261] SLASH_OP_NEG
-[C:/Compiler/PrsVar.HC.Z,416] PrsVarLst
+[C:/Compiler/PrsVar.HC.Z,408] PrsVarLst
 [C:/Compiler/Asm.HC.Z,814] PrsAsmDefine
 [C:/Compiler/PrsExp.HC.Z,15] PrsAddOp
 [C:/Compiler/CExcept.HC.Z,65] LexWarn
@@ -287,7 +287,7 @@
 [C:/Compiler/PrsStmt.HC.Z,904] PrsStmt
 [C:/Compiler/PrsStmt.HC.Z,140] PrsFun
 [C:/Compiler/Lex.HC.Z,293] LexIncludeStr
-[C:/Compiler/PrsVar.HC.Z,287] PrsType
+[C:/Compiler/PrsVar.HC.Z,285] PrsType
 [C:/Compiler/Lex.HC.Z,28] CmpCtrlNew
 [C:/Compiler/BackLib.HC.Z,131] MODR_SIB_D8_INDIRECT_REG
 [C:/Compiler/Lex.HC.Z,322] cmp_type_flags_src_code
@@ -340,7 +340,7 @@
 [C:/Compiler/BackLib.HC.Z,134] MODR_RIP_REL_IMM_U32
 [C:/Compiler/CExts.HC.Z,44] cmp_templates_dont_push2
 [C:/Compiler/UAsm.HC.Z,66] InstEntryFind
-[C:/Compiler/PrsVar.HC.Z,381] PrsDotDotDot
+[C:/Compiler/PrsVar.HC.Z,373] PrsDotDotDot
 [C:/Compiler/BackA.HC.Z,285] ICMulEqu
 [C:/Compiler/AsmInit.HC.Z,1] AsmPrsInsFlags
 [C:/Compiler/PrsStmt.HC.Z,791] PrsNoWarn

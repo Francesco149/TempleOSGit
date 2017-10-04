@@ -117,10 +117,10 @@ being loaded into memory fragments memory, so cameras are somewhat unwelcome.
  
 I have enough problems without making the Brits anxious about autonomous gun 
 turrets and killer robots.  The reason I say cameras will be super-simple 
-serial is because we are replacing USB ports with super-simple serial.  
-Windows/Linux will have only super-simple serial ports unless people buy a
-USB 
-PCI expansion card.  So, the digital cameras will be super-simple serial.
+serial is because we are replacing USB ports with super-simple serial.  PC's 
+will have only super-simple serial ports unless people buy a USB PCI
+expansion 
+card.  So, the digital cameras will be super-simple serial.
 
 
                                  Version 1.0

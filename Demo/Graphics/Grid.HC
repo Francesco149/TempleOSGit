@@ -13,7 +13,7 @@ U0 GridDemo()
   U0 (*old_draw_ms)(CDC *dc,I64 x,I64 y); //Can't init this type of var.
   MemCpy(&old_grid,&ms_grid,sizeof(CGridGlbls));
   GridInit;
-  ms_grid.snap=TRUE; //You can set other [C:/Kernel/KernelA.HH.Z,3061] stuff.
+  ms_grid.snap=TRUE; //You can set other [C:/Kernel/KernelA.HH.Z,3020] stuff.
   ms_grid.x=GRID;
   ms_grid.y=GRID;
   old_draw_ms=gr.fp_draw_ms;

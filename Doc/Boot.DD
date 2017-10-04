@@ -36,8 +36,8 @@ All the boot related code for TempleOS is in the /Adam/Opt/Boot directory.
 [C:/Adam/Opt/Boot/BootDVDIns.HC.Z,1] BootDVDIns.HC	Prep for CD/DVD install by
 creating /0000Boot/0000Kernel.BIN.C
 .
-If you are curious about ISO9660 CD/DVDs, see
-[C:/Adam/Opt/Boot/DskISO9660.HC.Z,1] DskISO9660.HC.  To make a custom 
+If you are curious about CD/DVDs, see [C:/Adam/Opt/Boot/DskISORedSea.HC.Z,1]
+DskISORedSea.HC.  To make a custom 
 bootable CD/DVD, look here [C:/Misc/DoDistro.HC.Z,1] Bootable CD.
 
 [C:/Adam/Opt/Boot/BootMHD.HC.Z,1] BootMHD.HC	Stage 1 Master HD boot loader.

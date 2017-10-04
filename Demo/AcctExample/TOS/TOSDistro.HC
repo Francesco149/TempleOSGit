@@ -29,7 +29,10 @@ public U0 TOSCopyDrv(U8 src,U8 dst)
   src=Let2Let(src);
   dst=Let2Let(dst);
 
-  Fmt(dst,,FALSE,FSt_FAT32);
+  if (dst=='D')
+    Fmt(dst,,FALSE,FSt_FAT32);
+  else
+    Fmt(dst,,FALSE,FSt_REDSEA);
 
   StrPrint(buf_s,"%c:/",src);
   StrPrint(buf_d,"%c:/",dst);
@@ -69,6 +72,8 @@ U0 DistroPrep()
   CopyTree("/Home","/Demo/AcctExample");
   DelTree("/Demo/AcctExample/TAD");
   DelTree("/Demo/AcctExample/Sup1");
+  DelTree("/Demo/AcctExample/Sup2");
+  DelTree("/Demo/AcctExample/Sup3");
   Del("/Demo/AcctExample/Test*");
   if (FileFind("~/Sup1/Sup1Utils/SortHeaders.HC.Z"))
     ExeFile("~/Sup1/Sup1Utils/SortHeaders.HC.Z");
@@ -125,13 +130,14 @@ U0 StaffDistroPrep()
   DelTree(TOS_DISTRO_DIR);
   CopyTree("C:/",TOS_DISTRO_DIR "/");
   DelTree(TOS_DISTRO_DIR "/Home/Sup1");
+  DelTree(TOS_DISTRO_DIR "/Home/Sup2");
+  DelTree(TOS_DISTRO_DIR "/Home/Sup3");
   Del(TOS_DISTRO_DIR "/" KERNEL_BIN_C);
 }
 U0 MakeStaffDistro()
 {
   StaffDistroPrep;
-  ISO9660ISO(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
-	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  RedSeaISO(TOS_ISO_NAME,TOS_DISTRO_DIR,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOS_STAFF_SIZE",
 	"Download TempleOS V5.03 - T.S. Company Internal Distro (%0.1fMB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
@@ -157,8 +163,7 @@ U0 DbgDistroPrep()
 U0 MakeDbgDistro()
 {
   DbgDistroPrep;
-  ISO9660ISO(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
-	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  RedSeaISO(TOS_ISO_NAME,TOS_DISTRO_DIR,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOS_DBG_SIZE",
 	"Download TempleOS V5.03 - Debug Distro (%0.1fMB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
@@ -183,8 +188,7 @@ U0 StdDistroPrep()
 U0 MakeStdDistro()
 {
   StdDistroPrep;
-  ISO9660ISO(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
-	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  RedSeaISO(TOS_ISO_NAME,TOS_DISTRO_DIR,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSCD_SIZE",
 	"Download TempleOS V5.03 - Standard Distro (%0.1fMB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
@@ -193,7 +197,6 @@ U0 MakeStdDistro()
 
 I64 UpdateLineCnts()
 {
-  U8 *st;
   I64 res;
 
   DocClear;
@@ -225,9 +228,9 @@ U0 UpdateISODocDefines()
   try {
     DefinePrint("DD_TEMPLEOSCD_SIZE",
 	  "Download TempleOS V5.03 - Standard Distro (%0.1fMB)",
-	  0.1*(10*Size("D:/TOS_Distro.ISO","+s")/1024/1024));
+	  0.1*(10*Size("D:/Downloads/TOS_Distro.ISO","+s")/1024/1024));
     DefinePrint("DD_TEMPLEOSCD_K_SIZE",
-	  "%dKB",Size("D:/TOS_Distro.ISO","+s")/1024);
+	  "%dKB",Size("D:/Downloads/TOS_Distro.ISO","+s")/1024);
   } catch
     Fs->catch_except=TRUE;
 }
@@ -243,7 +246,7 @@ U0 TOSProgress(U8 *st)
   progress4=tos_progress;
   progress3_max=1;
   *progress4_desc=0;
-  progress4_max=8+MAKE_DBG+MAKE_STAFF;
+  progress4_max=9+MAKE_DBG+MAKE_STAFF;
   progress4_t0=tos_progress_t0;
   StrPrint(buf,"%d. %s",++progress4,st);
   "$PURPLE$$TX+CX,\"%s\"$$FG$\n",buf;
@@ -274,22 +277,28 @@ U0 TOSRegen2()
   TOSProgress("Make Standard Distro ISO");
   MakeStdDistro;
   DocClear;
-  Move(TOS_ISO_NAME,"D:/TOS_Distro.ISO");
+  Move(TOS_ISO_NAME,"D:/Downloads/TOS_Distro.ISO");
 
   TOSProgress("Make Supplemental1 ISO");
-  RedSeaISO("D:/TOS_Supplemental1","C:/Home/Sup1");
+  RedSeaISO("D:/Downloads/TOS_Supplemental1","C:/Home/Sup1");
+
+  TOSProgress("Make Supplemental2 ISO");
+  RedSeaISO("D:/Downloads/TOS_Supplemental2","C:/Home/Sup2");
+
+  TOSProgress("Make Supplemental3 ISO");
+  RedSeaISO("D:/Downloads/TOS_Supplemental3","C:/Home/Sup3");
 
 #if MAKE_DBG
   TOSProgress("Make Dbg Distro ISO");
   MakeDbgDistro;
   DocClear;
-  Move(TOS_ISO_NAME,"D:/TOS_Dbg.ISO");
+  Move(TOS_ISO_NAME,"D:/Downloads/TOS_Dbg.ISO");
 #endif
 #if MAKE_STAFF
   TOSProgress("Make Staff Distro ISO");
   MakeStaffDistro;
   DocClear;
-  Move(TOS_ISO_NAME,"D:/TOS_Staff.ISO");
+  Move(TOS_ISO_NAME,"D:/Downloads/TOS_Staff.ISO");
 #endif
 
   UpdateISODocDefines;
@@ -320,14 +329,15 @@ U0 TOSRegen2()
 }
 
 public U0 TOSPreRegen()
-{//Copy bookmarks and bins from D:/Home/Sup1 to C:/Home/Sup1
+{//Copy bins from D:/Home/Sup1 to C:/Home/Sup1
   Copy("D:/Home/" INS_REG_PERSONAL_INITIALS "/*",
 	"C:/Home/" INS_REG_PERSONAL_INITIALS);
   DelTree("C:/Home/Sup1/Sup1Bin");
   CopyTree("D:/Home/Sup1/Sup1Bin","C:/Home/Sup1/Sup1Bin");
   Copy("D:/Home/Sup1/Sup1CodeScraps/Comm/TOSSocket*",
 	"C:/Home/Sup1/Sup1CodeScraps/Comm");
-  Copy("D:/Home/Sup1/Sup1Bin/God*","C:/Linux");
+  DelTree("C:/Downloads/Linux");
+  CopyTree("D:/Downloads/Linux","C:/Downloads/Linux");
 }
 
 public U0 TOSRegen()

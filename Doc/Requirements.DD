@@ -15,7 +15,7 @@ Supported Hardware
 
 * Internal PC Speakers.
 
-* CD/DVD-ROMs (not SCSI).  ISO9660 file system.
+* CD/DVD-ROMs (not SCSI) but only RedSea file system.
 
 * ATA and SATA hard drives.
 

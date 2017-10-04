@@ -30,7 +30,7 @@ I64 DirTreeSerializeFill(CDirEntry *tmpde,U8 *dst)
   return res+1;
 }
 public U8 *DirTreeSerialize(CDirEntry *tmpde,I64 *_size=NULL)
-{//Serialize tree returned from [C:/Kernel/BlkDev/DskFind.HC.Z,30] FilesFind() into a one contiguous U8 array.
+{//Serialize tree returned from [C:/Kernel/BlkDev/DskFind.HC.Z,27] FilesFind() into a one contiguous U8 array.
   I64 size=DirTreeSerializeSize(tmpde);
   U8 *buf=MAlloc(size);
   DirTreeSerializeFill(tmpde,buf);
@@ -54,7 +54,7 @@ U8 *DirTreeUnserialize2(U8 *src,CDirEntry **tmpde)
   return src;
 }
 public CDirEntry *DirTreeUnserialize(U8 *src)
-{//Unserialize tree to make it like a tree returned from [C:/Kernel/BlkDev/DskFind.HC.Z,30] FilesFind().
+{//Unserialize tree to make it like a tree returned from [C:/Kernel/BlkDev/DskFind.HC.Z,27] FilesFind().
   CDirEntry *tmpde=NULL;
   DirTreeUnserialize2(src,&tmpde);
   return tmpde;
@@ -117,7 +117,7 @@ public I64 Size(U8 *files_find_mask="/*",U8 *fu_flags=NULL,I64 round_to=0)
 }
 
 public I64 FileCnt(CDirEntry *tmpde)
-{//Cnt of files in [C:/Kernel/KernelA.HH.Z,2561] CDirEntry tree.
+{//Cnt of files in [C:/Kernel/KernelA.HH.Z,2520] CDirEntry tree.
   I64 cnt=0;
   while (tmpde) {
     if (tmpde->attr&RS_ATTR_DIR)

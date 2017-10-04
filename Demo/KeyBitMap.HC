@@ -23,11 +23,11 @@ U0 KeyDownBitMapDemo()
   SettingsPush; //See [C:/Adam/TaskSettings.HC.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
 
-  //[C:/Kernel/KernelA.HH.Z,2999] kbd.down_bitmap is indexed with the
+  //[C:/Kernel/KernelA.HH.Z,2958] kbd.down_bitmap is indexed with the
   //merged scan code.  (left shift and
   //right shift combined for example.)
-  //[C:/Kernel/KernelA.HH.Z,2999] kbd.down_bitmap2 is indexed with the
-  //distinct scan code.  See [Char,1] Char and [C:/Kernel/KernelA.HH.Z,3556] Scan Codes.
+  //[C:/Kernel/KernelA.HH.Z,2958] kbd.down_bitmap2 is indexed with the
+  //distinct scan code.  See [Char,1] Char and [C:/Kernel/KernelA.HH.Z,3515] Scan Codes.
 
   while (Bt(kbd.down_bitmap,i_sc)) {
     x++;

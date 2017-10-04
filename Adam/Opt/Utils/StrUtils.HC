@@ -155,7 +155,7 @@ public I64 LongLines(U8 *files_find_mask="*",I64 cols=80,U8 *fu_flags=NULL)
 
 U0 SUFile(U8 *filename,I64 suf_flags,F64 indent_scale_factor)
 {//String utility on a single file
-//See [C:/Kernel/KernelA.HH.Z,3773] SU Flags
+//See [C:/Kernel/KernelA.HH.Z,3734] SU Flags
   U8 *dst;
   Bool chged=FALSE;
   I64 reduced=0;
@@ -182,10 +182,10 @@ U0 SUFile(U8 *filename,I64 suf_flags,F64 indent_scale_factor)
 }
 public U0 SU(U8 *files_find_mask,I64 suf_flags,U8 *fu_flags=NULL,
 	F64 indent_scale_factor=0)
-{//Apply [C:/Kernel/StrA.HC.Z,519] StrUtil() on files
+{//Apply [C:/Kernel/StrA.HC.Z,519] StrUtil() on files.
 //You can convert spaces to tabs, for example,
   //or removing trailing spaces on lines.
-  //See [C:/Kernel/KernelA.HH.Z,3773] SUF Flags.
+  //See [C:/Kernel/KernelA.HH.Z,3734] SUF Flags.
   I64 fuf_flags=0;
   CDirEntry *tmpde,*tmpde1;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+f+F+T");

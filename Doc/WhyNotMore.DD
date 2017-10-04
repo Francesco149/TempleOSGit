@@ -31,7 +31,7 @@ driver, one [C:/Kernel/BlkDev/DskATA.HC.Z,1] ATA hard drive driver, one
 [C:/Kernel/BlkDev/DskATA.HC.Z,1] ATAPI CD/DVD driver, one 
 [C:/Adam/Gr/GrScrn.HC.Z,1] VGA 640x480 16 color video driver and one
 [C:/Kernel/KMisc.HC.Z,179] PC Speaker driver.  I use the 
-[C:/Kernel/KMain.HC.Z,88] PIT and HPET timers and [C:/Kernel/KInts.HC.Z,129]
+[C:/Kernel/KMain.HC.Z,89] PIT and HPET timers and [C:/Kernel/KInts.HC.Z,129]
 PIC Interrupt Controller.  I use  IRQ0 for timer, IRQ1 
 for keyboard, and IRQ12 for mouse.  If IRQ12 is not firing, I am able to poll 
 the mouse.
@@ -66,7 +66,7 @@ networking, there will be no browser within the 100,000 line limit and, with
 only 16 colors, the world wide web is not tolerable.  FTP and telnet might be 
 possible, in the far distant future, if they could fit within the 100,000
 line 
-limit.  Currently, there are 82,150 lines of code.
+limit.  Currently, there are 80,849 lines of code.
 
 I don't stand a chance working on native hardware, anymore.  I could install 
 and run natively on hardware from about 2005-2010.  It requires BIOS's being 

@@ -2,7 +2,7 @@ I64 ts_i;
 F64 ts_t0;
 
 U0 TS(U8 *desc)
-{//We must set these because an app can call [C:/Kernel/KMisc.HC.Z,303] ProgressBarsRst.
+{//We must set these because an app can call [C:/Kernel/KMisc.HC.Z,322] ProgressBarsRst.
   U8 *st=MStrPrint("%d. %s",ts_i,desc);
   if (*desc)
     progress3_max=1;

@@ -159,7 +159,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HH.Z,3312]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HH.Z,3271]
   CTask.  There is only one window per task, and only Core0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -303,7 +303,7 @@ POPFD pops the CPU flags.
 *.DATA.Z;*.DATA
   Data files
 *.ISO
-  CD/DVD image file--ISO9660.
+  CD/DVD image file.
 *.IN.Z;*.IN
   InFile Basically a HolyC program whose stdout goes to the input of a task
   when [C:/Kernel/Job.HC.Z,474] InFile() is called.
@@ -353,10 +353,10 @@ res is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HH.Z,3312] CTask.
+  [C:/Kernel/KernelA.HH.Z,3271] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HH.Z,3432] CCPU.
+  [C:/Kernel/KernelA.HH.Z,3391] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc().  They must

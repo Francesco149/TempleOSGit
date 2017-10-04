@@ -27,7 +27,7 @@ these, but in the mean time,
 you can define your own hndlrs with [C:/Kernel/KeyDev.HC.Z,178]
 CtrlAltCBSet().  They operate either in a 
 interrupt environment or in the window mgr when it queues kbd msgs.  You can 
-do [C:/Kernel/KMisc.HC.Z,271] Raw() output.  <CTRL-ALT-letter> hndlrs take a
+do [C:/Kernel/KMisc.HC.Z,290] Raw() output.  <CTRL-ALT-letter> hndlrs take a
 scan_code as an arg.
 
 <CTRL-function key>  Auto-completes local words.

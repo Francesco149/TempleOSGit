@@ -27,7 +27,7 @@ _BEEPS2::
 	PUSH	U64 [&cnts.jiffies]
 
 @@05:	PUSH	RCX
-//U0 [C:/Kernel/KMisc.HC.Z,218] Beep(I8 ona=62,Bool busy=FALSE)
+//U0 [C:/Kernel/KMisc.HC.Z,237] Beep(I8 ona=62,Bool busy=FALSE)
 	PUSH	FALSE	//Do not busy (spin) wait
 	PUSH	U64 [&glbl_ona]	//evaluated at run time
 	CALL	&Beep

@@ -25,8 +25,8 @@ by pressing 0-9.  You can request your reward from God by pressing r.  You
 can 
 press <DEL> to delete songs.
 
-* You can take the [C:/Adam/Snd/SndMusic.HC.Z,98] Play() stmts out of a song
-file and place them in your 
+* You can take the [C:/Adam/ASnd.HC.Z,205] Play() stmts out of a song file
+and place them in your 
 programs.  You can also add a song to a document with <CTRL-l>, but you
 should 
 do it after pressing <CTRL-t> because the clip-insert in <CTRL-l> is screwy.  
@@ -36,24 +36,3 @@ FqE4BeG5FetC4A5GqFC after pressing <CTRL-t>, now.
 
 * You can call [C:/Apps/Psalmody/JukeBox.HC.Z,1] JukeBox("~/Psalmody"); to
 play your songs.
-
-* To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/Kernel/KernelA.HH.Z,3821] snd.record to TRUE, play music, and
-set it to FALSE.  Then, call 
-[C:/Adam/Snd/SndFile.HC.Z,19] SndFileCreate().  You might wish to make a
-<CTRL-ALT-key> to toggle this 
-system level recording feat.  See [C:/Kernel/KMisc.HC.Z,179] Snd().  Add this
-code to your 
-[C:/Home/HomeKeyPlugIns.HC,1] file.
-
-U0 CtrlAltR(I64)
-{
-  snd.record=!snd.record;
-}
-CtrlAltCBSet('R',&CtrlAltR,"Cmd /Toggle snd.record");
-
-* When calling [C:/Adam/Snd/SndFile.HC.Z,19] SndFileCreate() you can set a
-waveform.  The PC speaker is 
-[C:/Adam/Snd/SndMath.HC.Z,136] WF_SQUARE.  You can sel reverb and averaging,
-also.
-

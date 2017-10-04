@@ -19,7 +19,7 @@ _BEEPS::
 	MOV	RCX,U64 SF_ARG1[RBP]  //[C:/Kernel/KernelA.HH.Z,1] SF_ARG1
 
 @@05:	PUSH	RCX
-//U0 [C:/Kernel/KMisc.HC.Z,218] Beep(I8 ona=62,Bool busy=FALSE)
+//U0 [C:/Kernel/KMisc.HC.Z,237] Beep(I8 ona=62,Bool busy=FALSE)
 	PUSH	FALSE	//Do not busy (spin) wait
 	PUSH	62	//500 Hz
 	CALL	Beep

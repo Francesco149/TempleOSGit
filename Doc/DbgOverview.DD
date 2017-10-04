@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.HC.Z,649] Dbg() in your code at fatal error points to
 enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.HC.Z,653] U(). [C:/Compiler/UAsm.HC.Z,653]
-U([C:/Kernel/KernelA.HH.Z,3418] _RIP); 
+U([C:/Kernel/KernelA.HH.Z,3377] _RIP); 
 
 * [C:/Compiler/UAsm.HC.Z,653] U(&FunName+offset) to unassemble mem or
 [C:/Adam/ADbg.HC.Z,254] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.HC.Z,653] U([C:/Kernel/KernelA.HH.Z,3418]
+function. [C:/Compiler/UAsm.HC.Z,653] U([C:/Kernel/KernelA.HH.Z,3377]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -58,14 +58,14 @@ InFile.)
 * Use [C:/Kernel/KDbg.HC.Z,217] RawPrint() to print debug info bypassing the
 window framework.  You pass 
 these routines a count in milliseconds for how long it should be displayed.  
-You can use [C:/Kernel/KMisc.HC.Z,271] Raw(TRUE) to make all output bypass
+You can use [C:/Kernel/KMisc.HC.Z,290] Raw(TRUE) to make all output bypass
 the window framework.  The Win
 Mgr runs on Core0 and will overwrite raw text from other cores when it
 updates 
 the scrn.
 
-* Use [C:/Kernel/KMisc.HC.Z,261] SysDbg() to set a flag which you can read
-with [C:/Kernel/KMisc.HC.Z,266] IsSysDbg() when you wish 
+* Use [C:/Kernel/KMisc.HC.Z,280] SysDbg() to set a flag which you can read
+with [C:/Kernel/KMisc.HC.Z,285] IsSysDbg() when you wish 
 to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
 
 * There are flags for various trace options that can help debugging when
@@ -96,7 +96,7 @@ issues.
 * You can define hndlr functions for <CTRL-ALT-letter> keys with
 [C:/Kernel/KeyDev.HC.Z,178] CtrlAltCBSet(
 ).  They operate either in a interrupt environment or in the window mgr when 
-it queues kbd msgs.  You can do [C:/Kernel/KMisc.HC.Z,271] Raw() output. 
+it queues kbd msgs.  You can do [C:/Kernel/KMisc.HC.Z,290] Raw() output. 
 <CTRL-ALT-letter> hndlrs take a 
 scan_code as an arg.
 

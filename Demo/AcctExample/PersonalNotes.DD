@@ -1,8 +1,19 @@
                                      TODO
 
+* Compiler Bug: [C:/Adam/Gr/ScrnCast.HC.Z,78] AUWrite()
+dst->cdt=t0_now+ToI64(CDATE_FREQ*(tmpsd->tS-t0_tS));
+
+* Make MV files combine disjoint rects for same frame.
+
 * God said to reconsider switch start/end, perhaps preface portion?
 
+* 170605 Alec Murphy said MountFile() of a red sea supplemental1 ISO failed.
+
 * Does entire tool chain support super/sub script?
+
+* 170624 [C:/Adam/ABlkDev/DskChk.HC.Z,207] DskChk() showed extra alloced clus
+for FAT32, Sup1Hymns.  ClusNum was 
+'.'+1 and clus was zero.
 
 * [C:/Apps/X-Caliber/X-Caliber.HC.Z,1]
 * Add asteroid harbor defense.
@@ -14,6 +25,8 @@
 * Fix straight shooting.
 * Helicopters.
 * Anti-Aircraft.
+
+* Fix [C:/Home/Sup1/Sup1Graphics/ICOFile.HC,1]
 
 * 64-Bit Device Memory
 `F("mem64_ptr");View;`
@@ -76,7 +89,7 @@ GetStr() all the way down into [C:/Kernel/KeyDev.HC.Z,1] PutKey() code.
 * Good spell checker.
 * Good Bible search.
 
-* Can [C:/Kernel/KernelA.HH.Z,2879] MEM_EXTRA_HASH2_PAGS be just one?
+* Can [C:/Kernel/KernelA.HH.Z,2838] MEM_EXTRA_HASH2_PAGS be just one?
 
 * Bible ranges in [C:/Adam/God/GodBible.HC.Z,240] BibleVerse(). 
 
@@ -92,7 +105,7 @@ Free old task memory?
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
-[C:/Kernel/KernelA.HH.Z,3312] CTask->task_flags and 
+[C:/Kernel/KernelA.HH.Z,3271] CTask->task_flags and 
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.HC.Z,52] KbdLEDsSet().
@@ -110,7 +123,7 @@ others need to be in separate cache lines?
 * [C:/Adam/Gr/GrPrimatives.HC.Z,648] GrLineFat3() needs a little work.
 
 * [C:/Adam/Gr/GrPrimatives.HC.Z,1397] GrFillTri0() with both
-[C:/Adam/Gr/GrBitMap.HC.Z,1664] GrHLine() and [C:/Adam/Gr/GrBitMap.HC.Z,1833]
+[C:/Adam/Gr/GrBitMap.HC.Z,1718] GrHLine() and [C:/Adam/Gr/GrBitMap.HC.Z,1887]
 GrVLine() don't match in 
 [C:/Demo/Games/CastleFrankenstein.HC.Z,1] causing wall spot pixels.
 
@@ -155,7 +168,7 @@ Diff("C:/Misc/Bible.TXT","D:/Misc/Bible.TXT"); Takes too long.
 
 * [C:/Adam/DolDoc/DocRecalc.HC.Z,1] Bible sized nodes
 
-* [C:/Adam/ABlkDev/FileMgr.HC.Z,597] FileMgr() is bad with lots of files.  
+* [C:/Adam/ABlkDev/FileMgr.HC.Z,579] FileMgr() is bad with lots of files.  
 
 * Would be nice to have a routine telling how much free memory, so apps can 
 plan a big alloc.  This is doable, depending on how.
@@ -233,9 +246,6 @@ reboot in TestSuite.
 * [C:/Kernel/StrPrint.HC.Z,208] StrPrintJoin(,st); With st="\n\\"; (Forgot
 what this is talking about.)
 
-* [C:/Adam/Opt/Utils/FileBMP.HC.Z,65] BMPRLE4To() has files_size too big by
-108.  Fixed?
-
 
                         TODO? Not really, just angst.
 * Should these be moved into [C:/Kernel/KernelA.HH.Z,837] CHashClass from
@@ -264,7 +274,7 @@ CHashFun *fun_ptr;
 * Links to self document if empty file name? [C:/Adam/DolDoc/DocLink.HC.Z,1]
 Document Links
 
-* [C:/Kernel/KernelA.HH.Z,2605] FUF_RECURSE would be nice if capital "+R".
+* [C:/Kernel/KernelA.HH.Z,2565] FUF_RECURSE would be nice if capital "+R".
 
 * Sprites in cmd line code.
 
@@ -290,7 +300,7 @@ have left-right for address search.
 
 * Should we get rid of drive mapping.  It's ugly.
 
-* Can we get rid of [C:/Kernel/KernelA.HH.Z,3216] MSG_CMD?
+* Can we get rid of [C:/Kernel/KernelA.HH.Z,3175] MSG_CMD?
 
 * Make so just CdRom; command to copy entire disk to ::/CdRom directory? 
 
@@ -306,24 +316,24 @@ routines.
 Every country make own version?
 * International Date input: [C:/Kernel/StrScan.HC.Z,138] Str2Date().
 
-* [C:/Kernel/KernelA.HH.Z,3613] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HH.Z,3572] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
-* [C:/Kernel/KernelA.HH.Z,2954] TRANSPARENT does not work with
-[C:/Kernel/KernelA.HH.Z,2950] ROPF_DITHER.
+* [C:/Kernel/KernelA.HH.Z,2913] TRANSPARENT does not work with
+[C:/Kernel/KernelA.HH.Z,2909] ROPF_DITHER.
 
-* [C:/Kernel/KernelA.HH.Z,2940] ROP_XOR with thick>1 is broken.
+* [C:/Kernel/KernelA.HH.Z,2899] ROP_XOR with thick>1 is broken.
 
 * [C:/Adam/Gr/GrPrimatives.HC.Z,821] GrPutChar3() with depth buf?
 
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.HC.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.HC.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HH.Z,116] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HH.Z,3640] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HH.Z,3599] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.HC.Z,6] Mat4x4MulXYZ() change to 3x3?
-* Eliminate?  [C:/Kernel/KernelA.HH.Z,2940] ROP_XOR?
+* Eliminate?  [C:/Kernel/KernelA.HH.Z,2899] ROP_XOR?
 
-* [C:/Adam/WinMgr.HC.Z,390] WinMgrTask needs to do doc operations on
+* [C:/Adam/WinMgr.HC.Z,418] WinMgrTask needs to do doc operations on
 [C:/Kernel/Job.HC.Z,242] PostMsg() msgs for ms_hard.  
 Already works for [C:/Kernel/SerialDev/Mouse.HC.Z,42] MsSet()?
 
@@ -332,9 +342,6 @@ Already works for [C:/Kernel/SerialDev/Mouse.HC.Z,42] MsSet()?
 * Import Intel datasheets so we can use links in
 [C:/Kernel/Mem/PageTables.HC.Z,1] Code for documentation.  I 
 tried a PDF-to-text convertor and it wasn't acceptible.
-
-* Why are BMP file [C:/Kernel/KernelA.HH.Z,2987] CBGR24's wrong? 
-[C:/Adam/Opt/Utils/FileBMP.HC.Z,1].
 
 * Switch stmt with sparse cases?  Maybe, ban sparse switch stmts.
 
@@ -350,7 +357,7 @@ ICCmp() like in [C:/Compiler/BackB.HC.Z,468] ICCmpAndBranch()?
 
 * Compiler: &=, |= can overflow with Bts Btr on small data types?
 
-* Implement [C:/Kernel/KernelA.HH.Z,2551] RS_ATTR_FIXED fixed pos files?
+* Implement [C:/Kernel/KernelA.HH.Z,2510] RS_ATTR_FIXED fixed pos files?
 
 * SIMD in [C:/Adam/Gr/GrDC.HC.Z,6] Mat4x4MulXYZ?
 
@@ -397,10 +404,10 @@ not that one.)
 
 * New editor widgets.
 
-* Make use of flag potential in [C:/Kernel/BlkDev/DskFind.HC.Z,30]
+* Make use of flag potential in [C:/Kernel/BlkDev/DskFind.HC.Z,27]
 FilesFind() and possibly [C:/Kernel/BlkDev/DskDirContext.HC.Z,23]
 DirContextNew().
-* Sort options for [C:/Kernel/BlkDev/DskFind.HC.Z,30] FilesFind()?
+* Sort options for [C:/Kernel/BlkDev/DskFind.HC.Z,27] FilesFind()?
 
 * New [C:/Doc/HolyC.DD.Z,1] HolyC language features?
 
@@ -421,7 +428,7 @@ DirContextNew().
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* More [C:/Kernel/KernelA.HH.Z,3106] Controls?
+* More [C:/Kernel/KernelA.HH.Z,3065] Controls?
 
 * Compiler: More use of more floating-point stk?
 
@@ -429,7 +436,7 @@ once.
 with types besides MOV and F64. 
 
 * Playing with [C:/Demo/Lectures/NegDisp.HC.Z,1] on
-[C:/Kernel/KernelA.HH.Z,3312] CTask?
+[C:/Kernel/KernelA.HH.Z,3271] CTask?
      $=-CTASK_NEG_OFFSET
 offset(CTask.addr)==0
 Spawn(): CAlloc()
@@ -447,10 +454,10 @@ Looks like task_flags,locked_flags cause problems with neg offset.
 [C:/Adam/ABlkDev/Mount.HC.Z,148] MountFile().
 
 * Return ress for [C:/Adam/Gr/GrBitMap.HC.Z,71] GrBlot,
-[C:/Adam/Gr/GrBitMap.HC.Z,954] GrRect, [C:/Adam/Gr/GrBitMap.HC.Z,639]
+[C:/Adam/Gr/GrBitMap.HC.Z,1008] GrRect, [C:/Adam/Gr/GrBitMap.HC.Z,693]
 GrPutChar?
 * Collision cnts for [C:/Adam/Gr/GrBitMap.HC.Z,71] GrBlot,
-[C:/Adam/Gr/GrBitMap.HC.Z,954] GrRect, [C:/Adam/Gr/GrBitMap.HC.Z,639]
+[C:/Adam/Gr/GrBitMap.HC.Z,1008] GrRect, [C:/Adam/Gr/GrBitMap.HC.Z,693]
 GrPutChar?
 
 * [C:/Kernel/SerialDev/Message.HC.Z,193] GetStr() or
@@ -463,7 +470,7 @@ GrPutChar?
 
 * InFile PopUp of PopUp?
 
-* [C:/Adam/ABlkDev/FileMgr.HC.Z,597] FileMgr() help link scrolls out of
+* [C:/Adam/ABlkDev/FileMgr.HC.Z,579] FileMgr() help link scrolls out of
 window.
 
 * [C:/Kernel/SerialDev/Mouse.HC.Z,294] MsHardDrvrInstall() throws exceptions?
@@ -478,7 +485,7 @@ window.
 [C:/Kernel/KernelB.HH.Z,68] QueIns and [C:/Kernel/KernelB.HH.Z,72] QueRem for 
 multicore cycling fwd through tasks.
 
-* Test removable media id and [C:/Kernel/KernelA.HH.Z,2548] RS_ATTR_RESIDENT.
+* Test removable media id and [C:/Kernel/KernelA.HH.Z,2507] RS_ATTR_RESIDENT.
  [C:/Adam/ABlkDev/ADskA.HC.Z,232] Touch("","+T");
 
 
@@ -537,120 +544,13 @@ Thousand songs of Solomon		1 Kings 4:32
 Not rich, nor poor, but my portion	Proverbs 30:8
 Be hot or cold. Lukewarm I spit you out	Revelation 3:16
 
-                                  Misc Notes
-Intel CEO's name: Brian Krzanich
->lspci -v
-Size:
-
-                               My Web Bookmarks
-Machine		```
-<center><img src="http://www.templeos.org/images/Machine.jpg" width="600" height="400" alt=""></center>
-```
-Frosting	```
-<center><img src="http://www.templeos.org/images/Frosting.jpg" width="600" height="400" alt=""></center>
-```
-Soap Carvings	```
-<center><img src="http://www.templeos.org/images/SoapCarvings.jpg" width="640" height="480" alt=""></center>
-```
-CottonTail	```
-<center><img src="http://www.templeos.org/images/CttnTail.jpg" width="644" height="1113" alt=""></center>
-```
-TOSLogo		```
-<center><img src="http://www.templeos.org/images/Logo128x152.jpg" width="640" height="760" alt=""></center>
-```
-TOSTheme	```
-<center><img src="http://www.templeos.org/images/TOSTheme.jpg" width="640" height="472" alt=""></center>
-```
-Pew Pew Pew	```
-<center><img src="http://i.imgur.com/sMpJ0ch.jpg" width="640" height="480" alt=""></center>
-```
-Iceberg		```
-<center><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Blue_ice_in_South_Greenland_-_Visit_Greenland.jpg" width="640" height="480" alt=""></center>
-```
-I made dis	```
-<center><img src="http://i.imgur.com/cZKkxTX.jpg" width="640" height="800" alt=""></center>
-```
-NIST Beacon	```
-<center><img src="http://www.nist.gov/itl/csd/ct/images/beacon_architecture_2013.jpg" width="550" height="278" alt=""></center>
-```
-Purple Frog	```
-<center><img src="https://s-media-cache-ak0.pinimg.com/736x/fb/08/2a/fb082a53bd798f5957a474ff9095e6d4.jpg" width="640" height="420" alt=""></center>
-```
-Sombrero	```
-<center><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/M104_ngc4594_sombrero_galaxy_hi-res.jpg" width="640" height="359" alt=""></center>
-```
-Zinger		```
-<center><img src="http://media.shopwell.com/gladson/00041300000031_full.jpg" width="432" height="234" alt=""></center>
-```
-Dianna Throne	```
-<center><img src="http://i.imgur.com/RtcK6iX.jpg%EF%BB%BF" width="640" height="746" alt=""></center>
-```
-170310 Terry	```
-<center><img src="http://www.templeos.org/images/170310TerryADavis.jpg" width="640" height="640" alt=""></center>
-```
-Bookshelf	```
-<center><img src="http://www.templeos.org/images/Bookshelf.jpg" width="640" height="480" alt=""></center>
-```
-EasterDesktop	```
-<center><img src="http://www.templeos.org/images/EasterDesktop.jpg" width="640" height="480" alt=""></center>
-```
-92ASU Bachelors	```
-<center><img src="http://www.templeos.org/Family3_86-99/PART3/567-18.jpg" width="900" height="600" alt=""></center>
-```
-94ASU Masters	```
-<center><img src="http://www.templeos.org/Family3_86-99/PART4/603-51.jpg" width="900" height="600" alt=""></center>
-```
-
 Linus Torvalds (Dec 28, 1969)
 John Carmack   (Aug 20, 1970)
 Terry A. Davis (Dec 15, 1969)
-
-SimStructure
-ASU_Transcripts      ASU Course Catalog (See page 261)
-Dr. David Pheanis	Dr. Konstantinos S. Tsakalis	Dr. Walter Higgins
-Peter Gadwa	Ticketmaster
+Dr. David Pheanis
+Dr. Konstantinos S. Tsakalis
+Dr. Walter Higgins
+Peter Gadwa
+Ticketmaster
 Tom Foley
-Graphic Technologies	Lexmark vs Static Control
-Ruth and Ed Davis
-
-3qEeEGCAsBABAqFDBeE2G33qEeEGCAsBABAqFDBeE2G33qCsBDBDq2G3s2G3F2G3FqAet2G32G3AEDAqF3qCsBDBDq2G3s2G3F2G3FqAet2G32G3AEDAqF
-qFeDAsBDeDqCeF2G3sGGeF2sG3C2G3CBCeF
-
-                                Web Bookmarks
-Cop tying shoe	```
-<center><img src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambridge-county-pd.jpg" width="480" height="376" alt=""></center>
-```
-Unikernels
-Handford school
-Look at PCI interrupt routing.
-The sins of Newton
-Stalin's Tanks
-Wisdom for the Way
-Lamp shades
-The Original Jewish Temple
-Top 1000 Movies
-Higgs 5-Sigma Proof
-The Number Bleem
-Dwight: Nerd torture
-ATA/ATAPI spec
-Patton Prayer
-Streaming Terry A. Davis
-Bleem
-
-WWW.OSDEV.ORG
-NIST Beacon
-The Perfect Coin Toss
-BBC
-KNPR
-BBC_News_24
-BBC_Five_Live
-CBS News
-
-C64 Users Guide
-Mapping the Commodore 64
-C64 Programmers Reference Guide
-
-8-Bit Pixel Art
-8-Bit Japanese Pixel Art
-
-sha256sum
+Graphic Technologies

@@ -113,7 +113,7 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
   public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
     U8 *buf=[C:/Kernel/StrPrint.HC.Z,208] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc()ed string.
-    [C:/Adam/Gr/GrBitMap.HC.Z,859] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
+    [C:/Adam/Gr/GrBitMap.HC.Z,913] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }
   
@@ -330,7 +330,7 @@ make an independent heap with [C:/Kernel/Mem/HeapCtrl.HC.Z,1] HeapCtrlInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HH.Z,2884] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HH.Z,2843] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.HC.Z,242]
 Spawn().  You can use 
 [C:/Kernel/KTask.HC.Z,110] CallStkGrow(), but it's odd.  See

@@ -106,15 +106,15 @@ the cmd line buf.  It counts [C:/Kernel/KernelA.HH.Z,1367] CDoc
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HH.Z,3312] CTask,
-[C:/Kernel/KernelA.HH.Z,1191] CDocEntry and [C:/Kernel/KernelA.HH.Z,2561]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HH.Z,3271] CTask,
+[C:/Kernel/KernelA.HH.Z,1191] CDocEntry and [C:/Kernel/KernelA.HH.Z,2520]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/KTask.HC.Z,242] Spawn(), chang
-[C:/Kernel/KernelA.HH.Z,2884] MEM_DFT_STK, and using
+[C:/Kernel/KernelA.HH.Z,2843] MEM_DFT_STK, and using
 [C:/Adam/DolDoc/DocRecalcLib.HC.Z,176] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -153,7 +153,7 @@ s.  Use the [C:/Adam/Opt/Utils/ToDolDoc.HC.Z,3] ToDolDoc() utility to convert
 plain text to DolDoc's by doubling $
 's.
 
-* Use [C:/Kernel/KMisc.HC.Z,251] Silent() to disable scrn text output.
+* Use [C:/Kernel/KMisc.HC.Z,270] Silent() to disable scrn text output.
 
 * Grab-scroll any window at any time with {CTRL-LEFT-MOUSE-DRAG}.  Null 
 grab-scrolling with {CTRL-RIGHT-MOUSE}.
@@ -173,7 +173,7 @@ if you want.
 * Use <CTRL-ALT-s> will capture the scrn as a sprite on the clip.  You can 
 save the cmd line doc as text with <CTRL-a>.
 
-* You can save a sprite as a .BMP file in <CTRL-r> on the Sprite BitMap Menu.
+* You can save a sprite as a .GR file in <CTRL-r> on the Sprite BitMap Menu.
 
 * You can eye-dropper colors in the <CTRL-r> sprite editor by pressing 'c'.  
 Press 't' for transparent.
@@ -248,7 +248,7 @@ so you can edit the ctrl points.  Then, convert them to bitmaps, so the flood
 fills work well.  If you are doing interpolation, however, they must be vect.
 
 * [C:/Adam/Gr/GrPrimatives.HC.Z,239] GrFloodFill() is slow. 
-[C:/Adam/Gr/GrBitMap.HC.Z,954] GrRect() is fast.
+[C:/Adam/Gr/GrBitMap.HC.Z,1008] GrRect() is fast.
 
 * You can customize the wallpaper.  See
 [C:/Demo/Graphics/WallPaperFish.HC.Z,1].
@@ -266,7 +266,7 @@ non-reg.
 will restore defaults.  It is a text doc, if you want to edit it.  Be careful 
 of tree indentations.
 
-* Study [C:/Adam/Opt/Utils/MemRep.HC.Z,1] and [C:/Adam/WallPaper.HC.Z,18]
+* Study [C:/Adam/Opt/Utils/MemRep.HC.Z,1] and [C:/Adam/WallPaper.HC.Z,17]
 WallPaper() to learn how the system 
 resources are put together.
 
@@ -289,11 +289,10 @@ be confused by [C:/Kernel/KernelA.HH.Z,1367] CDoc allocations.  Those are
 generated when text is written to 
 the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HH.Z,2814]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HH.Z,2773]
 _CFG_HEAP_DBG.  You're on your own.
 
-* You can use [C:/Adam/DolDoc/DocFile.HC.Z,332] Type() to display .BMP or .GR
-files.
+* You can use [C:/Adam/DolDoc/DocFile.HC.Z,325] Type() to display .GR files.
 
 * Use [C:/Kernel/FunSeg.HC.Z,346] Man() to jump to short sym name src code.
 
