@@ -153,6 +153,22 @@ Bool MyPutKey(I64 ch,I64 sc)
 	else
 	  AutoComplete;
 	return TRUE;
+      case 'f': //With sync
+	if (sc&SCF_KEY_DESC)
+	  KeyDescSet("Cmd /FrameGrabber Sync");
+	else if (fg_on)
+	  FrameGrabberToggle(FALSE,FALSE);
+	else
+	  FrameGrabberToggle(TRUE,FALSE);
+	return TRUE;
+      case 'F': //With sync and intro TOS theme
+	if (sc&SCF_KEY_DESC)
+	  KeyDescSet("Cmd /FrameGrabber Intro");
+	else if (fg_on)
+	  FrameGrabberToggle(FALSE,FALSE);
+	else
+	  FrameGrabberToggle(TRUE,TRUE);
+	return TRUE;
       case 'h':
 	if (sc&SCF_KEY_DESC)
 	  KeyDescSet("Cmd /WinTileHorz");
@@ -178,12 +194,6 @@ Bool MyPutKey(I64 ch,I64 sc)
 	  KeyDescSet("Cmd /WinTileVert");
 	else
 	  WinTileVert;
-	return TRUE;
-      case 'V':
-	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Cmd /FrameGrabberToggle");
-	else
-	  FrameGrabberToggle;
 	return TRUE;
       case 'l':
 	if (sc&SCF_KEY_DESC)
@@ -213,6 +223,20 @@ Bool MyPutKey(I64 ch,I64 sc)
 		DocPut->filename.name,i);
 	  "$AN,\"<TODO>\",A=\"ANC%d\"$",i;
 	}
+	return TRUE;
+      case 'p':
+	if (sc&SCF_KEY_DESC)
+	  KeyDescSet("Cmd /JukeBox");
+	else
+	  PopUp("#include \"::/Apps/Psalmody/Load\";"
+		"JukeBox(\"::/Home/Sup3/Sup3Hymns\");");
+	return TRUE;
+      case 'P':
+	if (sc&SCF_KEY_DESC)
+	  KeyDescSet("Cmd /Psalmody");
+	else
+	  PopUp("#include \"::/Apps/Psalmody/Load\";"
+		"Psalmody(\"~/Sup3/Sup3Hymns\");");
 	return TRUE;
 
 	//Ins your own ALT-key plug-ins

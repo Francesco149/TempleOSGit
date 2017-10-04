@@ -66,7 +66,7 @@ See [C:/Doc/Widget.DD.Z,1], [C:/Demo/DolDoc/DemoDoc.DD.Z,1], and
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HH.Z,2955] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HH.Z,2914] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -144,9 +144,9 @@ Examples: <CTRL-t> to see
 9)[C:/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually just does
   a text search.
 10) [Doc,1] Help Index Link.
-11) [C:/Kernel/KHashB.HC.Z,109] Address Link.
+11) [C:/Kernel/KHashB.HC.Z,106] Address Link.
 
-12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.HC.Z,578]
+12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.HC.Z,573]
   SpriteEdText().
 
 +] BT Bttn
@@ -284,7 +284,7 @@ The reason for the $IB...$ cmd is to pass a arg to
   Inserts a number into the compiled stream describing the size of binary
   data associated with a bin number.  I never use this.
 +] SO Song
-  See [C:/Adam/Snd/SndMusic.HC.Z,98] Play().  [C:/Kernel/KernelA.HH.Z,1191]
+  See [C:/Adam/ASnd.HC.Z,205] Play().  [C:/Kernel/KernelA.HH.Z,1191]
   CDocEntry.aux_str A="" stores the song note text.
 +] HL Highlighting
   Include a 1 or 0.

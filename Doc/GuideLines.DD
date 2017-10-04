@@ -141,13 +141,13 @@ need
 a locked semaphore.  I think semiphores need to be in their own cache line, 
 but I'm not sure.  I use lock bits in a lot of places not aligned.
 
-* [C:/Kernel/KMisc.HC.Z,261] SysDbg() and [C:/Kernel/KMisc.HC.Z,266]
+* [C:/Kernel/KMisc.HC.Z,280] SysDbg() and [C:/Kernel/KMisc.HC.Z,285]
 IsSysDbg() are really handy when working on the compiler or 
 kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HH.Z,3497] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HH.Z,3456] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Opt/Utils/StrUtils.HC.Z,1] Spaces-to-Tabs on source code.
 
@@ -188,9 +188,9 @@ case you wish to make hash table sizes bigger.
 
 See [C:/Doc/Asm.DD.Z,1].
 
-* FS must always point to the cur [C:/Kernel/KernelA.HH.Z,3312] CTask.
+* FS must always point to the cur [C:/Kernel/KernelA.HH.Z,3271] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HH.Z,3432] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HH.Z,3391] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/KUtils.HC.Z,445] SET_FS_BASE and

@@ -10,11 +10,11 @@ DrvD
 /       
 `Cd("/");Dir;
 `
-TOS     
-`Cd("/Home/TOS");Dir;
-`
 Home    
 `Cd("/Home");Dir;
+`
+TOS     
+`Cd("/Home/TOS");Dir;
 `
 ChgDskT 
 `DskChg('T');
@@ -46,6 +46,9 @@ CopyDrv
 `TOSPmtAndCopyDrv;
 `
 
+Adam    
+`Cd("/Adam");Dir;
+`
 Kernel  
 `Cd("/Kernel");Dir;
 `
@@ -61,48 +64,33 @@ Mem
 Serial  
 `Cd("/Kernel/SerialDev");Dir;
 `
-Bin     
-`Cd("/Home/Sup1/Sup1Bin");Dir;
-`
-HDAudio 
-`Cd("/Home/Sup1/Sup1HDAudio");Dir;
-`
-Examples
-`Cd("/Home/Sup1/Sup1HDAudio/Examples");Dir;
-`
-Dist    
-`Cd("/Home/Sup1/Sup1Distro");Dir;
-`
 
-Adam    
-`Cd("/Adam");Dir;
-`
-AutoComp
-`Cd("/Adam/AutoComplete");Dir;
-`
-Ctrls   
-`Cd("/Adam/Ctrls");Dir;
-`
-ABlkDev 
-`Cd("/Adam/ABlkDev");Dir;
-`
 DolDoc  
 `Cd("/Adam/DolDoc");Dir;
 `
 Gr      
 `Cd("/Adam/Gr");Dir;
 `
+AutoComp
+`Cd("/Adam/AutoComplete");Dir;
+`
 God     
 `Cd("/Adam/God");Dir;
 `
-Snd     
-`Cd("/Adam/Snd");Dir;
+Ctrls   
+`Cd("/Adam/Ctrls");Dir;
 `
 Boot    
 `Cd("/Adam/Opt/Boot");Dir;
 `
 Utils   
 `Cd("/Adam/Opt/Utils");Dir;
+`
+ABlkDev 
+`Cd("/Adam/ABlkDev");Dir;
+`
+Snd     
+`Cd("/Adam/Snd");Dir;
 `
 
 Apps    
@@ -129,26 +117,35 @@ Span
 Strut   
 `Cd("/Apps/Strut");Dir;
 `
-TimeClk 
-`Cd("/Apps/TimeClock");Dir;
-`
 
+Hymns3  
+`Cd("/Home/Sup3/Sup3Hymns");Dir;
+`
+Hymns2  
+`Cd("/Home/Sup2/Sup2Hymns");Dir;
+`
+Hymns1  
+`Cd("/Home/Sup1/Sup1Hymns");Dir;
+`
+Sup1    
+`Cd("/Home/Sup1");Dir;
+`
 Titan   
 `Cd("/Apps/Titanium");Dir;
 `
 ToTheFrt
 `Cd("/Apps/ToTheFront");Dir;
 `
-Vocab   
-`Cd("/Apps/Vocabulary");Dir;
-`
 XCaliber
 `Cd("/Apps/X-Caliber");Dir;
 `
-Hymns   
-`Cd("/Home/Sup1/Sup1Hymns");Dir;
-`
 
+Games   
+`Cd("/Demo/Games");Dir;
+`
+Graphics
+`Cd("/Demo/Graphics");Dir;
+`
 Demo    
 `Cd("/Demo");Dir;
 `
@@ -163,12 +160,6 @@ DocDoc
 `
 Dsk     
 `Cd("/Demo/Dsk");Dir;
-`
-Games   
-`Cd("/Demo/Games");Dir;
-`
-Graphics
-`Cd("/Demo/Graphics");Dir;
 `
 InFile  
 `Cd("/Demo/InFile");Dir;
@@ -214,30 +205,21 @@ Tour
 Tmp     
 `Cd("/Tmp");Dir;
 `
-ScrnShot
-`Cd("/Tmp/ScrnShots");Dir;
-`
 DelScrSt
-`Del("D:/Tmp/*.SND");DelTree("D:/Tmp/ScrnShots");DirMk("D:/Tmp/ScrnShots");Del("C:/Tmp/*.SND");DelTree("C:/Tmp/ScrnShots");DirMk("C:/Tmp/ScrnShots");
+`DelScrnShots;
 `
 0000Boot
 `Cd("/0000Boot");Dir;
 `
-Linux   
-`Cd("/Linux");Dir;
-`
 
+Download
+`Cd("/Downloads");Dir;
+`
 LinxDict
-`Adam("GodInit(\"~/Sup1/Sup1Words/LinuxDict.TXT**\");");
+`Adam("GodInit(\"~/Sup1/Sup1Words/DownloadsDict.TXT**\");");
 `
 Happy   
 `Adam("GodInit(\"~/Sup1/Sup1Words/HappyWords.TXT*\");");
-`
-Word1000
-`Adam("GodInit(\"~/Sup1/Sup1Words/Words1000.TXT*\");");
-`
-Word10k 
-`Adam("GodInit(\"~/Sup1/Sup1Words/Words10k.TXT*\");");
 `
 August  
 `Adam("GodInit(\"~/Sup1/Sup1Words/AugustWords.TXT**\");");
@@ -330,16 +312,14 @@ ToTheFront <15> (image)  Span  <16> (image) Checkers <17> (image) Digits <18> (i
 JukeBox <24> (image) Psalmody <25> (image) Budget <26> (image) Logic <27> (image) Vocab <28> (image) 
 
 
+Budget  
+`#include "::/Apps/Budget/Load";Budget("~/TAD/Budget");`
 TestSuit
 `#include "::/Misc/OSTestSuite";
 `
 TakeTour
 `Cd("::/Misc/Tour");;InFile("Tour");
 `
-PsalSup1
-`#include "::/Apps/Psalmody/Load";Psalmody("~/Sup1/Sup1Hymns");`
-Budget  
-`#include "::/Apps/Budget/Load";Budget("~/TAD/Budget");`
 SymAlpha
 `DocMax;Who;View;`
 SymNum  

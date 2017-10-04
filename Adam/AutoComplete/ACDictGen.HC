@@ -4,8 +4,6 @@ which will regenerate processed dictionary
 files from a raw Project Gutenberg
 dictionary file.
 
-http://www.templeos.org/files/DICTIONARY.DD
-
 See [C:/Doc/Credits.DD.Z,1].
 */
 

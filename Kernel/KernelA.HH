@@ -1475,7 +1475,8 @@ class CWinMgrTimingGlbls
   I64	calc_idle_cnt;
 };
 
-#define WINMGR_FPS			30
+#define WINMGR_FPS	(30000.0/1001)
+#define WINMGR_PERIOD	(1001/30000.0)
 
 public class CWinMgrGlbls
 {
@@ -1483,11 +1484,10 @@ public class CWinMgrGlbls
   F64	ode_time,
 	last_ode_time,
 	fps,		//You can read but not write this. You have no control.
+	ideal_refresh_tS,
 	last_refresh_tS;
   CWinMgrTimingGlbls *t;
-  Bool	show_menu,
-	grab_scroll,
-	grab_scroll_closed;
+  Bool	show_menu,grab_scroll,grab_scroll_closed;
 };
 
 #help_index "AutoComplete"
@@ -2302,7 +2302,7 @@ public class CATARep
 #define FILEMASK_SRC	"*.HC*;*.HH*;*.IN*;*.PRJ*"
 #define FILEMASK_DD	FILEMASK_SRC ";*.DD*"
 #define FILEMASK_TXT	FILEMASK_DD ";*.TXT*"
-#define FILEMASK_GR	"*.GR*;*.BMP*"
+#define FILEMASK_GR	"*.GR*"
 
 #help_index "File/Low Level"
 #define BLK_SIZE_BITS	9
@@ -2458,80 +2458,39 @@ class CATAPITrack
 	last_layer_jmp;
 };
 
-//ISO1 is ISO9660
-//ISO2 is ISO13490
-//ISO3 is ISO13346
-
-class CISO1Date
-{
-  U8	year,mon,day,hour,min,sec,sec100;
-};
-
-class CISO1DirEntry
-{
-  U8	len,ext_attr_len;
-  CPalindromeU32 loc;
-  CPalindromeU32 size;
-  CISO1Date date;
-  U8	flags,file_unit_size,interleave;
-  CPalindromeU16 vol_seq_num;
-  U8	name_len,name;
-};
-
-class CISO1PathEntry
-{
-  U8	name_len,zero;
-  U32	blk;
-  U16	parent_entry_num,
-	name[1]; //Aligned to U16 boundries
-};
-
 //ISO9660
-#define ISO1T_BOOT_RECORD		0
-#define ISO1T_PRI_VOL_DESC		1
-#define ISO1T_SUPPLEMENTARY_DESC	2
-#define ISO1T_VOL_DRV_DESC		3
-#define ISO1T_TERMINATOR		255
+#define ISOT_BOOT_RECORD	0
+#define ISOT_PRI_VOL_DESC	1
+#define ISOT_SUPPLEMENTARY_DESC	2
+#define ISOT_VOL_DRV_DESC	3
+#define ISOT_TERMINATOR		255
 
-class CISO1PriDesc
+class CISODirEntry
+{
+  U8 pad[2];
+  CPalindromeU32 loc;
+  U8 pad[24];
+};
+
+class CISOPriDesc
 {
   U8	type,
 	id[5],
 	version,
-	unused1,
-	system_id[32],
-	vol_id[32],
-	unused2[8];
+	pad[73];
   CPalindromeU32 vol_space_size;
-  U8	unused3[32];
+  U8	pad[32];
   CPalindromeU16 vol_set_size;
   CPalindromeU16 vol_seq_num;
   CPalindromeU16 log_block_size;
-  CPalindromeU32 path_table_size;
-  U32	type_l_path_table,
-	opt_type_l_path_table,
-	type_m_path_table,
-	opt_type_m_path_table;
-  CISO1DirEntry root_dir_record;
-  U8	vol_set_id[128],
+  U8	pad[20];
+  CISODirEntry root_dir_record;
+  U8	pad[128],
 	publisher_id[128],
-	preparer_id[128],
-	application_id[128],
-	copyright_file_id[37],
-	abstract_file_id[37],
-	bibliographic_file_id[37],
-	creation_date[17],
-	modification_date[17],
-	expiration_date[17],
-	effective_date[17],
+	pad[435],
 	file_structure_version,
-	unused4,
-	application_data[512],
-	unused5[653];
+	pad[1166];
 };
-
-#define ISO1_BASE_YEAR	1900
-#define ISO1_ATTR_DIR	2
 
 //Red Sea Attributes
 //See [C:/Kernel/KDefine.HC.Z,109] ST_FILE_ATTRS
@@ -2551,12 +2510,12 @@ class CISO1PriDesc
 #define RS_ATTR_FIXED		0x1000 //F
 
 #help_index "File/CD DVD"
-//Media types for [C:/Kernel/BlkDev/DskCDDVD.HC.Z,147] DVDImageWrite()
+//Media types for [C:/Kernel/BlkDev/DskCDDVD.HC.Z,143] DVDImageWrite()
 #define MT_CD		1
 #define MT_DVD		2
 
 #help_index "File/Low Level;File/Program Routines"
-//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.HC.Z,597] FileMgr())
+//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.HC.Z,579] FileMgr())
 #define CDIR_FILENAME_LEN	38 //Must include terminator zero
 public class CDirEntry
 {
@@ -2577,6 +2536,7 @@ public class CDirEntry
 //See [C:/Kernel/KDefine.HC.Z,111] ST_FILE_UTIL_FLAGS
 #define FUf_RECURSE		0
 #define FUf_DIFF		1
+#define FUf_DEL			1
 #define FUf_IGNORE		2
 #define FUf_ALL			3
 #define FUf_CANCEL		4
@@ -2604,6 +2564,7 @@ public class CDirEntry
 
 #define FUF_RECURSE		0x0000001 //r
 #define FUF_DIFF		0x0000002 //d
+#define FUF_DEL			0x0000002 //d
 #define FUF_IGNORE		0x0000004 //i
 #define FUF_ALL			0x0000008 //a
 #define FUF_CANCEL		0x0000010 //c
@@ -2697,12 +2658,10 @@ public class CBlkDev
 #define FSt_NULL	0
 #define FSt_REDSEA	1 //Supported
 #define FSt_FAT32	2 //Supported except for short names, to some degree
-#define FSt_ISO9660	3 //Supported (CD/DVD)
-#define FSt_ISO13490	4 //Not Supported (CD/DVD)
-#define FSt_ISO13346	5 //Not Supported (CD/DVD)
-#define FSt_NTFS	6 //Not Supported
-#define FSt_UNKNOWN	7
-#define FSt_TYPES_NUM	8
+#define FSt_ISO9660	3 //Not Supported
+#define FSt_NTFS	4 //Not Supported
+#define FSt_UNKNOWN	5
+#define FSt_TYPES_NUM	6
 #define FSG_TYPE_MASK	0x7FFF
 //File system type flags
 #define FStf_DISABLE	15
@@ -2941,7 +2900,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HH.Z,2951] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HH.Z,2910] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.HC.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3214,8 +3173,8 @@ class CJobCtrl
 //See [C:/Demo/MsgLoop.HC.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HH.Z,3467] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HH.Z,3467] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HH.Z,3426] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HH.Z,3426] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_MS_MOVE		4  //(x,y)
 #define MSG_MS_L_DOWN		5  //(x,y)
 #define MSG_MS_L_UP		6  //(x,y)
@@ -3640,7 +3599,9 @@ class CGrSym
 public class CDC
 {
   U0	start;
-  I32	width,width_internal,
+  CDate cdt;
+  I32	x0,y0,
+	width,width_internal,
 	height,
 	flags;
   U0	end;
@@ -3648,12 +3609,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HH.Z,2941] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HH.Z,2900] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.HC.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HH.Z,2951] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HH.Z,2910] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3684,7 +3645,7 @@ public class CDC
   I64	collision_cnt;
 
   I64	nearest_dist,
-	min_x,max_x,min_y,max_y; //Set by [C:/Kernel/KernelA.HH.Z,3624] DCF_RECORD_EXTENTS (scrn coordinates)
+	min_x,max_x,min_y,max_y; //Set by [C:/Kernel/KernelA.HH.Z,3583] DCF_RECORD_EXTENTS (scrn coordinates)
 
   U32	dc_signature,pad;
   CTask	*mem_task,*win_task;
@@ -3811,18 +3772,30 @@ class CKeyDevGlbls
 
 #help_index "Snd"
 #define ONA_REST	I8_MIN
-class CSndData
-{
-  CSndData *next,*last;
-  F64	time;
+
+#help_index "ScrnCast;Snd/AU Files"
+public class CAUData
+{//Fmt of AU files
+  CDate	cdt;
   I8	ona;
 };
 
-public class CSndGlbls
-{
-  CSndData record_head;
+class CSndData
+{//Fmt recorded in mem
+  CSndData *next,*last;
+  F64	tS;
   I8	ona;
-  Bool	record;
+};
+
+public class CScrnCastGlbls
+{
+  CSndData snd_head;
+  CDate	t0_now;
+  F64	t0_tS;
+  U8	*print_fmt;
+  CDC	*dc,*dc2_alias;
+  Bool	record,just_audio;
+  I8	ona;
 };
 
 #help_index "Debugging/FunSeg"

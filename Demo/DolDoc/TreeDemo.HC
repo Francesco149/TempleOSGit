@@ -17,7 +17,7 @@ U0 TreeSub(CDoc *doc,CDirEntry *tmpde)
 	    tmpde->name,tmpde->full_name);
 //Note there is also a routine
       //to delete an entire CDirEntry tree.
-      //See [C:/Kernel/BlkDev/DskDirA.HC.Z,36] DirTreeDel().
+      //See [C:/Kernel/BlkDev/DskDirA.HC.Z,33] DirTreeDel().
     DirEntryDel(tmpde);
     tmpde=tmpde1;
   }

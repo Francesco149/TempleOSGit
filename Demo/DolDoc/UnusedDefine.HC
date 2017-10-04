@@ -8,7 +8,7 @@ gets the job done... slowly.
 [C:/Adam/Opt/Utils/Find.HC.Z,145] Find() returns a count of matches.
 
 [C:/Adam/Opt/Utils/Find.HC.Z,182] FileOcc() is [C:/Adam/Opt/Utils/Find.HC.Z,145] Find() with
-output [C:/Kernel/KMisc.HC.Z,251] Silent().
+output [C:/Kernel/KMisc.HC.Z,270] Silent().
 */
 
 U0 UnusedDefineScan()

@@ -7,7 +7,7 @@ outside a function executes immediately.  Remember to add a semicolon.
 Look-up the function headers with AutoComplete by hitting <CTRL-SHIFT-F1> 
 after typing the first few letters.
 
-[C:/Kernel/BlkDev/DskDirB.HC.Z,105] Click Here to see the directory cmd
+[C:/Kernel/BlkDev/DskDirB.HC.Z,102] Click Here to see the directory cmd
 header.  It accepts default args from C++.
 
 >Dir("*.DD.Z");

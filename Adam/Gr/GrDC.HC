@@ -132,7 +132,7 @@ public U0 DCClear(CDC *dc=NULL)
 }
 
 public U0 DCRst(CDC *dc)
-{//Reset [C:/Kernel/KernelA.HH.Z,3640] CDC structure members but not image body, itself.
+{//Reset [C:/Kernel/KernelA.HH.Z,3599] CDC structure members but not image body, itself.
   dc->color=BLACK;
   dc->color2=BLACK;
   dc->bkcolor=BLACK;
@@ -378,6 +378,10 @@ public CDC *DCLoad(U8 *src,I64 *_size=NULL,CTask *task=NULL)
 #help_index "Graphics/GR Files"
 #help_file "::/Doc/GRFiles"
 #help_index "Graphics/Device Contexts;Graphics/GR Files"
+
+#define GR_FILE_MAX	(offset(CDC.end)-offset(CDC.start)+\
+	COLORS_NUM*sizeof(CBGR48)+sizeof(CArcCtrl)+GR_WIDTH*GR_HEIGHT)
+
 public I64 GRWrite(U8 *filename,CDC *dc,I64 dcsf_flags=DCSF_COMPRESSED)
 {//TempleOS GR File.
   I64	size;
@@ -416,7 +420,7 @@ public CDC *DCScrnCapture(Bool include_zoom=TRUE,CTask *task=NULL)
 {//Capture scrn to a device context.
   CDC *dc;
   U8 *dst;
-  Refresh(2,TRUE);
+  Refresh(0,FALSE);
   if (include_zoom)
     dc=DCCopy(gr.scrn_image,task);
   else

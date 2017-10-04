@@ -44,8 +44,7 @@ U0 TOSInit()
   }
 } TOSInit;
 
-#define TOS_ISO_NAME	"B:/TOS_Distro.ISO"
-#define TOS_ISO_C_NAME	"B:/TOS_Distro.ISO.C"
+#define TOS_ISO_NAME	"B:/TOS_Distro.ISO.C"
 #define TOS_DISTRO_DIR	"B:/Distro"
 #define CFG_OPTS	"StaffMode\nMountIDEAuto\nCT\n"
 #define CFG_DBG_OPTS	"StaffMode\nMountIDEAuto\nCT"\

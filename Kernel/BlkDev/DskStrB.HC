@@ -27,9 +27,6 @@ I64 Name2DirClus(CDrv *dv,U8 *dirname)
 	  case FSt_FAT32:
 	    cont=FAT32FileFind(dv,cur_dir_clus,buf2,&de,FUF_JUST_DIRS);
 	    break;
-	  case FSt_ISO9660:
-	    cont=ISO1FileFind(dv,cur_dir_clus,buf2,&de,FUF_JUST_DIRS);
-	    break;
 	  default:
 	    throw('Drv');
 	}
@@ -70,9 +67,6 @@ I64 Name2ParentDirClus(CDrv *dv,U8 *dirname)
 	    break;
 	  case FSt_FAT32:
 	    cont=FAT32FileFind(dv,cur_dir_clus,buf2,&de,FUF_JUST_DIRS);
-	    break;
-	  case FSt_ISO9660:
-	    cont=ISO1FileFind(dv,cur_dir_clus,buf2,&de,FUF_JUST_DIRS);
 	    break;
 	  default:
 	    throw('Drv');

@@ -51,7 +51,7 @@ SYS_INIT_PAGE_TABLES::
 	MOV	[MEM_512GIG_NUM],EAX
 	MOV	[MEM_512GIG_NUM+4],EDX
 
-//Set [C:/Kernel/KernelA.HH.Z,3456] CSysFixedArea to zero
+//Set [C:/Kernel/KernelA.HH.Z,3415] CSysFixedArea to zero
 	MOV	EDI,SYS_FIXED_AREA
 	XOR	EAX,EAX
 	MOV	ECX,sizeof(CSysFixedArea)/4

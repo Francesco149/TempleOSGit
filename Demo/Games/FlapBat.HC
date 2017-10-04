@@ -27,12 +27,12 @@ RegExe("TempleOS/FlapBat");
 
 
 #define BORDER		6
-#define AAT_TIME	0.5
+#define EAT_TIME	0.5
 #define FLAP_TIME	0.5
-#define BIRD_BOX	10
+#define BAT_BOX	10
 
 Bool flap_down,flap_up;
-F64 flap_phase,delta_phase,bird_y,bird_x,eat_timeout,flap_time;
+F64 flap_phase,delta_phase,bat_y,bat_x,eat_timeout,flap_time;
 F64 frame_x,game_t0,game_tf;
 
 #define BUGS_NUM	32
@@ -52,16 +52,16 @@ U0 DrawIt(CTask *task,CDC *dc)
   U8 *tmps,*tmps2,*tmps3;
   F64 tt=flap_phase*flap_phase*flap_phase,ts=tS;
 
-  bird_x=task->pix_width>>3;
+  bat_x=task->pix_width>>3;
   Sprite3(dc,(7*task->pix_width)>>3,20,0,__BIN_5);
 
   dc->color=DKGRAY;
-  GrCircle(dc,bird_x+5+20*Saw(15*tS,2),bird_y,10+20*Saw(15*tS,2),5,-pi/4,pi/2);
+  GrCircle(dc,bat_x+5+20*Saw(15*tS,2),bat_y,10+20*Saw(15*tS,2),5,-pi/4,pi/2);
 
   tmps=SpriteInterpolate(tt,__BIN_1,__BIN_2);
   if (eat_timeout && tS<eat_timeout) {
     tmps2=SpriteInterpolate(tt,__BIN_3,__BIN_4);
-    tmps3=SpriteInterpolate(1.0-(eat_timeout-tS)/AAT_TIME,tmps2,tmps);
+    tmps3=SpriteInterpolate(1.0-(eat_timeout-tS)/EAT_TIME,tmps2,tmps);
     Free(tmps);
     Free(tmps2);
     tmps=tmps3;
@@ -73,7 +73,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     limit_flood_fill_dc->color=TRANSPARENT;
     GrFloodFill(limit_flood_fill_dc,0,0);
   }
-  GrBlot(dc,bird_x-16,bird_y-32,limit_flood_fill_dc);
+  GrBlot(dc,bat_x-16,bat_y-32,limit_flood_fill_dc);
 
   Free(tmps);
   for (i=0;i<BUGS_NUM;i++)
@@ -110,7 +110,7 @@ U0 CheckBugs(CTask *task)
   I64 i,x,y,
 	h=MaxI64(1,task->pix_width-2*BORDER),
 	v=MaxI64(1,task->pix_height-2*BORDER);
-  if (eat_timeout && eat_timeout-tS<0.75*AAT_TIME) {
+  if (eat_timeout && eat_timeout-tS<0.75*EAT_TIME) {
     Suspend(task->song_task,FALSE);
     if (tS>=eat_timeout)
       eat_timeout=0;
@@ -119,9 +119,9 @@ U0 CheckBugs(CTask *task)
     if (!bugs_dead[i]) {
       x=(bugs_x[i]+frame_x)%h+BORDER;
       y=bugs_y[i]%v+BORDER;
-      if (AbsI64(x-bird_x)<BIRD_BOX && AbsI64(y-bird_y)<BIRD_BOX) {
+      if (AbsI64(x-bat_x)<BAT_BOX && AbsI64(y-bat_y)<BAT_BOX) {
 	bugs_dead[i]=TRUE;
-	eat_timeout=tS+AAT_TIME;
+	eat_timeout=tS+EAT_TIME;
 	Snd(74);
 	Suspend(task->song_task);
 	bug_cnt--;
@@ -145,8 +145,8 @@ U0 Init()
   limit_flood_fill_dc=DCNew(32,40);
   flap_down=flap_up=FALSE;
   flap_phase=0;
-  bird_x=Fs->pix_width>>3;
-  bird_y=0;
+  bat_x=Fs->pix_width>>3;
+  bat_y=0;
   frame_x=0;
   bug_cnt=BUGS_NUM;
   for (i=0;i<BUGS_NUM;i++) {
@@ -184,11 +184,11 @@ U0 AnimateTask(I64)
       delta_phase= 0.005;
     }
     if (delta_phase<0) {
-      bird_y+=75*delta_phase;
+      bat_y+=75*delta_phase;
       delta_phase+=0.000015;
     } else
-      bird_y+=0.15;
-    bird_y=Clamp(bird_y,BORDER,Fs->parent_task->pix_height-BORDER);
+      bat_y+=0.15;
+    bat_y=Clamp(bat_y,BORDER,Fs->parent_task->pix_height-BORDER);
     flap_phase=Clamp(flap_phase+delta_phase,0.0,1.0);
     CheckBugs(Fs->parent_task);
     Sleep(1);

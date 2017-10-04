@@ -38,7 +38,7 @@ I64 ScanMsg(I64 *_arg1=NULL,I64 *_arg2=NULL,I64 mask=~1,CTask *task=NULL)
 {/*Check for a message of type specified by a one in the mask.
 Throw-out messages not in mask.
 If no message fit mask, return NULL immediately.
-Remove desired message, return [C:/Kernel/KernelA.HH.Z,3216] msg_code.
+Remove desired message, return [C:/Kernel/KernelA.HH.Z,3175] msg_code.
 Note: This delivers messages from parent down to pop-up.
 */
   I64 res,old_flags;
@@ -95,7 +95,7 @@ I64 FlushMsgs(CTask *task=NULL)
 I64 GetMsg(I64 *_arg1=NULL,I64 *_arg2=NULL,I64 mask=~1,CTask *task=NULL)
 {//Wait for a message of type specified by a one in the mask.
 //Throw-out all messages not in mask.
-  //Returns [C:/Kernel/KernelA.HH.Z,3216] msg_code. See [C:/Demo/MsgLoop.HC.Z,1].
+  //Returns [C:/Kernel/KernelA.HH.Z,3175] msg_code. See [C:/Demo/MsgLoop.HC.Z,1].
   I64 res;
   if (!task) task=Fs;
   LBtr(&task->task_flags,TASKf_IDLE);
@@ -108,21 +108,21 @@ I64 GetMsg(I64 *_arg1=NULL,I64 *_arg2=NULL,I64 mask=~1,CTask *task=NULL)
 }
 
 I64 ScanChar()
-{//Checks for [C:/Kernel/KernelA.HH.Z,3217] MSG_KEY_DOWN and returns 0 immediately if no key.
-//Waits for [C:/Kernel/KernelA.HH.Z,3218] MSG_KEY_UP of non-zero [C:/Kernel/KernelA.HH.Z,3467] ASCII key and returns [C:/Kernel/KernelA.HH.Z,3467] ASCII if key.
+{//Checks for [C:/Kernel/KernelA.HH.Z,3176] MSG_KEY_DOWN and returns 0 immediately if no key.
+//Waits for [C:/Kernel/KernelA.HH.Z,3177] MSG_KEY_UP of non-zero [C:/Kernel/KernelA.HH.Z,3426] ASCII key and returns [C:/Kernel/KernelA.HH.Z,3426] ASCII if key.
   //[C:/Kernel/SerialDev/Message.HC.Z,37] ScanMsg() throws away other message types.
   I64 arg1a,arg2a,arg1b,arg2b;
   if (!ScanMsg(&arg1a,&arg2a,1<<MSG_KEY_DOWN)||!arg1a)
     return 0;
   else
     do GetMsg(&arg1b,&arg2b,1<<MSG_KEY_UP);
-    while (!arg1b);  //Be careful of [C:/Kernel/KernelA.HH.Z,3542] SC_SHIFT and [C:/Kernel/KernelA.HH.Z,3543] SC_CTRL, etc.
+    while (!arg1b);  //Be careful of [C:/Kernel/KernelA.HH.Z,3501] SC_SHIFT and [C:/Kernel/KernelA.HH.Z,3502] SC_CTRL, etc.
   return arg1a;
 }
 
 Bool ScanKey(I64 *_ch=NULL,I64 *_scan_code=NULL,Bool echo=FALSE)
-{//Checks for [C:/Kernel/KernelA.HH.Z,3217] MSG_KEY_DOWN and returns FALSE immediately if no key.
-//Sets [C:/Kernel/KernelA.HH.Z,3467] ASCII and [C:/Doc/CharOverview.DD.Z,1] scan_code.
+{//Checks for [C:/Kernel/KernelA.HH.Z,3176] MSG_KEY_DOWN and returns FALSE immediately if no key.
+//Sets [C:/Kernel/KernelA.HH.Z,3426] ASCII and [C:/Doc/CharOverview.DD.Z,1] scan_code.
   //Removes key message and returns TRUE.
   //[C:/Kernel/SerialDev/Message.HC.Z,37] ScanMsg() throws away other message types.
   I64 ch=0,sc=0;
@@ -140,7 +140,7 @@ Bool ScanKey(I64 *_ch=NULL,I64 *_scan_code=NULL,Bool echo=FALSE)
 }
 
 I64 GetKey(I64 *_scan_code=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
-{//Waits for [C:/Kernel/KernelA.HH.Z,3217] MSG_KEY_DOWN message and returns [C:/Kernel/KernelA.HH.Z,3467] ASCII.
+{//Waits for [C:/Kernel/KernelA.HH.Z,3176] MSG_KEY_DOWN message and returns [C:/Kernel/KernelA.HH.Z,3426] ASCII.
 //Sets [C:/Doc/CharOverview.DD.Z,1] scan_code.
   //[C:/Kernel/SerialDev/Message.HC.Z,123] ScanKey() throws away other message types.
   I64 ch,sc;
@@ -180,7 +180,7 @@ I64 GetKey(I64 *_scan_code=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
 }
 
 I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
-{//Waits for non-zero [C:/Kernel/KernelA.HH.Z,3467] ASCII key.
+{//Waits for non-zero [C:/Kernel/KernelA.HH.Z,3426] ASCII key.
 //Sets [C:/Doc/CharOverview.DD.Z,1] scan_code.
   I64 ch1;
   do ch1=GetKey(_scan_code,FALSE,raw_cursor);
@@ -191,7 +191,7 @@ I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
 }
 
 U8 *GetStr(U8 *msg=NULL,U8 *dft=NULL,I64 flags=0)
-{//Returns a [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc()ed prompted string.  See [C:/Kernel/KernelA.HH.Z,3764] Flags.
+{//Returns a [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc()ed prompted string.  See [C:/Kernel/KernelA.HH.Z,3725] Flags.
   U8 *st;
   if (msg)
     "" msg,dft;

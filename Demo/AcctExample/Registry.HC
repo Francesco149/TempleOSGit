@@ -8,7 +8,7 @@
     MemSet(&ins_reg,0,sizeof(CInsReg));
     ins_reg.registered=1;
     ins_reg.host_os=2;
-    ins_reg.host_vm=2;
+    ins_reg.host_vm=3;
     
     #define INS_REG_PERSONAL_INITIALS "TAD"
     StrCpy(ins_reg.initials,"TAD");
@@ -48,7 +48,7 @@
       F64 best_score=43.9944;
       +] OSTestSuite
       progress1_tf=0.000;progress2_tf=0.000;
-    progress3_tf=0.000;progress4_tf=231.681;
+    progress3_tf=0.000;progress4_tf=223.150;
       +] XCaliber
       I64 best_score=90;
     I64 msg_flags=2;
@@ -60,13 +60,13 @@
       I64 best_score=16469;
       +] TOSRegen
       progress1_tf=0.000;progress2_tf=0.000;
-    progress3_tf=0.000;progress4_tf=69.028;
+    progress3_tf=0.000;progress4_tf=256.163;
       +] Once
   +] Adam
         +] User
         +] DemoCompany
   +] Game1
-      F64 best_score=191.11932;
+      F64 best_score=187.05180;
     +] SimpleVal
-          1241;
+          1245;
             

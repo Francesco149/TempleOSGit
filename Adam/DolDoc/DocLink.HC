@@ -18,7 +18,7 @@
 "HI:index"
 "AD:code_address_number"
 
-To edit a doc structure already in memory. See [C:/Adam/Gr/SpriteEd.HC.Z,578] SpriteEdText().
+To edit a doc structure already in memory. See [C:/Adam/Gr/SpriteEd.HC.Z,573] SpriteEdText().
 "AI:doc_address"
 "AA:haystack_doc_address,needle_anchor_str"
 "AF:haystack_doc_address,needle_str"
@@ -38,7 +38,7 @@ To edit a doc structure already in memory. See [C:/Adam/Gr/SpriteEd.HC.Z,578] Sp
 #define LK_DEF		9
 #define LK_HELP_INDEX	10
 #define LK_ADDR		11
-#define LK_DOC		12 //See [C:/Adam/Gr/SpriteEd.HC.Z,578] SpriteEdText()
+#define LK_DOC		12 //See [C:/Adam/Gr/SpriteEd.HC.Z,573] SpriteEdText()
 #define LK_DOC_ANCHOR	13
 #define LK_DOC_FIND	14
 #define LK_DOC_LINE	15
@@ -92,7 +92,7 @@ Bool DocFileEd(I64 _type,U8 *filename,
     flags|=DOCF_ALLOW_UNDO;
 
     if (LK_DOC<=_type<=LK_DOC_LINE) {
-      doc=Str2I64(filename);//See [C:/Adam/Gr/SpriteEd.HC.Z,578] SpriteEdText()
+      doc=Str2I64(filename);//See [C:/Adam/Gr/SpriteEd.HC.Z,573] SpriteEdText()
       res=TRUE;
     } else {
       st1=StrNew(filename);

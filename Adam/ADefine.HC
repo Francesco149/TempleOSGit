@@ -15,7 +15,7 @@ U0 LoadDocDefines()
   //[C:/Adam/Opt/Boot/BootDVD.HC.Z,1] DD_BOOT_HIGH_LOC_DVD
 
 +] LineRep
-  DefinePrint("DD_TEMPLEOS_LOC","82,150");
+  DefinePrint("DD_TEMPLEOS_LOC","80,849");
   
   DefinePrint("DD_MP_VECT","%08X",MP_VECT_ADDR);
   DefinePrint("DD_MP_VECT_END","%08X",

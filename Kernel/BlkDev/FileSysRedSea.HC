@@ -154,7 +154,7 @@ U0 RedSeaFmt(U8 drv_let,Bool quick=TRUE)
 
 Bool RedSeaFileFind(CDrv *dv,I64 cur_dir_clus,U8 *name,
 	CDirEntry *_res,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HH.Z,2616] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2617] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HH.Z,2577] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2578] FUF_JUST_FILES
   CDirEntry *buf,*buf2,*ptr;
   U8 dname[CDIR_FILENAME_LEN];
   I64 ch;

@@ -1,7 +1,7 @@
 U0 MsgLoop()
 {
   I64 arg1,arg2,msg_code;
-  "Use [C:/Kernel/KernelA.HH.Z,3216] msg_code defines in your programs instead of hardcoded nums.\n"
+  "Use [C:/Kernel/KernelA.HH.Z,3175] msg_code defines in your programs instead of hardcoded nums.\n"
 	"<ESC> to Exit\n";
 
   //We don't want the mouse bttns to reposition the cursor,
@@ -20,4 +20,4 @@ U0 MsgLoop()
 
 MsgLoop;
 
-// Press <CTRL-SHIFT-L> and "Insert [C:/Kernel/KernelA.HH.Z,3467] ASCII/[C:/Doc/CharOverview.DD.Z,1] ScanCode".
+// Press <CTRL-SHIFT-L> and "Insert [C:/Kernel/KernelA.HH.Z,3426] ASCII/[C:/Doc/CharOverview.DD.Z,1] ScanCode".

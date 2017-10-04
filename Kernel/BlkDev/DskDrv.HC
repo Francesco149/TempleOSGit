@@ -170,7 +170,7 @@ U8 Let2Let(U8 drv_let=0)
 }
 
 I64 Let2BlkDevType(U8 drv_let)
-{//Drv letter to BlkDev Type. drv_let=0 not allowed. See [C:/Kernel/KernelA.HH.Z,2640] BDT_NULL.
+{//Drv letter to BlkDev Type. drv_let=0 not allowed. See [C:/Kernel/KernelA.HH.Z,2601] BDT_NULL.
   drv_let=Let2Let(drv_let);
   if ('A'<=drv_let<='B')
     return BDT_RAM;
@@ -278,7 +278,6 @@ Bool Drv(U8 drv_let)
   switch (dv->fs_type) {
     case FSt_REDSEA:
     case FSt_FAT32:
-    case FSt_ISO9660:
       return TRUE;
     default:
       PrintErr("File System Not Supported\n");
