@@ -48,9 +48,10 @@ U0 SysGlblsInit()
   for (i=-308;i<309;i++)
     pow10_I64[i+309]=Pow10(i);
 
-  snd.ona=ONA_REST;
-  QueInit(&snd.record_head);
-  snd.record_head.time=tS;
+  QueInit(&scrncast.snd_head);
+  scrncast.t0_now=Now;
+  scrncast.t0_tS=tS;
+  scrncast.ona=scrncast.snd_head.ona=ONA_REST;
 
   ProgressBarsRst;
 
@@ -170,7 +171,7 @@ U0 KMain()
   IntInit2;
   LBts(&sys_run_level,RLf_INTERRUPTS);
 
-  TimeStampFreqCal;
+  TimeCal;
   BlkDevsInitAll;
   "DskChg(':');\n";
   DskChg(':');
@@ -210,7 +211,7 @@ U0 KMain()
   LBts(&sys_run_level,RLf_COMPILER);
 
   DbgMode(OFF);
-  cnts.time_stamp_freq_initial=TimeStampFreqCal;
+  cnts.time_stamp_freq_initial=TimeCal;
   Cd("/");
   try ExeFile("StartOS"); //Continues [D:/StartOS.HC.Z,1] /StartOS.HC
   catch {

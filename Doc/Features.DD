@@ -27,8 +27,8 @@ files.
 file systems with file 
 compression.
 
-* ATAPI PIO CD/DVD support with ISO9660 file system.  Can make bootable ISO966
-0 ISO files so you can roll-your-own distro's.
+* ATAPI PIO CD/DVD support with RedSea file system.  Can make bootable ISO 
+files so you can roll-your-own distro's.
 
 * [C:/Adam/ABlkDev/DskPrt.HC.Z,13] Partitioning tool, installer, boot loaders
 for CD/DVD and hard disk.

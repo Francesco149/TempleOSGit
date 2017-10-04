@@ -231,9 +231,9 @@ U0 AnimateTask(I64)
   MyMass   *tmpm,*tmpm1;
   F64 dx,dy;
   while (TRUE) {
-    dx=Cos(nozzle_theta),
-	  dy=Sin(nozzle_theta),
-	  PlaceMass(MT_DROPLET,
+    dx=Cos(nozzle_theta);
+    dy=Sin(nozzle_theta);
+    PlaceMass(MT_DROPLET,
 	  nozzle->x+NOZZLE_LEN*dx,nozzle->y+NOZZLE_LEN*dy,HOSE_RADIUS,
 	  500*dx,500*dy,100.0,Fs->parent_task);
     if (Rand<0.05) //faucet drip

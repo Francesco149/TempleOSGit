@@ -15,7 +15,7 @@ involves a long and short name for each file.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HH.Z,2884] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HH.Z,2843] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.HC.Z,242]
 Spawn().
 

@@ -285,7 +285,7 @@ Bool FAT32DirFill(CFAT32DirEntry *de,
 
 Bool FAT32FileFind(CDrv *dv,I64 cur_dir_clus,
 	U8 *name,CDirEntry *_res,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HH.Z,2616] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2617] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HH.Z,2577] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2578] FUF_JUST_FILES
   Bool res=FALSE,unlock;
   CFAT32DirEntry *buf;
   I64 xsum=0,attr,cur_dir_entry,entries_per_clus;

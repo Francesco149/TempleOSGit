@@ -3,7 +3,7 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/Kernel/KernelA.HH.Z,3106] CCtrl type for the tempo/stacatto
+  2) The [C:/Kernel/KernelA.HH.Z,3065] CCtrl type for the tempo/stacatto
 sliders.
 
   3) The active [C:/Kernel/KernelA.HH.Z,1367] CDoc sprite bttns with macros

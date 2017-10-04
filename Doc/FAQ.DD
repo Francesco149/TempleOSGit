@@ -83,8 +83,8 @@
   with no object files or linking.  Linking is done when BIN modules are
   [C:/Kernel/KLoad.HC.Z,181] Load()ed.
 +] What is the FPS refresh rate?
-  The refresh rate is 30 frames-per-second.  That is how often TempleOS
-  updates scrn mem.  It is not syncronized to the hardware.
+  The refresh rate is (30000.0/1001) frames-per-second.  That is how often
+  TempleOS updates scrn mem.  It is not syncronized to the hardware.
 +] How does a task own the speaker?
   No task or application has a lock on the speaker so apps will interfere
   with each other.
@@ -169,7 +169,7 @@
 +] How do you use the FS and GS segment registers.
   MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP
   relative, so it's tricky to use.  FS is used for the current
-  [C:/Kernel/KernelA.HH.Z,3312] CTask, GS for [C:/Kernel/KernelA.HH.Z,3432]
+  [C:/Kernel/KernelA.HH.Z,3271] CTask, GS for [C:/Kernel/KernelA.HH.Z,3391]
   CCPU.
 +] How do I set ORG for position of code?
   The compiler creates pos independent code.  Don't create code which is

@@ -44,6 +44,6 @@ class GRFile
   U8	body[];
 };
 
-See [C:/Adam/Gr/GrDC.HC.Z,286] DCSave(), [C:/Adam/Gr/GrDC.HC.Z,379]
+See [C:/Adam/Gr/GrDC.HC.Z,286] DCSave(), [C:/Adam/Gr/GrDC.HC.Z,383]
 GRWrite(), [C:/Adam/Gr/GrDC.HC.Z,338] DCLoad(), and
-[C:/Adam/Gr/GrDC.HC.Z,390] GRRead().
+[C:/Adam/Gr/GrDC.HC.Z,394] GRRead().

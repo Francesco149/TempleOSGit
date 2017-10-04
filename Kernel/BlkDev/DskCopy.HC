@@ -94,9 +94,6 @@ I64 Del(U8 *files_find_mask,Bool make_mask=FALSE,
 	res=FAT32FilesDel(dirc->dv,Fs->cur_dir,dirc->mask,
 	      0,del_dir,print_msg);
 	break;
-      case FSt_ISO9660:
-	PrintErr("Not Writable\n");
-	break;
       default:
 	PrintErr("File System Not Supported\n");
     }

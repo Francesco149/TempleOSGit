@@ -1,7 +1,7 @@
 asm {/* See [C:/Doc/Boot.DD.Z,1].
 TempleOS starts in real, calls some BIOS
 routines, switches to 32 bit, and 64 bit mode
-and continues in [C:/Doc/HolyC.DD.Z,1] HolyC at [C:/Kernel/KMain.HC.Z,134] KMain().
+and continues in [C:/Doc/HolyC.DD.Z,1] HolyC at [C:/Kernel/KMain.HC.Z,135] KMain().
 
 The boot loader jumps here in real-mode (16-bit).
 It actually jumps to the [C:/Kernel/KernelA.HH.Z,384] CBinFile header which is

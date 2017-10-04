@@ -1,3 +1,88 @@
+#help_index "Snd"
+public U0 SndTaskEndCB()
+{//Will turn-off snd when a task gets killed.
+  Snd;
+  Exit;
+}
+
+#help_index "Snd/Math;Math"
+public F64 Saw(F64 t,F64 period)
+{//Sawtooth. 0.0 - 1.0 think "(Sin+1)/2"
+  if (period) {
+    if (t>=0.0)
+      return t%period/period;
+    else
+      return 1.0+t%period/period;
+  } else
+    return 0.0;
+}
+
+public F64 FullSaw(F64 t,F64 period)
+{//Plus&Minus Sawtooth. 1.0 - -1.0 think "Sin"
+  if (period) {
+    if (t>=0.0)
+      return 2.0*(t%period/period)-1.0;
+    else
+      return 2.0*(t%period/period)+1.0;
+  } else
+    return 0.0;
+}
+
+public F64 Caw(F64 t,F64 period)
+{//Cawtooth. 1.0 - 0.0 think "(Cos+1)/2"
+  if (period) {
+    if (t>=0.0)
+      return 1.0-t%period/period;
+    else
+      return -(t%period)/period;
+  } else
+    return 1.0;
+}
+
+public F64 FullCaw(F64 t,F64 period)
+{//Plus&Minus Cawtooth. 1.0 - -1.0 think "Cos"
+  if (period) {
+    if (t>=0.0)
+      return -2.0*(t%period/period)+1.0;
+    else
+      return -2.0*(t%period/period)-1.0;
+  } else
+    return 1.0;
+}
+
+public F64 Tri(F64 t,F64 period)
+{//Triangle waveform. 0.0 - 1.0 - 0.0
+  if (period) {
+    t=2.0*(Abs(t)%period)/period;
+    if (t<=1.0)
+      return t;
+    else
+      return 2.0-t;
+  } else
+    return 0.0;
+}
+
+public F64 FullTri(F64 t,F64 period)
+{//Plus&Minus Triangle waveform. 0.0 - 1.0 - 0.0 - -1.0 -0.0
+  if (period) {
+    t=4.0*(t%period)/period;
+    if (t<=-1.0) {
+      if (t<=-3.0)
+	return t+4.0;
+      else
+	return -2.0-t;
+    } else {
+      if (t<=1.0)
+	return t;
+      else if (t<=3.0)
+	return 2.0-t;
+      else
+	return t-4.0;
+    }
+  } else
+    return 0.0;
+}
+
 #help_index "Snd/Music"
 
 public class CMusicGlbls
@@ -95,6 +180,28 @@ U8 *MusicSetNoteLen(U8 *st)
   return st;
 }
 
+public I8 Note2Ona(I64 note,I64 octave=4)
+{//Note to ona. Mid C is ona=51, note=3 and octave=4.
+  if (note<3)
+    return (octave+1)*12+note;
+  else
+    return octave*12+note;
+}
+
+public I8 Ona2Note(I8 ona)
+{//Ona to note in octave. Mid C is ona=51, note=3 and octave=4.
+  return ona%12;
+}
+
+public I8 Ona2Octave(I8 ona)
+{//Ona to octave. Mid C is ona=51, note=3 and octave=4.
+  I64 note=ona%12,octave=ona/12;
+  if (note<3)
+    return octave-1;
+  else
+    return octave;
+}
+
 public U0 Play(U8 *st,U8 *words=NULL)
 {/* Notes are entered with a capital letter.
 
@@ -112,7 +219,7 @@ durations stay set until changed.
 
 '(' tie, placed before the note to be extended
 
-[C:/Adam/Snd/SndMusic.HC.Z,3] music.meter_top,[C:/Adam/Snd/SndMusic.HC.Z,3] music.meter_bottom is set with
+[C:/Adam/ASnd.HC.Z,88] music.meter_top,[C:/Adam/ASnd.HC.Z,88] music.meter_bottom is set with
 "M3/4"
 "M4/4"
 etc.
@@ -168,14 +275,11 @@ per second.  It defaults to
       ona=ONA_REST;
     if (words && (word=LstSub(i++,words)) && StrCmp(word," "))
       "%s",word;
+
     d=JIFFY_FREQ*music.note_len/music.tempo;
-    if (tie) {
-      on_jiffies  =d;
-      off_jiffies =0;
-    } else {
-      on_jiffies  =d*music.stacatto_factor;
-      off_jiffies =d*(1.0-music.stacatto_factor);
-    }
+    on_jiffies	=d*music.stacatto_factor;
+    off_jiffies =d*(1.0-music.stacatto_factor);
+
     timeout_val+=on_jiffies;
     timeout_val2=timeout_val+off_jiffies;
 
@@ -184,7 +288,7 @@ per second.  It defaults to
     SleepUntil(timeout_val);
     music.tM_correction+=on_jiffies-ToI64(on_jiffies);
 
-    if (!music.mute)
+    if (!music.mute && !tie)
       Snd;
     SleepUntil(timeout_val2);
     music.tM_correction+=off_jiffies-ToI64(off_jiffies);
@@ -221,4 +325,85 @@ U0 CurSongTask()
   Fs->task_end_cb=&SndTaskEndCB;
   while (TRUE)
     Play(music.cur_song);
+}
+
+#help_index "Snd"
+
+#define SE_NOISE	0
+#define SE_SWEEP	1
+
+class CSoundEffectFrame
+{
+  I32	type;
+  I8	ona1,ona2;
+  F64	duration;
+};
+
+U0 SoundEffectEndTaskCB()
+{
+  Free(FramePtr("CSoundEffectFrame"));
+  music.mute--;
+  SndTaskEndCB;
+}
+
+U0 SoundEffectTask(CSoundEffectFrame *ns)
+{
+  I64 i,ona;
+  F64 t0=tS,t,timeout=t0+ns->duration;
+  FramePtrAdd("CSoundEffectFrame",ns);
+  Fs->task_end_cb=&SoundEffectEndTaskCB;
+  switch (ns->type) {
+    case SE_NOISE:
+      i=MaxI64(ns->ona2-ns->ona1,1);
+      while (tS<timeout) {
+	ona=RandU16%i+ns->ona1;
+	Snd(ona);
+	t=Clamp(3000.0/Ona2Freq(ona),1.0,50.0);
+	if (t+tS>timeout)
+	  t=timeout-tS;
+	Sleep(t);
+      }
+      break;
+    case SE_SWEEP:
+      while (tS<timeout) {
+	t=(tS-t0)/ns->duration;
+	ona=(1.0-t)*ns->ona1+t*ns->ona2;
+	Snd(ona);
+	t=Clamp(3000.0/Ona2Freq(ona),1.0,50.0);
+	if (t+tS>timeout)
+	  t=timeout-tS;
+	Sleep(t);
+      }
+      break;
+  }
+}
+
+public CTask *Noise(I64 mS,F64 min_ona,F64 max_ona)
+{//Make white noise for given number of mS.
+  CSoundEffectFrame *ns;
+  if (mS>0) {
+    ns=MAlloc(sizeof(CSoundEffectFrame));
+    ns->type=SE_NOISE;
+    ns->duration=mS/1000.0;
+    ns->ona1=min_ona;
+    ns->ona2=max_ona;
+    music.mute++;
+    return Spawn(&SoundEffectTask,ns,"Noise",,Fs);
+  } else
+    return NULL;
+}
+
+public CTask *Sweep(I64 mS,F64 ona1,F64 ona2)
+{//Sweep through freq range in given number of mS.
+  CSoundEffectFrame *ns;
+  if (mS>0) {
+    ns=MAlloc(sizeof(CSoundEffectFrame));
+    ns->type=SE_SWEEP;
+    ns->duration=mS/1000.0;
+    ns->ona1=ona1;
+    ns->ona2=ona2;
+    music.mute++;
+    return Spawn(&SoundEffectTask,ns,"Noise",,Fs);
+  } else
+    return NULL;
 }

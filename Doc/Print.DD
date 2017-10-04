@@ -103,8 +103,8 @@ displayed.
 of code being compiled and 
 must reside in a #exe{} blk.
 
-[C:/Adam/Gr/GrBitMap.HC.Z,935] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
-[C:/Adam/Gr/GrBitMap.HC.Z,944] GrVPrint() plots text in graphics 
+[C:/Adam/Gr/GrBitMap.HC.Z,989] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
+[C:/Adam/Gr/GrBitMap.HC.Z,998] GrVPrint() plots text in graphics 
 mode.
 
 [C:/Adam/Gr/GrTextBase.HC.Z,321] TextPrint(CTask *task,I64 x,I64 y,I64
