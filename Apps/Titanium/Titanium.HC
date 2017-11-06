@@ -26,7 +26,7 @@ class Unit
 {
   I64 x,y,best_dd;
   F64 theta,phase;
-  Bool friendly,dead,tank,pad[5];
+  Bool friendly,dead,tank,CIA,pad[4];
 } u[U_NUM];
 
 #define ET_MAN		0
@@ -83,9 +83,7 @@ U8 *friendly_imgs[4]={__BIN_5,__BIN_4,__BIN_5,__BIN_6};
 
 
 
-
 	/* <8> <8> (image) */
-
 
 
 
@@ -93,8 +91,7 @@ U8 *friendly_imgs[4]={__BIN_5,__BIN_4,__BIN_5,__BIN_6};
 
 
 
-
-U8 *friendly_hacking_imgs[4]={__BIN_7,__BIN_8,__BIN_7,__BIN_9};
+U8 *CIA_neeger_imgs[4]={__BIN_8,__BIN_7,__BIN_8,__BIN_9};
 
 
 
@@ -103,7 +100,9 @@ U8 *friendly_hacking_imgs[4]={__BIN_7,__BIN_8,__BIN_7,__BIN_9};
 
 
 
+
 	/* <11> <11> (image) */
+
 
 
 
@@ -111,7 +110,8 @@ U8 *friendly_hacking_imgs[4]={__BIN_7,__BIN_8,__BIN_7,__BIN_9};
 
 
 
-U8 *enemy_imgs[4]={__BIN_11,__BIN_10,__BIN_11,__BIN_12};
+
+U8 *friendly_hacking_imgs[4]={__BIN_10,__BIN_11,__BIN_10,__BIN_12};
 
 
 
@@ -120,9 +120,7 @@ U8 *enemy_imgs[4]={__BIN_11,__BIN_10,__BIN_11,__BIN_12};
 
 
 
-
 	/* <14> <14> (image) */
-
 
 
 
@@ -130,28 +128,12 @@ U8 *enemy_imgs[4]={__BIN_11,__BIN_10,__BIN_11,__BIN_12};
 
 
 
-
-
-
-
+U8 *enemy_imgs[4]={__BIN_14,__BIN_13,__BIN_14,__BIN_15};
 
 
 
 
 	/* <16> <16> (image) */
-
-
-
-
-
-
-
-
-
-U8 *enemy_hacking_imgs[4]={__BIN_14,__BIN_13,__BIN_14,__BIN_15};
-
-
-
 
 
 
@@ -170,12 +152,47 @@ U8 *enemy_hacking_imgs[4]={__BIN_14,__BIN_13,__BIN_14,__BIN_15};
 
 
 
+
+
+
 	/* <19> <19> (image) */
 
 
 
 
+
+
+
+
+
+U8 *enemy_hacking_imgs[4]={__BIN_17,__BIN_16,__BIN_17,__BIN_18};
+
+
+
+
+
+
+
 	/* <20> <20> (image) */
+
+
+
+
+	/* <21> <21> (image) */
+
+
+
+
+
+
+
+
+	/* <22> <22> (image) */
+
+
+
+
+	/* <23> <23> (image) */
 
 
 
@@ -192,7 +209,7 @@ class LandScapeItem
 
 #define LS_TYPES	4
 U8 *landscape_imgs[LS_TYPES]=
-  {__BIN_17,__BIN_18,__BIN_19,__BIN_20};
+  {__BIN_20,__BIN_21,__BIN_22,__BIN_23};
 
 U0 ExplosionDraw(CDC *dc,Explosion *tmpe,I64 y)
 {
@@ -283,7 +300,7 @@ U0 MPMenDraw(CDC *dc2)
 	Mat4x4RotX(r,pi/6);
 	Mat4x4Scale(r,0.3);
 	if (tmpu->tank)
-	  Sprite3Mat4x4B(dc,tmpu->x,yy,GR_Z_ALL,__BIN_16,r);
+	  Sprite3Mat4x4B(dc,tmpu->x,yy,GR_Z_ALL,__BIN_19,r);
 	else {
 	  if (tmpu->best_dd<(2*HACK_DIST)*(2*HACK_DIST)) {//It's neat so times 2
 	    if (tmpu->friendly)
@@ -292,9 +309,12 @@ U0 MPMenDraw(CDC *dc2)
 	      _tmps=enemy_hacking_imgs;
 	    tt=4*Wrap(tmpu->phase+20*ts,0)/(2*pi);
 	  } else {
-	    if (tmpu->friendly)
-	      _tmps=friendly_imgs;
-	    else
+	    if (tmpu->friendly) {
+	      if (tmpu->CIA && Blink)
+		_tmps=CIA_neeger_imgs;
+	      else
+		_tmps=friendly_imgs;
+	    } else
 	      _tmps=enemy_imgs;
 	    tt=4*Wrap(tmpu->phase+5*ts,0)/(2*pi);
 	  }
@@ -562,6 +582,10 @@ U0 Init()
 	xx=(Fs->pix_width-200)*RandU32/U32_MAX;
 	yy=(MAP_HEIGHT-200)*RandU32/U32_MAX;
       }
+      if (!(i&63))
+	tmpu->CIA=TRUE;
+      else
+	tmpu->CIA=FALSE;
     } else {
       tmpu->friendly=FALSE;
       if (!(i&31)) {

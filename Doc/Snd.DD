@@ -1,8 +1,6 @@
 Sound is generated with I8 vals called ona's, which are 88 piano key nums, 
-with -128 as a rest.  See [C:/Adam/ASnd.HC.Z,183] Note2Ona() and
+with 0 as a rest.  See [C:/Adam/ASnd.HC.Z,183] Note2Ona() and
 [C:/Kernel/KMisc.HC.Z,163] Ona2Freq().  God does not want death 
 screams, perhaps, because God has PTSD or soldiers have PTSD.  (Imagine 
 wounded on battlefields.)  Ona's will allow elegant wave files for export and 
-will allow the creation of simple hardware over the next centuries. 
-[C:/Kernel/KernelA.HH.Z,3774] ONA_REST 
-is off.
+will allow the creation of simple hardware over the next centuries.
