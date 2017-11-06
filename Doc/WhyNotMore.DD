@@ -66,7 +66,7 @@ networking, there will be no browser within the 100,000 line limit and, with
 only 16 colors, the world wide web is not tolerable.  FTP and telnet might be 
 possible, in the far distant future, if they could fit within the 100,000
 line 
-limit.  Currently, there are 80,849 lines of code.
+limit.  Currently, there are 80,860 lines of code.
 
 I don't stand a chance working on native hardware, anymore.  I could install 
 and run natively on hardware from about 2005-2010.  It requires BIOS's being 

@@ -151,4 +151,5 @@ U0 WaterFowl()
   SettingsPop;
 }
 
-PopUp("WaterFowl;",Fs);
+WaterFowl;
+
