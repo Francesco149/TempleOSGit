@@ -2,7 +2,7 @@
 [C:/Kernel/KernelA.HH.Z,3256] TASK_EXCEPT_CALLERS
 [C:/Kernel/KernelA.HH.Z,1907] ARGT_R64
 [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc
-[C:/Kernel/KernelA.HH.Z,3841] BOOT_SRC_NULL
+[C:/Kernel/KernelA.HH.Z,3839] BOOT_SRC_NULL
 [C:/Kernel/SerialDev/Keyboard.HC.Z,86] KbdTypeMatic
 [C:/Kernel/SerialDev/Keyboard.HC.Z,52] KbdLEDsSet
 [C:/Kernel/KernelB.HH.Z,266] LXchgU32
@@ -20,7 +20,7 @@
 [C:/Kernel/KernelB.HH.Z,145] D3Add
 [C:/Kernel/KernelA.HH.Z,45] U64_F64_MAX
 [C:/Kernel/KernelB.HH.Z,159] D3NormSqr
-[C:/Kernel/KernelA.HH.Z,3854] ARf_PLANAR_SYMMETRY
+[C:/Kernel/KernelA.HH.Z,3852] ARf_PLANAR_SYMMETRY
 [C:/Kernel/KernelA.HH.Z,1307] DOCf_PLAIN_TEXT_TABS
 [C:/Kernel/KernelA.HH.Z,484] RLF_BLKDEV
 [C:/Kernel/KernelA.HH.Z,462] RLf_BLKDEV
@@ -51,7 +51,7 @@
 [C:/Kernel/KernelA.HH.Z,919] DOCT_FOREGROUND
 [C:/Kernel/KernelA.HH.Z,348] CGDT
 [C:/Kernel/KernelA.HH.Z,3196] TSF_SAME_SONG
-[C:/Kernel/KernelA.HH.Z,3882] PRTF_NEG_AUX_FMT_NUM
+[C:/Kernel/KernelA.HH.Z,3880] PRTF_NEG_AUX_FMT_NUM
 [C:/Kernel/KernelA.HH.Z,3487] SCF_MS_L_DOWN
 [C:/Kernel/KernelA.HH.Z,3472] SCf_MS_L_DOWN
 [C:/Kernel/KernelA.HH.Z,3179] MSG_MS_L_DOWN
@@ -91,7 +91,7 @@
 [C:/Kernel/KernelA.HH.Z,2079] TK_EOF
 [C:/Kernel/KernelA.HH.Z,3051] CWinScroll
 [C:/Kernel/KernelA.HH.Z,1112] DOCEf_NO_CLICK_ON
-[C:/Kernel/KernelA.HH.Z,3852] ARf_FLOODFILL
+[C:/Kernel/KernelA.HH.Z,3850] ARf_FLOODFILL
 [C:/Kernel/KernelA.HH.Z,1608] ICF_USE_F64
 [C:/Kernel/KernelA.HH.Z,3453] CH_BACKSPACE
 [C:/Kernel/KMathB.HC.Z,52] FloorI64
@@ -113,7 +113,7 @@
 [C:/Kernel/KernelA.HH.Z,2274] ATA_SET_MAX
 [C:/Kernel/KernelA.HH.Z,1741] IEF_DFT
 [C:/Kernel/KernelA.HH.Z,1575] RT_F32
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,180] Let2BlkDev
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,183] Let2BlkDev
 [C:/Kernel/KernelA.HH.Z,2550] FUf_JUST_FILES
 [C:/Kernel/KernelA.HH.Z,1919] ARGT_M1632
 [C:/Kernel/KernelA.HH.Z,991] DOCEF_LEFT_X
@@ -166,7 +166,7 @@
 [C:/Kernel/KernelA.HH.Z,3538] RWF_SHOW_DOLLAR
 [C:/Kernel/KernelA.HH.Z,2773] _CFG_HEAP_DBG
 [C:/Kernel/KernelA.HH.Z,661] HTt_INTERNAL_TYPE
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,509] RedSeaFileWrite
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,517] RedSeaFileWrite
 [C:/Kernel/KernelA.HH.Z,395] CPatchTableAbsAddr
 [C:/Kernel/BlkDev/DskCDDVD.HC.Z,65] DVDImageRead
 [C:/Kernel/KernelA.HH.Z,423] IET_CODE_HEAP
@@ -244,7 +244,7 @@
 [C:/Kernel/KernelA.HH.Z,1016] DOCEF_REMALLOC_DATA
 [C:/Kernel/KHashA.HC.Z,208] _HASH_REM_DEL
 [C:/Kernel/Sched.HC.Z,301] TaskQueRem
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,82] RedSeaValidate
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,83] RedSeaValidate
 [C:/Kernel/KernelA.HH.Z,3433] CH_CTRLH
 [C:/Kernel/KernelA.HH.Z,2428] CPalindromeU32
 [C:/Kernel/KernelA.HH.Z,2423] CPalindromeU16
@@ -286,7 +286,7 @@
 [C:/Kernel/KMathA.HC.Z,184] _D3_DIV
 [C:/Kernel/KernelA.HH.Z,3441] CH_CTRLP
 [C:/Kernel/KernelA.HH.Z,1607] ICF_ARG2_TO_INT
-[C:/Kernel/KernelA.HH.Z,3880] PRTF_NEG
+[C:/Kernel/KernelA.HH.Z,3878] PRTF_NEG
 [C:/Kernel/KernelA.HH.Z,3442] CH_CTRLQ
 [C:/Kernel/KernelA.HH.Z,3355] CTSS
 [C:/Kernel/BlkDev/DskDirB.HC.Z,1] HomeSet
@@ -353,7 +353,7 @@
 [C:/Kernel/KernelA.HH.Z,2520] CDirEntry
 [C:/Kernel/KernelA.HH.Z,2084] TK_STR
 [C:/Kernel/KernelA.HH.Z,1516] ACD_DEF_END
-[C:/Kernel/KernelA.HH.Z,3862] PROGRESS_DESC_LEN
+[C:/Kernel/KernelA.HH.Z,3860] PROGRESS_DESC_LEN
 [C:/Kernel/KernelA.HH.Z,2157] CCF_ASM_EXPRESSIONS
 [C:/Kernel/KernelB.HH.Z,160] D3Sub
 [C:/Kernel/KernelA.HH.Z,3510] SC_CURSOR_RIGHT
@@ -373,7 +373,7 @@
 [C:/Kernel/PCIBIOS.HC.Z,250] PCIWriteU32
 [C:/Kernel/PCIBIOS.HC.Z,235] PCIWriteU16
 [C:/Kernel/KeyDev.HC.Z,168] CtrlAltV
-[C:/Kernel/KernelA.HH.Z,3893] VM_VMWARE
+[C:/Kernel/KernelA.HH.Z,3891] VM_VMWARE
 [C:/Kernel/KUtils.HC.Z,244] _LXCHG_U8
 [C:/Kernel/KeyDev.HC.Z,173] CtrlAltX
 [C:/Kernel/KTask.HC.Z,384] UserTaskCont
@@ -437,7 +437,7 @@
 [C:/Kernel/KernelA.HH.Z,784] MLF_STATIC
 [C:/Kernel/KDefine.HC.Z,156] str2color_lst
 [C:/Kernel/KGlbls.HC.Z,14] local_time_offset
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,537] RedSeaFilesFind
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,545] RedSeaFilesFind
 [C:/Kernel/KernelA.HH.Z,2120] TK_INS_BIN
 [C:/Kernel/BlkDev/DskClus.HC.Z,123] ClusWrite
 [C:/Kernel/KMathA.HC.Z,167] _D3_MUL
@@ -454,7 +454,7 @@
 [C:/Kernel/KernelA.HH.Z,694] HTT_DICT_WORD
 [C:/Kernel/KernelA.HH.Z,664] HTt_DICT_WORD
 [C:/Kernel/KernelA.HH.Z,463] RLf_MP
-[C:/Kernel/KernelA.HH.Z,3875] PRTF_DOLLAR
+[C:/Kernel/KernelA.HH.Z,3873] PRTF_DOLLAR
 [C:/Kernel/KernelA.HH.Z,227] CSpring
 [C:/Kernel/KernelA.HH.Z,2946] CBGR24
 [C:/Kernel/KernelA.HH.Z,3551] FONT_WIDTH
@@ -462,8 +462,8 @@
 [C:/Kernel/KDate.HC.Z,110] LastDayOfYear
 [C:/Kernel/Sched.HC.Z,204] SYS_IDLE_PT
 [C:/Kernel/KernelB.HH.Z,240] mp_cnt_initial
-[C:/Kernel/KernelA.HH.Z,3848] STD_DISTRO_DVD_CFG
-[C:/Kernel/KernelA.HH.Z,3889] OS_WINDOWS
+[C:/Kernel/KernelA.HH.Z,3846] STD_DISTRO_DVD_CFG
+[C:/Kernel/KernelA.HH.Z,3887] OS_WINDOWS
 [C:/Kernel/KernelA.HH.Z,1816] CAbsCntsI64
 [C:/Kernel/MultiProc.HC.Z,283] Core0StartMP
 [C:/Kernel/KMathA.HC.Z,149] _D3_SUB
@@ -604,7 +604,7 @@
 [C:/Kernel/KernelA.HH.Z,3183] MSG_MS_R_DOWN
 [D:/Git/:/Tmp.DD.Z,1] SYS_MEM_INIT_VAL
 [C:/Kernel/KernelA.HH.Z,3381] _R11
-[C:/Kernel/KernelA.HH.Z,3838] BOOT_RAM_LIMIT
+[C:/Kernel/KernelA.HH.Z,3836] BOOT_RAM_LIMIT
 [C:/Kernel/KernelA.HH.Z,3382] _R12
 [C:/Kernel/BlkDev/DskAddDev.HC.Z,179] SysGetI64
 [C:/Kernel/KernelB.HH.Z,173] MemSetI64
@@ -745,7 +745,7 @@
 [C:/Kernel/KernelB.HH.Z,86] RepInU8
 [C:/Kernel/KMisc.HC.Z,285] IsSysDbg
 [C:/Kernel/KernelB.HH.Z,225] progress3_t0
-[C:/Kernel/KernelA.HH.Z,3822] CDbgGlbls
+[C:/Kernel/KernelA.HH.Z,3820] CDbgGlbls
 [C:/Kernel/KExcept.HC.Z,4] _TEST_EXCEPT
 [C:/Kernel/KMathA.HC.Z,632] _FSTCW
 [C:/Kernel/KernelA.HH.Z,3192] MSG_MS_R_DOWN_UP
@@ -780,7 +780,7 @@
 [C:/Kernel/KernelB.HH.Z,150] D3DistSqr
 [C:/Kernel/KernelA.HH.Z,3374] _RDI
 [C:/Kernel/KernelA.HH.Z,1750] SV_R_REG
-[C:/Kernel/KernelA.HH.Z,3873] PRTF_TRUNCATE
+[C:/Kernel/KernelA.HH.Z,3871] PRTF_TRUNCATE
 [C:/Kernel/BlkDev/DskATAId.HC.Z,123] ATARepExitAllApplications
 [C:/Kernel/KMathB.HC.Z,62] CeilI64
 [C:/Kernel/KernelA.HH.Z,3375] _RBP
@@ -890,7 +890,7 @@
 [C:/Kernel/KernelA.HH.Z,3165] CJobCtrl
 [C:/Kernel/KernelB.HH.Z,226] progress3_tf
 [C:/Kernel/KernelA.HH.Z,1742] IEF_NOT_IN_64_BIT
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,155] RedSeaFileFind
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,163] RedSeaFileFind
 [C:/Kernel/KernelA.HH.Z,3046] CTRLF_CAPTURE_RIGHT_MS
 [C:/Kernel/PCIBIOS.HC.Z,4] SYS_PCIBIOS_SERVICE_DIR
 [C:/Kernel/KMisc.HC.Z,122] tS
@@ -971,7 +971,7 @@
 [C:/Kernel/KernelA.HH.Z,1324] DOCf_BWD_MOVEMENT
 [C:/Kernel/SerialDev/Message.HC.Z,95] GetMsg
 [C:/Kernel/BlkDev/DskBlk.HC.Z,71] BlkWrite
-[C:/Kernel/KernelA.HH.Z,3813] CMPCrash
+[C:/Kernel/KernelA.HH.Z,3811] CMPCrash
 [C:/Kernel/KernelA.HH.Z,2893] ROPBF_HALF_RANGE_COLOR
 [C:/Kernel/KernelA.HH.Z,3142] JOBT_EXE_STR
 [C:/Kernel/KernelA.HH.Z,1614] ICF_SHORT_JMP
@@ -1002,7 +1002,7 @@
 [C:/Kernel/KernelA.HH.Z,995] DOCEF_CENTER_Y
 [C:/Kernel/KMathB.HC.Z,147] Seed
 [C:/Kernel/BlkDev/DskDrv.HC.Z,27] DrvsRelease
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,125] BlkDevNextFreeSlot
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,128] BlkDevNextFreeSlot
 [C:/Kernel/KernelA.HH.Z,3235] TASKf_FILTER_INPUT
 [C:/Kernel/KernelA.HH.Z,1011] DOCEF_REFRESH_DATA
 [C:/Kernel/KernelA.HH.Z,1318] DOCf_DONT_HIGHLIGHT_CURSOR
@@ -1019,9 +1019,9 @@
 [C:/Kernel/KernelA.HH.Z,41] STR_LEN
 [C:/Kernel/BlkDev/DskCache.HC.Z,53] DskCacheQueIns
 [C:/Kernel/KernelA.HH.Z,3532] SC_PRTSCRN2
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,300] RedSeaAllocClus
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,308] RedSeaAllocClus
 [C:/Kernel/KernelB.HH.Z,242] sys_semas
-[C:/Kernel/KernelA.HH.Z,3888] OS_LINUX
+[C:/Kernel/KernelA.HH.Z,3886] OS_LINUX
 [C:/Kernel/SerialDev/Message.HC.Z,1] InputFilterTask
 [C:/Kernel/KHashA.HC.Z,4] SYS_HASH_STR
 [C:/Kernel/KernelA.HH.Z,2296] ATAR0_CMD
@@ -1067,7 +1067,7 @@
 [C:/Kernel/Sched.HC.Z,100] _TASK_CONTEXT_RESTORE
 [C:/Kernel/KernelB.HH.Z,32] BFieldOrU32
 [C:/Kernel/KernelA.HH.Z,2114] TK_IFJIT
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,207] RedSeaFileRead
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,215] RedSeaFileRead
 [C:/Kernel/KernelA.HH.Z,3678] VGAP_CRTC_DATA
 [C:/Kernel/KernelA.HH.Z,1892] ARGT_REL32
 [C:/Kernel/KernelA.HH.Z,1891] ARGT_REL16
@@ -1083,7 +1083,7 @@
 [C:/Kernel/KernelA.HH.Z,2926] LTRED
 [C:/Kernel/KernelA.HH.Z,2665] FSG_TYPE_MASK
 [C:/Kernel/StrA.HC.Z,319] StrIMatch
-[C:/Kernel/KernelA.HH.Z,3790] CScrnCastGlbls
+[C:/Kernel/KernelA.HH.Z,3788] CScrnCastGlbls
 [C:/Kernel/KernelA.HH.Z,703] HTG_TYPE_MASK
 [C:/Kernel/KernelB.HH.Z,140] Sign
 [C:/Kernel/Compress.HC.Z,250] ExpandBuf
@@ -1127,7 +1127,7 @@
 [C:/Kernel/KDefine.HC.Z,74] DefineCnt
 [C:/Kernel/KernelA.HH.Z,3521] SC_F5
 [C:/Kernel/KernelA.HH.Z,1432] WIF_FOCUS_TASK_MENU
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,236] RedSeaCd
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,244] RedSeaCd
 [C:/Kernel/Job.HC.Z,1] JobDel
 [C:/Kernel/KernelA.HH.Z,3522] SC_F6
 [C:/Kernel/KernelA.HH.Z,2728] DFT_ISO_C_FILENAME
@@ -1160,7 +1160,7 @@
 [C:/Kernel/KernelA.HH.Z,1095] DOCEf_SOLID_BORDER
 [C:/Kernel/KernelA.HH.Z,988] DOCEF_LEFT_IN_STR
 [C:/Kernel/KernelB.HH.Z,248] sys_pci_busses
-[C:/Kernel/KernelA.HH.Z,3839] BOOT_STK_SIZE
+[C:/Kernel/KernelA.HH.Z,3837] BOOT_STK_SIZE
 [C:/Kernel/KernelA.HH.Z,3223] TTS_LOCKED_CONST
 [C:/Kernel/KernelA.HH.Z,2161] CCf_FUN_EXP
 [C:/Kernel/KernelA.HH.Z,2160] CCF_FUN_EXP
@@ -1196,7 +1196,7 @@
 [C:/Kernel/EdLite.HC.Z,327] FixSet
 [C:/Kernel/KernelA.HH.Z,1335] DOCf_SEL
 [C:/Kernel/KernelA.HH.Z,57] sqrt2
-[C:/Kernel/KernelA.HH.Z,3894] VM_QEMU
+[C:/Kernel/KernelA.HH.Z,3892] VM_QEMU
 [C:/Kernel/KernelA.HH.Z,2294] ATAR0_SEL
 [C:/Kernel/KernelA.HH.Z,1116] DOCEf_FLAGS_NUM
 [C:/Kernel/KernelA.HH.Z,163] CQueVectU8
@@ -1210,7 +1210,7 @@
 [C:/Kernel/KernelA.HH.Z,1797] REG_NONE
 [C:/Kernel/KernelA.HH.Z,1769] OC_LOCK_PREFIX
 [C:/Kernel/KernelA.HH.Z,851] Ff_INTERRUPT
-[C:/Kernel/KernelA.HH.Z,3803] CFunSegCache
+[C:/Kernel/KernelA.HH.Z,3801] CFunSegCache
 [C:/Kernel/KernelA.HH.Z,1883] OM_CD
 [C:/Kernel/KernelA.HH.Z,1979] AAT_ADD_U8
 [C:/Kernel/KernelA.HH.Z,750] REGT_XMM
@@ -1251,15 +1251,14 @@
 [C:/Kernel/KernelA.HH.Z,1887] OM_ID
 [C:/Kernel/KernelA.HH.Z,1884] OM_CP
 [C:/Kernel/KMathA.HC.Z,380] _ROUND
-[C:/Kernel/KernelA.HH.Z,3886] OS_OTHER
+[C:/Kernel/KernelA.HH.Z,3884] OS_OTHER
 [C:/Kernel/KernelA.HH.Z,325] RFLAGf_TRAP
 [C:/Kernel/KernelA.HH.Z,24] I8_MIN
 [C:/Kernel/KHashA.HC.Z,109] SYS_HASH_BUCKET_FIND
-[C:/Kernel/KernelA.HH.Z,3845] BOOT_SRC_DVD
+[C:/Kernel/KernelA.HH.Z,3843] BOOT_SRC_DVD
 [C:/Kernel/KernelA.HH.Z,2565] FUF_RECURSE
 [C:/Kernel/KernelA.HH.Z,2537] FUf_RECURSE
 [C:/Kernel/KernelB.HH.Z,167] MemCmp
-[C:/Kernel/KernelA.HH.Z,3774] ONA_REST
 [C:/Kernel/KernelA.HH.Z,3511] SC_PAGE_UP
 [C:/Kernel/KTask.HC.Z,424] User
 [C:/Kernel/KernelA.HH.Z,3181] MSG_MS_L_D_DOWN
@@ -1315,7 +1314,7 @@
 [C:/Kernel/BlkDev/DskStrB.HC.Z,50] Name2ParentDirClus
 [C:/Kernel/KernelA.HH.Z,1071] DOCEf_SCROLLING_X
 [C:/Kernel/MultiProc.HC.Z,132] MPInt
-[C:/Kernel/KernelA.HH.Z,3843] BOOT_SRC_RAM
+[C:/Kernel/KernelA.HH.Z,3841] BOOT_SRC_RAM
 [C:/Kernel/KernelA.HH.Z,2105] TK_AND_EQU
 [C:/Kernel/KernelA.HH.Z,105] I64
 [C:/Kernel/Job.HC.Z,397] PopUpPrint
@@ -1391,7 +1390,7 @@
 [C:/Kernel/KernelA.HH.Z,171] CFifoU8
 [C:/Kernel/BlkDev/DskATA.HC.Z,194] ATAReadNativeMax
 [C:/Kernel/SerialDev/Mouse.HC.Z,196] MsHardSetPre
-[C:/Kernel/KernelA.HH.Z,3842] BOOT_SRC_ROM
+[C:/Kernel/KernelA.HH.Z,3840] BOOT_SRC_ROM
 [C:/Kernel/KernelA.HH.Z,2835] MEM_FREE_PAG_HASH_SIZE
 [C:/Kernel/KernelA.HH.Z,491] RLF_AUTO_COMPLETE
 [C:/Kernel/KMain.HC.Z,231] SYS_KERNEL_END
@@ -1471,7 +1470,7 @@
 [C:/Kernel/StrPrint.HC.Z,205] TMP_BUF_LEN
 [C:/Kernel/KernelA.HH.Z,2820] MRT_UNUSED
 [C:/Kernel/KernelA.HH.Z,1598] MDG_REG_DISP_SIB
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,456] RedSeaFilesDel
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,464] RedSeaFilesDel
 [C:/Kernel/KernelB.HH.Z,273] XchgU32
 [C:/Kernel/KernelB.HH.Z,272] XchgU16
 [C:/Kernel/KernelA.HH.Z,2101] TK_SHL_EQU
@@ -1503,7 +1502,7 @@
 [C:/Kernel/KernelA.HH.Z,1772] OC_CALL
 [C:/Kernel/Job.HC.Z,39] TaskExe
 [C:/Kernel/BlkDev/DskFile.HC.Z,79] FileWrite
-[C:/Kernel/KernelA.HH.Z,3857] ARf_CSPRITE_PTS_RECTANGLES
+[C:/Kernel/KernelA.HH.Z,3855] ARf_CSPRITE_PTS_RECTANGLES
 [C:/Kernel/KernelA.HH.Z,337] RFLAGf_ID
 [C:/Kernel/KernelA.HH.Z,3478] SCF_E0_PREFIX
 [C:/Kernel/KernelA.HH.Z,3463] SCf_E0_PREFIX
@@ -1518,10 +1517,10 @@
 [C:/Kernel/KernelA.HH.Z,2918] RED
 [C:/Kernel/KernelA.HH.Z,1565] RT_U0
 [C:/Kernel/KernelA.HH.Z,3682] VGAR_MAP_MASK
-[C:/Kernel/KernelA.HH.Z,3874] PRTF_COMMA
+[C:/Kernel/KernelA.HH.Z,3872] PRTF_COMMA
 [C:/Kernel/KernelA.HH.Z,2061] CAOTCtrl
 [C:/Kernel/KernelA.HH.Z,1150] DOC_COLOR_DEFINE_STR
-[C:/Kernel/KernelA.HH.Z,3895] VM_VIRTUALBOX
+[C:/Kernel/KernelA.HH.Z,3893] VM_VIRTUALBOX
 [C:/Kernel/KernelA.HH.Z,3486] SCF_NEW_KEY
 [C:/Kernel/Sched.HC.Z,56] TASK_CONTEXT_SAVE
 [C:/Kernel/KernelA.HH.Z,3471] SCf_NEW_KEY
@@ -1589,7 +1588,7 @@
 [C:/Kernel/KernelA.HH.Z,922] DOCT_DFT_BACKGROUND
 [C:/Kernel/KernelA.HH.Z,921] DOCT_DFT_FOREGROUND
 [C:/Kernel/KernelA.HH.Z,2147] CCF_KEEP_SIGN_NUM
-[C:/Kernel/KernelA.HH.Z,3844] BOOT_SRC_HARDDRV
+[C:/Kernel/KernelA.HH.Z,3842] BOOT_SRC_HARDDRV
 [C:/Kernel/KHashA.HC.Z,255] HashFind
 [C:/Kernel/KernelB.HH.Z,148] D3Cross
 [C:/Kernel/KernelA.HH.Z,1003] DOCEF_ESC
@@ -1604,7 +1603,7 @@
 [C:/Kernel/KernelA.HH.Z,328] RFLAGf_OVERFLOW
 [C:/Kernel/KMathA.HC.Z,462] SYS_POW
 [C:/Kernel/StrA.HC.Z,315] StrNICmp
-[C:/Kernel/KernelA.HH.Z,3853] ARf_CSPRITE_INS_CLIP
+[C:/Kernel/KernelA.HH.Z,3851] ARf_CSPRITE_INS_CLIP
 [C:/Kernel/KernelA.HH.Z,1325] DOCf_NULL_GRAB_SCROLL
 [C:/Kernel/KernelA.HH.Z,1081] DOCEf_RIGHT_X
 [C:/Kernel/KernelA.HH.Z,993] DOCEF_RIGHT_X
@@ -1643,7 +1642,7 @@
 [C:/Kernel/KernelA.HH.Z,2596] FUG_FILE_FIND
 [C:/Kernel/KernelA.HH.Z,303] I_PAGE_FAULT
 [C:/Kernel/BlkDev/DskDrv.HC.Z,14] DrvUnlock
-[C:/Kernel/KernelA.HH.Z,3863] CProgress
+[C:/Kernel/KernelA.HH.Z,3861] CProgress
 [C:/Kernel/KernelB.HH.Z,122] Arg
 [C:/Kernel/KernelA.HH.Z,2661] FSt_ISO9660
 [C:/Kernel/KernelA.HH.Z,2475] CISOPriDesc
@@ -1794,7 +1793,7 @@
 [C:/Kernel/StrA.HC.Z,30] PUT_HEX_U32
 [C:/Kernel/BlkDev/DskATA.HC.Z,144] ATAPIStartStop
 [C:/Kernel/KMathA.HC.Z,347] _SIGN
-[C:/Kernel/KernelA.HH.Z,3881] PRTF_NEG_E
+[C:/Kernel/KernelA.HH.Z,3879] PRTF_NEG_E
 [C:/Kernel/KernelA.HH.Z,743] REGT_R8
 [C:/Kernel/KernelA.HH.Z,623] SEMA_DEV_MEM
 [C:/Kernel/KernelA.HH.Z,55] log10_2
@@ -1825,7 +1824,7 @@
 [C:/Kernel/KStart16.HC.Z,17] SYS_KERNEL
 [C:/Kernel/KernelA.HH.Z,321] RFLAGf_PARITY
 [C:/Kernel/KStart32.HC.Z,57] SYS_PROGRESS4_MAX
-[C:/Kernel/KernelA.HH.Z,3871] PRTF_PAD_ZERO
+[C:/Kernel/KernelA.HH.Z,3869] PRTF_PAD_ZERO
 [C:/Kernel/KernelA.HH.Z,3735] SUF_TO_UPPER
 [C:/Kernel/KernelA.HH.Z,2677] MBR_PT_REDSEA
 [C:/Kernel/KernelA.HH.Z,2676] MBR_PT_NTFS
@@ -1896,7 +1895,7 @@
 [C:/Kernel/BlkDev/DskATA.HC.Z,281] ATAPIReadTrackInfo
 [C:/Kernel/KernelA.HH.Z,2262] CATARep
 [C:/Kernel/KernelA.HH.Z,1784] REG_RAX
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,248] RedSeaFreeClus
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,256] RedSeaFreeClus
 [C:/Kernel/BlkDev/DskATA.HC.Z,353] ATAReadBlks
 [C:/Kernel/KernelB.HH.Z,146] D3AddEqu
 [C:/Kernel/KernelB.HH.Z,58] ToUpper
@@ -1973,8 +1972,8 @@
 [C:/Kernel/StrPrint.HC.Z,200] sys_pos_pows_lets
 [C:/Kernel/KDataTypes.HC.Z,76] QueSize
 [C:/Kernel/KMathB.HC.Z,74] LIN_CONGRUE_A
-[C:/Kernel/KernelA.HH.Z,3892] VM_NATIVE
-[C:/Kernel/KernelA.HH.Z,3887] OS_NATIVE
+[C:/Kernel/KernelA.HH.Z,3890] VM_NATIVE
+[C:/Kernel/KernelA.HH.Z,3885] OS_NATIVE
 [C:/Kernel/KernelA.HH.Z,3689] CT_8_BIT
 [C:/Kernel/KernelA.HH.Z,1788] REG_RSP
 [C:/Kernel/KeyDev.HC.Z,128] CtrlAltDel
@@ -2007,7 +2006,7 @@
 [C:/Kernel/KGlbls.HC.Z,23] dev
 [C:/Kernel/FunSeg.HC.Z,114] FunSegCacheFind
 [C:/Kernel/SerialDev/Mouse.HC.Z,9] MsUpdate
-[C:/Kernel/KernelA.HH.Z,3898] CInsReg
+[C:/Kernel/KernelA.HH.Z,3896] CInsReg
 [C:/Kernel/KernelA.HH.Z,698] HTT_REG
 [C:/Kernel/StrA.HC.Z,577] StrFirstRem
 [C:/Kernel/KernelA.HH.Z,3045] CTRLF_CAPTURE_LEFT_MS
@@ -2038,14 +2037,14 @@
 [C:/Kernel/KDataTypes.HC.Z,41] QueDel
 [C:/Kernel/BlkDev/DskDrv.HC.Z,161] Let2Let
 [C:/Kernel/KernelA.HH.Z,1631] ICF_DONT_RESTORE
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,350] RedSeaDirNew
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,358] RedSeaDirNew
 [C:/Kernel/KernelA.HH.Z,420] IET_REL64_EXPORT
 [C:/Kernel/KernelA.HH.Z,418] IET_REL32_EXPORT
 [C:/Kernel/Mem/PageTables.HC.Z,157] SYS_INIT_16MEG_SYS_CODE_BP
 [C:/Kernel/KernelA.HH.Z,3116] CExcept
 [C:/Kernel/KernelB.HH.Z,70] QueInsRev
 [C:/Kernel/KStart32.HC.Z,35] SYS_EXTERN_TABLE
-[C:/Kernel/KernelA.HH.Z,3876] PRTF_SLASH
+[C:/Kernel/KernelA.HH.Z,3874] PRTF_SLASH
 [C:/Kernel/KernelA.HH.Z,945] DOCT_HTML_CODE
 [C:/Kernel/KernelA.HH.Z,514] LAPIC_IRR
 [C:/Kernel/StrA.HC.Z,353] char_bmp_hex_numeric
@@ -2112,7 +2111,7 @@
 [C:/Kernel/Mem/MAllocFree.HC.Z,434] CAllocAligned
 [C:/Kernel/Mem/MAllocFree.HC.Z,423] MAllocAligned
 [C:/Kernel/KernelB.HH.Z,53] ext
-[C:/Kernel/KernelA.HH.Z,3802] FUN_SEG_CACHE_SIZE
+[C:/Kernel/KernelA.HH.Z,3800] FUN_SEG_CACHE_SIZE
 [C:/Kernel/KernelA.HH.Z,1494] ACf_INIT_IN_PROGRESS
 [C:/Kernel/KDbg.HC.Z,250] RawDm
 [C:/Kernel/KernelA.HH.Z,1624] ICf_DONT_POP_FLOAT0
@@ -2210,7 +2209,7 @@
 [C:/Kernel/KernelA.HH.Z,1926] ARGT_MOFFS32
 [C:/Kernel/KernelA.HH.Z,1925] ARGT_MOFFS16
 [C:/Kernel/KernelB.HH.Z,180] sys_heap_dbg
-[C:/Kernel/KernelA.HH.Z,3872] PRTF_LEFT_JUSTIFY
+[C:/Kernel/KernelA.HH.Z,3870] PRTF_LEFT_JUSTIFY
 [C:/Kernel/KernelA.HH.Z,2576] FUF_SINGLE
 [C:/Kernel/KernelA.HH.Z,2548] FUf_SINGLE
 [C:/Kernel/KernelA.HH.Z,1115] DOCEf_DFT_RAW_TYPE
@@ -2221,14 +2220,14 @@
 [C:/Kernel/KDataTypes.HC.Z,132] QueVectU8Del
 [C:/Kernel/KernelB.HH.Z,115] SwapU32
 [C:/Kernel/KernelB.HH.Z,113] SwapU16
-[C:/Kernel/KernelA.HH.Z,3856] ARf_MESH_ED
+[C:/Kernel/KernelA.HH.Z,3854] ARf_MESH_ED
 [C:/Kernel/KernelA.HH.Z,1823] CAsmUndefHash
 [C:/Kernel/KernelA.HH.Z,657] HTt_IMPORT_SYS_SYM
 [C:/Kernel/KernelA.HH.Z,656] HTt_EXPORT_SYS_SYM
 [C:/Kernel/PCIBIOS.HC.Z,63] C32_EDI
 [C:/Kernel/KGlbls.HC.Z,15] pow10_I64
 [C:/Kernel/KGlbls.HC.Z,9] sys_num_spawned_tasks
-[C:/Kernel/KernelA.HH.Z,3777] CAUData
+[C:/Kernel/KernelA.HH.Z,3775] CAUData
 [C:/Kernel/KernelA.HH.Z,521] LAPIC_LVT_LINT0
 [C:/Kernel/Compress.HC.Z,155] ArcFinishCompression
 [C:/Kernel/KernelA.HH.Z,522] LAPIC_LVT_LINT1
@@ -2277,8 +2276,8 @@
 [C:/Kernel/Job.HC.Z,265] JOB_DONE
 [C:/Kernel/KLoad.HC.Z,154] LoadPass2
 [C:/Kernel/Mem/MemPag.HC.Z,114] MemPagTaskAlloc
-[C:/Kernel/KernelA.HH.Z,3858] ARf_MANAGE_SLIDER
-[C:/Kernel/KernelA.HH.Z,3783] CSndData
+[C:/Kernel/KernelA.HH.Z,3856] ARf_MANAGE_SLIDER
+[C:/Kernel/KernelA.HH.Z,3781] CSndData
 [C:/Kernel/KernelA.HH.Z,3512] SC_PAGE_DOWN
 [C:/Kernel/KernelA.HH.Z,1770] OC_NOP
 [C:/Kernel/KMisc.HC.Z,47] IntCore0TimerHndlr
@@ -2325,7 +2324,7 @@
 [C:/Kernel/KernelA.HH.Z,2081] TK_SUBSCRIPT
 [C:/Kernel/KernelA.HH.Z,1443] WIG_TASK_DFT
 [C:/Kernel/KernelA.HH.Z,742] REGT_NONE
-[C:/Kernel/KernelA.HH.Z,3855] ARf_PSALMODY_JUKEBOX
+[C:/Kernel/KernelA.HH.Z,3853] ARf_PSALMODY_JUKEBOX
 [C:/Kernel/KernelA.HH.Z,1061] DOCEf_HTML_LINK
 [C:/Kernel/KernelA.HH.Z,973] DOCEF_HTML_LINK
 [C:/Kernel/SerialDev/Keyboard.HC.Z,3] NORMAL_KEY_SCAN_DECODE_TABLE
@@ -2351,7 +2350,7 @@
 [C:/Kernel/KernelA.HH.Z,1065] DOCEf_RIGHT_MACRO
 [C:/Kernel/KernelA.HH.Z,487] RLF_DOC
 [C:/Kernel/KernelB.HH.Z,80] OutU8
-[C:/Kernel/KernelA.HH.Z,3877] PRTF_QUESTION
+[C:/Kernel/KernelA.HH.Z,3875] PRTF_QUESTION
 [C:/Kernel/KernelA.HH.Z,3580] DCF_ALIAS
 [C:/Kernel/MultiProc.HC.Z,194] CoreAPSethTask
 [C:/Kernel/KernelA.HH.Z,852] Ff_HASERRCODE
@@ -2390,7 +2389,7 @@
 [C:/Kernel/KernelA.HH.Z,1449] WIf_SELF_FOCUS
 [C:/Kernel/BlkDev/DskCFile.HC.Z,73] FClose
 [C:/Kernel/KernelA.HH.Z,1583] MDf_STK
-[C:/Kernel/KernelA.HH.Z,3878] PRTF_AUX_FMT_NUM
+[C:/Kernel/KernelA.HH.Z,3876] PRTF_AUX_FMT_NUM
 [C:/Kernel/KernelA.HH.Z,2931] COLORS_NUM
 [C:/Kernel/KernelA.HH.Z,1968] IEF_GOTO_LABEL
 [C:/Kernel/KernelA.HH.Z,1699] CMT_GOTO_LABEL
@@ -2407,7 +2406,7 @@
 [C:/Kernel/Job.HC.Z,267] JOB_EXIT
 [C:/Kernel/KMisc.HC.Z,155] Sleep
 [C:/Kernel/KernelA.HH.Z,2539] FUf_DEL
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,602] RedSeaMkDir
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,610] RedSeaMkDir
 [C:/Kernel/KeyDev.HC.Z,1] PutKey
 [C:/Kernel/KHashA.HC.Z,120] _HASH_STR
 [C:/Kernel/KernelA.HH.Z,2979] CMsHardStateGlbls
@@ -2443,7 +2442,7 @@
 [C:/Kernel/KernelA.HH.Z,3513] SC_HOME
 [C:/Kernel/BlkDev/DskATA.HC.Z,106] ATAPIWritePktWord
 [C:/Kernel/BlkDev/DskStrA.HC.Z,40] FilesFindMatch
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,114] BlkDevsRelease
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,117] BlkDevsRelease
 [C:/Kernel/KernelA.HH.Z,1140] DOC_COLOR_LINK
 [C:/Kernel/KernelA.HH.Z,1985] AAT_ADD_U64
 [C:/Kernel/KernelA.HH.Z,690] HTT_CLASS
@@ -2464,7 +2463,7 @@
 [C:/Kernel/KernelA.HH.Z,1460] WIf_FOCUS_TASK_CTRLS
 [C:/Kernel/PCIBIOS.HC.Z,66] C32_RSP
 [C:/Kernel/StrPrint.HC.Z,20] OutStr
-[C:/Kernel/KernelA.HH.Z,3861] PROGRESS_BARS_NUM
+[C:/Kernel/KernelA.HH.Z,3859] PROGRESS_BARS_NUM
 [C:/Kernel/KernelA.HH.Z,1098] DOCEf_CHECK_COLLAPSABLE
 [C:/Kernel/KernelA.HH.Z,999] DOCEF_PAGE_REL_Y
 [C:/Kernel/KMain.HC.Z,89] TimersInit
@@ -2483,7 +2482,7 @@
 [C:/Kernel/BlkDev/DskATA.HC.Z,118] ATAPISetMaxSpeed
 [C:/Kernel/KDbg.HC.Z,104] StkRep
 [C:/Kernel/KernelB.HH.Z,117] SwapU8
-[C:/Kernel/KernelA.HH.Z,3810] FUN_SEG_CACHE_STR_LEN
+[C:/Kernel/KernelA.HH.Z,3808] FUN_SEG_CACHE_STR_LEN
 [C:/Kernel/KernelA.HH.Z,3569] DCF_TRANSFORMATION
 [C:/Kernel/KernelA.HH.Z,2760] FF_CONTIGUOUS
 [C:/Kernel/KernelA.HH.Z,627] SEMA_MUTE
@@ -2529,9 +2528,9 @@
 [C:/Kernel/StrA.HC.Z,309] StrCmp
 [C:/Kernel/KernelA.HH.Z,1226] DOF_INTERCEPT_TASK_END
 [C:/Kernel/KernelA.HH.Z,586] SF_ARG8
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,159] BlkDevDel
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,162] BlkDevDel
 [C:/Kernel/KernelA.HH.Z,3459] ST_ERR_ST
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,168] BlkDevChk
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,171] BlkDevChk
 [C:/Kernel/KernelA.HH.Z,2659] FSt_REDSEA
 [C:/Kernel/KernelA.HH.Z,2252] CPCIDev
 [C:/Kernel/KernelA.HH.Z,1114] DOCEf_DFT_LEN
@@ -2592,9 +2591,9 @@
 [C:/Kernel/KernelB.HH.Z,183] sys_mem_init_flag
 [C:/Kernel/KernelA.HH.Z,3536] RWF_IN_DOLLAR
 [C:/Kernel/KernelA.HH.Z,3252] DISPLAYf_CHILDREN_NOT_ON_TOP
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,94] RedSeaFmt
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,102] RedSeaFmt
 [C:/Kernel/KernelB.HH.Z,186] sys_var_init_flag
-[C:/Kernel/KernelA.HH.Z,3879] PRTF_DECIMAL
+[C:/Kernel/KernelA.HH.Z,3877] PRTF_DECIMAL
 [C:/Kernel/KernelA.HH.Z,530] IOAPIC_DATA
 [C:/Kernel/KDbg.HC.Z,337] SysGetStr2
 [C:/Kernel/KGlbls.HC.Z,32] fp_getstr2
@@ -2625,7 +2624,7 @@
 [C:/Kernel/KernelA.HH.Z,701] HTT_HELP_FILE
 [C:/Kernel/KernelA.HH.Z,671] HTt_HELP_FILE
 [C:/Kernel/KernelB.HH.Z,139] Round
-[C:/Kernel/KernelA.HH.Z,3891] VM_OTHER
+[C:/Kernel/KernelA.HH.Z,3889] VM_OTHER
 [C:/Kernel/Job.HC.Z,25] TaskRstAwaitingMsg
 [C:/Kernel/KernelA.HH.Z,2466] ISOT_TERMINATOR
 [C:/Kernel/KernelA.HH.Z,2295] ATAR0_STAT
@@ -2733,7 +2732,7 @@
 [C:/Kernel/EdLite.HC.Z,7] EdLiteUpdate
 [C:/Kernel/Compress.HC.Z,43] _ARC_ENTRY_GET
 [C:/Kernel/KStart32.HC.Z,34] SYS_CTRL_ALT_FLAGS
-[C:/Kernel/KernelA.HH.Z,3837] BOOT_RAM_BASE
+[C:/Kernel/KernelA.HH.Z,3835] BOOT_RAM_BASE
 [C:/Kernel/KernelA.HH.Z,3133] JOBf_HIGHEST_PRIORITY
 [C:/Kernel/KernelA.HH.Z,2515] MT_DVD
 [C:/Kernel/KHashB.HC.Z,240] FramePtrDel

@@ -1,5 +1,15 @@
                                      TODO
 
+* Change mouse Z to wheel.
+
+* 10/28/17 Editor froze when filter search 3, in bible, "hour".
+
+* 10/28/17 Titanium froze
+
+* Corrupt ISO.C 
+
+* DskChk CDROM
+
 * Compiler Bug: [C:/Adam/Gr/ScrnCast.HC.Z,78] AUWrite()
 dst->cdt=t0_now+ToI64(CDATE_FREQ*(tmpsd->tS-t0_tS));
 
@@ -25,8 +35,6 @@ for FAT32, Sup1Hymns.  ClusNum was
 * Fix straight shooting.
 * Helicopters.
 * Anti-Aircraft.
-
-* Fix [C:/Home/Sup1/Sup1Graphics/ICOFile.HC,1]
 
 * 64-Bit Device Memory
 `F("mem64_ptr");View;`
