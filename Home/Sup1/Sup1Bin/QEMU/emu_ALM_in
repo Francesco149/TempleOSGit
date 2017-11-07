@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer /Home/ALM files into QEMU.
-
-echo ALM EMU In
-sudo ~/TOS/Bin/QEMU/emu_ALM_in2
-
