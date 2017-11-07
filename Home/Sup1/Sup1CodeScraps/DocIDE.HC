@@ -137,9 +137,9 @@ public U0 IDE(U8 *filename)
 	"I recommend making use of:\n"
 	"[C:/Kernel/KernelB.HH.Z,209] progress1-[C:/Kernel/KernelB.HH.Z,227] progress4,\t\t-- glbl I64 vars shown on wallpaper\n"
 	"[C:/Kernel/KDbg.HC.Z,217] RawPrint(), [C:/Kernel/KDbg.HC.Z,234] RawD(), [C:/Kernel/KDbg.HC.Z,250] RawDm()\t-- raw text output for a time\n"
-	"[C:/Kernel/KMisc.HC.Z,218] Beep(), [C:/Kernel/KMisc.HC.Z,179] Snd()\t\t\t-- sound\n"
+	"[C:/Kernel/KMisc.HC.Z,237] Beep(), [C:/Kernel/KMisc.HC.Z,179] Snd()\t\t\t-- sound\n"
 	"[C:/Kernel/Job.HC.Z,423] AdamLog(), [C:/Kernel/Job.HC.Z,433] AdamErr()\t\t-- print to adam task's window\n"
-	"[C:/Kernel/KMisc.HC.Z,261] SysDbg(), [C:/Kernel/KMisc.HC.Z,266] IsSysDbg()\t\t-- just a flag\n\n")) {
+	"[C:/Kernel/KMisc.HC.Z,280] SysDbg(), [C:/Kernel/KMisc.HC.Z,285] IsSysDbg()\t\t-- just a flag\n\n")) {
     WinHorz(1,TEXT_COLS>>1-1);
     WinVert(2,TEXT_ROWS-2);
     LBts(&Fs->display_flags,DISPLAYf_CHILDREN_NOT_ON_TOP);

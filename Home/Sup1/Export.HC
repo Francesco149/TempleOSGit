@@ -43,7 +43,7 @@ U0 ExportBinary(U8 *src_file,CDocBin *b)
 }
 
 U8 *ResolveLink(U8 *link_st)
-{ //Adapted from [C:/Adam/DolDoc/DocEd.HC.Z,189] Ed. Resolves stuff like MN:Func to the file
+{ //Adapted from [C:/Adam/DolDoc/DocEd.HC.Z,204] Ed. Resolves stuff like MN:Func to the file
   U8 *res,*filename=NULL,*pattern=NULL;
   I64 num;
   if (EdLinkCvt(link_st,&filename,&pattern,&num,0)==-1)
@@ -625,7 +625,9 @@ U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
 //to start the export.
 
 U0 ExportTree() {
-  CTask *task=User("#include \"D:/Export.HC\"
+  Copy("D:/Export.HC","C:/Export.HC");
+  CTask *task=User("#include \"C:/Export.HC\";
+DskChg('D');
 ExportTreeImpl;
 ExportSingle(\"D:/Export.HC\",\"D:/Git/Export.HC\");
 ");

@@ -1,9 +1,0 @@
-#!/bin/bash
-
-#Transfer /Home/ALM files into QEMU.
-
-~/TOS/Bin/QEMU/emu_mnt
-rm -R /mnt/qemu_disk/Home
-cp -R --preserve=timestamps ~/TOS/Home /mnt/qemu_disk
-~/TOS/Bin/QEMU/emu_umnt
-

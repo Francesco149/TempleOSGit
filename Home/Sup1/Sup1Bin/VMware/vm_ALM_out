@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#Transfer /Home/ALM files out of VMware.
-
-echo ALM VMware Out
-sudo ~/TOS/Bin/VMware/vm_ALM_out2
-
