@@ -26,8 +26,7 @@
 #define SPBM_ADD_OUTLINE	23
 #define SPBM_ETCH		24
 #define SPBM_UNDO		25
-#define SPBM_SAVE_BMP		26
-#define SPBM_SAVE_GRA		27
+#define SPBM_SAVE_GR		26
 
 U0 GrInit4()
 {
@@ -36,7 +35,7 @@ U0 GrInit4()
 	"Rect\0Circle\0Text\0Text Box\0Text Diamond\0Flood Fill\0"
 	"Flood Fill Not Color\0PolyLine\0PolyPoint\0Copy\0Delete\0Paste\0"
 	"Paste Transparent\0Find and Replace\0Trim to Extents\0Add Outline\0"
-	"Etch\0Undo\0Save BMP\0Save GR\0");
+	"Etch\0Undo\0Save GR\0");
 }
 GrInit4;
 
@@ -79,8 +78,7 @@ I64 PopUpSpriteBitMap(CColorROPU32 color,I64 width)
 	"$MU-UL,\"Delete to Clip\",LE=SPBM_DELETE$\n"
 	"$MU-UL,\"Paste Clip\",LE=SPBM_PASTE$\n"
 	"$MU-UL,\"Paste Transparent Clip\",LE=SPBM_PASTE_TRANSPARENT$\n"
-	"\n$MU-UL,\"Save BMP File\",LE=SPBM_SAVE_BMP$\n"
-	"$MU-UL,\"Save GR File\",LE=SPBM_SAVE_GRA$\n"
+	"\n$MU-UL,\"Save GR File\",LE=SPBM_SAVE_GR$\n"
 	"\n$MU-UL,\"Undo\",LE=SPBM_UNDO$\n"
 	"\n$PURPLE$$MU-UL,\"+] Sprite Main Menu\",LE=SPBM_MAIN_MENU$$LTBLUE$\n"
 	"$MU-UL,\"Exit  Sprite\",LE=SPBM_EXIT$\n"
@@ -219,7 +217,7 @@ I64 SpriteBitMapEd(CDoc *,CDocEntry *doc_e,CDC *dc,I64 *_xx1,I64 *_yy1,
       GrBitMapEdPrepPersistentDC(dc,xx1,yy1,img);
 
     dc->color=ROPF_DITHER+WHITE<<16+BLACK;
-    dc->pen_width=1;
+    dc->thick=1;
     GrBorder(dc,xx1-1,yy1-1,xx2,yy2);//This is done little bit too often.
 
     while (msg_code=ScanMsg(&arg1,&arg2,1<<MSG_MS_L_DOWN|1<<MSG_MS_L_UP|
@@ -293,12 +291,7 @@ bm_menu:
 		GrBitMapEdPrepPersistentDC(dc,xx1,yy1,img);
 	      }
 	      goto bm_menu;
-	    case SPBM_SAVE_BMP:
-	      *filename.name=0;
-	      if (DocForm(&filename) && *filename.name)
-		BMPWrite(filename.name,img);
-	      goto bm_menu;
-	    case SPBM_SAVE_GRA:
+	    case SPBM_SAVE_GR:
 	      *filename.name=0;
 	      if (DocForm(&filename) && *filename.name)
 		GRWrite(filename.name,img,DCSF_COMPRESSED|DCSF_PALETTE_GET);
@@ -308,7 +301,7 @@ bm_menu:
 	      if (i>=0) color=i;
 	      goto bm_menu;
 	    case SPBM_WIDTH:
-	      i=PopUpRangeI64(1,16,1,"Pen Width\n");
+	      i=PopUpRangeI64(1,16,1,"Thick\n");
 	      if (i>=0) width=i;
 	      goto bm_menu;
 	    case SPBM_UNDO:
@@ -357,7 +350,7 @@ bm_menu:
 	  switch (mode) {
 	    case SPBM_PT:
 	      img->color=color;
-	      img->pen_width=width;
+	      img->thick=width;
 	      GrPlot3(img,arg1-xx1,arg2-yy1,0);
 	      GrBitMapEdPrepPersistentDC(dc,xx1,yy1,img);
 	      break;
@@ -367,7 +360,7 @@ bm_menu:
 	      x1=arg1; y1=arg2;
 	      down=TRUE;
 	      dc->color=color;
-	      dc->pen_width=width;
+	      dc->thick=width;
 	      case SPBM_LINE:
 		GrLine3(dc,x1,y1,0,arg1,arg2,0);
 		break;
@@ -383,7 +376,7 @@ bm_menu:
 	      case SPBM_COPY:
 	      case SPBM_DELETE:
 		dc->color=ROPF_DITHER+WHITE<<16+BLACK;
-		dc->pen_width=1;
+		dc->thick=1;
 		GrBorder(dc,x1,y1,x1,y1);
 		break;
 	    end:
@@ -434,7 +427,7 @@ bm_menu:
 		x1=arg1; y1=arg2;
 		down=TRUE;
 		dc->color=color;
-		dc->pen_width=width;
+		dc->thick=width;
 		GrLine3(dc,x1,y1,0,arg1,arg2,0);
 	      }
 	      break;
@@ -442,7 +435,7 @@ bm_menu:
 	      x1=arg1; y1=arg2;
 	      down=TRUE;
 	      img->color=color;
-	      img->pen_width=width;
+	      img->thick=width;
 	      GrLine3(img,x1-xx1,y1-yy1,0,arg1-xx1,arg2-yy1,0);
 	      GrBitMapEdPrepPersistentDC(dc,xx1,yy1,img);
 	      break;
@@ -456,7 +449,7 @@ bm_menu:
 	      if (down) {
 		GrBitMapEdPrepPersistentDC(dc,xx1,yy1,img);
 		dc->color=color;
-		dc->pen_width=width;
+		dc->thick=width;
 		if (mode==SPBM_ARROW)
 		  GrArrow3(dc,x1,y1,0,arg1,arg2,0);
 		else
@@ -503,7 +496,7 @@ bm_menu:
 		  y22=y1;
 		}
 		dc->color=ROPF_DITHER+WHITE<<16+BLACK;
-		dc->pen_width=1;
+		dc->thick=1;
 		GrBorder(dc,x11,y11,x22,y22);
 	      }
 	      break;
@@ -511,7 +504,7 @@ bm_menu:
 	      if (down) {
 		GrBitMapEdPrepPersistentDC(dc,xx1,yy1,img);
 		dc->color=color;
-		dc->pen_width=width;
+		dc->thick=width;
 		GrCircle3(dc,x1,y1,0,Sqrt(SqrI64(arg1-x1)+SqrI64(arg2-y1)));
 	      }
 	      break;
@@ -549,7 +542,7 @@ bm_menu:
 	    case SPBM_POLYPT:
 	      if (down) {
 		img->color=color;
-		img->pen_width=width;
+		img->thick=width;
 		GrLine3(img,x1-xx1,y1-yy1,0,arg1-xx1,arg2-yy1,0);
 		GrBitMapEdPrepPersistentDC(dc,xx1,yy1,img);
 		x1=arg1; y1=arg2;
@@ -564,7 +557,7 @@ bm_menu:
 	    case SPBM_POLYPT:
 	    case SPBM_POLYLINE:
 	      img->color=color;
-	      img->pen_width=width;
+	      img->thick=width;
 	      if (mode==SPBM_ARROW)
 		GrArrow3(img,x1-xx1,y1-yy1,0,arg1-xx1,arg2-yy1,0);
 	      else
@@ -621,7 +614,7 @@ bm_menu:
 	      goto bm_menu;
 	    case SPBM_CIRCLE:
 	      img->color=color;
-	      img->pen_width=width;
+	      img->thick=width;
 	      GrCircle3(img,x1-xx1,y1-yy1,0,
 		    Sqrt(SqrI64(arg1-x1)+SqrI64(arg2-y1)));
 	      down=FALSE;

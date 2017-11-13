@@ -4,6 +4,8 @@ before import is resolved, you can use
 "import".  Otherwise, use a fun pointer
 var and check it before calling.
 */
+import U0 ClassRep(U8 *_d,U8 *class_name=lastclass,
+	I64 max_depth=2,Bool fun=FALSE,I64 offset=0);
 import U8 *DocSave(CDoc *doc,I64 *_size=NULL);
 import Bool DocUnlock(CDoc *doc);
 import Bool Ed(U8 *link_st,I64 edf_dof_flags=0);
@@ -60,8 +62,6 @@ extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE);
 extern I64 GetS(U8 *buf,I64 size,Bool allow_ext=TRUE);
 extern CHeapCtrl *HeapCtrlInit(CHeapCtrl *hc=NULL,
 	CTask *task=NULL,CBlkPool *bp);
-extern Bool ISO1FileFind(CDrv *dv,I64 cur_dir_clus,U8 *name,
-	CDirEntry *_res,I64 fuf_flags=0);
 extern Bool ISOInit(CDrv *dv,I64 blk);
 extern Bool IsDbgMode();
 extern Bool IsDir(U8 *dir_name);

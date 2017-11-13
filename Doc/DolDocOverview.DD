@@ -66,7 +66,7 @@ See [C:/Doc/Widget.DD.Z,1], [C:/Demo/DolDoc/DemoDoc.DD,1], and
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HH.Z,2956] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HH.Z,2914] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -144,9 +144,9 @@ Examples: <CTRL-t> to see
 9)[C:/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually just does
   a text search.
 10) [Doc,1] Help Index Link.
-11) [C:/Kernel/KHashB.HC.Z,109] Address Link.
+11) [C:/Kernel/KHashB.HC.Z,106] Address Link.
 
-12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.HC.Z,578]
+12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.HC.Z,573]
   SpriteEdText().
 
 +] BT Bttn
@@ -154,7 +154,7 @@ Examples: <CTRL-t> to see
 +] DA Data
   Used for forms that prompt for data or just displaying a value.  Use
   <CTRL-l> to help you generate the DolDoc command text you need in your
-  [C:/Doc/HolyC.DD.Z,1] HolyC class member's fmtstr meta-data for
+  [C:/Doc/HolyC.DD.Z,1] HolyC class member's format meta-data for
   [C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm().  See [C:/Demo/DolDoc/Form.HC,1],
   [C:/Demo/Dsk/DataBase.HC,1], and [C:/Adam/DolDoc/DocWidgetWiz.HC.Z,1].
 
@@ -184,7 +184,7 @@ The space after the first ':' in the format string marks the first valid
   cursor pos.  See [C:/Adam/DolDoc/DocPlain.HC.Z,1] Data Tag Width.
 +] CB Check Box
   Used for forms.  Use <CTRL-l> to help you generate the DolDoc command text
-  you need in your [C:/Doc/HolyC.DD.Z,1] HolyC class member's fmtstr meta-data
+  you need in your [C:/Doc/HolyC.DD.Z,1] HolyC class member's format meta-data
   for [C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm().  See
   [C:/Demo/DolDoc/Form.HC,1] and [C:/Kernel/KernelA.HH.Z,1234] CEdFindText.
 
@@ -203,7 +203,7 @@ The default raw data type for the $CB...$ command is RT=I8 which is Bool.
 +] LS List Widget
   Used for forms that prompt for data.  You must specify a define list, D="".
    Use <CTRL-l> to help you generate the DolDoc command text you need in your
-  [C:/Doc/HolyC.DD.Z,1] HolyC class member's fmtstr meta-data for
+  [C:/Doc/HolyC.DD.Z,1] HolyC class member's format meta-data for
   [C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm().  See [C:/Demo/DolDoc/Form.HC,1].
 
 If you are not using [C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm(), make a
@@ -282,7 +282,7 @@ The reason for the $IB...$ cmd is to pass a arg to
   Inserts a number into the compiled stream describing the size of binary
   data associated with a bin number.  I never use this.
 +] SO Song
-  See [C:/Adam/Snd/SndMusic.HC.Z,98] Play().  [C:/Kernel/KernelA.HH.Z,1191]
+  See [C:/Adam/ASnd.HC.Z,205] Play().  [C:/Kernel/KernelA.HH.Z,1191]
   CDocEntry.aux_str A="" stores the song note text.
 +] HL Highlighting
   Include a 1 or 0.

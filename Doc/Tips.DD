@@ -102,19 +102,19 @@ different apps might interfere.  I use them most for debugging--just values
 easily viewed.  See [C:/Demo/Progress.HC,1].
 
 * Use [C:/Adam/DolDoc/DocRecalcLib.HC.Z,176] DocMax() to adjust the size of
-the cmd line buf.  It counts [C:/Kernel/KernelA.HH.Z,1365] CDoc 
+the cmd line buf.  It counts [C:/Kernel/KernelA.HH.Z,1367] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HH.Z,3313] CTask,
-[C:/Kernel/KernelA.HH.Z,1191] CDocEntry and [C:/Kernel/KernelA.HH.Z,2562]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HH.Z,3271] CTask,
+[C:/Kernel/KernelA.HH.Z,1191] CDocEntry and [C:/Kernel/KernelA.HH.Z,2520]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/KTask.HC.Z,242] Spawn(), chang
-[C:/Kernel/KernelA.HH.Z,2885] MEM_DFT_STK, and using
+[C:/Kernel/KernelA.HH.Z,2843] MEM_DFT_STK, and using
 [C:/Adam/DolDoc/DocRecalcLib.HC.Z,176] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -135,25 +135,25 @@ flag will recurse.)
 check for broken links in 
 documentation.
 
-* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1547]
+* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1549]
 OPTf_WARN_PAREN,ON) to find unnecessary parentheses in 
 code.
 
-* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1548]
+* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1550]
 OPTf_WARN_DUP_TYPES,ON) to find unnecessary local var 
 type stmts.
 
-* [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1544]
+* [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1546]
 OPTf_ECHO,ON) can be placed in [C:/StartOS.HC.Z,1] StartOS.HC to echo
 start-up scripts.
 
-* Use [C:/Adam/DolDoc/DocEd.HC.Z,234] Plain() to edit a plain text file. 
+* Use [C:/Adam/DolDoc/DocEd.HC.Z,249] Plain() to edit a plain text file. 
 You'll need this if your file has $'
 s.  Use the [C:/Adam/Opt/Utils/ToDolDoc.HC.Z,3] ToDolDoc() utility to convert
 plain text to DolDoc's by doubling $
 's.
 
-* Use [C:/Kernel/KMisc.HC.Z,251] Silent() to disable scrn text output.
+* Use [C:/Kernel/KMisc.HC.Z,270] Silent() to disable scrn text output.
 
 * Grab-scroll any window at any time with {CTRL-LEFT-MOUSE-DRAG}.  Null 
 grab-scrolling with {CTRL-RIGHT-MOUSE}.
@@ -173,7 +173,7 @@ if you want.
 * Use <CTRL-ALT-s> will capture the scrn as a sprite on the clip.  You can 
 save the cmd line doc as text with <CTRL-a>.
 
-* You can save a sprite as a .BMP file in <CTRL-r> on the Sprite BitMap Menu.
+* You can save a sprite as a .GR file in <CTRL-r> on the Sprite BitMap Menu.
 
 * You can eye-dropper colors in the <CTRL-r> sprite editor by pressing 'c'.  
 Press 't' for transparent.
@@ -203,7 +203,7 @@ Tag Text blank and it will be filled-in automatically based on other entries.
 * There is a feature of the precompiler that allows code to be executed in
 the 
 middle of compilation and data inserted into the compilation stream.  Click 
-here for an example: [C:/Kernel/KEnd.HC.Z,1] #exe {.
+here for an example: [C:/Kernel/KMain.HC.Z,1] #exe {.
 
 * If you output to the cmd line and wish to allow users to scroll around and 
 view data, you can use [C:/Adam/DolDoc/DocEd.HC.Z,3] View().
@@ -212,14 +212,14 @@ view data, you can use [C:/Adam/DolDoc/DocEd.HC.Z,3] View().
 the user presses <ESC> or <SHIFT
 -ESC>.
 
-* You can access the word under the cursor at [C:/Kernel/KernelA.HH.Z,1494]
+* You can access the word under the cursor at [C:/Kernel/KernelA.HH.Z,1496]
 ac.cur_word.
 
 * You can reactivate AutoComplete after closing it by pressing <CTRL-Fun Key> 
 or <ALT-w> if you have it defined.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/KernelA.HH.Z,1365] CDoc cmd under the 
+[C:/Kernel/KernelA.HH.Z,1367] CDoc cmd under the 
 cursor.  See [C:/Demo/DolDoc/TextDemo.HC,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -248,7 +248,7 @@ so you can edit the ctrl points.  Then, convert them to bitmaps, so the flood
 fills work well.  If you are doing interpolation, however, they must be vect.
 
 * [C:/Adam/Gr/GrPrimatives.HC.Z,239] GrFloodFill() is slow. 
-[C:/Adam/Gr/GrBitMap.HC.Z,954] GrRect() is fast.
+[C:/Adam/Gr/GrBitMap.HC.Z,1008] GrRect() is fast.
 
 * You can customize the wallpaper.  See [C:/Demo/Graphics/WallPaperFish.HC,1].
 
@@ -265,7 +265,7 @@ non-reg.
 will restore defaults.  It is a text doc, if you want to edit it.  Be careful 
 of tree indentations.
 
-* Study [C:/Adam/Opt/Utils/MemRep.HC.Z,1] and [C:/Adam/WallPaper.HC.Z,18]
+* Study [C:/Adam/Opt/Utils/MemRep.HC.Z,1] and [C:/Adam/WallPaper.HC.Z,17]
 WallPaper() to learn how the system 
 resources are put together.
 
@@ -284,17 +284,16 @@ cnts.jiffies.
 * Use [C:/Adam/Opt/Utils/HeapLog.HC.Z,73] HeapLog(),
 [C:/Adam/Opt/Utils/HeapLog.HC.Z,115] HeapLogAddrRep() and
 [C:/Adam/Opt/Utils/HeapLog.HC.Z,146] HeapLogSizeRep() to find leaks.  Don't 
-be confused by [C:/Kernel/KernelA.HH.Z,1365] CDoc allocations.  Those are
+be confused by [C:/Kernel/KernelA.HH.Z,1367] CDoc allocations.  Those are
 generated when text is written to 
 the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HH.Z,2815]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HH.Z,2773]
 _CFG_HEAP_DBG.  You're on your own.
 
-* You can use [C:/Adam/DolDoc/DocFile.HC.Z,330] Type() to display .BMP or .GR
-files.
+* You can use [C:/Adam/DolDoc/DocFile.HC.Z,325] Type() to display .GR files.
 
-* Use [C:/Kernel/FunSeg.HC.Z,324] Man() to jump to short sym name src code.
+* Use [C:/Kernel/FunSeg.HC.Z,346] Man() to jump to short sym name src code.
 
 * Use [C:/Kernel/EdLite.HC.Z,337] Fix() to edit and fix the last compiler err.
 

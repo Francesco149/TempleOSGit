@@ -68,6 +68,7 @@ U0 RedSeaInit(CDrv *dv)
     RedSeaFreeFreeLst(dv);
     dv->spc=1;
     dv->size=br.sects;
+"Init sects:%X	size:%X\n",br.sects,dv->size; //sponge
     dv->data_area=dv->drv_offset+br.bitmap_sects;
     dv->root_clus=br.root_clus;
     dv->fat1=dv->fat2=dv->drv_offset+1;
@@ -85,10 +86,17 @@ Bool RedSeaValidate(U8 drv_let)
   CRedSeaBoot br;
   if ((dv=Let2Drv(drv_let,FALSE)) && dv->fs_type==FSt_REDSEA &&
 	BlkRead(dv,&br,dv->drv_offset,1) && br.signature==MBR_PT_REDSEA &&
-	br.signature2==0xAA55 && br.sects==dv->size)
+	br.signature2==0xAA55 /* && br.sects==dv->size*/){ //sponge
+"dv:%X br:%X\n",dv->size,br.sects;
+dv->size=br.sects;
+
     return TRUE;
-  else
+
+}  else{
+ClassRep(&br);
+"sects:%X  size:%X\n",br.sects,dv->size; //sponge
     return FALSE;
+}
 }
 
 U0 RedSeaFmt(U8 drv_let,Bool quick=TRUE)
@@ -154,7 +162,7 @@ U0 RedSeaFmt(U8 drv_let,Bool quick=TRUE)
 
 Bool RedSeaFileFind(CDrv *dv,I64 cur_dir_clus,U8 *name,
 	CDirEntry *_res,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HH.Z,2617] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2618] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HH.Z,2577] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2578] FUF_JUST_FILES
   CDirEntry *buf,*buf2,*ptr;
   U8 dname[CDIR_FILENAME_LEN];
   I64 ch;
@@ -166,7 +174,7 @@ Bool RedSeaFileFind(CDrv *dv,I64 cur_dir_clus,U8 *name,
   if (dv->fs_type!=FSt_REDSEA)
     PrintErr("Not RedSea Drv\n");
   else if (!CFileNameTo(dname,name))
-    PrintErr("Invalid FileName.\n");
+    PrintErr("Invalid FileName: \"%s\".\n",name);
   else
     try {
       unlock=DrvLock(dv);
@@ -240,10 +248,8 @@ Bool RedSeaCd(U8 *name,I64 cur_dir_clus)
     PrintErr("Not RedSea Drv\n");
   else if (RedSeaFileFind(Fs->cur_dv,cur_dir_clus,name,&de,FUF_JUST_DIRS))
     return TRUE;
-  else {
-    "%s ",name;
-    PrintErr("File not found.\n");
-  }
+  else
+    PrintErr("File not found: \"%s\".\n",name);
   return FALSE;
 }
 
@@ -518,7 +524,7 @@ I64 RedSeaFileWrite(CDrv *dv,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
   if (dv->fs_type!=FSt_REDSEA)
     PrintErr("Not RedSea Drv\n");
   else if (!CFileNameTo(de.name,name))
-    PrintErr("Invalid FileName.\n");
+    PrintErr("Invalid FileName: \"%s\".\n",name);
   else {
     RedSeaFilesDel(dv,cur_dir,de.name,0,FALSE,FALSE);
     de.size=size;

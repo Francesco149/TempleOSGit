@@ -10,9 +10,6 @@ CDirEntry *FilesFind2(U8 *files_find_mask,I64 fuf_flags)
     case FSt_FAT32:
       res=FAT32FilesFind(files_find_mask,fuf_flags);
       break;
-    case FSt_ISO9660:
-      res=ISO1FilesFind(files_find_mask,fuf_flags);
-      break;
     default:
       PrintErr("File System Not Supported\n");
       res=NULL;
@@ -32,8 +29,8 @@ CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0)
 
 Find files and make a directory tree in memory.
 
-When done, you free with [C:/Kernel/BlkDev/DskDirA.HC.Z,17] DirEntryDel(),[C:/Kernel/BlkDev/DskDirA.HC.Z,26] DirEntryDel2(),
-[C:/Kernel/BlkDev/DskDirA.HC.Z,36] DirTreeDel() or [C:/Kernel/BlkDev/DskDirA.HC.Z,49] DirTreeDel2().
+When done, you free with [C:/Kernel/BlkDev/DskDirA.HC.Z,14] DirEntryDel(),[C:/Kernel/BlkDev/DskDirA.HC.Z,23] DirEntryDel2(),
+[C:/Kernel/BlkDev/DskDirA.HC.Z,33] DirTreeDel() or [C:/Kernel/BlkDev/DskDirA.HC.Z,46] DirTreeDel2().
 
 */
   CDirEntry *res;
@@ -55,7 +52,7 @@ When done, you free with [C:/Kernel/BlkDev/DskDirA.HC.Z,17] DirEntryDel(),[C:/Ke
 }
 
 Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HH.Z,2617] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2618] FUF_JUST_FILES, [C:/Kernel/KernelA.HH.Z,2625] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HH.Z,2627] FUF_SCAN_PARENTS
+{//[C:/Kernel/KernelA.HH.Z,2577] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2578] FUF_JUST_FILES, [C:/Kernel/KernelA.HH.Z,2585] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HH.Z,2587] FUF_SCAN_PARENTS
 //If you pass _de, you must Free(_de->full_name);
   I64 i,j,cur_dir_clus;
   U8 *altname,*curname,*full_name=NULL;
@@ -89,10 +86,6 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
 	  break;
 	case FSt_FAT32:
 	  res=FAT32FileFind(dirc->dv,cur_dir_clus,dirc->mask,
-		&de,fuf_flags);
-	  break;
-	case FSt_ISO9660:
-	  res=ISO1FileFind(dirc->dv,cur_dir_clus,dirc->mask,
 		&de,fuf_flags);
 	  break;
 	default:
@@ -129,10 +122,6 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
 	    break;
 	  case FSt_FAT32:
 	    res=FAT32FileFind(dirc->dv,cur_dir_clus,
-		  dirc->mask,&de,fuf_flags);
-	    break;
-	  case FSt_ISO9660:
-	    res=ISO1FileFind(dirc->dv,cur_dir_clus,
 		  dirc->mask,&de,fuf_flags);
 	    break;
 	  default:

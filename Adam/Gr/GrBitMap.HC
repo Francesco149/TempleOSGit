@@ -2,7 +2,7 @@
 
 Option(OPTf_WARN_HEADER_MISMATCH,OFF);
 public Bool GrPlot0(CDC *dc=gr.dc,I64 x,I64 y)
-{//2D. No clipping or transformation or pen width.
+{//2D. No clipping or transformation or thick.
   U8 *dst;
   I32 *db;
   I64 d,dist;
@@ -634,6 +634,60 @@ public CDC *DCExt(CDC *dc=gr.dc,I64 x1,I64 y1,I64 x2,I64 y2,
   return res;
 }
 
+public CDC *DCDiff(CDC *base,CDC *update)
+{//Trim to win of what has chged.
+  I64 i,x1=0,y1=0,x2=update->width-1,y2=update->height-1; //inclusive
+  U32 *ptr_base,*ptr_update;
+  CDC *res;
+  ptr_base  =base->body;
+  ptr_update=update->body;
+  while (y1<=y2) {
+    i=update->width>>2;
+    while (i--)
+      if (*ptr_base++!=*ptr_update++)
+	goto df_y2;
+    i=update->width&3;
+    while (i--)
+      if (*ptr_base(U8 *)++!=*ptr_update(U8 *)++)
+	goto df_y2;
+    y1++;
+  }
+  return NULL;
+df_y2:
+  ptr_base  =base->body  +base->width_internal	*base->height;
+  ptr_update=update->body+update->width_internal*update->height;
+  while (y1<y2) {
+    i=update->width>>2;
+    while (i--)
+      if (*--ptr_base!=*--ptr_update)
+	goto df_x1;
+    i=update->width&3;
+    while (i--)
+      if (*--ptr_base(U8 *)!=*--ptr_update(U8 *))
+	goto df_x1;
+    y2--;
+  }
+df_x1:
+  while (x1<x2) {
+    for (i=y1;i<=y2;i++)
+      if (GrPeek0(base,x1,i)!=GrPeek0(update,x1,i))
+	 goto df_x2;
+    x1++;
+  }
+df_x2:
+  while (x1<x2) {
+    for (i=y1;i<=y2;i++)
+      if (GrPeek0(base,x2,i)!=GrPeek0(update,x2,i))
+	 goto df_done;
+    x2--;
+  }
+df_done:
+  res=DCExt(update,x1,y1,x2,y2);
+  res->x0=x1;
+  res->y0=y1;
+  return res;
+}
+
 #help_index "Graphics/Char;Char/Graphics"
 
 public I64 GrPutChar(CDC *dc=gr.dc,I64 x,I64 y,U8 ch)
@@ -857,7 +911,7 @@ public I64 GrPutChar(CDC *dc=gr.dc,I64 x,I64 y,U8 ch)
 }
 
 I64 GrPutS(CDC *dc=gr.dc,I64 x,I64 y,U8 *_s)
-{//Use [C:/Adam/Gr/GrBitMap.HC.Z,935] GrPrint()
+{//Use [C:/Adam/Gr/GrBitMap.HC.Z,989] GrPrint()
   I64 x0,sx=0,sy=0,res;
   if (!_s) return 0;
   x0=x;
@@ -894,7 +948,7 @@ I64 GrPutS(CDC *dc=gr.dc,I64 x,I64 y,U8 *_s)
 }
 
 I64 GrVPutS(CDC *dc=gr.dc,I64 x,I64 y,U8 *_s)
-{//Vertical Text.  Use [C:/Adam/Gr/GrBitMap.HC.Z,944] GrVPrint()
+{//Vertical Text.  Use [C:/Adam/Gr/GrBitMap.HC.Z,998] GrVPrint()
   I64 y0,sx=0,sy=0,res;
   U8 buf[2];
   if (!_s) return 0;
@@ -1662,7 +1716,7 @@ gr_done:
 }
 
 public I64 GrHLine(CDC *dc=gr.dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
-{//3D. No transformation or pen width.
+{//3D. No transformation or thick.
 //Returns cnt of pixs changed
   //Uses [C:/Demo/Lectures/FixedPoint.HC,1] fixed-point.
   I64 dist,dx,dz,z,res=0,i,j,d;
@@ -1831,7 +1885,7 @@ gr_done:
 }
 
 public I64 GrVLine(CDC *dc=gr.dc,I64 x,I64 y1,I64 y2,I64 z1=0,I64 z2=0)
-{//3D. No transformation or pen width.
+{//3D. No transformation or thick.
 //Returns cnt of pixs changed
   //Uses [C:/Demo/Lectures/FixedPoint.HC,1] fixed-point.
   I64 dist,dy,dz,z,res=0,i,j,d;

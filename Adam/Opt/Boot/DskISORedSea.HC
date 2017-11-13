@@ -48,7 +48,7 @@ U0 RedSeaISO9660Stage1(U8 *iso_filename,U8 *stage2_filename)
 U0 RedSeaISO9660(U8 *iso_filename,U8 drv_let)
 {
   CDrv	*dv=Let2Drv(drv_let);
-  CISO1PriDesc *iso_pri=CAlloc(DVD_BLK_SIZE),
+  CISOPriDesc *iso_pri=CAlloc(DVD_BLK_SIZE),
 	*iso_boot=CAlloc(DVD_BLK_SIZE),
 	*iso_sup=CAlloc(DVD_BLK_SIZE),
 	*iso_term=CAlloc(DVD_BLK_SIZE);
@@ -63,7 +63,7 @@ U0 RedSeaISO9660(U8 *iso_filename,U8 drv_let)
     for (i=0;i<dv->bd->drv_offset;i+=4)
       FBlkWrite(out_file,zero_buf,i,4);
 
-    iso_pri->type=ISO1T_PRI_VOL_DESC;
+    iso_pri->type=ISOT_PRI_VOL_DESC;
     StrCpy(iso_pri->id,"CD001");
     iso_pri->version=1;
     FillU16Palindrome(&iso_pri->vol_set_size,1);
@@ -75,15 +75,15 @@ U0 RedSeaISO9660(U8 *iso_filename,U8 drv_let)
     StrCpy(iso_pri->publisher_id,"TempleOS RedSea");
 
     MemCpy(iso_sup,iso_pri,DVD_BLK_SIZE);
-    iso_sup->type=ISO1T_SUPPLEMENTARY_DESC;
+    iso_sup->type=ISOT_SUPPLEMENTARY_DESC;
 
-    iso_boot->type=ISO1T_BOOT_RECORD;
+    iso_boot->type=ISOT_BOOT_RECORD;
     StrCpy(iso_boot->id,"CD001");
     iso_boot->version=1;
     StrCpy(iso_boot(U8 *)+7,"EL TORITO SPECIFICATION");
 
     FBlkWrite(out_file,iso_pri,16<<2,4);
-    iso_term->type=ISO1T_TERMINATOR;
+    iso_term->type=ISOT_TERMINATOR;
     StrCpy(iso_term->id,"CD001");
     iso_term->version=1;
 
@@ -139,7 +139,7 @@ public I64 RedSeaISO(U8 *_iso_filename=NULL,U8 *_src_dir,
   I64 i,res,root_cnt,root_dir_blks,bitmap_blks,bitmap_blks1;
   CDirEntry *tmpde;
   U8 buf[STR_LEN],*iso_filename,*src_dir,*stage2_filename;
-  CDrv *dv=DrvMakeFreeSlot(DrvNextFreeLet('Q')); //First [C:/Kernel/KernelA.HH.Z,2645] BDT_ISO_FILE_WRITE
+  CDrv *dv=DrvMakeFreeSlot(DrvNextFreeLet('Q')); //First [C:/Kernel/KernelA.HH.Z,2605] BDT_ISO_FILE_WRITE
   CBlkDev *bd=BlkDevNextFreeSlot(dv->drv_let,BDT_ISO_FILE_WRITE);
 
   if (!IsDir(_src_dir))

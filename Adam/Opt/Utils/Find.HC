@@ -25,7 +25,7 @@ I64 PopUpFindMenu()
 
 I64 FindFile(U8 *needle_str,U8 *haystack_filename,
 	I64 *_fuf_flags,U8 *replace_text)
-{//Have you confused with [C:/Kernel/BlkDev/DskFind.HC.Z,57] FileFind()?
+{//Have you confused with [C:/Kernel/BlkDev/DskFind.HC.Z,54] FileFind()?
   Bool first_on_line,write_this_file=FALSE,cont=!Bt(_fuf_flags,FUf_CANCEL);
   U8 *src,*dst,*dst2,*name_buf=NULL;
   I64 i,j,plen,rlen,dlen,cnt=0,old_flags,ss_flags;
@@ -197,15 +197,15 @@ public I64 FileOcc(U8 *needle_str,
 
 class CFind
 {
-  U8	find_text[STR_LEN] fmtstr "$DA-P,"
+  U8	find_text[STR_LEN] format "$DA-P,"
 	"A=\"FIND        :%s\"$\n";
-  U8	replace_text[STR_LEN] fmtstr "$DA-P,"
+  U8	replace_text[STR_LEN] format "$DA-P,"
 	"A=\"REPLACE     :%s\"$\n";
-  Bool	replace		fmtstr "$CB,\"REPLACE\"$\n";
-  Bool	match_case	fmtstr "$CB,\"MATCH CASE\"$\n";
-  Bool	whole_labels	fmtstr "$CB,\"WHOLE LABELS\"$\n";
-  U8	filemask[STR_LEN] fmtstr "$DA-P,A=\"FILE MASK   :%s\"$\n";
-  Bool	recurse		fmtstr "$CB,\"RECURSE\"$\n";
+  Bool	replace		format "$CB,\"REPLACE\"$\n";
+  Bool	match_case	format "$CB,\"MATCH CASE\"$\n";
+  Bool	whole_labels	format "$CB,\"WHOLE LABELS\"$\n";
+  U8	filemask[STR_LEN] format "$DA-P,A=\"FILE MASK   :%s\"$\n";
+  Bool	recurse		format "$CB,\"RECURSE\"$\n";
 };
 
 I64 FindWiz()

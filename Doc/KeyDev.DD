@@ -23,9 +23,9 @@ document cmds
 Since handling individual keys is slow, TempleOS supports PutS() as well.  If 
 no puts hndlr is defined, individual keys are sent.
 
-[C:/Kernel/KernelA.HH.Z,1365] CDoc.user_put_key and
-[C:/Kernel/KernelA.HH.Z,1365] CDoc.user_put_s are call back routines which
+[C:/Kernel/KernelA.HH.Z,1367] CDoc.user_put_key and
+[C:/Kernel/KernelA.HH.Z,1367] CDoc.user_put_s are call back routines which
 offer some 
 neat tricks.  See [C:/Apps/Psalmody/JukeBox.HC,1].  There is a var
-[C:/Kernel/KernelA.HH.Z,1365] CDoc.user_put_d
+[C:/Kernel/KernelA.HH.Z,1367] CDoc.user_put_d
 ata which gets passed to them.

@@ -14,7 +14,7 @@ kernel".  Two Gig is plenty for code, don't worry.
 
 You can create new, independent heaps using [C:/Kernel/Mem/HeapCtrl.HC.Z,1]
 HeapCtrlInit().  Then, use the 
-[C:/Kernel/KernelA.HH.Z,2905] CHeapCtrl as the 2nd arg to
+[C:/Kernel/KernelA.HH.Z,2863] CHeapCtrl as the 2nd arg to
 [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc().  See
 [C:/Adam/Opt/Utils/HeapLog.HC.Z,73] HeapLog() for an example.
 
@@ -31,19 +31,19 @@ hardware,
 however, you need uncached page table.  The lowest 4Gig addresses have an 
 alias to access hardware located toward the top of mapped space,
 0x0100000000. 
- See [C:/Kernel/KEnd.HC.Z,1] dev.uncached_alias.
+ See [C:/Kernel/KMain.HC.Z,1] dev.uncached_alias.
 
 During an extended powered-on session of TempleOS, in theory, memory will 
 become fragmented, requiring a reboot.  It has never happens to me.
 
-See [C:/Adam/Opt/Utils/MemRep.HC.Z,191] MemRep() and [C:/Demo/MemDemo.HC,1].
+See [C:/Adam/Opt/Utils/MemRep.HC.Z,193] MemRep() and [C:/Demo/MemDemo.HC,1].
 
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x0000036A7F
+ 0x0000007C00- 0x000003626F
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HH.Z,3865] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HH.Z,3835] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -55,7 +55,7 @@ See [C:/Adam/Opt/Utils/MemRep.HC.Z,191] MemRep() and [C:/Demo/MemDemo.HC,1].
 ~0x000009F000- 0x000009FFFF Extended BIOS data area.
  0x00000A0000- 0x00000BFFFF VGA graphics mem with alias at
 [C:/Kernel/KGlbls.HC.Z,30] text.vga_alias.
- 0x0000100000- 0x0000101FFF [C:/Kernel/KernelA.HH.Z,3457] CSysFixedArea for
+ 0x0000100000- 0x0000101FFF [C:/Kernel/KernelA.HH.Z,3415] CSysFixedArea for
 misc.
  0x0000104000- 0x007FFDFFFF Code Heap mem.
 
@@ -123,8 +123,8 @@ simplicity of identity mapping everything.  Since many of my users are
 familiar with A0000-BFFFF, it is actually pretty seriously unfortunate that 
 they cannot use the easy-to-understand numbers of A0000-BFFFF, but must
 access 
-the relocated alias location.  See [C:/Kernel/KEnd.HC.Z,1] text.vga_alias.  I
-also no longer cause a 
+the relocated alias location.  See [C:/Kernel/KMain.HC.Z,1] text.vga_alias. 
+I also no longer cause a 
 fault when dereferencing NULL.
 
 Then, I switched to 1Gig page sizes.  For the lowest 4Gig, I set-up an alias 
@@ -137,4 +137,4 @@ code for taking control of 2Meg pages and marking them uncached or whatever.
 When I did a HDAudio driver, I requested some 32-bit address space as 
 uncached.  Today, all of the first 4Gig can be accessed without caching at
 the 
-[C:/Kernel/KEnd.HC.Z,1] dev.uncached_alias.
+[C:/Kernel/KMain.HC.Z,1] dev.uncached_alias.

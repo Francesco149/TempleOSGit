@@ -1,9 +1,8 @@
-//See [C:/Doc/Install.DD.Z,1] Install Documentation or [C:/Doc/Upgrade.DD.Z,1] Upgrading Documentation.
+//See [C:/Doc/Install.DD.Z,1] Install Documentation.
 //Study my account examples: [C:/Demo/AcctExample/TOS/TOSCfg.HC,1] Cfg Strs, [C:/Demo/AcctExample/TOS/TOSDistro.HC,1] Update Funs
 
 #include "BootDVD"
 #include "DskISORedSea"
-#include "DskISO9660"
 
 #help_index "Install"
 

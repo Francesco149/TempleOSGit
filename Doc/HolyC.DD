@@ -113,7 +113,7 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
   public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
     U8 *buf=[C:/Kernel/StrPrint.HC.Z,208] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc()ed string.
-    [C:/Adam/Gr/GrBitMap.HC.Z,859] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
+    [C:/Adam/Gr/GrBitMap.HC.Z,913] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }
   
@@ -187,8 +187,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HH.Z,1802] REGG_LOCAL_VARS or
-  [C:/Kernel/KernelA.HH.Z,1803] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
+  //Only use [C:/Kernel/KernelA.HH.Z,1804] REGG_LOCAL_VARS or
+  [C:/Kernel/KernelA.HH.Z,1805] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
 clobbered.
   I64 reg R15 i=5, noreg j=4;
   no_warn i;
@@ -244,16 +244,16 @@ PutChars('World\n');
   ||
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
-* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1547]
+* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1549]
 OPTf_WARN_PAREN,ON) to find unnecessary parentheses in 
 code.
 
-* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1548]
+* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1550]
 OPTf_WARN_DUP_TYPES,ON) to find dup local var type stmts.
 
 * With the #exe{} feature in your src code, you can place programs that
 insert 
-text into the stream of code being compiled.  See [C:/Kernel/KEnd.HC.Z,1]
+text into the stream of code being compiled.  See [C:/Kernel/KMain.HC.Z,1]
 #exe {} for an example where 
 the date/time and compile-time prompting for cfguration data is placed into a 
 program.  [C:/Compiler/CMisc.HC.Z,68] StreamPrint() places text into a src
@@ -280,7 +280,7 @@ and 8 byte objects.  If you place a type in front of a union declaration,
 that 
 is the type when used by itself.  See [C:/Demo/SubIntAccess.HC,1]. 
 
-* class member vars can have meta data. fmtstr and fmtdata are two meta data 
+* class member vars can have meta data. format and data are two meta data 
 types now used.  All compiler structures are saved and you can access the 
 compiler's info about classes and vars.  See [C:/Demo/ClassMeta.HC,1] and  
 [C:/Adam/DolDoc/DocForm.HC.Z,209] DocForm().
@@ -329,7 +329,7 @@ make an independent heap with [C:/Kernel/Mem/HeapCtrl.HC.Z,1] HeapCtrlInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HH.Z,2885] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HH.Z,2843] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.HC.Z,242]
 Spawn().  You can use 
 [C:/Kernel/KTask.HC.Z,110] CallStkGrow(), but it's odd.  See

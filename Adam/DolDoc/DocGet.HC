@@ -96,7 +96,7 @@ public U8 *DocScanLine(CDoc *doc,CDocEntry *doc_e,
 }
 
 U8 *DocGetStr2(I64 flags=0)
-{//[C:/Kernel/KernelA.HH.Z,3765] Flags
+{//[C:/Kernel/KernelA.HH.Z,3725] Flags
   CDoc *doc;
   CDocEntry *doc_e,*doc_e_end;
   U8 *st,*st2,*res;

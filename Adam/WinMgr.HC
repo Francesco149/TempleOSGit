@@ -2,7 +2,7 @@
 
 public U0 Refresh(I64 cnt=1,Bool force=FALSE)
 {//Wait for 30fps WinMgr to start & finish scrn refresh.
-//0,FALSE Cnt Sync to WinMgr. (not used)
+  //0,FALSE Cnt Sync to WinMgr.
   //0,TRUE  Pump Msgs.
   //1 Cnt Wait and Pump Msgs.
   //2 Cnt Make Sure to do a Full Refresh
@@ -223,8 +223,11 @@ I64 WinMgrSleep(Bool flush_msgs=FALSE)
   CCtrl *c;
   Bool que;
   F64 t,t_delta;
+  U8 *st;
+  CDC *diff;
+  CDate cdt;
 
-  TimeStampFreqCal;
+  TimeCal;
   if ((t_delta=(t=tS)-winmgr.last_refresh_tS)>0.01)
     winmgr.fps=Max(1.0/t_delta,1);
   else
@@ -260,11 +263,36 @@ I64 WinMgrSleep(Bool flush_msgs=FALSE)
   WinMsUpdate;
 
   if (!LBtr(&sys_semas[SEMA_JUST_PUMP_MSGS],0)) {
-    timeout_val=cnts.jiffies+JIFFY_FREQ/WINMGR_FPS;
+    t=tS+WINMGR_PERIOD/8;
+    while (winmgr.ideal_refresh_tS<t)
+      winmgr.ideal_refresh_tS+=WINMGR_PERIOD;
+    timeout_val=cnts.jiffies+(winmgr.ideal_refresh_tS-tS)*JIFFY_FREQ;
     LBts(&sys_semas[SEMA_REFRESH_IN_PROGRESS],0);
     GrUpdateScrn;
     LBtr(&sys_semas[SEMA_REFRESH_IN_PROGRESS],0);
-
+    if (scrncast.record  && !scrncast.just_audio) {
+      cdt=scrncast.t0_now(I64)+ToI64(CDATE_FREQ*(tS-scrncast.t0_tS));
+      if (!scrncast.dc) {
+	scrncast.dc=DCCopy(scrncast.dc2_alias);
+	scrncast.dc->cdt=cdt;
+	st=MStrPrint(scrncast.print_fmt,cdt);
+	GRWrite(st,scrncast.dc);
+	Free(st);
+      } else if (MemCmp(scrncast.dc->body,
+	    scrncast.dc2_alias->body,MSize(scrncast.dc2_alias->body))) {
+	diff=DCDiff(scrncast.dc,scrncast.dc2_alias);
+	diff->cdt=cdt;
+	st=MStrPrint(scrncast.print_fmt,cdt);
+	GRWrite(st,diff);
+	Free(st);
+	DCDel(diff);
+	Free(scrncast.dc->body);
+	scrncast.dc->body=MAllocIdent(scrncast.dc2_alias->body);
+      }
+    } else if (scrncast.dc) {
+      DCDel(scrncast.dc); //TODO: [C:/Adam/Opt/Utils/MemRep.HC.Z,193] MemRep can crash.
+      scrncast.dc=NULL;
+    }
     if (sys_focus_task && !Bt(&sys_focus_task->task_flags,TASKf_HAS_SONG)) {
       Free(music.cur_song);
       music.cur_song=NULL;
@@ -404,6 +432,7 @@ U0 WinMgrTask(I64)
   gr.dc->win_task=Fs;
   Fs->win_inhibit&=~WIF_SELF_CTRLS;
   GrSetUpTables;
+  scrncast.dc2_alias=DCAlias(gr.dc2);
   WinZBufUpdate;
   LBts(&sys_run_level,RLf_WINMGR);
   while (TRUE) {

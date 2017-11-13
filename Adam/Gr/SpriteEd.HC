@@ -1,11 +1,11 @@
 #help_index "Graphics/Sprite;Sprites"
 
 CSprite *SpriteSetSettings(CDC *dc=NULL,CSprite *head,I64 elem_num,
-	I64 x=0,I64 y=0,CColorROPU32 *_color=NULL,I64 *_width=NULL,
+	I64 x=0,I64 y=0,CColorROPU32 *_color=NULL,I64 *_thick=NULL,
 	I64 *_xx=NULL,I64 *_yy=NULL)
 {
   CSprite *res=head->next;
-  I64 width=1,xx=0,yy=0;
+  I64 thick=1,xx=0,yy=0;
   CColorROPU32 color=BLACK;
   if (dc) DCRst(dc);
   while (elem_num-->0 && res!=head) {
@@ -19,9 +19,9 @@ CSprite *SpriteSetSettings(CDC *dc=NULL,CSprite *head,I64 elem_num,
 	      res->d.dither_color.u8[1]<<COLORROP_BITS|ROPF_DITHER;
 	if (dc) dc->color=color;
 	break;
-      case SPT_WIDTH:
-	width=res->w.width;
-	if (dc) dc->pen_width=width;
+      case SPT_THICK:
+	thick=res->t.thick;
+	if (dc) dc->thick=thick;
 	break;
       case SPT_SHIFT:
 	xx+=res->p.x1;
@@ -43,7 +43,7 @@ CSprite *SpriteSetSettings(CDC *dc=NULL,CSprite *head,I64 elem_num,
     res=res->next;
   }
   if (_color) *_color=color;
-  if (_width) *_width=width;
+  if (_thick) *_thick=thick;
   if (_xx) *_xx=xx;
   if (_yy) *_yy=yy;
   return res;
@@ -296,38 +296,38 @@ CSprite *SpriteTransformBitMap(I64 *r,CSprite *tmpg)
   I64 x,y,z,minx,maxx,miny,maxy,minz,maxz;
   CSprite *tmpg1;
 
-  x=0; y=0; z=0;
+  x=tmpg->pwhu.x1; y=tmpg->pwhu.y1; z=0;
   Mat4x4MulXYZ(r,&x,&y,&z);
   minx=maxx=x;
   miny=maxy=y;
   minz=maxz=z;
 
-  x=0; y=tmpg->pwhu.height; z=0;
+  x=tmpg->pwhu.x1; y=tmpg->pwhu.y1+tmpg->pwhu.height; z=0;
   Mat4x4MulXYZ(r,&x,&y,&z);
   if (x<minx) minx=x;
   if (x>maxx) maxx=x;
-  if (y<minx) miny=y;
-  if (y>maxx) maxy=y;
-  if (z<minx) minz=z;
-  if (z>maxx) maxz=z;
+  if (y<miny) miny=y;
+  if (y>maxy) maxy=y;
+  if (z<minz) minz=z;
+  if (z>maxz) maxz=z;
 
-  x=tmpg->pwhu.width; y=0; z=0;
+  x=tmpg->pwhu.x1+tmpg->pwhu.width; y=tmpg->pwhu.y1; z=0;
   Mat4x4MulXYZ(r,&x,&y,&z);
   if (x<minx) minx=x;
   if (x>maxx) maxx=x;
-  if (y<minx) miny=y;
-  if (y>maxx) maxy=y;
-  if (z<minx) minz=z;
-  if (z>maxx) maxz=z;
+  if (y<miny) miny=y;
+  if (y>maxy) maxy=y;
+  if (z<minz) minz=z;
+  if (z>maxz) maxz=z;
 
-  x=tmpg->pwhu.width; y=tmpg->pwhu.height; z=0;
+  x=tmpg->pwhu.x1+tmpg->pwhu.width; y=tmpg->pwhu.y1+tmpg->pwhu.height; z=0;
   Mat4x4MulXYZ(r,&x,&y,&z);
   if (x<minx) minx=x;
   if (x>maxx) maxx=x;
-  if (y<minx) miny=y;
-  if (y>maxx) maxy=y;
-  if (z<minx) minz=z;
-  if (z>maxx) maxz=z;
+  if (y<miny) miny=y;
+  if (y>maxy) maxy=y;
+  if (z<minz) minz=z;
+  if (z>maxz) maxz=z;
 
   dc3=DCNew(maxx-minx+1,maxy-miny+1);
 
@@ -345,8 +345,8 @@ CSprite *SpriteTransformBitMap(I64 *r,CSprite *tmpg)
   DCMat4x4Set(dc3,r);
   dc3->flags|=DCF_TRANSFORMATION;
 
-  dc3->x=-minx;
-  dc3->y=-miny;
+  dc3->x=tmpg->pwhu.x1-minx;
+  dc3->y=tmpg->pwhu.y1-miny;
   dc3->z=-minz;
   GrBlot3(dc3,0,0,0,img);
   Free(img);
@@ -363,11 +363,6 @@ CSprite *SpriteTransformBitMap(I64 *r,CSprite *tmpg)
   tmpg1->pwhu.x1=x;
   tmpg1->pwhu.y1=y;
 
-  x=0; y=0; z=0;
-  Mat4x4MulXYZ(r,&x,&y,&z);
-  tmpg1->pwhu.x1+=minx-x;
-  tmpg1->pwhu.y1+=miny-y;
-
   return tmpg1;
 }
 
@@ -380,9 +375,9 @@ U0 SpriteTransformQue(CSprite *head,I64 *r)
   while (tmpg!=head) {
     if (Bt(&tmpg->type,SPf_SEL))
       switch (tmpg->type&SPG_TYPE_MASK) {
-	case SPT_WIDTH:
-	  tmpg->w.width*=Sqrt(Mat4x4NormSqr65536(r))/65536;
-	  if (tmpg->w.width<0) tmpg->w.width=0;
+	case SPT_THICK:
+	  tmpg->t.thick*=Sqrt(Mat4x4NormSqr65536(r))/65536;
+	  if (tmpg->t.thick<0) tmpg->t.thick=0;
 	  break;
 	case SPT_PLANAR_SYMMETRY:
 	case SPT_ARROW:

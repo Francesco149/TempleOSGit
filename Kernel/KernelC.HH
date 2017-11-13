@@ -211,7 +211,6 @@ public extern Bool PutSrcLink(U8 *addr,I64 cnt=1,U8 *buf=NULL);
 public extern U8 *SrcEdLink(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
 public extern U8 *SrcFileName(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
 public extern I64 SrcLineNum(U8 *addr,I64 cnt=1);
-
 #help_index "Debugging/FunSeg;Hash/System"
 public extern CHash *FunSegFind(U8 *addr,I64 *_offset);
 
@@ -514,7 +513,7 @@ extern CJob sys_macro_head;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HH.Z,3765] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HH.Z,3725] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -664,6 +663,11 @@ public extern U8 *IntEntryGet(I64 irq);
 public extern U8 *IntEntrySet(I64 irq,
 	U0 (*fp_new_hndlr)(),I64 type=IDTET_IRQ,I64 dpl=0);
 
+#help_index "ScrnCast;Cmd Line (Typically)"
+public extern Bool ScrnCast(Bool val=ON,Bool just_audio=FALSE,
+	U8 *print_fmt="B:/Tmp/%X.GR")
+public extern CScrnCastGlbls scrncast;
+
 #help_index "Snd"
 #help_file "::/Doc/Snd"
 public extern U0 Beep(I8 ona=62,Bool busy=FALSE);
@@ -671,9 +675,8 @@ public extern I8 Freq2Ona(F64 freq);
 public extern Bool IsMute();
 public extern Bool Mute(Bool val);
 public extern F64 Ona2Freq(I64 ona);
-public extern U0 Snd(I8 ona=ONA_REST);
+public extern U0 Snd(I8 ona=0);
 public extern U0 SndRst();
-public extern CSndGlbls snd;
 
 #help_index "StdIn"
 #help_file "::/Doc/Streams"
@@ -705,11 +708,12 @@ extern CTask *sys_winmgr_task,*sys_task_being_scrn_updated;
 #help_index "Task/Delay;Time/CPU Cycles"
 public extern U0 Busy(I64 uS); //Loosely timed
 public extern U0 PortNop(); //On the order of 1uS
-extern I64 TimeStampFreqCal();
+extern I64 TimeCal();
 
 #help_index "Task/Delay;Time/Jiffies"
 public extern U0 Sleep(I64 mS);
 public extern U0 SleepUntil(I64 wake_jiffy);
+
 #help_index "Task/Misc"
 extern U0 (*fp_update_ctrls)(CTask *task);
 public extern U0 TSSBusy(I64 tr,Bool val=OFF);
@@ -727,7 +731,6 @@ public extern CCntsGlbls cnts;
 
 #help_index "Time/Date/CDate;Date/CDate"
 #help_file "::/Doc/TimeDate"
-extern U0 Date2ISO1(CISO1Date *dst,CDate cdt);
 public extern U0 Date2Struct(CDateStruct *_ds,CDate cdt);
 extern U8 *MPrintDate(CDate cdt);
 extern U8 *MPrintTime(CDate cdt);

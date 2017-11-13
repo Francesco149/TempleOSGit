@@ -15,7 +15,7 @@ involves a long and short name for each file.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HH.Z,2885] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HH.Z,2843] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.HC.Z,242]
 Spawn().
 
@@ -31,21 +31,21 @@ or [C:/Kernel/BlkDev/DskDrv.HC.Z,237] DskChg() twice.
 which 
 binds a HolyC definition to a asm sym.  This, too, can only be done once.
 
-* A terminal task has a [C:/Kernel/KernelA.HH.Z,1365] CDoc document structure
+* A terminal task has a [C:/Kernel/KernelA.HH.Z,1367] CDoc document structure
 that remains active even when 
 you change Fs->draw_it.  To prevent links in the
-[C:/Kernel/KernelA.HH.Z,1365] CDoc from being activated 
+[C:/Kernel/KernelA.HH.Z,1367] CDoc from being activated 
 when the user clicks in the window, do one of three things:
   
 A) [C:/Adam/DolDoc/DocRecalcLib.HC.Z,107] DocBottom() followed by
   [C:/Adam/DolDoc/DocRecalcLib.HC.Z,120] DocClear() to clear the
-  [C:/Kernel/KernelA.HH.Z,1365] CDoc so it has no active 
+  [C:/Kernel/KernelA.HH.Z,1367] CDoc so it has no active 
 widgets.
 
 B) Disable window mgr bttn click checking with Fs->win_inhibit set to mask 
-[C:/Kernel/KernelA.HH.Z,1419] WIF_SELF_MS_L|[C:/Kernel/KernelA.HH.Z,1433]
-  WIF_FOCUS_TASK_MS_L_D|[C:/Kernel/KernelA.HH.Z,1421]
-  WIF_SELF_MS_R|[C:/Kernel/KernelA.HH.Z,1435] WIF_FOCUS_TASK_MS_R_D.  
+[C:/Kernel/KernelA.HH.Z,1421] WIF_SELF_MS_L|[C:/Kernel/KernelA.HH.Z,1435]
+  WIF_FOCUS_TASK_MS_L_D|[C:/Kernel/KernelA.HH.Z,1423]
+  WIF_SELF_MS_R|[C:/Kernel/KernelA.HH.Z,1437] WIF_FOCUS_TASK_MS_R_D.  
 This inhibits window mgr operations but still generates messages from bttn 
 clicks.
 

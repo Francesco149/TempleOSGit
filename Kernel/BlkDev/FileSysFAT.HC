@@ -285,7 +285,7 @@ Bool FAT32DirFill(CFAT32DirEntry *de,
 
 Bool FAT32FileFind(CDrv *dv,I64 cur_dir_clus,
 	U8 *name,CDirEntry *_res,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HH.Z,2617] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2618] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HH.Z,2577] FUF_JUST_DIRS, [C:/Kernel/KernelA.HH.Z,2578] FUF_JUST_FILES
   Bool res=FALSE,unlock;
   CFAT32DirEntry *buf;
   I64 xsum=0,attr,cur_dir_entry,entries_per_clus;
@@ -299,7 +299,7 @@ Bool FAT32FileFind(CDrv *dv,I64 cur_dir_clus,
   if (dv->fs_type!=FSt_FAT32)
     PrintErr("Not FAT32 Drv\n");
   else if (!CFileNameTo(dname,name))
-    PrintErr("Invalid FileName.\n");
+    PrintErr("Invalid FileName: \"%s\".\n",name);
   else
     try {
       unlock=DrvLock(dv);
@@ -391,10 +391,8 @@ Bool FAT32Cd(U8 *name,I64 cur_dir_clus)
     PrintErr("Not FAT32 Drv\n");
   else if (FAT32FileFind(Fs->cur_dv,cur_dir_clus,name,&de,FUF_JUST_DIRS))
     return TRUE;
-  else {
-    "%s ",name;
-    PrintErr("File not found.\n");
-  }
+  else
+    PrintErr("File not found: \"%s\".\n",name);
   return FALSE;
 }
 
@@ -809,7 +807,7 @@ I64 FAT32FileWrite(CDrv *dv,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
   if (dv->fs_type!=FSt_FAT32)
     PrintErr("Not FAT32 Drv\n");
   else if (!CFileNameTo(de.name,name))
-    PrintErr("Invalid FileName.\n");
+    PrintErr("Invalid FileName: \"%s\".\n",name);
   else {
     FAT32FilesDel(dv,cur_dir,de.name,0,FALSE,FALSE);
     if (attr & RS_ATTR_CONTIGUOUS)

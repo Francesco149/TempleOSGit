@@ -56,7 +56,7 @@ U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=FSt_FAT32)
 {//Format hard drive or RAM drive.
 //**Warning:** Destroys all prev info.
   //quick=FALSE means fill entire drive with zeros.
-  //Choose [C:/Kernel/KernelA.HH.Z,2700] FSt_FAT32 or [C:/Kernel/KernelA.HH.Z,2699] FSt_REDSEA.
+  //Choose [C:/Kernel/KernelA.HH.Z,2660] FSt_FAT32 or [C:/Kernel/KernelA.HH.Z,2659] FSt_REDSEA.
   //You don't format a CD/DVD with this.
   CDrv *dv=Let2Drv(drv_let);
   Bool old_silent=IsSilent;
@@ -85,9 +85,6 @@ U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=FSt_FAT32)
       RedSeaFmt(drv_let,quick);
       DskCacheInvalidate(Let2Drv(drv_let));
       Drv(drv_let);
-      break;
-    case FSt_ISO9660:
-      PrintErr("Not Writable\n");
       break;
     default:
       PrintErr("File System Not Supported\n");

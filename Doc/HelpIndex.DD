@@ -38,8 +38,7 @@ Ctrl-Right	Null scrolling
 [C:/Doc/FAQ.DD.Z,1] F.A.Q.		[C:/Doc/Glossary.DD.Z,1] Glossary
 [C:/Doc/HolyC.DD.Z,1] HolyC  		[C:/Doc/CompilerOverview.DD.Z,1] Compiler Index
 [C:/Doc/WhyNotMore.DD.Z,1] Why Not More?	[C:/Doc/Demands.DD.Z,1] Demands
-[C:/Doc/ChgLog.DD.Z,1] Change Log	[C:/Doc/StdTempleOSPC.DD.Z,1] The Std
-TempleOS PC
+[C:/Doc/StdTempleOSPC.DD.Z,1] The Std TempleOS PC
 	
 +] User Help
   
@@ -56,15 +55,15 @@ TempleOS PC
 +] DolDoc
     [C:/Doc/DolDocOverview.DD.Z,1] DolDoc is the TempleOS document type.  The
     editor, compiler, assembler and whole operating system seamlessly handle
-    DolDocs.  Cmds like [C:/Kernel/BlkDev/DskDirB.HC.Z,105] Dir() and
+    DolDocs.  Cmds like [C:/Kernel/BlkDev/DskDirB.HC.Z,102] Dir() and
     [C:/Adam/Opt/Utils/Find.HC.Z,145] Find() can output links to the cmd line.
   +] Burning CD/DVDs
     * Prepare a directory with the files you wish to burn.
 
-* Use [C:/Adam/Opt/Boot/DskISO9660.HC.Z,304] ISO9660ISO() to make an ISO
+* Use [C:/Adam/Opt/Boot/DskISORedSea.HC.Z,136] RedSeaISO() to make an ISO
     image file.
 
-* Use [C:/Kernel/BlkDev/DskCDDVD.HC.Z,147] DVDImageWrite() to burn an ISO
+* Use [C:/Kernel/BlkDev/DskCDDVD.HC.Z,143] DVDImageWrite() to burn an ISO
     file onto a CD or DVD.
 
 * See [C:/Misc/DoDistro.HC.Z,1] Making a Distro ISO.
@@ -79,7 +78,7 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootHDIns.HC.Z,18]
 [C:/Doc/Install.DD.Z,1] Installing
 
 [C:/StartOS.HC.Z,1] the TempleOS equivalent of the AUTOEXEC.BAT.  It is run
-  at start-up by the [C:/Kernel/KEnd.HC.Z,1] Adam Task.
+  at start-up by the [C:/Kernel/KMain.HC.Z,1] Adam Task.
 +] Programmer help
   [C:/Doc/GuideLines.DD.Z,1] Guidelines
 [C:/Doc/HolyC.DD.Z,1] HolyC
@@ -98,7 +97,7 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootHDIns.HC.Z,18]
 [C:/Doc/FileLowLevel.DD.Z,1] Dsk Stk
 [Keyboard Devices/System,1] Keyboard Devices
 [C:/Demo/Lectures/PCIInterrupts.HC,1] PCIInterrupts.HC
-[C:/Adam/Opt/Utils/MemRep.HC.Z,191] MemRep
+[C:/Adam/Opt/Utils/MemRep.HC.Z,193] MemRep
 [C:/Adam/WallPaper.HC.Z,1] WallPaper
 [C:/Kernel/Sched.HC.Z,1] Scheduler
 [C:/Adam/DolDoc/MakeDoc.HC.Z,1] Doc
@@ -164,6 +163,7 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootHDIns.HC.Z,18]
 [C:/Doc/RedSea.DD.Z,1] RedSea
 [Registry,1] Registry
 [C:/Doc/CharOverview.DD.Z,1] Scan Codes
+[ScrnCast,1] ScrnCast
 [Snd,1] Sound
 [Sprites,1] Sprites
 [StdIn,1] StdIn

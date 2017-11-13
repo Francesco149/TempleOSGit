@@ -1,13 +1,10 @@
 Bool DirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tmpde,Bool free_old_chain=TRUE)
-{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HH.Z,2562] CDirEntry node.
+{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HH.Z,2520] CDirEntry node.
   switch (dv->fs_type) {
     case FSt_REDSEA:
       return RedSeaDirNew(dv,cur_dir,tmpde,free_old_chain);
     case FSt_FAT32:
       return FAT32DirNew(dv,cur_dir,tmpde,free_old_chain);
-    case FSt_ISO9660:
-      PrintErr("Not Writable\n");
-      return FALSE;
     default:
       PrintErr("File System Not Supported\n");
       return FALSE;
@@ -15,7 +12,7 @@ Bool DirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tmpde,Bool free_old_chain=TRUE)
 }
 
 U0 DirEntryDel(CDirEntry *tmpde)
-{//Free node returned from [C:/Kernel/BlkDev/DskFind.HC.Z,30] FilesFind().  Doesn't Free user_data.
+{//Free node returned from [C:/Kernel/BlkDev/DskFind.HC.Z,27] FilesFind().  Doesn't Free user_data.
 //Does not change the directory on disk.
   if (tmpde) {
     Free(tmpde->full_name);
@@ -24,7 +21,7 @@ U0 DirEntryDel(CDirEntry *tmpde)
 }
 
 U0 DirEntryDel2(CDirEntry *tmpde)
-{//Free node returned from [C:/Kernel/BlkDev/DskFind.HC.Z,30] FilesFind().  Frees user_data
+{//Free node returned from [C:/Kernel/BlkDev/DskFind.HC.Z,27] FilesFind().  Frees user_data
 //Does not change the directory on disk.
   if (tmpde) {
     Free(tmpde->full_name);
@@ -34,7 +31,7 @@ U0 DirEntryDel2(CDirEntry *tmpde)
 }
 
 U0 DirTreeDel(CDirEntry *tmpde)
-{//Free tree returned from [C:/Kernel/BlkDev/DskFind.HC.Z,30] FilesFind().  Doesn't Free user_data.
+{//Free tree returned from [C:/Kernel/BlkDev/DskFind.HC.Z,27] FilesFind().  Doesn't Free user_data.
 //Does not change the directory on disk.
   CDirEntry *tmpde2;
   while (tmpde) {
@@ -47,7 +44,7 @@ U0 DirTreeDel(CDirEntry *tmpde)
 }
 
 U0 DirTreeDel2(CDirEntry *tmpde)
-{//Free tree returned from [C:/Kernel/BlkDev/DskFind.HC.Z,30] FilesFind().  Frees user_data
+{//Free tree returned from [C:/Kernel/BlkDev/DskFind.HC.Z,27] FilesFind().  Frees user_data
 //Does not change the directory on disk.
   CDirEntry *tmpde2;
   while (tmpde) {
@@ -172,7 +169,7 @@ U0 PutFileLink(U8 *filename,U8 *full_name=NULL,I64 line=0,Bool plain_text=FALSE)
   } else {
 //LK_DOC,LK_DOC_ANCHOR,LK_DOC_FIND,LK_DOC_LINE
     if (filename[0]=='A'&&filename[2]==':') {
-      if (line) //See [C:/Adam/Gr/SpriteEd.HC.Z,578] SpriteEdText()
+      if (line) //See [C:/Adam/Gr/SpriteEd.HC.Z,573] SpriteEdText()
 	"$LK,\"%s,%04d\",A=\"AL:%s,%d\"$",filename+3,line,filename+3,line;
       else
 	"$LK,\"%s\",A=\"AI:%s\"$",filename+3,filename+3;

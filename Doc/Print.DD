@@ -38,9 +38,13 @@ letters.
 
 "%$F" [C:/Doc/DolDocOverview.DD.Z,1] DolDoc file in memory.
 
-"%p" ptr.
+"%p" ptr. 
+
+"%,p" ptr with no offset. 
 
 "%P" link to ptr.
+
+"%,P" link to ptr with no offset.
 
 "%D" date.  Pass a [C:/Kernel/KernelA.HH.Z,186] CDate.
 
@@ -99,8 +103,8 @@ displayed.
 of code being compiled and 
 must reside in a #exe{} blk.
 
-[C:/Adam/Gr/GrBitMap.HC.Z,935] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
-[C:/Adam/Gr/GrBitMap.HC.Z,944] GrVPrint() plots text in graphics 
+[C:/Adam/Gr/GrBitMap.HC.Z,989] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
+[C:/Adam/Gr/GrBitMap.HC.Z,998] GrVPrint() plots text in graphics 
 mode.
 
 [C:/Adam/Gr/GrTextBase.HC.Z,321] TextPrint(CTask *task,I64 x,I64 y,I64

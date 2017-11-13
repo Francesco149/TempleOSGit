@@ -136,6 +136,8 @@ Bool MemRepTask(CTask *task,Bool override_validate=FALSE)
   if (task==sys_winmgr_task) {
     "gr.pen_brushes\t:%010X\n",PenBrushesSize;
     "gr.scrn_zoom_tbles\t:%010X\n",ScrnZoomTablesSize;
+    "scrncast.dc\t:%010X\n",DCSize(scrncast.dc);
+    "scrncast.dc2_alias\t:%010X\n",DCSize(scrncast.dc2_alias);
   } else if (task==adam_task) {
     j=0;k=0;m=0;n=0;
     for (i=0;i<mp_cnt;i++) {
@@ -202,7 +204,7 @@ public U0 MemRep()
   "VGA\t\t:00000A0000-00000BFFFF\n";
   "$ID,-2$$BLACK$High Memory\t:0000100000-%010X$FG$\n",
 	mem_heap_limit;
-  "[C:/Kernel/KernelA.HH.Z,3457] SYS_FIXED_AREA\t:%010X-%010X\n",
+  "[C:/Kernel/KernelA.HH.Z,3415] SYS_FIXED_AREA\t:%010X-%010X\n",
 	SYS_FIXED_AREA,SYS_FIXED_AREA+sizeof(CSysFixedArea)-1;
 
   if (sys_data_bp) {

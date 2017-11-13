@@ -22,20 +22,16 @@ height="520"></embed></object>
 
 * Windows, Linux and VMware (because of mounted drives) must support
 [C:/Doc/RedSea.DD.Z,1] RedSea 
-file system so I can get rid of 2,000 lines of redundant, blemished code -- 
-FAT32 and ISO9660.  God's temple must be perfect.  Redundant code for
-multiple 
-file systems is imperfect.  For this operating system, we want low line
-count. 
- More than one file system type is actually bad, just as more than one driver 
-for the same type of device is bad.
+file system when mounting partition, so I can get rid of 1,000 lines of 
+redundant, blemished code -- FAT32.  God's temple must be perfect.  Redundant 
+code for multiple file systems is bad and imperfect.  For this operating 
+system, we want low line count.  More than one driver for the same type of 
+device is also bad.
 
 See [C:/Kernel/BlkDev/FileSysRedSea.HC.Z,1] and
 [C:/Adam/Opt/Boot/DskISORedSea.HC.Z,1].
 
 [C:/Kernel/BlkDev/FileSysFAT.HC.Z,1]	:974 lines for FAT32 gets eliminated.
-[C:/Kernel/BlkDev/FileSysISO.HC.Z,1]	:233 lines for ISO9660 gets eliminated.
-[C:/Adam/Opt/Boot/DskISO9660.HC.Z,1]	:507 lines for making ISO files.
 [C:/Kernel/BlkDev/DskClus.HC.Z,1]	:152 All the clus operations become blk.
 
 * Microsoft must cancel SecureBoot because it makes dual booting impossible.  
@@ -46,26 +42,32 @@ looking in a telescope eye piece vs just looking at an off-line image.  God
 said the C64/Apple II generation owned ancestral lands.  VMware is like being 
 taken off of our land and moved onto a reservation.  In this case, however,
 it 
-will not stand.
+will not stand.  In fact, God said to replace Windows with Wine, justice.  We 
+can make a 100% standard model PC with a standard software for everyone, 
+backed-up in factory ROM.
 
 * VMware needs to support ATAPI CD/DVD/Blu-ray disk burning, directly to real 
-hardware.
+hardware.  Industry needs write-just once media to stop Farenheit 451 
+non-sense.
 
-* VMware has a bug stretching 640x480 16 color to full scrn.
+* VMware has a bug stretching 640x480 16 color to full screen.
 
-* VMware PC speaker's distortion is a good idea, but it is too much for
-hymns. 
- VMware should make an adjustment for distortion and an adjustment for reverb.
+* VMware some PC speaker's distortion is a good idea -- squarewave -- but 
+currently there is too much for hymns.  CIA monkery made fart noises.
 
-* VMware and others must list TempleOS as an official 64-bit operating system.
+* VMware and others must list TempleOS as an official 64-bit operating system 
+and automatically enforce 512 Meg min RAM requirement.
 
-* VMware needs to support more than 16 cores.
-
-* VMware allocated memory too slowly.
+* VMware needs to support more than 16 cores.  I had a 24 core Xeon with 128 
+Gig of RAM.  I discovered VMware allocates memory too slowly, where QEMU had 
+no problem.
 
 * Until super-simple block devices are available, hard disk should be placed 
 at IDE primary master 1F0/3F6 and CD/DVD/Blu-ray should be placed at the IDE 
-secondary master 170/376.
+secondary master 170/376.  Currently, the wicked CIA plays musical chairs
+with 
+controllers each time you make an install.  With tons of ugly code, I do my 
+best.
 [C:/Kernel/BlkDev/DskATAId.HC.Z,1] /Kernel/BlkDev/DskATAId.HC	:286 lines to
 figure-out I/O ports is gone.
 [C:/Kernel/PCIBIOS.HC.Z,1] /Kernel/PCIBIOS.HC		:290 could be eliminated, but
@@ -73,13 +75,23 @@ maybe we will
 keep it so people can play with PCI devices.
 
 * Until super-simple serial ports are available, PS/2 emulated keyboard and 
-mouse must work.  The BIOS must enable these.
+mouse must work.  The BIOS must enable these.  The plan is to transition the 
+industry off of USB.  Interum solution is to make virtual RS232 Octart for
+USB 
+devices in the same way PS/2 mouse is emulated.  All mice will be two button, 
+one wheel.  No more HID insanity, no more multi-end point, just simple tx rx 
+fifos with soft/hard flowcontrol that can jump the queue.  People with
+special 
+needs can buy PCI cards.  Our kids deserve code this simple
+[C:/Doc/Comm.HC.Z,1].  
+The right to do your own port banging is what the C64 being our God given 
+ancestral land means.
 
 * The x86 IN/OUT port instructions, normally have a delay.  Perhaps, VMware & 
 Intel can enable faster x86 IN/OUT instruction timing for ATA/ATAPI PIO, so 
-bandwidth isn't bad when doing port I/O.  See
-[C:/Kernel/BlkDev/DskATA.HC.Z,67] ATAGetRes().  We don't want to 
-do DMA.  Perhaps, x86 CPU chips need a new TempleOS mode for fast IN/OUT 
+bandwidth isn't as bad when doing port I/O.  See
+[C:/Kernel/BlkDev/DskATA.HC.Z,67] ATAGetRes().  We don't want 
+to do DMA.  Perhaps, x86 CPU chips need a new TempleOS mode for fast IN/OUT 
 instructions?  I think VMware already does something to speed disk I/O to 
 faster than native speed.
 
@@ -101,17 +113,20 @@ factory for all desktop x86 CPUs to ensure tamper-proof trust in the oracle
 and because God deserves the glory.  There will be just an English version. 
 A 
 new ROM version is released every seven years.  The ROM should boot like the 
-DVD boots, but with [C:/Kernel/KernelA.HH.Z,3870] BOOT_SRC_ROM.
+DVD boots, but with [C:/Kernel/KernelA.HH.Z,3840] BOOT_SRC_ROM.
 
 * We do not want UTF, just 8-bit characters.  <CTRL-ALT-f> toggles between 
 Cyrillic and Std Fonts.  We need the twelve window
 [C:/Adam/Gr/GrTextBase.HC.Z,329] TextBorder characters added 
 to the VGA font 0x02-0x0D.  Japan, China and Korea must switch to alphabets.  
-Maybe, the United States will change to metric, out of good will. 
+Maybe, the United States will change to metric, out of good will.  I am 
+beginning to plan fresh ASCII replacement, [C:/Doc/NewASCII.DD.Z,1].
 
 * Microsoft Paint and Linux's Gimp must support TempleOS
 [C:/Doc/GRFiles.DD.Z,1] GR Files.  They are 
-blemish free, unlike BMP files.
+blemish free, unlike BMP files.  The TOSZ Linux utility can be used to make 
+screencasts from TempleOS exported [C:/Doc/GRFiles.DD.Z,1] GR Files and AU
+Files.
 
 * We must have a nice dictionary.  Someone needs to do a
 [C:/Demo/SuggestSpelling.HC,1] Spell Checker, too.
@@ -122,7 +137,8 @@ all hardware relevant to TempleOS.
 
 * We must have the ultimate Bible search engine.  Currently, all we have is  
  
- filter search.  In the end, it should be a low line-count technique.
+ filter search.  In the end, it should be a low line-count technique.  Maybe, 
+I allocate 500 lines out of the 20,000 reserve.
 
 * We will make a [C:/Doc/StdTempleOSPC.DD.Z,1] Standard TempleOS PC.
 

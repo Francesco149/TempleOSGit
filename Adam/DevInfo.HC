@@ -51,7 +51,7 @@ public U0 PCIDevFileGen()
 }
 ****/
 
-//[C:/Misc/PCIDevices.DD,1] ::/Misc/PCIDevices.DD
+//[C:/Misc/PCIDevices.DD.Z,1] ::/Misc/PCIDevices.DD
 U0 PCILookUpSingle(CDoc *doc,I64 m,I64 d,U8 **_vendor,U8 **_dev)
 {
   Bool first=TRUE;

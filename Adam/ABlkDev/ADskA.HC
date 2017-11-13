@@ -23,7 +23,7 @@ public U8 *DClus(I64 c,Bool write=FALSE,I64 num=0)
 //If you set write to TRUE, the clus will
   //be written when you press <ESC>.
   //See [C:/Demo/Dsk/DskRaw.HC,1].
-  //Do [C:/Kernel/BlkDev/DskDirB.HC.Z,105] Dir("*",TRUE); to get clus numbers of files.
+  //Do [C:/Kernel/BlkDev/DskDirB.HC.Z,102] Dir("*",TRUE); to get clus numbers of files.
   U8 *buf=MAlloc(Fs->cur_dv->spc<<BLK_SIZE_BITS);
   c=ClusNumNext(Fs->cur_dv,c,num);
   ClusRead(Fs->cur_dv,buf,c,1);
@@ -226,7 +226,7 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=I64_MIN)
       DirNew(dv,cur_dir,&de,FALSE);
     }
   } else
-    PrintErr("File not found.\n");
+    PrintErr("File not found: \"%s\".\n",filename);
   Free(cur_dir);
 }
 public U0 Touch(U8 *files_find_mask="*",U8 *attr="+?",
@@ -235,7 +235,7 @@ public U0 Touch(U8 *files_find_mask="*",U8 *attr="+?",
 Default lists attributes.
 attr: "+?" =show current
 "+T" =resident
-[C:/Kernel/KernelA.HH.Z,2536] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.HC.Z,109] ST_FILE_ATTRS
+[C:/Kernel/KernelA.HH.Z,2497] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.HC.Z,109] ST_FILE_ATTRS
 To Set DateL:
 Touch(filename,"",,datetime);
 */

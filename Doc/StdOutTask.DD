@@ -1,4 +1,4 @@
-There is one [C:/Kernel/KernelA.HH.Z,1365] CDoc for the task's border:
+There is one [C:/Kernel/KernelA.HH.Z,1367] CDoc for the task's border:
 Fs->border_doc.  There is a pair for 
 the task's client area: Fs->put_doc and Fs->display_doc.  You can,
 optionally, 

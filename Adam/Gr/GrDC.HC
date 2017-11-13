@@ -46,7 +46,7 @@ public I64 Mat4x4NormSqr65536(I64 *r)
 
 public U0 DCMat4x4Set(CDC *dc=NULL,I64 *r)
 {//Set device context's rot matrix. Will be [C:/Kernel/Mem/MAllocFree.HC.Z,383] Freed() in [C:/Adam/Gr/GrDC.HC.Z,208] DCDel().Uses [C:/Demo/Lectures/FixedPoint.HC,1] fixed-point.
-//The main purpose is to set matrix norm for pen width scaling.
+//The main purpose is to set matrix norm for thick scaling.
   //NULL as dc means gr.dc
   if (!dc)   dc=gr.dc;
   dc->r=r;
@@ -95,7 +95,7 @@ public U0 DCLighting(CDC *dc,
   //TempleOS will generate a random U16
   //and compare to dither_probability_u16 and
   //will pick from two colors.
-  //Probability dithering does not work with pen_width>1 at this time.
+  //Probability dithering does not work with thick>1 at this time.
   if (color.c0.rop&ROPBF_TWO_SIDED) {
     color.c0.rop&=~ROPBF_TWO_SIDED;
     i=AbsI64(i)<<1;
@@ -132,12 +132,12 @@ public U0 DCClear(CDC *dc=NULL)
 }
 
 public U0 DCRst(CDC *dc)
-{//Reset [C:/Kernel/KernelA.HH.Z,3641] CDC structure members but not image body, itself.
+{//Reset [C:/Kernel/KernelA.HH.Z,3599] CDC structure members but not image body, itself.
   dc->color=BLACK;
   dc->color2=BLACK;
   dc->bkcolor=BLACK;
   dc->collision_cnt=0;
-  dc->pen_width=1;
+  dc->thick=1;
   dc->ls.x=37837; //1<<16/Sqrt(3)
   dc->ls.y=37837;
   dc->ls.z=37837;
@@ -367,7 +367,7 @@ public CDC *DCLoad(U8 *src,I64 *_size=NULL,CTask *task=NULL)
     MemCpy(res->body,ptr,body_size);
     ptr+=body_size;
   }
-  res->pen_width=1;
+  res->thick=1;
   res->r=Mat4x4IdentNew(task);
   res->r_norm.u32[1]=1;
   res->dc_signature=DCS_SIGNATURE_VAL;
@@ -378,6 +378,10 @@ public CDC *DCLoad(U8 *src,I64 *_size=NULL,CTask *task=NULL)
 #help_index "Graphics/GR Files"
 #help_file "::/Doc/GRFiles"
 #help_index "Graphics/Device Contexts;Graphics/GR Files"
+
+#define GR_FILE_MAX	(offset(CDC.end)-offset(CDC.start)+\
+	COLORS_NUM*sizeof(CBGR48)+sizeof(CArcCtrl)+GR_WIDTH*GR_HEIGHT)
+
 public I64 GRWrite(U8 *filename,CDC *dc,I64 dcsf_flags=DCSF_COMPRESSED)
 {//TempleOS GR File.
   I64	size;
@@ -416,7 +420,7 @@ public CDC *DCScrnCapture(Bool include_zoom=TRUE,CTask *task=NULL)
 {//Capture scrn to a device context.
   CDC *dc;
   U8 *dst;
-  Refresh(2,TRUE);
+  Refresh(0,FALSE);
   if (include_zoom)
     dc=DCCopy(gr.scrn_image,task);
   else

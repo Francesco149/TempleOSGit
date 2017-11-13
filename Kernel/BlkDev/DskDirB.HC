@@ -60,9 +60,6 @@ Bool Cd(U8 *dirname=NULL,Bool make_dirs=FALSE)
 	case FSt_FAT32:
 	  res=FAT32Cd(buf,cur_dir_clus);
 	  break;
-	case FSt_ISO9660:
-	  res=ISO1Cd(buf,cur_dir_clus);
-	  break;
 	default:
 	  PrintErr("File System Not Supported\n");
 	  res=FALSE;
@@ -133,7 +130,7 @@ I64 Dir(U8 *files_find_mask,Bool full)
       "$MA,T=\"Directory\",LM=\"PopUpCd;Dir;\n\"$ of %s\n",st;
       if (full)
 	"__DATE__ __TIME__ %*ts %*ts\n",
-	      csize,"SIZE",c,"CLUS";
+	      csize,"SIZE",c,"BLK";
       else
 	"DATE_ TIME_ %*ts\n",csize,"SIZE";
       while (tmpde1) {
@@ -173,7 +170,7 @@ Bool DirMk(U8 *filename,I64 entry_cnt=0)
   if (dirc=DirContextNew(filename)) {
     if (*dirc->mask) {
       if (!FileNameChk(dirc->mask))
-	PrintErr("Invalid FileName.\n");
+	PrintErr("Invalid FileName: \"%s\".\n",dirc->mask);
       else {
 	"Make Directory:%s\n",filename;
 	name=MStrUtil(dirc->mask,
@@ -184,9 +181,6 @@ Bool DirMk(U8 *filename,I64 entry_cnt=0)
 	    break;
 	  case FSt_FAT32:
 	    res=FAT32MkDir(dirc->dv,Fs->cur_dir,name,entry_cnt);
-	    break;
-	  case FSt_ISO9660:
-	    PrintErr("Not Writable\n");
 	    break;
 	  default:
 	    PrintErr("File System Not Supported\n");
