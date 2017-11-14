@@ -211,6 +211,7 @@ public extern Bool PutSrcLink(U8 *addr,I64 cnt=1,U8 *buf=NULL);
 public extern U8 *SrcEdLink(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
 public extern U8 *SrcFileName(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
 public extern I64 SrcLineNum(U8 *addr,I64 cnt=1);
+
 #help_index "Debugging/FunSeg;Hash/System"
 public extern CHash *FunSegFind(U8 *addr,I64 *_offset);
 
@@ -756,7 +757,6 @@ public extern I64 HPET();
 #help_index "Time/Jiffies"
 #help_file "::/Doc/TimeJiffy"
 public extern I64 SysTimerRead();//18.33333*65536Hz (SYS_TIMER_FREQ)
-
 #help_index "Time/Seconds"
 public extern Bool Blink(F64 Hz=2.5);
 public extern F64 tS(); //From SysTimerFreq.
