@@ -312,6 +312,14 @@ ToTheFront <15> (image)  Span  <16> (image) Checkers <17> (image) Digits <18> (i
 JukeBox <24> (image) Psalmody <25> (image) Budget <26> (image) Logic <27> (image) Vocab <28> (image) 
 
 
+
+
+
+
+
+
+Sup1Hym <29> (image) Sup2Hym <30> (image) Sup3Hym <31> (image)
+
 Budget  
 `#include "::/Apps/Budget/Load";Budget("~/TAD/Budget");`
 TestSuit
