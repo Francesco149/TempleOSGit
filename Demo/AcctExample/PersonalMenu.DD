@@ -311,14 +311,13 @@ ToTheFront <15> (image)  Span  <16> (image) Checkers <17> (image) Digits <18> (i
 
 JukeBox <24> (image) Psalmody <25> (image) Budget <26> (image) Logic <27> (image) Vocab <28> (image) 
 
+Sup1Hym
+`#include "::/Apps/Psalmody/Load";JukeBox("~/Sup1/Sup1Hymns");`
+ Sup2Hym
+`#include "::/Apps/Psalmody/Load";JukeBox("~/Sup2/Sup2Hymns");`
+ Sup3Hym
+`#include "::/Apps/Psalmody/Load";JukeBox("~/Sup3/Sup3Hymns");`
 
-
-
-
-
-
-
-Sup1Hym <29> (image) Sup2Hym <30> (image) Sup3Hym <31> (image)
 
 Budget  
 `#include "::/Apps/Budget/Load";Budget("~/TAD/Budget");`
