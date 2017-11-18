@@ -375,7 +375,6 @@ public extern I64 FileWrite(U8 *filename,
 
 #help_index "File/Program Routines;File/FileNames"
 public extern CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0);
-
 #help_index "File/System"
 public extern CATARep *ATAIDDrvs(CATARep *head,CATARep **_ata_drv,
 	CATARep **_atapi_drv);
@@ -757,6 +756,7 @@ public extern I64 HPET();
 #help_index "Time/Jiffies"
 #help_file "::/Doc/TimeJiffy"
 public extern I64 SysTimerRead();//18.33333*65536Hz (SYS_TIMER_FREQ)
+
 #help_index "Time/Seconds"
 public extern Bool Blink(F64 Hz=2.5);
 public extern F64 tS(); //From SysTimerFreq.
