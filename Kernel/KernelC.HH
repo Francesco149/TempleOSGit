@@ -375,6 +375,7 @@ public extern I64 FileWrite(U8 *filename,
 
 #help_index "File/Program Routines;File/FileNames"
 public extern CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0);
+
 #help_index "File/System"
 public extern CATARep *ATAIDDrvs(CATARep *head,CATARep **_ata_drv,
 	CATARep **_atapi_drv);
@@ -635,7 +636,6 @@ extern CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 
 #help_index "MultiCore;Boot"
 public extern U0 MPHalt();
-
 #help_index "MultiCore;Job/Exe;Task/Job/Exe"
 public extern CJob *JobQue(I64 (*fp_addr)(U8 *data),U8 *data=NULL,
 	I64 target_cpu=1,I64 flags=1<<JOBf_FREE_ON_COMPLETE,
