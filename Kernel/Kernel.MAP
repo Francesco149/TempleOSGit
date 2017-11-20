@@ -113,7 +113,7 @@
 [C:/Kernel/KernelA.HH.Z,2274] ATA_SET_MAX
 [C:/Kernel/KernelA.HH.Z,1741] IEF_DFT
 [C:/Kernel/KernelA.HH.Z,1575] RT_F32
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,181] Let2BlkDev
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,180] Let2BlkDev
 [C:/Kernel/KernelA.HH.Z,2550] FUf_JUST_FILES
 [C:/Kernel/KernelA.HH.Z,1919] ARGT_M1632
 [C:/Kernel/KernelA.HH.Z,991] DOCEF_LEFT_X
@@ -1002,7 +1002,7 @@
 [C:/Kernel/KernelA.HH.Z,995] DOCEF_CENTER_Y
 [C:/Kernel/KMathB.HC.Z,147] Seed
 [C:/Kernel/BlkDev/DskDrv.HC.Z,27] DrvsRelease
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,126] BlkDevNextFreeSlot
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,125] BlkDevNextFreeSlot
 [C:/Kernel/KernelA.HH.Z,3235] TASKf_FILTER_INPUT
 [C:/Kernel/KernelA.HH.Z,1011] DOCEF_REFRESH_DATA
 [C:/Kernel/KernelA.HH.Z,1318] DOCf_DONT_HIGHLIGHT_CURSOR
@@ -2442,7 +2442,7 @@
 [C:/Kernel/KernelA.HH.Z,3513] SC_HOME
 [C:/Kernel/BlkDev/DskATA.HC.Z,106] ATAPIWritePktWord
 [C:/Kernel/BlkDev/DskStrA.HC.Z,40] FilesFindMatch
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,115] BlkDevsRelease
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,114] BlkDevsRelease
 [C:/Kernel/KernelA.HH.Z,1140] DOC_COLOR_LINK
 [C:/Kernel/KernelA.HH.Z,1985] AAT_ADD_U64
 [C:/Kernel/KernelA.HH.Z,690] HTT_CLASS
@@ -2528,9 +2528,9 @@
 [C:/Kernel/StrA.HC.Z,309] StrCmp
 [C:/Kernel/KernelA.HH.Z,1226] DOF_INTERCEPT_TASK_END
 [C:/Kernel/KernelA.HH.Z,586] SF_ARG8
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,160] BlkDevDel
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,159] BlkDevDel
 [C:/Kernel/KernelA.HH.Z,3459] ST_ERR_ST
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,169] BlkDevChk
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,168] BlkDevChk
 [C:/Kernel/KernelA.HH.Z,2659] FSt_REDSEA
 [C:/Kernel/KernelA.HH.Z,2252] CPCIDev
 [C:/Kernel/KernelA.HH.Z,1114] DOCEf_DFT_LEN
