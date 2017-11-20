@@ -48,7 +48,7 @@
       F64 best_score=43.9944;
       +] OSTestSuite
       progress1_tf=0.000;progress2_tf=0.000;
-    progress3_tf=0.000;progress4_tf=227.120;
+    progress3_tf=0.000;progress4_tf=226.523;
       +] XCaliber
       I64 best_score=90;
     I64 msg_flags=2;
@@ -60,7 +60,7 @@
       I64 best_score=16469;
       +] TOSRegen
       progress1_tf=0.000;progress2_tf=0.000;
-    progress3_tf=0.000;progress4_tf=92.922;
+    progress3_tf=0.000;progress4_tf=94.516;
       +] TempleTetris
       I64 hiscore=0;
       +] Once
@@ -68,9 +68,9 @@
         +] User
         +] DemoCompany
   +] Game1
-      F64 best_score=200.29423;
+      F64 best_score=189.85507;
     +] SimpleVal
-          1247;
+          1248;
             +] WalnutZone
   +] Cherub
       #define rom_path M:/SnailNet
