@@ -1,5 +1,5 @@
 #!/bin/bash
 
-#Start QEMU and boot CDROM in order to install new TempleOS files.
+#Start QEMU and boot Dropbox CDROM in order to install new TempleOS files.
 
-qemu-system-x86_64 -hda ~/qemu_disk.qcow2 -machine kernel_irqchip=off -smp cores=1 -enable-kvm -cpu host -m 2048 -rtc base=localtime -soundhw pcspk -cdrom ~/TOS/Site1/Wb/TempleOSCD.ISO -boot d
+qemu-system-x86_64 -hda ~/qemu_disk.qcow2 -machine kernel_irqchip=off -smp cores=1 -enable-kvm -cpu host -m 2048 -rtc base=localtime -soundhw pcspk -cdrom ~/TOS/Site/Downloads/TOS_Distro.ISO -boot d

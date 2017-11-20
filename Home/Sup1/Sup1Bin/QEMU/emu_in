@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer files into QEMU.
+
+echo EMU In
+sudo ~/TOS/Bin/QEMU/emu_in2
+

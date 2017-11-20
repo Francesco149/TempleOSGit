@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Transfer files out of QEMU.
+
+echo EMU Out
+sudo ~/TOS/Bin/QEMU/emu_out2
+

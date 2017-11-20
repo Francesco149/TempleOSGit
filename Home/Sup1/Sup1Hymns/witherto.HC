@@ -21,7 +21,7 @@ U0 Song()
       Play("5qC4G5eFC4G5E4qA5CD4A",
 	    "Has \0no \0fruit.\n\0 \0 \0 \0 \0 \0 \0 \0");
       Play("5C4G5eFC4G5E4qA5CD4A",
-	    "Kill \0the \0head.\n\0 \0 \0 \0 \0 \0 \0 \0");
+	    "Kill \0the \0root.\n\0 \0 \0 \0 \0 \0 \0 \0");
       "$GREEN$Be sure to bear 'fruit'.$FG$\n\n";
     }
   } catch

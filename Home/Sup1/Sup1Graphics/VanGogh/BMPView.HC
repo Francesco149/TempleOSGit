@@ -1,3 +1,6 @@
+Cd(__DIR__);;
+#include "../../Sup1Utils/FileBMP.HC"
+
 #define DC_NUM	4
 
 CDC *cafe_dc[DC_NUM];

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#Transfer files into QEMU.
+
+cd ~/TOS/Site/Downloads/Linux
+./make_tosz
+cp TOSZ ~/TOS/Bin
+
+rm ~/TOS/Bin/*~
+rm ~/TOS/Home/*~
+rm ~/TOS/Home/Sup1/Sup1Bin/*~
+
+cp --preserve=all ~/TOS/Bin/gw ~/TOS/Home/Sup1/Sup1Bin
+cp -R --preserve=all ~/TOS/Bin/QEMU ~/TOS/Home/Sup1/Sup1Bin
+
+~/TOS/Bin/QEMU/emu_mnt
+rm -R /mnt/qemu_disk/Home
+cp -R --preserve=timestamps ~/TOS/Home /mnt/qemu_disk
+rm -R /mnt/qemu_disk/Downloads/Linux
+cp -R --preserve=timestamps ~/TOS/Site/Downloads/Linux /mnt/qemu_disk/Downloads/Linux
+~/TOS/Bin/QEMU/emu_umnt
+
