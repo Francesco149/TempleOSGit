@@ -38,7 +38,6 @@ char_bmp_zero_tab_cr_nl_cursor_dollar[16],
 char_bmp_macro[16],			char_bmp_printable[16],
 char_bmp_displayable[16],		char_bmp_safe_dollar[16],
 char_bmp_filename[16],			char_bmp_non_eol[16];
-
 #help_index "Char/Conversion"
 public extern U8 *Char2KeyName(I64 ch,Bool include_ctrl=TRUE);
 public extern I64 Char2ScanCode(I64 ch,I64 sc_flags=0);
@@ -314,6 +313,7 @@ public extern U8 *ToggleZorNotZ(U8 *name);
 
 #help_index "File/FileNames;Misc"
 public extern U8 *FileNameTmpTxt();
+
 #help_index "File/Internal"
 public extern U0 DirContextDel(CDirContext *dirc,Bool restore=TRUE);
 public extern CDirContext *DirContextNew(U8 *mask,
