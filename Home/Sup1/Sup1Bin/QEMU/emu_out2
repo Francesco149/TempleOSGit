@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#Transfer files out of QEMU.
+
+~/TOS/Bin/QEMU/emu_mnt
+rm -R ~/TOS/Home
+rm -R ~/TOS/Site/Downloads
+mv /mnt/qemu_disk/Downloads/TOS_Staff.ISO ~/TOS
+cp -R --preserve=all /mnt/qemu_disk/Home ~/TOS/Home
+cp -R --preserve=all /mnt/qemu_disk/Downloads ~/TOS/Site/Downloads
+chmod -R 777 ~/TOS
+~/TOS/Bin/QEMU/emu_umnt
+

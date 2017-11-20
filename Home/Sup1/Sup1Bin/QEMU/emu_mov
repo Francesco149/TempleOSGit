@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#Transfer BMP screenshot movie files out of QEMU.
+
+echo QEMU Mov
+~/TOS/Bin/QEMU/emu_mnt
+cp -R --preserve=all /mnt/qemu_disk/Tmp/*.AU ~/Pictures
+cp -R --preserve=all /mnt/qemu_disk/Tmp/*.MV ~/Pictures
+~/TOS/Bin/QEMU/emu_umnt
+cd ~/Pictures
+rm MOVIE.MP4
+~/TOS/Bin/TOSZ -mp4
+rm *.AU
+rm *.MV
+
