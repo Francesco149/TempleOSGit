@@ -41,7 +41,7 @@ See [C:/Adam/Opt/Utils/MemRep.HC.Z,193] MemRep() and [C:/Demo/MemDemo.HC.Z,1].
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003626F
+ 0x0000007C00- 0x000003616F
   Kernel module, placed here by the boot-loader,
   [C:/Kernel/KernelA.HH.Z,3835] BOOT_RAM_BASE.
 

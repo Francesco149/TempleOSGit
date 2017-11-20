@@ -113,7 +113,7 @@
 [C:/Kernel/KernelA.HH.Z,2274] ATA_SET_MAX
 [C:/Kernel/KernelA.HH.Z,1741] IEF_DFT
 [C:/Kernel/KernelA.HH.Z,1575] RT_F32
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,183] Let2BlkDev
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,181] Let2BlkDev
 [C:/Kernel/KernelA.HH.Z,2550] FUf_JUST_FILES
 [C:/Kernel/KernelA.HH.Z,1919] ARGT_M1632
 [C:/Kernel/KernelA.HH.Z,991] DOCEF_LEFT_X
@@ -166,7 +166,7 @@
 [C:/Kernel/KernelA.HH.Z,3538] RWF_SHOW_DOLLAR
 [C:/Kernel/KernelA.HH.Z,2773] _CFG_HEAP_DBG
 [C:/Kernel/KernelA.HH.Z,661] HTt_INTERNAL_TYPE
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,517] RedSeaFileWrite
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,509] RedSeaFileWrite
 [C:/Kernel/KernelA.HH.Z,395] CPatchTableAbsAddr
 [C:/Kernel/BlkDev/DskCDDVD.HC.Z,65] DVDImageRead
 [C:/Kernel/KernelA.HH.Z,423] IET_CODE_HEAP
@@ -244,7 +244,7 @@
 [C:/Kernel/KernelA.HH.Z,1016] DOCEF_REMALLOC_DATA
 [C:/Kernel/KHashA.HC.Z,208] _HASH_REM_DEL
 [C:/Kernel/Sched.HC.Z,301] TaskQueRem
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,83] RedSeaValidate
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,82] RedSeaValidate
 [C:/Kernel/KernelA.HH.Z,3433] CH_CTRLH
 [C:/Kernel/KernelA.HH.Z,2428] CPalindromeU32
 [C:/Kernel/KernelA.HH.Z,2423] CPalindromeU16
@@ -437,7 +437,7 @@
 [C:/Kernel/KernelA.HH.Z,784] MLF_STATIC
 [C:/Kernel/KDefine.HC.Z,156] str2color_lst
 [C:/Kernel/KGlbls.HC.Z,14] local_time_offset
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,545] RedSeaFilesFind
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,537] RedSeaFilesFind
 [C:/Kernel/KernelA.HH.Z,2120] TK_INS_BIN
 [C:/Kernel/BlkDev/DskClus.HC.Z,123] ClusWrite
 [C:/Kernel/KMathA.HC.Z,167] _D3_MUL
@@ -890,7 +890,7 @@
 [C:/Kernel/KernelA.HH.Z,3165] CJobCtrl
 [C:/Kernel/KernelB.HH.Z,226] progress3_tf
 [C:/Kernel/KernelA.HH.Z,1742] IEF_NOT_IN_64_BIT
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,163] RedSeaFileFind
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,155] RedSeaFileFind
 [C:/Kernel/KernelA.HH.Z,3046] CTRLF_CAPTURE_RIGHT_MS
 [C:/Kernel/PCIBIOS.HC.Z,4] SYS_PCIBIOS_SERVICE_DIR
 [C:/Kernel/KMisc.HC.Z,122] tS
@@ -1002,7 +1002,7 @@
 [C:/Kernel/KernelA.HH.Z,995] DOCEF_CENTER_Y
 [C:/Kernel/KMathB.HC.Z,147] Seed
 [C:/Kernel/BlkDev/DskDrv.HC.Z,27] DrvsRelease
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,128] BlkDevNextFreeSlot
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,126] BlkDevNextFreeSlot
 [C:/Kernel/KernelA.HH.Z,3235] TASKf_FILTER_INPUT
 [C:/Kernel/KernelA.HH.Z,1011] DOCEF_REFRESH_DATA
 [C:/Kernel/KernelA.HH.Z,1318] DOCf_DONT_HIGHLIGHT_CURSOR
@@ -1019,7 +1019,7 @@
 [C:/Kernel/KernelA.HH.Z,41] STR_LEN
 [C:/Kernel/BlkDev/DskCache.HC.Z,53] DskCacheQueIns
 [C:/Kernel/KernelA.HH.Z,3532] SC_PRTSCRN2
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,308] RedSeaAllocClus
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,300] RedSeaAllocClus
 [C:/Kernel/KernelB.HH.Z,242] sys_semas
 [C:/Kernel/KernelA.HH.Z,3886] OS_LINUX
 [C:/Kernel/SerialDev/Message.HC.Z,1] InputFilterTask
@@ -1067,7 +1067,7 @@
 [C:/Kernel/Sched.HC.Z,100] _TASK_CONTEXT_RESTORE
 [C:/Kernel/KernelB.HH.Z,32] BFieldOrU32
 [C:/Kernel/KernelA.HH.Z,2114] TK_IFJIT
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,215] RedSeaFileRead
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,207] RedSeaFileRead
 [C:/Kernel/KernelA.HH.Z,3678] VGAP_CRTC_DATA
 [C:/Kernel/KernelA.HH.Z,1892] ARGT_REL32
 [C:/Kernel/KernelA.HH.Z,1891] ARGT_REL16
@@ -1127,7 +1127,7 @@
 [C:/Kernel/KDefine.HC.Z,74] DefineCnt
 [C:/Kernel/KernelA.HH.Z,3521] SC_F5
 [C:/Kernel/KernelA.HH.Z,1432] WIF_FOCUS_TASK_MENU
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,244] RedSeaCd
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,236] RedSeaCd
 [C:/Kernel/Job.HC.Z,1] JobDel
 [C:/Kernel/KernelA.HH.Z,3522] SC_F6
 [C:/Kernel/KernelA.HH.Z,2728] DFT_ISO_C_FILENAME
@@ -1470,7 +1470,7 @@
 [C:/Kernel/StrPrint.HC.Z,205] TMP_BUF_LEN
 [C:/Kernel/KernelA.HH.Z,2820] MRT_UNUSED
 [C:/Kernel/KernelA.HH.Z,1598] MDG_REG_DISP_SIB
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,464] RedSeaFilesDel
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,456] RedSeaFilesDel
 [C:/Kernel/KernelB.HH.Z,273] XchgU32
 [C:/Kernel/KernelB.HH.Z,272] XchgU16
 [C:/Kernel/KernelA.HH.Z,2101] TK_SHL_EQU
@@ -1895,7 +1895,7 @@
 [C:/Kernel/BlkDev/DskATA.HC.Z,281] ATAPIReadTrackInfo
 [C:/Kernel/KernelA.HH.Z,2262] CATARep
 [C:/Kernel/KernelA.HH.Z,1784] REG_RAX
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,256] RedSeaFreeClus
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,248] RedSeaFreeClus
 [C:/Kernel/BlkDev/DskATA.HC.Z,353] ATAReadBlks
 [C:/Kernel/KernelB.HH.Z,146] D3AddEqu
 [C:/Kernel/KernelB.HH.Z,58] ToUpper
@@ -2037,7 +2037,7 @@
 [C:/Kernel/KDataTypes.HC.Z,41] QueDel
 [C:/Kernel/BlkDev/DskDrv.HC.Z,161] Let2Let
 [C:/Kernel/KernelA.HH.Z,1631] ICF_DONT_RESTORE
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,358] RedSeaDirNew
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,350] RedSeaDirNew
 [C:/Kernel/KernelA.HH.Z,420] IET_REL64_EXPORT
 [C:/Kernel/KernelA.HH.Z,418] IET_REL32_EXPORT
 [C:/Kernel/Mem/PageTables.HC.Z,157] SYS_INIT_16MEG_SYS_CODE_BP
@@ -2406,7 +2406,7 @@
 [C:/Kernel/Job.HC.Z,267] JOB_EXIT
 [C:/Kernel/KMisc.HC.Z,155] Sleep
 [C:/Kernel/KernelA.HH.Z,2539] FUf_DEL
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,610] RedSeaMkDir
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,602] RedSeaMkDir
 [C:/Kernel/KeyDev.HC.Z,1] PutKey
 [C:/Kernel/KHashA.HC.Z,120] _HASH_STR
 [C:/Kernel/KernelA.HH.Z,2979] CMsHardStateGlbls
@@ -2442,7 +2442,7 @@
 [C:/Kernel/KernelA.HH.Z,3513] SC_HOME
 [C:/Kernel/BlkDev/DskATA.HC.Z,106] ATAPIWritePktWord
 [C:/Kernel/BlkDev/DskStrA.HC.Z,40] FilesFindMatch
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,117] BlkDevsRelease
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,115] BlkDevsRelease
 [C:/Kernel/KernelA.HH.Z,1140] DOC_COLOR_LINK
 [C:/Kernel/KernelA.HH.Z,1985] AAT_ADD_U64
 [C:/Kernel/KernelA.HH.Z,690] HTT_CLASS
@@ -2528,9 +2528,9 @@
 [C:/Kernel/StrA.HC.Z,309] StrCmp
 [C:/Kernel/KernelA.HH.Z,1226] DOF_INTERCEPT_TASK_END
 [C:/Kernel/KernelA.HH.Z,586] SF_ARG8
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,162] BlkDevDel
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,160] BlkDevDel
 [C:/Kernel/KernelA.HH.Z,3459] ST_ERR_ST
-[C:/Kernel/BlkDev/DskBlkDev.HC.Z,171] BlkDevChk
+[C:/Kernel/BlkDev/DskBlkDev.HC.Z,169] BlkDevChk
 [C:/Kernel/KernelA.HH.Z,2659] FSt_REDSEA
 [C:/Kernel/KernelA.HH.Z,2252] CPCIDev
 [C:/Kernel/KernelA.HH.Z,1114] DOCEf_DFT_LEN
@@ -2591,7 +2591,7 @@
 [C:/Kernel/KernelB.HH.Z,183] sys_mem_init_flag
 [C:/Kernel/KernelA.HH.Z,3536] RWF_IN_DOLLAR
 [C:/Kernel/KernelA.HH.Z,3252] DISPLAYf_CHILDREN_NOT_ON_TOP
-[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,102] RedSeaFmt
+[C:/Kernel/BlkDev/FileSysRedSea.HC.Z,94] RedSeaFmt
 [C:/Kernel/KernelB.HH.Z,186] sys_var_init_flag
 [C:/Kernel/KernelA.HH.Z,3877] PRTF_DECIMAL
 [C:/Kernel/KernelA.HH.Z,530] IOAPIC_DATA
