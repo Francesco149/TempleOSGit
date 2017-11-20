@@ -314,7 +314,6 @@ public extern U8 *ToggleZorNotZ(U8 *name);
 
 #help_index "File/FileNames;Misc"
 public extern U8 *FileNameTmpTxt();
-
 #help_index "File/Internal"
 public extern U0 DirContextDel(CDirContext *dirc,Bool restore=TRUE);
 public extern CDirContext *DirContextNew(U8 *mask,
@@ -636,6 +635,7 @@ extern CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 
 #help_index "MultiCore;Boot"
 public extern U0 MPHalt();
+
 #help_index "MultiCore;Job/Exe;Task/Job/Exe"
 public extern CJob *JobQue(I64 (*fp_addr)(U8 *data),U8 *data=NULL,
 	I64 target_cpu=1,I64 flags=1<<JOBf_FREE_ON_COMPLETE,
