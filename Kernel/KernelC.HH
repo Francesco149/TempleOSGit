@@ -38,6 +38,7 @@ char_bmp_zero_tab_cr_nl_cursor_dollar[16],
 char_bmp_macro[16],			char_bmp_printable[16],
 char_bmp_displayable[16],		char_bmp_safe_dollar[16],
 char_bmp_filename[16],			char_bmp_non_eol[16];
+
 #help_index "Char/Conversion"
 public extern U8 *Char2KeyName(I64 ch,Bool include_ctrl=TRUE);
 public extern I64 Char2ScanCode(I64 ch,I64 sc_flags=0);
@@ -46,7 +47,6 @@ public extern U8 *ScanCode2KeyName(I64 sc);
 public extern F64 Str2F64(U8 *src,U8 **_end_ptr=NULL);
 public extern I64 Str2I64(U8 *st,I64 radix=10,U8 **_end_ptr=NULL);
 public extern U8 *StrScan(U8 *src,U8 *fmt,...);
-
 #help_index "Char/Conversion;Time/Date/CDate;Date/CDate"
 public extern CDate Str2Date(U8 *src);
 
