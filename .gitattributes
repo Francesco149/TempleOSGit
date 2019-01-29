@@ -1,0 +1,6 @@
+*.CPC linguist-language=cpp
+*.HPC linguist-language=cpp
+*.APC linguist-langage=cpp
+*.SPC linguist-langage=cpp
+*.ASC linguist-language=asm
+*.HC linguist-langage=cpp
