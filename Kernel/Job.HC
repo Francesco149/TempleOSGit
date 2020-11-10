@@ -119,7 +119,7 @@ CJob *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags)
 CJob *TaskMsg(CTask *_srv,CTask *master,
 	I64 msg_code,I64 arg1,I64 arg2,I64 flags)
 {//Post message to servant task.  Tell who the master task is.
-//See [C:/Kernel/KernelA.HH.Z,3129] flags and [C:/Kernel/KernelA.HH.Z,3175] msg_code.
+//See [C:/Kernel/KernelA.HH.Z,3130] flags and [C:/Kernel/KernelA.HH.Z,3176] msg_code.
   CJob *tmpc1,*tmpc;
   CTask *srv=_srv;
   if (!TaskValidate(srv) || master && !TaskValidate(master)||
@@ -240,7 +240,7 @@ U0 TaskWait(CTask *task=NULL,Bool cmd_line_pmt=FALSE)
 }
 
 U0 PostMsg(CTask *task,I64 msg_code,I64 arg1,I64 arg2,I64 flags=0)
-{//Post message to a task and return immediately.  See [C:/Kernel/KernelA.HH.Z,3175] msg_code.
+{//Post message to a task and return immediately.  See [C:/Kernel/KernelA.HH.Z,3176] msg_code.
   if (TaskValidate(task)) {
     if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
       TaskMsg(task->last_input_filter_task,NULL,msg_code,arg1,arg2,
@@ -251,14 +251,14 @@ U0 PostMsg(CTask *task,I64 msg_code,I64 arg1,I64 arg2,I64 flags=0)
 }
 
 U0 PostMsgWait(CTask *task,I64 msg_code,I64 arg1,I64 arg2,I64 flags=0)
-{//Post message to a task and wait until task is idle.See [C:/Kernel/KernelA.HH.Z,3175] msg_code.
+{//Post message to a task and wait until task is idle.See [C:/Kernel/KernelA.HH.Z,3176] msg_code.
   PostMsg(task,msg_code,arg1,arg2,flags);
   TaskWait(task);
 }
 
 U0 Msg(I64 msg_code,I64 arg1,I64 arg2,I64 flags=0)
 {//Post message to current task and return immediately.
-//See [C:/Kernel/KernelA.HH.Z,3175] msg_code.
+//See [C:/Kernel/KernelA.HH.Z,3176] msg_code.
   PostMsg(Fs,msg_code,arg1,arg2,flags);
 }
 

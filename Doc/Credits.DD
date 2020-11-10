@@ -14,7 +14,7 @@ the kernel to the compiler to the boot loaders!  It is public domain, not GPL.
 *) [C:/Kernel/FontCyrillic.HC.Z,1], is taken from OrientDisplay without
 permission.
 
-*) [C:/Kernel/KernelA.HH.Z,2269] ATA Reg and Cmd Definitions are originally
+*) [C:/Kernel/KernelA.HH.Z,2270] ATA Reg and Cmd Definitions are originally
 from Linux.  Later, I got the 
 spec.
 

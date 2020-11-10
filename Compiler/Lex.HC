@@ -27,7 +27,7 @@ CLexFile *LexFilePop(CCmpCtrl *cc)
 
 CCmpCtrl *CmpCtrlNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
 {//MAlloc and Init CCmpCtrl.
-//Frees buf in [C:/Compiler/Lex.HC.Z,58] CmpCtrlDel unless [C:/Kernel/KernelA.HH.Z,2141] CCF_DONT_FREE_BUF flag is set.
+//Frees buf in [C:/Compiler/Lex.HC.Z,58] CmpCtrlDel unless [C:/Kernel/KernelA.HH.Z,2142] CCF_DONT_FREE_BUF flag is set.
   //FileName is for error reporting.  If files are #included,
   //new names are used.  See [C:/Apps/Psalmody/PsalmodyFile.HC.Z,1] Psalmody CmpCtrlNew.
   CCmpCtrl *cc=CAlloc(sizeof(CCmpCtrl));

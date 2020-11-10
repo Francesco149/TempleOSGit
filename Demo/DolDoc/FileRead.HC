@@ -4,7 +4,7 @@ public U0 DocProfile(U8 *filename,I64 flags)
 	*flags_stats=CAlloc(sizeof(I64)*64),
 	*type_flags_stats=CAlloc(sizeof(I64)*64);
 //Note: word wrap is determined by
-  //doc->win_task when a [C:/Kernel/KernelA.HH.Z,1367] CDoc is recalculated
+  //doc->win_task when a [C:/Kernel/KernelA.HH.Z,1368] CDoc is recalculated
   //use [C:/Adam/DolDoc/DocRecalc.HC.Z,256] DocRecalc().
   CDoc *doc=DocRead(filename,flags);
 
@@ -65,11 +65,11 @@ public U0 DocProfile(U8 *filename,I64 flags)
 
 /*See [C:/Adam/Training.HC.Z,161] TipOfDay.
 
-Note: Not all [C:/Kernel/KernelA.HH.Z,1191] CDocEntry's are full-sized nodes.
+Note: Not all [C:/Kernel/KernelA.HH.Z,1192] CDocEntry's are full-sized nodes.
 Some are [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloced with a smaller size to save
-mem.	They all have at least the size [C:/Kernel/KernelA.HH.Z,1169] CDocEntryBase.
+mem.	They all have at least the size [C:/Kernel/KernelA.HH.Z,1170] CDocEntryBase.
 
-Note: [C:/Kernel/KernelA.HH.Z,1191] CDocEntry's should be alloced from the
+Note: [C:/Kernel/KernelA.HH.Z,1192] CDocEntry's should be alloced from the
 heap of the owning task, doc->mem_task.
 
 The flag arrays [C:/Adam/DolDoc/MakeDoc.HC.Z,21] doldoc.type_flags_form, etc

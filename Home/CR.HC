@@ -1,0 +1,22 @@
+U64 GetCR0() {
+  MOV_RAX_CR0
+}
+
+U64 GetCR4() {
+  MOV_RAX_CR4
+}
+
+U0 EnSSE() {
+  MOV_RAX_CR0;
+  AND AX,0xFFFB;
+  OR RAX,0x33;
+  MOV_CR0_RAX;
+  MOV_RAX_CR4;
+  OR RAX,3<<9;
+  MOV_CR4_RAX;
+}
+
+//EnSSE;
+
+"CR0: %016X\n",GetCR0;
+"CR4: %016X\n",GetCR4;

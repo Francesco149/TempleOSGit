@@ -9,12 +9,12 @@ must be a contiguous ISO.C file, so rename it under TempleOS to ISO.C.
 
 Ideally, do not install applications such as games onto your hard drive 
 because we wish to keep hard drive usage low, so the whole 'C' drive can be 
-copied quickly to 'D'.  Also, the [C:/Adam/ABlkDev/FileMgr.HC.Z,594]
+copied quickly to 'D'.  Also, the [C:/Adam/ABlkDev/FileMgr.HC.Z,579]
 FileMgr() <CTRL-d> starts too slowly when 
 there are lots of hard drive files, but that is how we want it.
 
 
-* Free	[C:/Home/Web/AppStore/Frotz.DD,1] Frotz (Text Adventure) by Jack
+* Free	[C:/Home/Web/AppStore/Frotz.DD.Z,1] Frotz (Text Adventure) by Jack
 Whitham.
 
 * Free	Julia Fractel by pcorey.
@@ -34,10 +34,10 @@ future, if we start getting a lot and they become a problem.
 
 * Free	TempleTetris by Plotr Olszewski.
 
-* Free	[C:/Home/Web/AppStore/TerryQEMU.DD,1] Terry Distro QEMU by Terry A.
+* Free	[C:/Home/Web/AppStore/TerryQEMU.DD.Z,1] Terry Distro QEMU by Terry A.
 Davis.
 
-* Free	[C:/Home/Web/AppStore/TerryVMware.DD,1] Terry Distro VMware by Terry
+* Free	[C:/Home/Web/AppStore/TerryVMware.DD.Z,1] Terry Distro VMware by Terry
 A. Davis.
 
 * Free	Tic Tac Toe by Robin Essmann.

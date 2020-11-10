@@ -4,7 +4,7 @@ prefixes on code.  Only use it on
 read-modify-write stmts.
 It will generate invalid insts
 if you misuse it and it will crash.
-[C:/Compiler/UAsm.HC.Z,653] U() to see what code was generated.
+[C:/Compiler/UAsm.HC.Z,663] U() to see what code was generated.
 */
 
 #define CNT	0x1000000

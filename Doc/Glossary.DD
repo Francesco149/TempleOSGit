@@ -159,7 +159,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HH.Z,3271]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HH.Z,3272]
   CTask.  There is only one window per task, and only Core0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -192,7 +192,7 @@ Since there is not friendly disk sharing and all tasks have the same address
   within the lowest 2Gig of memory, addresses 00000000-7FFFFFFF.  The compiler
   and [C:/Kernel/KLoad.HC.Z,181] Load()er alloc memory from the code heap to
   store code and glbl vars, unless the compiler option
-  [C:/Kernel/KernelA.HH.Z,1555] OPTf_GLBLS_ON_DATA_HEAP is used.  When programs
+  [C:/Kernel/KernelA.HH.Z,1556] OPTf_GLBLS_ON_DATA_HEAP is used.  When programs
   call [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc() is from the data heap,
   which in not limited in size, except by physical RAM memory.  You can alloc
   from any heap in any task at any time on any core, even making
@@ -244,7 +244,7 @@ There is no main() routine.  Instead, stmts outside functions are
   does not interpret code, except in the process of optimization to make the
   final machine code.  Assembly language output can be viewed when code is
   compiled with the [C:/Compiler/CMisc.HC.Z,58] Trace(), or, afterward, with
-  [C:/Compiler/UAsm.HC.Z,653] U() or [C:/Adam/ADbg.HC.Z,254] Uf("").
+  [C:/Compiler/UAsm.HC.Z,663] U() or [C:/Adam/ADbg.HC.Z,254] Uf("").
 +] Drive/Partition
 
   There is no distinction between drive or partition.  They are specified
@@ -310,11 +310,11 @@ POPFD pops the CPU flags.
 *.GR.Z;*.GR
   Graphics file
 
-[C:/Kernel/KernelA.HH.Z,2304] FILEMASK_TXT
-[C:/Kernel/KernelA.HH.Z,2302] FILEMASK_SRC
-[C:/Kernel/KernelA.HH.Z,2301] FILEMASK_AOT
-[C:/Kernel/KernelA.HH.Z,2300] FILEMASK_JIT
-[C:/Kernel/KernelA.HH.Z,2305] FILEMASK_GR
+[C:/Kernel/KernelA.HH.Z,2305] FILEMASK_TXT
+[C:/Kernel/KernelA.HH.Z,2303] FILEMASK_SRC
+[C:/Kernel/KernelA.HH.Z,2302] FILEMASK_AOT
+[C:/Kernel/KernelA.HH.Z,2301] FILEMASK_JIT
+[C:/Kernel/KernelA.HH.Z,2306] FILEMASK_GR
 +] Naming Convention
   Since there are no namespaces and I don't plan to implement name spaces, I
   highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
@@ -353,10 +353,10 @@ res is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HH.Z,3271] CTask.
+  [C:/Kernel/KernelA.HH.Z,3272] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HH.Z,3391] CCPU.
+  [C:/Kernel/KernelA.HH.Z,3392] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc().  They must
@@ -374,6 +374,6 @@ res is reserved for local variables that hold the function return val.
   The application processors have an executive [C:/Doc/Glossary.DD.Z,1] Seth
   Tasks and are the slave processors.  Only Core0 tasks can have windows and
   can launch applications.  Slave cores are used if the application explicitly
-  [C:/Kernel/KTask.HC.Z,242] Spawns() a task or [C:/Kernel/MultiProc.HC.Z,213]
+  [C:/Kernel/KTask.HC.Z,242] Spawns() a task or [C:/Kernel/MultiProc.HC.Z,218]
   JobQue() a job on them.
 

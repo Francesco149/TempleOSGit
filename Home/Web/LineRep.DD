@@ -91,13 +91,13 @@
      124 [C:/Adam/Opt/Boot/BootMHD2.HC.Z,1] BootMHD2.HC
      153 [C:/Adam/Opt/Boot/BootMHDIns.HC.Z,1] BootMHDIns.HC
       61 [C:/Adam/Opt/Boot/BootRAM.HC.Z,1] BootRAM.HC
-     507 [C:/Adam/Opt/Boot/DskISO9660.HC.Z,1] DskISO9660.HC
+     507 [C:/Adam/Opt/Boot/DskISO9660.HC,1] DskISO9660.HC
      189 [C:/Adam/Opt/Boot/DskISORedSea.HC.Z,1] DskISORedSea.HC
        7 [C:/Adam/Opt/Boot/MakeBoot.HC.Z,1] MakeBoot.HC
          2,384 +] Utils
              354 [C:/Adam/Opt/Utils/Diff.HC.Z,1] Diff.HC
      157 [C:/Adam/Opt/Utils/DocUtils.HC.Z,1] DocUtils.HC
-     344 [C:/Adam/Opt/Utils/FileBMP.HC.Z,1] FileBMP.HC
+     344 [C:/Adam/Opt/Utils/FileBMP.HC,1] FileBMP.HC
      258 [C:/Adam/Opt/Utils/Find.HC.Z,1] Find.HC
      212 [C:/Adam/Opt/Utils/HeapLog.HC.Z,1] HeapLog.HC
      110 [C:/Adam/Opt/Utils/LineRep.HC.Z,1] LineRep.HC
@@ -111,11 +111,11 @@
       20 [C:/Adam/Opt/Utils/ToDolDoc.HC.Z,1] ToDolDoc.HC
      133 [C:/Adam/Opt/Utils/ToTXT.HC.Z,1] ToTXT.HC
                712 +] Snd
-            22 [C:/Adam/Snd/MakeSnd.HC.Z,1] MakeSnd.HC
-      81 [C:/Adam/Snd/SndEffects.HC.Z,1] SndEffects.HC
-     135 [C:/Adam/Snd/SndFile.HC.Z,1] SndFile.HC
-     249 [C:/Adam/Snd/SndMath.HC.Z,1] SndMath.HC
-     225 [C:/Adam/Snd/SndMusic.HC.Z,1] SndMusic.HC
+            22 [C:/Adam/Snd/MakeSnd.HC,1] MakeSnd.HC
+      81 [C:/Adam/Snd/SndEffects.HC,1] SndEffects.HC
+     135 [C:/Adam/Snd/SndFile.HC,1] SndFile.HC
+     249 [C:/Adam/Snd/SndMath.HC,1] SndMath.HC
+     225 [C:/Adam/Snd/SndMusic.HC,1] SndMusic.HC
          271 [C:/Adam/ADbg.HC.Z,1] ADbg.HC
       43 [C:/Adam/ADefine.HC.Z,1] ADefine.HC
      101 [C:/Adam/AExts.HC.Z,1] AExts.HC
@@ -263,15 +263,15 @@
        3,516 +] AcctExample
          3,031 +] TOS
               14 [C:/Demo/AcctExample/TOS/MakeTOS.HC.Z,1] MakeTOS.HC
-     159 [C:/Demo/AcctExample/TOS/TOSBlog.HC.Z,1] TOSBlog.HC
+     159 [C:/Demo/AcctExample/TOS/TOSBlog.HC,1] TOSBlog.HC
       74 [C:/Demo/AcctExample/TOS/TOSCfg.HC.Z,1] TOSCfg.HC
      615 [C:/Demo/AcctExample/TOS/TOSDistro.HC.Z,1] TOSDistro.HC
      298 [C:/Demo/AcctExample/TOS/TOSExt.HC.Z,1] TOSExt.HC
-     702 [C:/Demo/AcctExample/TOS/TOSHolySpirit.HC.Z,1] TOSHolySpirit.HC
-     244 [C:/Demo/AcctExample/TOS/TOSIns.HC.Z,1] TOSIns.HC
+     702 [C:/Demo/AcctExample/TOS/TOSHolySpirit.HC,1] TOSHolySpirit.HC
+     244 [C:/Demo/AcctExample/TOS/TOSIns.HC,1] TOSIns.HC
      240 [C:/Demo/AcctExample/TOS/TOSMisc.HC.Z,1] TOSMisc.HC
-     182 [C:/Demo/AcctExample/TOS/TOSNIST.HC.Z,1] TOSNIST.HC
-     503 [C:/Demo/AcctExample/TOS/TOSToHtml.HC.Z,1] TOSToHtml.HC
+     182 [C:/Demo/AcctExample/TOS/TOSNIST.HC,1] TOSNIST.HC
+     503 [C:/Demo/AcctExample/TOS/TOSToHtml.HC,1] TOSToHtml.HC
            316 [C:/Demo/AcctExample/HomeKeyPlugIns.HC.Z,1] HomeKeyPlugIns.HC
       22 [C:/Demo/AcctExample/HomeLocalize.HC.Z,1] HomeLocalize.HC
       48 [C:/Demo/AcctExample/HomeSys.HC.Z,1] HomeSys.HC
@@ -507,7 +507,7 @@
      344 [C:/Kernel/BlkDev/DskStrA.HC.Z,1] DskStrA.HC
       96 [C:/Kernel/BlkDev/DskStrB.HC.Z,1] DskStrB.HC
      960 [C:/Kernel/BlkDev/FileSysFAT.HC.Z,1] FileSysFAT.HC
-     231 [C:/Kernel/BlkDev/FileSysISO.HC.Z,1] FileSysISO.HC
+     231 [C:/Kernel/BlkDev/FileSysISO.HC,1] FileSysISO.HC
      636 [C:/Kernel/BlkDev/FileSysRedSea.HC.Z,1] FileSysRedSea.HC
       25 [C:/Kernel/BlkDev/MakeBlkDev.HC.Z,1] MakeBlkDev.HC
        1,138 +] Mem
@@ -542,7 +542,7 @@
      251 [C:/Kernel/KHashB.HC.Z,1] KHashB.HC
      216 [C:/Kernel/KInts.HC.Z,1] KInts.HC
      251 [C:/Kernel/KLoad.HC.Z,1] KLoad.HC
-     238 [C:/Kernel/KMain.HC,1] KMain.HC
+     238 [C:/Kernel/KMain.HC.Z,1] KMain.HC
      649 [C:/Kernel/KMathA.HC.Z,1] KMathA.HC
      158 [C:/Kernel/KMathB.HC.Z,1] KMathB.HC
      308 [C:/Kernel/KMisc.HC.Z,1] KMisc.HC

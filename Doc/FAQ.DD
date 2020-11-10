@@ -128,7 +128,7 @@
   [C:/Doc/Glossary.DD.Z,1] Code Heap, so that the REL32 addressing mode can be
   used.  TempleOS is 64-bit, but 2Gig is enough for code.  It actually puts
   global variables there, too, but you can turn that off with
-  [C:/Kernel/KernelA.HH.Z,1555] OPTf_GLBLS_ON_DATA_HEAP. 
+  [C:/Kernel/KernelA.HH.Z,1556] OPTf_GLBLS_ON_DATA_HEAP. 
   [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc() allocs higher memory.
 +] How does it SYSCALL?
   TempleOS doesn't use software interrupts or SYSCALL insts because it never
@@ -169,7 +169,7 @@
 +] How do you use the FS and GS segment registers.
   MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP
   relative, so it's tricky to use.  FS is used for the current
-  [C:/Kernel/KernelA.HH.Z,3271] CTask, GS for [C:/Kernel/KernelA.HH.Z,3391]
+  [C:/Kernel/KernelA.HH.Z,3272] CTask, GS for [C:/Kernel/KernelA.HH.Z,3392]
   CCPU.
 +] How do I set ORG for position of code?
   The compiler creates pos independent code.  Don't create code which is

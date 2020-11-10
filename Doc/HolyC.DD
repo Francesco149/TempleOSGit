@@ -187,8 +187,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HH.Z,1804] REGG_LOCAL_VARS or
-  [C:/Kernel/KernelA.HH.Z,1805] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
+  //Only use [C:/Kernel/KernelA.HH.Z,1805] REGG_LOCAL_VARS or
+  [C:/Kernel/KernelA.HH.Z,1806] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
 clobbered.
   I64 reg R15 i=5, noreg j=4;
   no_warn i;
@@ -244,11 +244,11 @@ PutChars('World\n');
   ||
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
-* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1549]
+* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1550]
 OPTf_WARN_PAREN,ON) to find unnecessary parentheses in 
 code.
 
-* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1550]
+* You can use [C:/Compiler/CMisc.HC.Z,1] Option([C:/Kernel/KernelA.HH.Z,1551]
 OPTf_WARN_DUP_TYPES,ON) to find dup local var type stmts.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -330,7 +330,7 @@ make an independent heap with [C:/Kernel/Mem/HeapCtrl.HC.Z,1] HeapCtrlInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HH.Z,2843] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HH.Z,2844] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.HC.Z,242]
 Spawn().  You can use 
 [C:/Kernel/KTask.HC.Z,110] CallStkGrow(), but it's odd.  See

@@ -21,7 +21,7 @@ If you wish to improve the most critical code, study this:
 
 [C:/Adam/Gr/GrPrimatives.HC.Z,1397] GrFillTri0()
 
-[C:/Adam/Gr/GrBitMap.HC.Z,1664] GrHLine() [C:/Adam/Gr/GrBitMap.HC.Z,1833]
+[C:/Adam/Gr/GrBitMap.HC.Z,1718] GrHLine() [C:/Adam/Gr/GrBitMap.HC.Z,1887]
 GrVLine()
 
 

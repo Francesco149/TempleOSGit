@@ -71,7 +71,7 @@ U0 SuggestSpellingDemo()
 
 U0 CtrlAltL(I64)
 {
-//[C:/Kernel/KernelA.HH.Z,1496] ac.cur_word is only set if AutoComplete
+//[C:/Kernel/KernelA.HH.Z,1497] ac.cur_word is only set if AutoComplete
   //is running.
   if (!TaskValidate(ac.task)) {
     AutoComplete(ON);

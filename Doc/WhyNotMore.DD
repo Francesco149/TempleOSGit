@@ -39,8 +39,8 @@ the mouse.
 In the CPU department, I have state of the art 64-bit
 [C:/Kernel/KStart64.HC.Z,1] long mode with 
 [C:/Kernel/MultiProc.HC.Z,1] multicore support.  I use the
-[C:/Kernel/MultiProc.HC.Z,171] APIC and start-up
-[C:/Kernel/MultiProc.HC.Z,283] multicore operation.
+[C:/Kernel/MultiProc.HC.Z,176] APIC and start-up
+[C:/Kernel/MultiProc.HC.Z,288] multicore operation.
 
 I have made an incredible accomplishment by getting it to work on practically 
 everyone's computer as long as it is 64-bit and they run inside VMware, QEMU 

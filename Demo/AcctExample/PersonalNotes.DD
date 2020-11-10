@@ -76,7 +76,7 @@ edited.
 
 * [C:/Adam/DolDoc/DocChar.HC.Z,1] DOCEF_REMALLOC_DATA HexEdit Remalloc.
 
-* [C:/Kernel/KernelA.HH.Z,1274] DOCF_DBL_DOLLARS in
+* [C:/Kernel/KernelA.HH.Z,1275] DOCF_DBL_DOLLARS in
 [C:/Adam/DolDoc/DocCodeTools.HC.Z,422] Reindention.
 
 * Compiler Optimization: Local array vars --> reg.  Might exist.
@@ -97,13 +97,13 @@ GetStr() all the way down into [C:/Kernel/KeyDev.HC.Z,1] PutKey() code.
 * Good spell checker.
 * Good Bible search.
 
-* Can [C:/Kernel/KernelA.HH.Z,2838] MEM_EXTRA_HASH2_PAGS be just one?
+* Can [C:/Kernel/KernelA.HH.Z,2839] MEM_EXTRA_HASH2_PAGS be just one?
 
 * Bible ranges in [C:/Adam/God/GodBible.HC.Z,240] BibleVerse(). 
 
 * [C:/Demo/Games/FlatTops.HC.Z,1] is torpedo, not bombs.
 
-* Reset MPs with [C:/Kernel/MultiProc.HC.Z,283] Core0StartMP() after boot. 
+* Reset MPs with [C:/Kernel/MultiProc.HC.Z,288] Core0StartMP() after boot. 
 Free old task memory?
 
 * Use thick and pen_height when clipping with thick>1.
@@ -113,7 +113,7 @@ Free old task memory?
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
-[C:/Kernel/KernelA.HH.Z,3271] CTask->task_flags and 
+[C:/Kernel/KernelA.HH.Z,3272] CTask->task_flags and 
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.HC.Z,52] KbdLEDsSet().
@@ -153,7 +153,7 @@ SPT_SHIFT origin cmds?
 in 
 future centuries.)
 
-* Compiler: Exceptions don't free [C:/Kernel/KernelA.HH.Z,2179] CCmpCtrl
+* Compiler: Exceptions don't free [C:/Kernel/KernelA.HH.Z,2180] CCmpCtrl
 stuff.
 
 * [C:/Adam/DolDoc/DocHighlight.HC.Z,1] for code comments at top of documents.
@@ -184,7 +184,7 @@ plan a big alloc.  This is doable, depending on how.
 * Log-to-file is inefficient because we load and save whole file.
 
 * [C:/Compiler/BackLib.HC.Z,445] ICMov() [C:/Compiler/BackLib.HC.Z,1]
-PUSH_CMP and [C:/Kernel/KernelA.HH.Z,1583] MDf_STK?  Perhaps, it's okay.
+PUSH_CMP and [C:/Kernel/KernelA.HH.Z,1584] MDf_STK?  Perhaps, it's okay.
 
 * Short FAT32 ~ names.
 
@@ -216,7 +216,7 @@ runs-out of space and hangs instead of reporting errors.
 [C:/Adam/Win.HC.Z,301] WinToTop 
 is called on Adam task at start-up, sometimes.  Might be user's fault because 
 of bad keys pressed during VMware power-on init.  Might be fixed by 
-[C:/Kernel/KernelA.HH.Z,1494] ACf_INIT_IN_PROGRESS.
+[C:/Kernel/KernelA.HH.Z,1495] ACf_INIT_IN_PROGRESS.
 
 * 1/12/16 [C:/Kernel/BlkDev/DskATAId.HC.Z,91] ATARepEntry shows corrupted
 bttns.  Weird.  Perhaps, my imagination.
@@ -275,14 +275,14 @@ CHashFun *fun_ptr;
 
 * Compiler: Prints two error messages for expressions in stmts.
 
-* [C:/Compiler/UAsm.HC.Z,653] U() negative byte displacement, neg 32-bit disp.
+* [C:/Compiler/UAsm.HC.Z,663] U() negative byte displacement, neg 32-bit disp.
 
 * Race condition in [C:/Demo/Games/FlatTops.HC.Z,1] torpedo.
 
 * Links to self document if empty file name? [C:/Adam/DolDoc/DocLink.HC.Z,1]
 Document Links
 
-* [C:/Kernel/KernelA.HH.Z,2565] FUF_RECURSE would be nice if capital "+R".
+* [C:/Kernel/KernelA.HH.Z,2566] FUF_RECURSE would be nice if capital "+R".
 
 * Sprites in cmd line code.
 
@@ -308,7 +308,7 @@ have left-right for address search.
 
 * Should we get rid of drive mapping.  It's ugly.
 
-* Can we get rid of [C:/Kernel/KernelA.HH.Z,3175] MSG_CMD?
+* Can we get rid of [C:/Kernel/KernelA.HH.Z,3176] MSG_CMD?
 
 * Make so just CdRom; command to copy entire disk to ::/CdRom directory? 
 
@@ -324,22 +324,22 @@ routines.
 Every country make own version?
 * International Date input: [C:/Kernel/StrScan.HC.Z,138] Str2Date().
 
-* [C:/Kernel/KernelA.HH.Z,3572] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HH.Z,3573] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
-* [C:/Kernel/KernelA.HH.Z,2913] TRANSPARENT does not work with
-[C:/Kernel/KernelA.HH.Z,2909] ROPF_DITHER.
+* [C:/Kernel/KernelA.HH.Z,2914] TRANSPARENT does not work with
+[C:/Kernel/KernelA.HH.Z,2910] ROPF_DITHER.
 
-* [C:/Kernel/KernelA.HH.Z,2899] ROP_XOR with thick>1 is broken.
+* [C:/Kernel/KernelA.HH.Z,2900] ROP_XOR with thick>1 is broken.
 
 * [C:/Adam/Gr/GrPrimatives.HC.Z,821] GrPutChar3() with depth buf?
 
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.HC.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.HC.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HH.Z,116] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HH.Z,3599] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HH.Z,3600] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.HC.Z,6] Mat4x4MulXYZ() change to 3x3?
-* Eliminate?  [C:/Kernel/KernelA.HH.Z,2899] ROP_XOR?
+* Eliminate?  [C:/Kernel/KernelA.HH.Z,2900] ROP_XOR?
 
 * [C:/Adam/WinMgr.HC.Z,418] WinMgrTask needs to do doc operations on
 [C:/Kernel/Job.HC.Z,242] PostMsg() msgs for ms_hard.  
@@ -365,7 +365,7 @@ ICCmp() like in [C:/Compiler/BackB.HC.Z,468] ICCmpAndBranch()?
 
 * Compiler: &=, |= can overflow with Bts Btr on small data types?
 
-* Implement [C:/Kernel/KernelA.HH.Z,2510] RS_ATTR_FIXED fixed pos files?
+* Implement [C:/Kernel/KernelA.HH.Z,2511] RS_ATTR_FIXED fixed pos files?
 
 * SIMD in [C:/Adam/Gr/GrDC.HC.Z,6] Mat4x4MulXYZ?
 
@@ -436,7 +436,7 @@ DirContextNew().
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* More [C:/Kernel/KernelA.HH.Z,3065] Controls?
+* More [C:/Kernel/KernelA.HH.Z,3066] Controls?
 
 * Compiler: More use of more floating-point stk?
 
@@ -444,7 +444,7 @@ once.
 with types besides MOV and F64. 
 
 * Playing with [C:/Demo/Lectures/NegDisp.HC.Z,1] on
-[C:/Kernel/KernelA.HH.Z,3271] CTask?
+[C:/Kernel/KernelA.HH.Z,3272] CTask?
      $=-CTASK_NEG_OFFSET
 offset(CTask.addr)==0
 Spawn(): CAlloc()
@@ -493,7 +493,7 @@ window.
 [C:/Kernel/KernelB.HH.Z,68] QueIns and [C:/Kernel/KernelB.HH.Z,72] QueRem for 
 multicore cycling fwd through tasks.
 
-* Test removable media id and [C:/Kernel/KernelA.HH.Z,2507] RS_ATTR_RESIDENT.
+* Test removable media id and [C:/Kernel/KernelA.HH.Z,2508] RS_ATTR_RESIDENT.
  [C:/Adam/ABlkDev/ADskA.HC.Z,232] Touch("","+T");
 
 

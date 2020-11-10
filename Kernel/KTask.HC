@@ -219,7 +219,7 @@ I64 TaskInit(CTask *task,I64 stk_size)
   task->stk=tmps=TaskStkNew(stk_size,task);
   task->rsp=(&tmps->stk_base)(U8 *)+tmps->stk_size;
 
-  task->text_attr	=WHITE<<4+BLUE;
+  task->text_attr	=BLACK<<4+LTGRAY;
   task->border_src	=BDS_CONST;
   task->border_attr	=DrvTextAttrGet(':');
   task->title_src	=TTS_CONST;
@@ -245,7 +245,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<JOBf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HH.Z,3271] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HH.Z,3272] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)

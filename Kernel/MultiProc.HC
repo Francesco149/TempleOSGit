@@ -20,6 +20,11 @@ AP_GDT_PTR:	DU16	sizeof(CGDT)-1;
 
 	MOV	EAX,SYS_START_CR0
 	MOV_CR0_EAX
+
+	MOV_EAX_CR4
+	OR	EAX,3<<9 // enable SSE
+	MOV_CR4_EAX
+
 	DU8	0x66,0xEA;		 //JMP CGDT.cs32:AP_32BIT_INIT
 	DU32	AP_32BIT_INIT;
 	DU16	CGDT.cs32;
@@ -171,7 +176,7 @@ U0 MPHalt()
 U0 MPAPICInit()
 {//Called by adam during start-up
 //and other cores during initialization
-  //after [C:/Kernel/MultiProc.HC.Z,283] Core0StartMP().
+  //after [C:/Kernel/MultiProc.HC.Z,288] Core0StartMP().
   *(dev.uncached_alias+LAPIC_SVR)(U32 *)|=LAPICF_APIC_ENABLED;
   dev.mp_apic_ids[Gs->num]=*(dev.uncached_alias+LAPIC_APIC_ID)(U32 *)>>24;
   *(dev.uncached_alias+LAPIC_LDR)(U32 *)=dev.mp_apic_ids[Gs->num]<<24;
@@ -273,7 +278,7 @@ CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 }
 
 U0 CoreAPSethInit()
-{//Called by multicore's seth task after [C:/Kernel/MultiProc.HC.Z,283] Core0StartMP()
+{//Called by multicore's seth task after [C:/Kernel/MultiProc.HC.Z,288] Core0StartMP()
 //as the first thing a CPU does before waiting for jobs.
   MPAPICInit;
   Fs->rip=&CoreAPSethTask;
@@ -337,7 +342,7 @@ U0 Core0StartMP()
     StrPrint(buf,"Seth Task CPU%02X",i);
     task=Spawn(&CoreAPSethInit,NULL,buf,,,MEM_SETH_STK,0);
     task->rflags=RFLAGG_START;
-//[C:/Kernel/KernelA.HH.Z,3271] CTask alloced off this core's seth_task's heap (Which is Adam)
+//[C:/Kernel/KernelA.HH.Z,3272] CTask alloced off this core's seth_task's heap (Which is Adam)
     CPUStructInit(i,&cpu_structs[i],task);
     WBINVD //Not sure why this is needed.  Might just need delay.
   }

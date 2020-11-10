@@ -14,7 +14,7 @@ core.  [C:/Doc/Glossary.DD.Z,1] Adam is the [C:/Doc/Glossary.DD.Z,1] Seth
 Task on Core0.
 
 You give a job to a [C:/Doc/Glossary.DD.Z,1] Seth Task with
-[C:/Kernel/MultiProc.HC.Z,213] JobQue() and get the result with
+[C:/Kernel/MultiProc.HC.Z,218] JobQue() and get the result with
 [C:/Kernel/Job.HC.Z,199] JobResGet(
 ).  You spawn a task on any core with [C:/Kernel/KTask.HC.Z,242] Spawn().
 

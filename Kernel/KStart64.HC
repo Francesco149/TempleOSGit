@@ -41,9 +41,9 @@ USE64
 
 //************************************
 USE32
-SYS_ENTER_LONG_MODE:: //Switch to long 64-bit mode
+SYS_ENTER_LONG_MODE:: //Switch to long 64-bit mode, enable SSE
 	MOV_EAX_CR4
-	OR	EAX,0xB0
+	OR	EAX,0x6B0
 	MOV_CR4_EAX
 
 	MOV	EAX,[MEM_PML4]

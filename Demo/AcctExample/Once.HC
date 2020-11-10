@@ -3,7 +3,7 @@
 
 //This file is executed by the
 //first terminal window upon start-up.
-//See [D:/Home/HomeSys.HC,1] Once and [C:/Doc/GuideLines.DD.Z,1] Home Files.
+//See [D:/Home/HomeSys.HC.Z,1] Once and [C:/Doc/GuideLines.DD.Z,1] Home Files.
 
 //  Type("::/Doc/Customize.DD");
 

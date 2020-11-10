@@ -41,7 +41,7 @@ FOpen() and cannot change it.  See
 If you like, you are encouraged to to do raw
 [C:/Kernel/BlkDev/DskBlk.HC.Z,31] BlkRead() and
 [C:/Kernel/BlkDev/DskBlk.HC.Z,71] BlkWrite() directly 
-on a drive.  Just get a pointer to a [C:/Kernel/KernelA.HH.Z,2688] CDrv with
+on a drive.  Just get a pointer to a [C:/Kernel/KernelA.HH.Z,2689] CDrv with
 [C:/Kernel/BlkDev/DskDrv.HC.Z,188] Let2Drv() and you are on your 
 way!  Your computer is supposed to be a fun toy!  You can make an entire 
 partition used for a database, or invent a file system.

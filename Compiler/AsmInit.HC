@@ -58,11 +58,12 @@ U0 AsmHashLoad()
   CInst *tmpins;
   CHashClass *tmpc;
 
-  cmp.size_arg_mask[0]=0x3FF0FFFFFE;
+  cmp.size_arg_mask[0]=0xF0003FF0FFFFFE;
   cmp.size_arg_mask[1]=0x1110111112;
   cmp.size_arg_mask[2]=0x2220222224;
   cmp.size_arg_mask[4]=0x0440444448;
   cmp.size_arg_mask[8]=0x0880888880;
+  cmp.size_arg_mask[16]=0xF8000000000000; //1<<ARGT_XMM|1<<ARGT_XMM0...etc
 
   cmp.asm_hash=HashTableNew(1024);
   size_max=offset(CHashOpcode.ins)+sizeof(CInst)<<5;
@@ -135,6 +136,8 @@ U0 AsmHashLoad()
 	      tmpins->size1=32;
 	    else if (Bt(&cmp.size_arg_mask[8],j))
 	      tmpins->size1=64;
+	    else if (Bt(&cmp.size_arg_mask[16],j))
+	      tmpins->size1=128;
 
 	    if (Lex(cc)==TK_IDENT) {
 	      j=DefineMatch(cc->cur_str,"ST_ARG_TYPES");
@@ -148,6 +151,8 @@ U0 AsmHashLoad()
 		tmpins->size2=32;
 	      else if (Bt(&cmp.size_arg_mask[8],j))
 		tmpins->size2=64;
+	      else if (Bt(&cmp.size_arg_mask[16],j))
+		tmpins->size2=128;
 	    }
 	  }
 	}

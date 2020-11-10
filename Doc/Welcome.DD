@@ -182,9 +182,9 @@ Hardware graphics acceleration is not used, so this is possible.  See
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/KernelA.HH.Z,3271] CTask, pointed to by the FS
+task record, [C:/Kernel/KernelA.HH.Z,3272] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
-> while Gs-> points to a [C:/Kernel/KernelA.HH.Z,3391] CCPU for the current
+> while Gs-> points to a [C:/Kernel/KernelA.HH.Z,3392] CCPU for the current
 CPU core.  Each task can have 
 just one window, but a task can have children with windows.  (The segment
 regs 

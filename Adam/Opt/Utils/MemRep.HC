@@ -204,7 +204,7 @@ public U0 MemRep()
   "VGA\t\t:00000A0000-00000BFFFF\n";
   "$ID,-2$$BLACK$High Memory\t:0000100000-%010X$FG$\n",
 	mem_heap_limit;
-  "[C:/Kernel/KernelA.HH.Z,3415] SYS_FIXED_AREA\t:%010X-%010X\n",
+  "[C:/Kernel/KernelA.HH.Z,3416] SYS_FIXED_AREA\t:%010X-%010X\n",
 	SYS_FIXED_AREA,SYS_FIXED_AREA+sizeof(CSysFixedArea)-1;
 
   if (sys_data_bp) {

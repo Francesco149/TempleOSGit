@@ -10,7 +10,7 @@ PUT_DEC_U64::
 //but this function will be nice for ASM callers if it saves all regs.
 	PUSH_C_REGS
 
-	PUSH	RSI	      //See [C:/Kernel/KernelA.HH.Z,1804] REGG_LOCAL_VARS&[C:/Kernel/KernelA.HH.Z,1805] REGG_LOCAL_NON_PTR_VARS
+	PUSH	RSI	      //See [C:/Kernel/KernelA.HH.Z,1805] REGG_LOCAL_VARS&[C:/Kernel/KernelA.HH.Z,1806] REGG_LOCAL_NON_PTR_VARS
 	LEA	RSI,-1[RBP]	//Load addr of end of buffer.
 				//We picked RSI because of PUT_STR
 				//We'll move bwd

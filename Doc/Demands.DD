@@ -113,7 +113,7 @@ factory for all desktop x86 CPUs to ensure tamper-proof trust in the oracle
 and because God deserves the glory.  There will be just an English version. 
 A 
 new ROM version is released every seven years.  The ROM should boot like the 
-DVD boots, but with [C:/Kernel/KernelA.HH.Z,3840] BOOT_SRC_ROM.
+DVD boots, but with [C:/Kernel/KernelA.HH.Z,3841] BOOT_SRC_ROM.
 
 * We do not want UTF, just 8-bit characters.  <CTRL-ALT-f> toggles between 
 Cyrillic and Std Fonts.  We need the twelve window

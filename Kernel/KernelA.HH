@@ -41,7 +41,7 @@ extern class CTask;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HH.Z,1557] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HH.Z,1558] OPTf_NO_BUILTIN_CONST.
 #define U64_F64_MAX (0x43F0000000000000(F64))
 #define F64_MAX (0x7FEFFFFFFFFFFFFF(F64))
 #define F64_MIN (0xFFEFFFFFFFFFFFFF(F64))
@@ -315,7 +315,7 @@ public class CMathODE
 
 #define MP_PROCESSORS_NUM	128
 
-#define SYS_START_CR0		0x0031
+#define SYS_START_CR0		0x0033
 
 #define RFLAGf_CARRY		0
 #define RFLAGf_PARITY		2
@@ -400,7 +400,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HH.Z,1969] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HH.Z,1970] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -1135,9 +1135,10 @@ public class CDocBin
 #define DOCSS_COMMENT		3
 #define DOCSS_CPP_Z_COMMENT	4
 
-#define DOC_ATTR_DFT_TEXT	WHITE<<4+BLACK
+//#define DOC_ATTR_DFT_TEXT	WHITE<<4+BLACK
+#define DOC_ATTR_DFT_TEXT	BLACK<<4+LTGRAY
 #define DOC_COLOR_ALT_TEXT	LTGRAY
-#define DOC_COLOR_LINK		RED
+#define DOC_COLOR_LINK		LTRED
 #define DOC_COLOR_MACRO		LTBLUE
 #define DOC_COLOR_ANCHOR	DKGRAY
 #define DOC_COLOR_TREE		PURPLE
@@ -1151,7 +1152,7 @@ public class CDocBin
 #define DOC_COLOR_GLBL_VAR	LTCYAN
 #define DOC_COLOR_CLASS		LTBLUE
 #define DOC_COLOR_FUN		PURPLE
-#define DOC_COLOR_KEYWORD	BLUE
+#define DOC_COLOR_KEYWORD	LTBLUE
 #define DOC_COLOR_REG		LTRED
 
 public class CDocSettings
@@ -1213,7 +1214,7 @@ public class CDocEntry:CDocEntryBase
 	*my_fmt_data;
   I64	hex_ed_width;
   I32	scroll_len,
-	len, //[C:/Kernel/KernelA.HH.Z,1189] DOCE_LEN_DFT
+	len, //[C:/Kernel/KernelA.HH.Z,1190] DOCE_LEN_DFT
 	bin_num;
   U8	raw_type,pad[3];
   CDocBin *bin_data;
@@ -1229,7 +1230,7 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HH.Z,1257] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HH.Z,1258] Editor Flags
 
 class CEdFindText
 {
@@ -1258,7 +1259,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HH.Z,1225] Document Flags
+//Combines with [C:/Kernel/KernelA.HH.Z,1226] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1475,8 +1476,8 @@ class CWinMgrTimingGlbls
   I64	calc_idle_cnt;
 };
 
-#define WINMGR_FPS	(30000.0/1001)
-#define WINMGR_PERIOD	(1001/30000.0)
+#define WINMGR_FPS	(60000.0/1001)
+#define WINMGR_PERIOD	(1001/60000.0)
 
 public class CWinMgrGlbls
 {
@@ -1570,7 +1571,7 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HH.Z,1354] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HH.Z,1355] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -2233,7 +2234,7 @@ public class CCmpGlbls
   I64	num_reg_vars,num_non_ptr_vars,
 	stk_tmps_mask,reg_vars_mask,non_ptr_vars_mask;
   U8	*to_reg_vars_map,*non_ptr_vars_map;
-  I64	size_arg_mask[9],
+  I64	size_arg_mask[17],
 	compiled_lines;
 };
 
@@ -2900,7 +2901,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HH.Z,2910] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HH.Z,2911] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.HC.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3141,7 +3142,7 @@ class CFPU
 #define JOBT_MSG		1 //[C:/Kernel/Job.HC.Z,119] TaskMsg()	Post msg
 #define JOBT_EXE_STR		2 //[C:/Kernel/Job.HC.Z,39] TaskExe()	Compile & execute src code text
 //MP cmds
-#define JOBT_CALL		3 //[C:/Kernel/MultiProc.HC.Z,213] JobQue()	Tell MP to call function
+#define JOBT_CALL		3 //[C:/Kernel/MultiProc.HC.Z,218] JobQue()	Tell MP to call function
 #define JOBT_SPAWN_TASK		4 //[C:/Kernel/KTask.HC.Z,242] Spawn()	Tell MP to spawn task
 
 class CJob
@@ -3173,8 +3174,8 @@ class CJobCtrl
 //See [C:/Demo/MsgLoop.HC.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HH.Z,3426] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HH.Z,3426] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HH.Z,3427] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HH.Z,3427] ASCII,[C:/Doc/CharOverview.DD.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_MS_MOVE		4  //(x,y)
 #define MSG_MS_L_DOWN		5  //(x,y)
 #define MSG_MS_L_UP		6  //(x,y)
@@ -3609,12 +3610,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HH.Z,2900] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HH.Z,2901] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.HC.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HH.Z,2910] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HH.Z,2911] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3645,7 +3646,7 @@ public class CDC
   I64	collision_cnt;
 
   I64	nearest_dist,
-	min_x,max_x,min_y,max_y; //Set by [C:/Kernel/KernelA.HH.Z,3583] DCF_RECORD_EXTENTS (scrn coordinates)
+	min_x,max_x,min_y,max_y; //Set by [C:/Kernel/KernelA.HH.Z,3584] DCF_RECORD_EXTENTS (scrn coordinates)
 
   U32	dc_signature,pad;
   CTask	*mem_task,*win_task;

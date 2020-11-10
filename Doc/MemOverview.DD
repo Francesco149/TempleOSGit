@@ -14,7 +14,7 @@ kernel".  Two Gig is plenty for code, don't worry.
 
 You can create new, independent heaps using [C:/Kernel/Mem/HeapCtrl.HC.Z,1]
 HeapCtrlInit().  Then, use the 
-[C:/Kernel/KernelA.HH.Z,2863] CHeapCtrl as the 2nd arg to
+[C:/Kernel/KernelA.HH.Z,2864] CHeapCtrl as the 2nd arg to
 [C:/Kernel/Mem/MAllocFree.HC.Z,387] MAlloc().  See
 [C:/Adam/Opt/Utils/HeapLog.HC.Z,73] HeapLog() for an example.
 
@@ -30,7 +30,7 @@ All of the regular page tables are marked, "cached".  When accessing
 hardware, 
 however, you need uncached page table.  The lowest 4Gig addresses have an 
 alias to access hardware located toward the top of mapped space,
-0x0100000000. 
+0x0140000000. 
  See [C:/Kernel/KMain.HC.Z,1] dev.uncached_alias.
 
 During an extended powered-on session of TempleOS, in theory, memory will 
@@ -41,23 +41,23 @@ See [C:/Adam/Opt/Utils/MemRep.HC.Z,193] MemRep() and [C:/Demo/MemDemo.HC.Z,1].
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003616F
+ 0x0000007C00- 0x000003610F
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HH.Z,3835] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HH.Z,3836] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
   [C:/Adam/Opt/Boot/BootDVD.HC.Z,1] BootDVD & 
 [C:/Adam/Opt/Boot/BootHD.HC.Z,1] BootHD.
 
- 0x0000097000- 0x0000097030 Multicore start-up vect code,
+ 0x0000097000- 0x000009703C Multicore start-up vect code,
 [C:/Kernel/KernelA.HH.Z,525] MPN_VECT.
 ~0x000009F000- 0x000009FFFF Extended BIOS data area.
  0x00000A0000- 0x00000BFFFF VGA graphics mem with alias at
 [C:/Kernel/KGlbls.HC.Z,30] text.vga_alias.
- 0x0000100000- 0x0000101FFF [C:/Kernel/KernelA.HH.Z,3415] CSysFixedArea for
+ 0x0000100000- 0x0000101FFF [C:/Kernel/KernelA.HH.Z,3416] CSysFixedArea for
 misc.
- 0x000010C000- 0x007FFDFFFF Code Heap mem.
+ 0x000010D000- 0x003FFDFEFF Code Heap mem.
 
  0x00E0000000- 0x00FFFFFFFF
   32-bit devices could alloc memory at 0xF0000000 going up, but this is
@@ -67,14 +67,14 @@ supported, so [C:/Kernel/Mem/MemPhysical.HC.Z,58] Mem32DevAlloc() flaws are
   not an issue.
 
  0x0080000000-~0x00DFFFFFFF
- 0x0100000000-~0x00FFFFFFFF
+ 0x0100000000-~0x013FFFFFFF
   Data Heap mem.  (The physical memory that exists in this range is data 
 heap.)
 
- 0x0100000000- 0x01FFFFFFFF
+ 0x0140000000- 0x023FFFFFFF
   Uncached alias of first 4Gig.  (For 32-bit device access.)
 
-             - 0x01FFFFFFFF
+             - 0x023FFFFFFF
   64-bit devices are alloced with [C:/Kernel/Mem/MemPhysical.HC.Z,108]
   Mem64DevAlloc() counting bwd, but no PCI 
 devices are actually supported.

@@ -1,6 +1,6 @@
                          The Temple Operating System
-[C:/Home/Web/DownloadOS.DD,1]
-Downloads				[C:/Home/Web/AppStore/AppStore.DD,1] App Store
+[C:/Home/Web/DownloadOS.DD.Z,1]
+Downloads				[C:/Home/Web/AppStore/AppStore.DD.Z,1] App Store
 
 Terry's Linux Bash Scripts
 	General
@@ -8,21 +8,21 @@ Terry's Linux Bash Scripts
 	VirtualBox
 	VMware
 
-[C:/Home/Web/ScrnShots.DD,1] Screen Shots				[C:/Home/Web/TOSVideos.DD,1]
+[C:/Home/Web/ScrnShots.DD.Z,1] Screen Shots				[C:/Home/Web/TOSVideos.DD.Z,1]
 Instructional Videos
 
 [C:/Doc/Welcome.DD.Z,1] Introduction				[C:/Doc/FAQ.DD.Z,1] F.A.Q.
 
 [C:/Doc/Features.DD.Z,1] Features				[C:/Doc/Charter.DD.Z,1] The Charter
 
-[C:/Home/Web/LineRep.DD,1] Source Code By File			Source Code (Raw)
+[C:/Home/Web/LineRep.DD.Z,1] Source Code By File			Source Code (Raw)
 
 Source Code By Sym			Source Code By Address
 	
-[C:/Doc/Credits.DD.Z,1] TempleOS Credits			[C:/Home/Web/History.DD,1] History
-of TempleOS
+[C:/Doc/Credits.DD.Z,1] TempleOS Credits			[C:/Home/Web/History.DD.Z,1]
+History of TempleOS
 
-[C:/Doc/ChgLog.DD.Z,1] Change Log				[C:/Home/Web/640x480.DD,1] Why 640x480?
+[C:/Doc/ChgLog.DD,1] Change Log				[C:/Home/Web/640x480.DD.Z,1] Why 640x480?
 
 ```
 <object width="640" height="520"><param name="movie"
@@ -46,8 +46,8 @@ This "Hello World" joke, the BMP file format and the WAV file format show
 that 
 the industry is really screwed-up!  That's what TempleOS fixes.  I capped the 
 line-of-code count at 100,000 and God said it must be perfect, so it will 
-never be an ugly monstrocity.  It is currently 82,152 lines of unblemished 
-code.  Backward compatibility is not promised.
+never be an ugly monstrocity.  It is currently  lines of unblemished code.  
+Backward compatibility is not promised.
 
 Normally, failure is not an option, but since TempleOS accompanies Windows or 
 Linux, we exclude certain uses.  There is no reason to duplicate browsing, 
@@ -107,7 +107,7 @@ type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
 
-I wrote all [C:/Home/Web/LineRep.DD,1] 120,793 lines of TempleOS over the
+I wrote all [C:/Home/Web/LineRep.DD.Z,1] 80,849 lines of TempleOS over the
 last 17.3 years, full-time, 
 including the 64-bit compiler.  It was called, at various times, "Hoppy", "
 The J Operating System", "LoseThos" and "SparrowOS".  Here are my 

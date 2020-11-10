@@ -4,7 +4,7 @@ Bool Option(I64 num,Bool val)
 }
 
 Bool GetOption(I64 num)
-{//Get state of compiler [C:/Kernel/KernelA.HH.Z,1546] option.
+{//Get state of compiler [C:/Kernel/KernelA.HH.Z,1547] option.
   return Bt(&Fs->last_cc->opts,num);
 }
 

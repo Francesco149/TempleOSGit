@@ -6,13 +6,13 @@
 
                           Installation Instructions
 
-[C:/Home/Web/InsNative.DD,1] Native
+[C:/Home/Web/InsNative.DD.Z,1] Native
 
-[C:/Home/Web/InsQEMU.DD,1] QEMU
+[C:/Home/Web/InsQEMU.DD.Z,1] QEMU
 
-[C:/Home/Web/InsVMware.DD,1] VMware
+[C:/Home/Web/InsVMware.DD.Z,1] VMware
 
-[C:/Home/Web/InsVirtualBox.DD,1] VirtualBox
+[C:/Home/Web/InsVirtualBox.DD.Z,1] VirtualBox
 
 
 * "QEMU" is a trademark owned by Fabrice Bellard.

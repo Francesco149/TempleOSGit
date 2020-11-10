@@ -61,6 +61,9 @@ U0 PrsAsmArg(CCmpCtrl *cc,CAsmArg *arg,Bool rel)
 	      case REGT_R64:
 		arg->size=8;
 		break;
+	      case REGT_XMM:
+		arg->size=16;
+		break;
 	    end:
 	      arg->reg1=tmpr->reg_num;
 	      Lex(cc);
@@ -75,7 +78,6 @@ U0 PrsAsmArg(CCmpCtrl *cc,CAsmArg *arg,Bool rel)
 	      break;
 	    case REGT_FSTK:
 	    case REGT_MM:
-	    case REGT_XMM:
 	      arg->size=8;
 	      arg->reg1=tmpr->reg_num;
 	      Lex(cc);
@@ -174,6 +176,11 @@ pa_asm_indirect_imm:
   }
 }
 
+#define XMM_INDMSK \
+  (1<<ARGT_XMM0|1<<ARGT_XMM128|1<<ARGT_XMM32|1<<ARGT_XMM64)
+#define XMM_MSK (1<<ARGT_XMM)
+#define XMM_ALLMSK (XMM_INDMSK|XMM_MSK)
+
 I64 AsmMakeArgMask(CCmpCtrl *cc,CAsmArg *arg)
 {
   CAOTCtrl *aotc=cc->aotc;
@@ -198,7 +205,7 @@ I64 AsmMakeArgMask(CCmpCtrl *cc,CAsmArg *arg)
   }
   res=cmp.size_arg_mask[arg->size];
   if (aotc->seg_size==64)
-    res&=0xFF0FFFFFFF;
+    res&=0xFF0FFFFFFF|XMM_ALLMSK;
 
   if (arg->reg1!=REG_NONE && arg->imm_or_off_present && !arg->num.i &&
 	!arg->num.glbl_asm_undef_hash && !arg->num.local_asm_undef_hash)
@@ -208,23 +215,22 @@ I64 AsmMakeArgMask(CCmpCtrl *cc,CAsmArg *arg)
     res&=0x0000FF0000;
     goto mm_done;
   }
-
   if (arg->indirect) {
     if (arg->imm_or_off_present)
-      res&=0x00FFFF0000;
+      res&=0x00FFFF0000|XMM_INDMSK;
     else
-      res&=0x000FFF0000;
+      res&=0x000FFF0000|XMM_INDMSK;
   } else {
     if (arg->imm_or_off_present)
-      res&=0x000F000FFE;
+      res&=0x000F000FFE|XMM_ALLMSK;
     else
-      res&=0x3F0FFFF000;
+      res&=0x3F0FFFF000|XMM_ALLMSK;
   }
   if (arg->seg!=REG_NONE)
-    res&=0x00FFFF0000;
+    res&=0x00FFFF0000|XMM_ALLMSK;
   if (arg->reg1==REG_NONE) {
     if (arg->indirect)
-      res&=0x00FFFF0000;
+      res&=0x00FFFF0000|XMM_INDMSK;
     else if (arg->num.i<0) {
       if (arg->num.i>=I8_MIN)
 	res&=0x8FE;
@@ -251,9 +257,9 @@ I64 AsmMakeArgMask(CCmpCtrl *cc,CAsmArg *arg)
 	res&=0x88E;
     }
   } else {
-    res&=  0x3F00FFF000;
+    res&=  0x3F00FFF000|XMM_ALLMSK;
     if (!arg->indirect) //M8-M64
-      res&=0xFFFF0FFFFF;
+      res&=0xFFFF0FFFFF|XMM_ALLMSK;
   }
   switch (arg->reg1) {
     case REG_RAX: res&=~0x3000000000; break;
@@ -397,7 +403,8 @@ Bool PrsAsmInst(CCmpCtrl *cc,CHashOpcode *tmpo,I64 argcnt)
   CAOTCtrl *aotc=cc->aotc;
   I64 i,j,arg1,arg2,om,seg,arg1mask,arg2mask;
   CAsmArg *tmpa1,*tmpa2;
-  Bool ModrM_complete,U8_avail=FALSE,found_second_possible=FALSE;
+  Bool ModrM_complete,U8_avail=FALSE,found_second_possible=FALSE,
+	isXMM,isXMM1,isXMM2;
   CInst *tmpins;
   CAsmIns cur,best;
 
@@ -434,6 +441,11 @@ Bool PrsAsmInst(CCmpCtrl *cc,CHashOpcode *tmpo,I64 argcnt)
       tmpa1=&aotc->arg1;
       tmpa2=&aotc->arg2;
       cur.last_opcode_U8=tmpins->opcode[tmpins->opcode_cnt-1];
+
+
+      isXMM1=ARGT_XMM<=arg1<=ARGT_XMM0;
+      isXMM2=ARGT_XMM<=arg2<=ARGT_XMM0;
+      isXMM=isXMM1 || isXMM2;
 
       if (tmpins->slash_val<8) {
 	cur.ModrM|=tmpins->slash_val<<3;
@@ -599,16 +611,18 @@ Bool PrsAsmInst(CCmpCtrl *cc,CHashOpcode *tmpo,I64 argcnt)
 	      cur.last_opcode_U8|=tmpa2->reg1;
 	  }
 	}
+
 	if (arg1==ARGT_RM64 || arg2==ARGT_RM64 ||
 	      arg1==ARGT_M64 || arg2==ARGT_M64 ||
 	      arg1==ARGT_R64 || arg2==ARGT_R64)
 	  cur.REX|=8;
-	if (ARGT_RM8<=arg1<=ARGT_RM64 || ARGT_RM8<=arg2<=ARGT_RM64 ||
+	if (isXMM || ARGT_RM8<=arg1<=ARGT_RM64 || ARGT_RM8<=arg2<=ARGT_RM64 ||
 	      ARGT_M8<=arg1<=ARGT_M64  || ARGT_M8<=arg2<=ARGT_M64) {
 	  if (aotc->seg_size==16)
 	    cur.has_addr_prefix=TRUE;
 	  cur.has_ModrM=TRUE;
-	  if (ARGT_RM8<=arg2<=ARGT_RM64 || ARGT_M8<=arg2<=ARGT_M64) {
+	  if (ARGT_RM8<=arg2<=ARGT_RM64 || ARGT_M8<=arg2<=ARGT_M64 ||
+		ARGT_XMM32<=arg2<=ARGT_XMM0) {
 	    tmpa1=&aotc->arg2;
 	    tmpa2=&aotc->arg1;
 	  }
@@ -620,13 +634,13 @@ Bool PrsAsmInst(CCmpCtrl *cc,CHashOpcode *tmpo,I64 argcnt)
 		cur.ModrM|=(tmpa1->reg1&7)<<3;
 		if (tmpa1->reg1&15>7)
 		  cur.REX|=4;
-		if (tmpa1->reg1>=20) //RBPu8,RSPu8,RSIu8,RDIu8?
+		if (!isXMM1 && tmpa1->reg1>=20) //RBPu8,RSPu8,RSIu8,RDIu8?
 		  cur.has_REX=TRUE;
 	      } else {
 		cur.ModrM|=(tmpa2->reg1&7)<<3;
 		if (tmpa2->reg1&15>7)
 		  cur.REX|=4;
-		if (tmpa2->reg1>=20) //RBPu8,RSPu8,RSIu8,RDIu8?
+		if (!isXMM2 && tmpa2->reg1>=20) //RBPu8,RSPu8,RSIu8,RDIu8?
 		  cur.has_REX=TRUE;
 	      }
 	    }
@@ -681,6 +695,8 @@ Bool PrsAsmInst(CCmpCtrl *cc,CHashOpcode *tmpo,I64 argcnt)
 	    if (tmpa1->imm_or_off_present &&
 		  tmpa1->indirect && tmpa1->reg1==REG_NONE) {
 	      cur.ModrM=cur.ModrM&0xF8+5;
+	      if (isXMM2)
+		cur.ModrM&=0xFE;
 	      MemCpy(&cur.disp.num,&tmpa1->num,sizeof(CAsmNum));
 	      cur.disp.U8_cnt=4;
 	      if (aotc->seg_size==64)
@@ -710,6 +726,9 @@ Bool PrsAsmInst(CCmpCtrl *cc,CHashOpcode *tmpo,I64 argcnt)
 	      }
 	    }
 	  }
+	  //regs in ModrM U8 are swapped for SSE instrs
+	  if (isXMM && tmpa1->reg1==ARGT_XMM && tmpa2->reg1==ARGT_XMM)
+	    cur.ModrM=cur.ModrM&0xC0|(cur.ModrM&3)<<3|(cur.ModrM&3<<3)>>3;
 	} else if (ARGT_MOFFS8<=arg1<=ARGT_MOFFS64) {
 	  MemCpy(&cur.disp.num,&tmpa1->num,sizeof(CAsmNum));
 	  if (aotc->seg_size==16)

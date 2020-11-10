@@ -1,5 +1,5 @@
 Bool DirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tmpde,Bool free_old_chain=TRUE)
-{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HH.Z,2520] CDirEntry node.
+{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HH.Z,2521] CDirEntry node.
   switch (dv->fs_type) {
     case FSt_REDSEA:
       return RedSeaDirNew(dv,cur_dir,tmpde,free_old_chain);

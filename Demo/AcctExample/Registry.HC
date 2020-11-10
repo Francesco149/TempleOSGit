@@ -60,7 +60,7 @@
       I64 best_score=16469;
       +] TOSRegen
       progress1_tf=0.000;progress2_tf=0.000;
-    progress3_tf=0.000;progress4_tf=116.067;
+    progress3_tf=0.000;progress4_tf=113.560;
       +] TempleTetris
       I64 hiscore=0;
       +] Once

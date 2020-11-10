@@ -4,12 +4,12 @@ mouse.  They are relative to the scrn, not window.  These can be used if you
 don't want to use msg passing.  [C:/Kernel/KGlbls.HC.Z,25] ms.pos.z is the
 wheel.
 
-[C:/Kernel/KernelA.HH.Z,2998] ms.pos_text.x and [C:/Kernel/KernelA.HH.Z,2998]
+[C:/Kernel/KernelA.HH.Z,2999] ms.pos_text.x and [C:/Kernel/KernelA.HH.Z,2999]
 ms.pos_text.y are the text column and row.  See 
 [C:/Demo/Games/Maze.HC.Z,1].
 
-See [C:/Kernel/KernelA.HH.Z,2998] CMsStateGlbls and
-[C:/Kernel/KernelA.HH.Z,2979] CMsHardStateGlbls.
+See [C:/Kernel/KernelA.HH.Z,2999] CMsStateGlbls and
+[C:/Kernel/KernelA.HH.Z,2980] CMsHardStateGlbls.
 
 The hard designation, as in ms_hard, represents hardware layer items before 
 the application of an abstraction layer.

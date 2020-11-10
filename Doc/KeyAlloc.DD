@@ -8,7 +8,7 @@ See Key Map
  for a detailed list of key commands.
 
 When you are at the cmd line, editing documents, browsing documentation and 
-help, entering items in forms or in menu's, the [C:/Kernel/KernelA.HH.Z,1367]
+help, entering items in forms or in menu's, the [C:/Kernel/KernelA.HH.Z,1368]
 DolDoc editor handles keys.  
 It allows you to define your own key hndlrs in a
 [C:/Home/HomeKeyPlugIns.HC.Z,11] MyPutKey() function.  If you 
@@ -22,7 +22,7 @@ The following is an overview of key allocations.
 pre-defined, but you can change them if you wish.
 
 <CTRL-ALT-keys> and <CTRL-ALT-SHIFT-keys>  Handled at a system level, NOT by 
-the [C:/Kernel/KernelA.HH.Z,1367] CDoc editor.  I reserve the right to alloc
+the [C:/Kernel/KernelA.HH.Z,1368] CDoc editor.  I reserve the right to alloc
 these, but in the mean time, 
 you can define your own hndlrs with [C:/Kernel/KeyDev.HC.Z,178]
 CtrlAltCBSet().  They operate either in a 

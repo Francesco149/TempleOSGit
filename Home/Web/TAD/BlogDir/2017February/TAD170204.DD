@@ -1517,7 +1517,7 @@ make them worthy.  I got lots and lots of time.
 I kinda don't like the games and want to emphasize the hymns instead.
 
 TempleOS is s space alien trading post and adults make hymns.
-[C:/Home/Web/TAD/HymnVideos.DD,1]
+[C:/Home/Web/TAD/HymnVideos.DD.Z,1]
 Solomon wrote 1005 hymns because they are currency to trade at the trading 
 post.
 
@@ -2611,21 +2611,21 @@ chills Maryland's dropping asinine neophytes wainscotings
 
                                    Credits
 
-I, Terry A. Davis, wrote all 120,793 lines of TempleOS over the past 17.3 
-years (full-time).  It can run on some bare metal 64-bit PC's from about 
-2005-2010 with no layering, libraries, tools, modules or anything from other 
-sources.  Otherwise, you run it in a virtual machine, like VMware, QEMU or Vir
-tualBox.  It is independent and stands alone.  It has no networking, so it 
-certainly doesn't call home.  100% of the src code is including on all 
-distro's, from the kernel to the compiler to the boot loaders!  It is public 
-domain, not GPL.
+I, Terry A. Davis, wrote all 80,849 lines of TempleOS over the past 17.3
+years 
+(full-time).  It can run on some bare metal 64-bit PC's from about 2005-2010 
+with no layering, libraries, tools, modules or anything from other sources.  
+Otherwise, you run it in a virtual machine, like VMware, QEMU or VirtualBox.  
+It is independent and stands alone.  It has no networking, so it certainly 
+doesn't call home.  100% of the src code is including on all distro's, from 
+the kernel to the compiler to the boot loaders!  It is public domain, not GPL.
 
 *) [C:/Kernel/FontStd.HC.Z,1], is taken from FreeDOS.  It's public domain.
 
 *) [C:/Kernel/FontCyrillic.HC.Z,1], is taken from OrientDisplay without
 permission.
 
-*) [C:/Kernel/KernelA.HH.Z,2267] ATA Reg and Cmd Definitions are originally
+*) [C:/Kernel/KernelA.HH.Z,2270] ATA Reg and Cmd Definitions are originally
 from Linux.  Later, I got the 
 spec.
 

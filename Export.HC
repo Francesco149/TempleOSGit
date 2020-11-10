@@ -345,7 +345,7 @@ U8 *UnZExtension(U8 *out_path)
   U8 *ex=FileExtDot(out_path)+1;
   if (StrEqAny(ex,"TXT.Z","LOG.Z","CPP.Z","HPP.Z","PRJ.Z","MAP.Z","DAT.Z",
                    "BIN.Z","AUT.Z","GRA.Z","HC.Z","HH.Z","DATA.Z","DD.Z",
-                   "IN.Z","GR.Z"))
+                   "IN.Z","GR.Z","BMP.Z"))
     StrLastRem(ex,".");
   else if (IsDotZ(out_path))
     ex[4]='C';
@@ -368,27 +368,22 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
   I64 indent=0,line_len=0,prev_len=0;
   U8 *indents=StrNew("");
 
+
 //Windows stuff should just be passed through with the original extension
-  if (StrMatchAny(out_path,"/Windows/","/Linux/")) {
+//Big TXTs that aren't in DD format
+  if (StrMatchAny(out_path,"/Windows/","/Linux/","/Sup1Bin/","/Sup1Texts/",
+	"AugustWords.TXT","BibleWords.TXT","ChessWords.TXT","Countries.TXT",
+	"HappyWords.TXT","Ingredients.TXT","Letters.TXT","LinuxDict.TXT",
+	"HuckWords.TXT","PCIDevices.TXT","Bible.TXT","Words1000.TXT",
+	"Words10k.TXT","GodDict.TXT","NumBible.TXT")) {
     FilePassThrough(in_path,out_path);
     return;
   }
 
   ex=UnZExtension(out_path);
 
-  if (StrEqAny(ex,"BIN.C","BIN","DAT","GRA","ISO","BMP","DATA","GR")) {
-    FilePassThrough(in_path,out_path);
-    return;
-  }
-
-  for (buf=ex;buf>out_path && *buf!='/';buf--);
-  buf++;
-
-  if (StrEqAny(buf,"Bible.TXT","PCIDevices.TXT")) {
-//Special case: I know these large files don't have any Doc syntax so no point
-//in wasting time parsing them
-//NOTE: PCIDevices contains non-ASCII but they shouldn't be converted because
-//it's not TempleOS extended ASCII, it was probably created in Linux/Windows
+  if (StrEqAny(ex,"BIN.C","BIN","DAT","GRA","ISO","BMP","DATA","GR","BMP",
+	"JPG","JPEG","jpg","JPEG","html","htm","HTM","HTML")) {
     FilePassThrough(in_path,out_path);
     return;
   }
@@ -630,7 +625,9 @@ U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
 //to start the export.
 
 U0 ExportTree() {
-  CTask *task=User("#include \"D:/Export.HC\"
+  Copy("D:/Export.HC","C:/Export.HC");
+  CTask *task=User("#include \"C:/Export.HC\";
+DskChg('D');
 ExportTreeImpl;
 ExportSingle(\"D:/Export.HC\",\"D:/Git/Export.HC\");
 ");

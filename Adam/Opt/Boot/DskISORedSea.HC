@@ -139,7 +139,7 @@ public I64 RedSeaISO(U8 *_iso_filename=NULL,U8 *_src_dir,
   I64 i,res,root_cnt,root_dir_blks,bitmap_blks,bitmap_blks1;
   CDirEntry *tmpde;
   U8 buf[STR_LEN],*iso_filename,*src_dir,*stage2_filename;
-  CDrv *dv=DrvMakeFreeSlot(DrvNextFreeLet('Q')); //First [C:/Kernel/KernelA.HH.Z,2605] BDT_ISO_FILE_WRITE
+  CDrv *dv=DrvMakeFreeSlot(DrvNextFreeLet('Q')); //First [C:/Kernel/KernelA.HH.Z,2606] BDT_ISO_FILE_WRITE
   CBlkDev *bd=BlkDevNextFreeSlot(dv->drv_let,BDT_ISO_FILE_WRITE);
 
   if (!IsDir(_src_dir))

@@ -1,8 +1,8 @@
 [C:/Kernel/KMain.HC.Z,135] KMain()
   includes [C:/StartOS.HC.Z,1]
     includes [C:/Home/MakeHome.HC.Z,1]
-      includes [C:/Home/HomeSys.HC,1]
-        calls [C:/Home/HomeSys.HC,1] StartUpTasks()
+      includes [C:/Home/HomeSys.HC.Z,1]
+        calls [C:/Home/HomeSys.HC.Z,1] StartUpTasks()
           includes [C:/Home/Once.HC,1]
             calls [C:/Adam/ARegistry.HC.Z,179] OnceExe().
 
